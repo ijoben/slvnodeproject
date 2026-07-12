@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== RESET & GLOBAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +19,7 @@
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
             color: #e6edf5;
             min-height: 100vh;
-            padding: 1.5rem 1rem 3rem;
+            padding: 1.5rem 1rem 6rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -379,6 +380,7 @@
             font-size: 0.8rem;
             cursor: pointer;
             transition: 0.15s;
+            text-decoration: none;
         }
         .login-bar .btn-login:hover {
             background: rgba(60, 120, 255, 0.2);
@@ -598,6 +600,72 @@
             margin: 0.8rem 0;
         }
 
+        /* ===== BOTTOM NAV (3 menu) ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(12, 28, 60, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(80, 140, 255, 0.08);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.4rem 0 0.6rem;
+            z-index: 100;
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+        }
+        .bottom-nav a {
+            color: #5a8ac0;
+            text-decoration: none;
+            font-size: 0.55rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            transition: 0.2s;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            min-width: 60px;
+            position: relative;
+        }
+        .bottom-nav a i {
+            font-size: 1.3rem;
+            transition: 0.2s;
+        }
+        .bottom-nav a span {
+            font-size: 0.55rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .bottom-nav a.active {
+            color: #7aaeff;
+        }
+        .bottom-nav a.active i {
+            color: #4a8aff;
+            text-shadow: 0 0 25px rgba(60, 120, 255, 0.3);
+        }
+        .bottom-nav a:hover {
+            color: #b0ccff;
+        }
+        .bottom-nav a.hidden-nav {
+            display: none;
+        }
+
+        /* Badge notif kecil */
+        .bottom-nav a .badge-dot {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background: #4a8aff;
+            border-radius: 50%;
+            border: 2px solid rgba(12, 28, 60, 0.9);
+        }
+
         @media (max-width: 700px) {
             .grid-2 {
                 grid-template-columns: 1fr;
@@ -632,6 +700,17 @@
             .modal-box {
                 padding: 1.8rem 1.5rem;
             }
+            .bottom-nav a {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.3rem;
+                min-width: 45px;
+            }
+            .bottom-nav a i {
+                font-size: 1.1rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -642,11 +721,8 @@
         <div class="login-bar" id="loginBar">
             <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login</div>
             <button class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
-            <div id="userInfo" style="display:none; display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap;">
+            <div id="userInfo" style="display:none; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
                 <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">user@example.com</span></span>
-                <a href="dashboard.html" class="btn-login" style="background:rgba(60,120,255,0.12); border:1px solid rgba(80,140,255,0.15); border-radius:60px; padding:0.3rem 1.2rem; color:#8ab8ff; font-weight:600; font-size:0.8rem; cursor:pointer; text-decoration:none; transition:0.15s;">
-                    <i class="fas fa-chart-pie"></i> Dashboard
-                </a>
                 <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
             </div>
         </div>
@@ -834,6 +910,23 @@
 
     </div>
 
+    <!-- ===== BOTTOM NAV (3 menu) ===== -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="active" id="navHome">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="dashboard.html" id="navBuy">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Beli Token</span>
+            <span class="badge-dot" id="navBadge" style="display:none;"></span>
+        </a>
+        <a href="account.html" id="navAccount">
+            <i class="fas fa-user"></i>
+            <span>Akun</span>
+        </a>
+    </nav>
+
     <!-- ===== LOGIN MODAL ===== -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
@@ -861,13 +954,13 @@
             REF: 'silverchain_ref',
             CURRENT_USER: 'silverchain_current_user'
         };
+        const OWNER_EMAIL = 'admin@silverchain.io';
 
         let usersDB = [];
         let depositsDB = [];
         let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
-        const OWNER_EMAIL = 'admin@silverchain.io';
 
         // ============================================================
         // LOAD DATA
@@ -957,11 +1050,21 @@
                 userInfo.style.display = 'flex';
                 userEmail.textContent = currentUser.email;
                 document.getElementById('loginBtn').style.display = 'none';
+
+                // Tampilkan badge di menu Beli Token jika ada pending
+                const pending = depositsDB.filter(d => d.email === currentUser.email && d.status === 'pending');
+                const badge = document.getElementById('navBadge');
+                if (pending.length > 0) {
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
             } else {
                 status.innerHTML =
                     `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login`;
                 userInfo.style.display = 'none';
                 document.getElementById('loginBtn').style.display = 'inline-block';
+                document.getElementById('navBadge').style.display = 'none';
             }
 
             // Progress
@@ -1119,6 +1222,7 @@
             document.getElementById('toastText').textContent = '👋 Berhasil keluar.';
             toast.style.display = 'flex';
             setTimeout(() => { toast.style.display = 'none'; }, 3000);
+            window.location.href = 'index.html';
         });
 
         // ============================================================
@@ -1134,6 +1238,13 @@
             });
         });
         document.querySelector('.faq-item')?.classList.add('active');
+
+        // ============================================================
+        // NAVIGATION ACTIVE STATE
+        // ============================================================
+        // Di index.html, menu Beranda aktif
+        document.querySelectorAll('.bottom-nav a').forEach(a => a.classList.remove('active'));
+        document.getElementById('navHome').classList.add('active');
 
         // ============================================================
         // INIT
