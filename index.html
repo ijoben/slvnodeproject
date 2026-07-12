@@ -229,7 +229,7 @@
             border: 1px solid rgba(80, 140, 255, 0.08);
         }
 
-        /* PROGRESS */
+        /* PROGRESS BAR — Acuan USDT */
         .progress-wrap {
             display: flex;
             align-items: center;
@@ -240,6 +240,17 @@
             padding: 0.7rem 1.5rem;
             border-radius: 60px;
             border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .progress-label {
+            font-size: 0.85rem;
+            color: #8ab0e6;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .progress-label i {
+            color: #4a8aff;
         }
         .progress-bar-bg {
             flex: 2;
@@ -261,7 +272,7 @@
             font-weight: 700;
             font-size: 1.1rem;
             color: #b0ccff;
-            min-width: 80px;
+            min-width: 100px;
             text-align: right;
         }
         .counter-num small {
@@ -624,6 +635,14 @@
             .header .brand-center i {
                 font-size: 1.8rem;
             }
+            .progress-wrap {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+            }
+            .counter-num {
+                text-align: left;
+            }
         }
         @media (max-width: 480px) {
             .grid-3 {
@@ -677,13 +696,13 @@
 
         <!-- HERO -->
         <div class="section-card hero">
-            <!-- PROGRESS -->
+            <!-- PROGRESS BAR — ACUAN USDT -->
             <div class="progress-wrap">
-                <span style="font-size:0.85rem; color:#8ab0e6; min-width:80px;"><i class="fas fa-chart-simple"></i> Terjual</span>
+                <span class="progress-label"><i class="fas fa-dollar-sign"></i> Terkumpul</span>
                 <div class="progress-bar-bg">
                     <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
-                <div class="counter-num" id="counterDisplay">0 <small>SCT</small></div>
+                <div class="counter-num" id="counterDisplay">$0 <small>USDT</small></div>
             </div>
 
             <div class="subhead" style="font-size:0.95rem; color:#8ab0e6; margin:0.5rem 0 1.2rem; line-height:1.5; border-left:3px solid #4a8aff; padding-left:1rem;">
@@ -727,7 +746,7 @@
             </div>
         </div>
 
-        <!-- ABOUT -->
+        <!-- ABOUT, FEATURES, WHY, ROADMAP, WHITEPAPER, FAQ, CONTACT (sama seperti sebelumnya) -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang SilverChain DAO</div>
             <p style="color:#8ab0e6; line-height:1.7; margin-bottom:0.5rem;">
@@ -742,7 +761,6 @@
             </div>
         </div>
 
-        <!-- FEATURES -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-star"></i> Fitur Unggulan</div>
             <div class="grid-3">
@@ -773,7 +791,6 @@
             </div>
         </div>
 
-        <!-- WHY -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question-circle"></i> Mengapa SilverChain?</div>
             <div class="grid-2">
@@ -796,7 +813,6 @@
             </div>
         </div>
 
-        <!-- ROADMAP -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
@@ -808,7 +824,6 @@
             </div>
         </div>
 
-        <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#8ab0e6; margin-bottom:0.8rem;">Whitepaper lengkap SilverChain mencakup spesifikasi teknis, tokenomics, konsensus, dan tata kelola DAO.</p>
@@ -819,7 +834,6 @@
             </div>
         </div>
 
-        <!-- FAQ -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
@@ -840,7 +854,6 @@
             </div>
         </div>
 
-        <!-- CONTACT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
             <div class="contact-grid">
@@ -901,6 +914,7 @@
             CURRENT_USER: 'silverchain_current_user'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
+        const TARGET_USDT = 1000000; // Target 1 Juta USDT
 
         let usersDB = [];
         let depositsDB = [];
@@ -966,9 +980,7 @@
         }
 
         function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
-
         function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
-
         function saveCurrentUser(user) {
             if (user) localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
             else localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -976,17 +988,33 @@
 
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
-        function getUserTotalSCT(email) {
-            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total,
-            0);
+        // ============================================================
+        // FUNGSI UTAMA — Acuan USDT
+        // ============================================================
+        function getTotalUSDT() {
+            // Hanya ambil deposit yang statusnya 'approved'
+            const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
+            const total = approved.reduce((sum, d) => sum + d.usdt, 0);
+            console.log('💰 Total USDT terkumpul (approved):', total);
+            return total;
         }
 
-        function getTotalMinted() {
-            // Filter status 'approved' (case insensitive)
+        function getTotalSCTMinted() {
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
             const total = approved.reduce((sum, d) => sum + d.total, 0);
-            console.log('📊 Total SCT minted (approved):', total, 'from', approved.length, 'approved deposits');
             return total;
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(2) + 'K';
+            return num.toFixed(0);
+        }
+
+        function formatCurrency(num) {
+            if (num >= 1000000) return '$' + (num / 1000000).toFixed(2) + 'M';
+            if (num >= 1000) return '$' + (num / 1000).toFixed(2) + 'K';
+            return '$' + num.toFixed(0);
         }
 
         // ============================================================
@@ -1023,30 +1051,20 @@
                 });
             }
 
-            // ===== PROGRESS BAR & COUNTER =====
-            const total = getTotalMinted();
-            const target = 2000000000; // 2B target
-            const pct = Math.min((total / target) * 100, 100);
+            // ===== PROGRESS BAR — ACUAN USDT =====
+            const totalUSDT = getTotalUSDT();
+            const pct = Math.min((totalUSDT / TARGET_USDT) * 100, 100);
             
             const progressFill = document.getElementById('progressFill');
             progressFill.style.width = pct + '%';
             
-            // Format display
-            let displayStr;
-            if (total >= 1000000000) {
-                displayStr = (total / 1000000000).toFixed(2) + 'B';
-            } else if (total >= 1000000) {
-                displayStr = (total / 1000000).toFixed(2) + 'M';
-            } else if (total >= 1000) {
-                displayStr = (total / 1000).toFixed(2) + 'K';
-            } else {
-                displayStr = total.toFixed(0);
-            }
-            
-            document.getElementById('counterDisplay').textContent = displayStr + ' SCT';
-            document.getElementById('statSold').textContent = displayStr;
+            document.getElementById('counterDisplay').textContent = formatCurrency(totalUSDT) + ' USDT';
 
-            console.log(`📊 Progress: ${pct.toFixed(1)}% | Total SCT: ${displayStr}`);
+            console.log(`📊 Progress USDT: ${pct.toFixed(1)}% | Total: $${totalUSDT}`);
+
+            // ===== STATS: Token Dicetak =====
+            const totalSCT = getTotalSCTMinted();
+            document.getElementById('statSold').textContent = formatNumber(totalSCT);
 
             // ===== MEMBER AKTIF =====
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
@@ -1087,7 +1105,7 @@
         }
 
         // ============================================================
-        // AUTH
+        // AUTH (sama seperti sebelumnya)
         // ============================================================
         function registerUser(email, password) {
             if (findUser(email)) return { success: false, msg: 'Email sudah terdaftar.' };
@@ -1194,7 +1212,7 @@
         });
 
         // ============================================================
-        // STORAGE EVENT — SINKRONISASI REAL-TIME
+        // STORAGE EVENT
         // ============================================================
         window.addEventListener('storage', function(e) {
             if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS) {
@@ -1219,10 +1237,9 @@
         document.querySelector('.faq-item')?.classList.add('active');
 
         // ============================================================
-        // FORCE FIX — Coba reset data jika masih 0
+        // FORCE FIX
         // ============================================================
         function forceFixData() {
-            // Cek apakah ada data approved
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
             if (approved.length === 0 && depositsDB.length > 0) {
                 console.warn('⚠️ Tidak ada deposit approved! Mengubah beberapa menjadi approved...');
@@ -1243,20 +1260,19 @@
         forceFixData();
         updateUI();
 
-        // Update setiap 1 detik (realtime)
         setInterval(() => {
-            const oldTotal = getTotalMinted();
+            const oldTotal = getTotalUSDT();
             loadData();
             updateUI();
-            const newTotal = getTotalMinted();
+            const newTotal = getTotalUSDT();
             if (oldTotal !== newTotal) {
-                console.log('🔄 Data updated! Total changed:', oldTotal, '→', newTotal);
+                console.log('🔄 Data updated! USDT changed:', oldTotal, '→', newTotal);
             }
         }, 1000);
 
         console.log('🟢 SilverChain Landing Page siap.');
         console.log('👑 Owner:', OWNER_EMAIL);
-        console.log('📊 Total SCT minted:', getTotalMinted());
+        console.log('💰 Total USDT terkumpul:', getTotalUSDT());
         console.log('📦 Deposits DB:', depositsDB);
     </script>
 </body>
