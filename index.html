@@ -346,7 +346,7 @@
         }
 
         /* BUTTON LOGIN DI HERO */
-        .btn-hero-login {
+        .btn-hero {
             background: rgba(60, 120, 255, 0.12);
             border: 1px solid rgba(80, 140, 255, 0.15);
             border-radius: 60px;
@@ -361,11 +361,11 @@
             align-items: center;
             gap: 8px;
         }
-        .btn-hero-login:hover {
+        .btn-hero:hover {
             background: rgba(60, 120, 255, 0.2);
             border-color: rgba(80, 140, 255, 0.3);
         }
-        .btn-hero-login i {
+        .btn-hero i {
             color: #4a8aff;
         }
 
@@ -705,7 +705,9 @@
             <div style="text-align:center; padding:1rem 0;">
                 <p style="color:#8ab0e6; font-size:0.95rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda dengan SilverChain</strong></p>
                 <p style="color:#5a8ac0; font-size:0.8rem; margin-top:0.3rem;">Login atau daftar untuk membeli token dan mulai berinvestasi</p>
-                <button class="btn-hero-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
+                <div id="heroButtonContainer">
+                    <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
+                </div>
             </div>
 
             <div style="text-align:center; font-size:0.7rem; color:#4a7ab0; margin-top:0.8rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
@@ -972,18 +974,33 @@
         // ============================================================
         function updateUI() {
             const isLoggedIn = !!currentUser;
+            const isOwner = isLoggedIn && currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
 
             // Badge di menu Beli Token
             const badge = document.getElementById('navBadge');
             if (isLoggedIn) {
                 const pending = depositsDB.filter(d => d.email === currentUser.email && d.status === 'pending');
-                if (pending.length > 0) {
-                    badge.style.display = 'block';
-                } else {
-                    badge.style.display = 'none';
-                }
+                badge.style.display = pending.length > 0 ? 'block' : 'none';
             } else {
                 badge.style.display = 'none';
+            }
+
+            // Hero button: jika login tampilkan tombol ke Dashboard, jika tidak tampilkan Login
+            const heroContainer = document.getElementById('heroButtonContainer');
+            if (isLoggedIn) {
+                heroContainer.innerHTML = `
+                    <a href="dashboard.html" class="btn-hero"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                `;
+            } else {
+                heroContainer.innerHTML = `
+                    <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
+                `;
+                // Re-attach event listener
+                document.getElementById('loginBtn').addEventListener('click', function() {
+                    document.getElementById('loginModal').classList.add('active');
+                    document.getElementById('emailInput').value = 'demo@silverchain.io';
+                    document.getElementById('passwordInput').value = '123456';
+                });
             }
 
             // Progress
@@ -1089,12 +1106,6 @@
         // ============================================================
         // EVENT LISTENERS
         // ============================================================
-        document.getElementById('loginBtn').addEventListener('click', function() {
-            document.getElementById('loginModal').classList.add('active');
-            document.getElementById('emailInput').value = 'demo@silverchain.io';
-            document.getElementById('passwordInput').value = '123456';
-        });
-
         document.getElementById('closeModal').addEventListener('click', function() {
             document.getElementById('loginModal').classList.remove('active');
         });
