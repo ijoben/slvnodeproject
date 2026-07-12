@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>SilverChain · Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1228;
+            background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
+            color: #e6edf5;
+            min-height: 100vh;
+            padding: 1.5rem 1rem 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 1050px;
+            width: 100%;
+        }
+        .section-card {
+            background: rgba(18, 34, 72, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2.8rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
+            transition: all 0.25s;
+        }
+        .badge-silver {
+            background: rgba(60, 120, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.25rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8ab8ff;
+        }
+        .owner-badge {
+            background: rgba(255, 200, 60, 0.1);
+            border: 1px solid rgba(255, 200, 60, 0.15);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.6rem;
+            color: #fcd34d;
+        }
+        .badge-admin {
+            background: rgba(60, 120, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.6rem;
+            color: #8ab8ff;
+        }
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        .admin-stat {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1.2rem;
+            padding: 0.8rem;
+            text-align: center;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .admin-stat .num {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #b0ccff;
+        }
+        .admin-stat .label {
+            font-size: 0.55rem;
+            color: #5a8ac0;
+            text-transform: uppercase;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        .admin-table th {
+            text-align: left;
+            color: #5a8ac0;
+            font-weight: 600;
+            padding: 0.3rem 0.2rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .admin-table td {
+            padding: 0.3rem 0.2rem;
+            color: #8ab0e6;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+            font-size: 0.7rem;
+        }
+        .admin-table .empty {
+            color: #5a8ac0;
+            text-align: center;
+            padding: 0.8rem 0;
+        }
+        .btn-approve {
+            background: rgba(60, 220, 80, 0.15);
+            border: 1px solid rgba(60, 220, 80, 0.2);
+            border-radius: 60px;
+            padding: 0.1rem 0.6rem;
+            color: #6aff8a;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .btn-approve:hover {
+            background: rgba(60, 220, 80, 0.25);
+        }
+        .btn-reject {
+            background: rgba(255, 60, 60, 0.15);
+            border: 1px solid rgba(255, 60, 60, 0.2);
+            border-radius: 60px;
+            padding: 0.1rem 0.6rem;
+            color: #ff6a6a;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-left: 4px;
+        }
+        .btn-reject:hover {
+            background: rgba(255, 60, 60, 0.25);
+        }
+        .settings-group {
+            background: rgba(8, 20, 48, 0.2);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin: 0.8rem 0;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .settings-group .row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0.3rem 0;
+        }
+        .settings-group label {
+            color: #8ab0e6;
+            font-size: 0.8rem;
+            min-width: 120px;
+        }
+        .settings-group input {
+            background: rgba(8, 20, 48, 0.5);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 60px;
+            padding: 0.3rem 1rem;
+            color: #e6edf5;
+            font-size: 0.85rem;
+            width: 80px;
+            outline: none;
+        }
+        .settings-group input:focus {
+            border-color: rgba(80, 140, 255, 0.2);
+        }
+        .btn-save {
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #8ab8ff;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .btn-save:hover {
+            background: rgba(60, 120, 255, 0.2);
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(12, 28, 60, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(80, 140, 255, 0.08);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.5rem 0 0.7rem;
+            z-index: 100;
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .bottom-nav a {
+            color: #5a8ac0;
+            text-decoration: none;
+            font-size: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            transition: 0.15s;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+        }
+        .bottom-nav a i {
+            font-size: 1.3rem;
+        }
+        .bottom-nav a.active {
+            color: #7aaeff;
+        }
+        .bottom-nav a.active i {
+            color: #4a8aff;
+        }
+        .bottom-nav a:hover {
+            color: #b0ccff;
+        }
+
+        .login-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(12, 28, 60, 0.3);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin: 0.5rem 0 0.8rem;
+        }
+        .login-bar .status {
+            font-size: 0.85rem;
+            color: #8ab0e6;
+        }
+        .login-bar .status i {
+            color: #4a8aff;
+            margin-right: 6px;
+        }
+        .login-bar .status .highlight {
+            color: #7aaeff;
+            font-weight: 600;
+        }
+        .login-bar .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 80, 80, 0.15);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #ff6a6a;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .login-bar .btn-logout:hover {
+            background: rgba(255, 80, 80, 0.1);
+        }
+        .login-bar .user-badge {
+            background: rgba(60, 120, 255, 0.08);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .login-bar .user-badge i {
+            color: #4a8aff;
+            margin-right: 6px;
+        }
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #4a8aff;
+            border-radius: 40px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            color: #b0ccff;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
+        }
+
+        @media (max-width: 700px) {
+            .admin-stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .login-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+        }
+        @media (max-width: 480px) {
+            .section-card {
+                padding: 1.5rem 1rem;
+            }
+            .admin-stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .bottom-nav a {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.4rem;
+            }
+            .bottom-nav a i {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== LOGIN BAR ===== -->
+        <div class="login-bar">
+            <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Memuat...</span></div>
+            <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">-</span></span>
+            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+
+        <!-- ===== ADMIN PANEL ===== -->
+        <div class="section-card">
+            <h2 style="color:#b0ccff; font-size:1.5rem;">
+                <i class="fas fa-user-shield" style="color:#4a8aff; margin-right:10px;"></i>Panel Admin
+                <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
+            </h2>
+            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, dan pengaturan bonus</p>
+
+            <!-- Settings -->
+            <div class="settings-group">
+                <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
+                <div class="row">
+                    <label>Bonus (%)</label>
+                    <input type="number" id="adminBonusPercent" value="10" min="0" max="100" />
+                    <label style="min-width:80px;">Referral (%)</label>
+                    <input type="number" id="adminRefPercent" value="3" min="0" max="100" />
+                    <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Simpan</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="admin-stats-grid">
+                <div class="admin-stat"><div class="num" id="adminTotalUsers">0</div><div class="label">Total Pengguna</div></div>
+                <div class="admin-stat"><div class="num" id="adminTotalDeposits">0</div><div class="label">Total Deposit</div></div>
+                <div class="admin-stat"><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending</div></div>
+                <div class="admin-stat"><div class="num" id="adminTotalSCTMinted">0</div><div class="label">Total SCT Dicetak</div></div>
+            </div>
+
+            <!-- Pending -->
+            <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                <i class="fas fa-clock"></i> Deposit Pending
+            </div>
+            <table class="admin-table">
+                <thead><tr><th>User</th><th>USDT</th><th>Bonus</th><th>Ref</th><th>Total SCT</th><th>Hash TX</th><th>Aksi</th></tr></thead>
+                <tbody id="adminPendingBody">
+                    <tr><td colspan="7" class="empty">Tidak ada pending</td></tr>
+                </tbody>
+            </table>
+
+            <!-- All Users -->
+            <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                <i class="fas fa-users"></i> Semua Pengguna
+            </div>
+            <table class="admin-table">
+                <thead><tr><th>Email</th><th>Kode Ref</th><th>Direferral</th><th>Total SCT</th></tr></thead>
+                <tbody id="adminUserBody">
+                    <tr><td colspan="4" class="empty">Memuat...</td></tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top:1rem; font-size:0.7rem; color:#5a8ac0; text-align:center; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
+                <i class="fas fa-database"></i> Data tersimpan di localStorage
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="bottom-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="dashboard.html">
+            <i class="fas fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="admin.html" class="active">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin</span>
+        </a>
+        <a href="#" id="logoutNavBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Keluar</span>
+        </a>
+    </nav>
+
+    <script>
+        // ============================================================
+        // STORAGE KEYS
+        // ============================================================
+        const STORAGE_KEYS = {
+            USERS: 'silverchain_users',
+            DEPOSITS: 'silverchain_deposits',
+            BONUS: 'silverchain_bonus',
+            REF: 'silverchain_ref',
+            CURRENT_USER: 'silverchain_current_user'
+        };
+        const OWNER_EMAIL = 'admin@silverchain.io';
+
+        let usersDB = [];
+        let depositsDB = [];
+        let currentUser = null;
+        let bonusPercent = 10;
+        let refPercent = 3;
+
+        // ============================================================
+        // LOAD
+        // ============================================================
+        function loadData() {
+            try {
+                const users = localStorage.getItem(STORAGE_KEYS.USERS);
+                if (users) usersDB = JSON.parse(users);
+                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
+                if (deposits) depositsDB = JSON.parse(deposits);
+                const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
+                if (bonus) bonusPercent = parseInt(bonus) || 10;
+                const ref = localStorage.getItem(STORAGE_KEYS.REF);
+                if (ref) refPercent = parseInt(ref) || 3;
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const found = usersDB.find(u => u.email === data.email);
+                    if (found) currentUser = found;
+                }
+            } catch (e) { console.warn('Load error:', e); }
+        }
+
+        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
+
+        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
+
+        function saveSettings() {
+            localStorage.setItem(STORAGE_KEYS.BONUS, String(bonusPercent));
+            localStorage.setItem(STORAGE_KEYS.REF, String(refPercent));
+        }
+
+        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+
+        function getUserTotalSCT(email) {
+            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total,
+            0);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // UI
+        // ============================================================
+        function updateUI() {
+            const isOwner = currentUser && currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+
+            document.getElementById('loginStatus').innerHTML = currentUser ?
+                `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${currentUser.email}</strong>` :
+                `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — <a href="index.html" style="color:#4a8aff;">Login di sini</a>`;
+
+            document.getElementById('userEmailDisplay').textContent = currentUser ? currentUser.email : '-';
+
+            if (!isOwner) {
+                document.getElementById('adminTotalUsers').textContent = '🔒';
+                document.getElementById('adminTotalDeposits').textContent = '🔒';
+                document.getElementById('adminPendingDeposits').textContent = '🔒';
+                document.getElementById('adminTotalSCTMinted').textContent = '🔒';
+                document.getElementById('adminPendingBody').innerHTML =
+                    `<tr><td colspan="7" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
+                document.getElementById('adminUserBody').innerHTML =
+                    `<tr><td colspan="4" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
+                document.getElementById('adminBonusPercent').disabled = true;
+                document.getElementById('adminRefPercent').disabled = true;
+                document.getElementById('saveSettingsBtn').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('adminBonusPercent').disabled = false;
+            document.getElementById('adminRefPercent').disabled = false;
+            document.getElementById('saveSettingsBtn').style.display = 'inline-block';
+            document.getElementById('adminBonusPercent').value = bonusPercent;
+            document.getElementById('adminRefPercent').value = refPercent;
+
+            // Stats
+            document.getElementById('adminTotalUsers').textContent = usersDB.length;
+            document.getElementById('adminTotalDeposits').textContent = depositsDB.length;
+            const pending = depositsDB.filter(d => d.status === 'pending');
+            document.getElementById('adminPendingDeposits').textContent = pending.length;
+            const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+            document.getElementById('adminTotalSCTMinted').textContent = totalMinted.toFixed(1);
+
+            // Pending
+            if (pending.length === 0) {
+                document.getElementById('adminPendingBody').innerHTML =
+                    `<tr><td colspan="7" class="empty">Tidak ada pending</td></tr>`;
+            } else {
+                let html = '';
+                pending.forEach(d => {
+                    html += `<tr>
+                        <td>${d.email}</td>
+                        <td>${d.usdt}</td>
+                        <td>${d.bonus}</td>
+                        <td>${d.ref}</td>
+                        <td>${d.total}</td>
+                        <td style="font-family:monospace; font-size:0.6rem;">${d.txHash || '-'}</td>
+                        <td>
+                            <button class="btn-approve" data-id="${d.id}">✅ Approve</button>
+                            <button class="btn-reject" data-id="${d.id}">✖ Reject</button>
+                        </td>
+                    </tr>`;
+                });
+                document.getElementById('adminPendingBody').innerHTML = html;
+
+                document.querySelectorAll('.btn-approve').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        const deposit = depositsDB.find(d => d.id === id);
+                        if (deposit) {
+                            deposit.status = 'approved';
+                            saveDeposits();
+                            showToast(`✅ Deposit ${deposit.usdt} USDT dari ${deposit.email} disetujui!`);
+                            updateUI();
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.btn-reject').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        const deposit = depositsDB.find(d => d.id === id);
+                        if (deposit) {
+                            deposit.status = 'rejected';
+                            saveDeposits();
+                            showToast(`❌ Deposit ${deposit.usdt} USDT dari ${deposit.email} ditolak.`);
+                            updateUI();
+                        }
+                    });
+                });
+            }
+
+            // All users
+            if (usersDB.length === 0) {
+                document.getElementById('adminUserBody').innerHTML =
+                    `<tr><td colspan="4" class="empty">Belum ada pengguna</td></tr>`;
+            } else {
+                let html = '';
+                usersDB.forEach(u => {
+                    const isOwner = u.email === OWNER_EMAIL;
+                    const total = getUserTotalSCT(u.email);
+                    html += `<tr>
+                        <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
+                        <td><span class="badge-admin">${u.refCode || '-'}</span></td>
+                        <td>${u.referredBy || '-'}</td>
+                        <td>${total.toFixed(1)}</td>
+                    </tr>`;
+                });
+                document.getElementById('adminUserBody').innerHTML = html;
+            }
+        }
+
+        // ============================================================
+        // ACTIONS
+        // ============================================================
+        document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+            const newBonus = parseInt(document.getElementById('adminBonusPercent').value) || 0;
+            const newRef = parseInt(document.getElementById('adminRefPercent').value) || 0;
+            if (newBonus < 0 || newRef < 0) {
+                showToast('❌ Nilai tidak boleh negatif.');
+                return;
+            }
+            bonusPercent = newBonus;
+            refPercent = newRef;
+            saveSettings();
+            showToast(`✅ Pengaturan disimpan! Bonus: ${bonusPercent}%, Referral: ${refPercent}%`);
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            updateUI();
+            showToast('👋 Berhasil keluar.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 500);
+        });
+
+        document.getElementById('logoutNavBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            updateUI();
+            showToast('👋 Berhasil keluar.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 500);
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadData();
+        updateUI();
+
+        setInterval(() => {
+            loadData();
+            updateUI();
+        }, 3000);
+
+        console.log('🟢 SilverChain Admin Panel siap.');
+        console.log('👑 Owner:', OWNER_EMAIL);
+    </script>
+</body>
+</html>
