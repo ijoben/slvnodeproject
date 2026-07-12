@@ -72,7 +72,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* BUY CARD */
         .buy-card {
             background: rgba(12, 28, 60, 0.3);
             border-radius: 1.8rem;
@@ -180,7 +179,6 @@
             font-size: 0.7rem;
         }
 
-        /* TABLE WRAPPER SCROLL */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -241,7 +239,7 @@
             display: flex;
         }
 
-        /* ===== MODAL PAYMENT ===== */
+        /* MODAL PAYMENT */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -345,6 +343,12 @@
             font-size: 2rem;
             color: #4a8aff;
             border: 2px dashed rgba(80, 140, 255, 0.15);
+            overflow: hidden;
+        }
+        .modal-box .qr-section .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         .modal-box .qr-section .qr-text {
             color: #8ab0e6;
@@ -406,12 +410,6 @@
         }
         .modal-box .btn-submit-payment:active {
             transform: scale(0.97);
-        }
-        .modal-box .btn-submit-payment:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
         }
 
         /* BOTTOM NAV */
@@ -578,7 +576,7 @@
                 <button class="btn-buy" id="buyBtn"><i class="fas fa-shopping-cart"></i> Beli Token</button>
             </div>
 
-            <!-- History dengan scroll horizontal -->
+            <!-- History -->
             <div style="margin-top:1.5rem;">
                 <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#4a8aff;"></i> Riwayat Transaksi</h4>
                 <div class="table-wrapper">
@@ -611,7 +609,6 @@
             <h2><i class="fas fa-credit-card" style="color:#4a8aff;"></i> Konfirmasi Pembayaran</h2>
             <p>Kirim USDT ke address di bawah, lalu isi hash transaksi.</p>
 
-            <!-- Detail transaksi -->
             <div id="paymentDetails" style="margin:0.5rem 0;">
                 <div class="detail-row"><span class="label">Jumlah USDT</span><span class="value" id="modalUsdt">0</span></div>
                 <div class="detail-row"><span class="label">Bonus 10%</span><span class="value" id="modalBonus">0</span></div>
@@ -619,24 +616,25 @@
                 <div class="detail-row"><span class="label">Total SCT</span><span class="value" id="modalTotal">0</span></div>
             </div>
 
-            <!-- Address USDT -->
+            <!-- USDT Address (dari localStorage) -->
             <div class="address-box">
-                <input type="text" id="modalAdminAddress" readonly value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="font-family:monospace;" />
+                <input type="text" id="modalAdminAddress" readonly style="font-family:monospace;" />
                 <button id="modalCopyAddress"><i class="fas fa-copy"></i> Salin</button>
             </div>
 
-            <!-- QRIS -->
+            <!-- QRIS (dari localStorage) -->
             <div class="qr-section">
-                <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
+                <div class="qr-placeholder" id="modalQrPlaceholder">
+                    <i class="fas fa-qrcode"></i>
+                </div>
                 <div class="qr-text">
                     <strong>QRIS</strong><br />
                     Scan QRIS untuk pembayaran<br />
-                    <span style="font-size:0.65rem; color:#5a8ac0;">ID: 1234567890 | Nama: SilverChain DAO</span>
+                    <span style="font-size:0.65rem; color:#5a8ac0;" id="modalQrText">ID: 1234567890 | Nama: SilverChain DAO</span>
                 </div>
                 <button id="modalCopyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.2rem 0.8rem; color:#8ab8ff; cursor:pointer; font-size:0.65rem;"><i class="fas fa-copy"></i> Salin ID</button>
             </div>
 
-            <!-- Hash Transaksi -->
             <input type="text" class="input-field" id="modalTxHash" placeholder="Masukkan hash transaksi (0x...)" style="font-family:monospace;" />
 
             <button class="btn-submit-payment" id="modalSubmitBtn"><i class="fas fa-paper-plane"></i> Kirim Bukti Deposit</button>
@@ -670,9 +668,12 @@
             DEPOSITS: 'silverchain_deposits',
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
-            CURRENT_USER: 'silverchain_current_user'
+            CURRENT_USER: 'silverchain_current_user',
+            USDT_ADDRESS: 'silverchain_usdt_address',
+            QRIS_DATA: 'silverchain_qris_data'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
+        const DEFAULT_USDT = '0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ';
 
         let usersDB = [];
         let depositsDB = [];
@@ -743,12 +744,42 @@
         }
 
         // ============================================================
+        // GET PAYMENT DATA FROM LOCALSTORAGE
+        // ============================================================
+        function getUsdtAddress() {
+            const stored = localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS);
+            return stored || DEFAULT_USDT;
+        }
+
+        function getQrisData() {
+            return localStorage.getItem(STORAGE_KEYS.QRIS_DATA) || null;
+        }
+
+        function updatePaymentModal() {
+            // USDT Address
+            const addressInput = document.getElementById('modalAdminAddress');
+            addressInput.value = getUsdtAddress();
+
+            // QRIS
+            const qrisData = getQrisData();
+            const placeholder = document.getElementById('modalQrPlaceholder');
+            const qrText = document.getElementById('modalQrText');
+
+            if (qrisData) {
+                placeholder.innerHTML = `<img src="${qrisData}" alt="QRIS" style="width:100%;height:100%;object-fit:contain;" />`;
+                qrText.textContent = 'QRIS tersedia — scan untuk pembayaran';
+            } else {
+                placeholder.innerHTML = `<i class="fas fa-qrcode"></i>`;
+                qrText.textContent = 'ID: 1234567890 | Nama: SilverChain DAO';
+            }
+        }
+
+        // ============================================================
         // UI
         // ============================================================
         function updateUI() {
             const isLoggedIn = !!currentUser;
 
-            // Badge
             const badge = document.getElementById('navBadge');
             if (isLoggedIn) {
                 const pending = depositsDB.filter(d => d.email === currentUser.email && d.status === 'pending');
@@ -788,7 +819,6 @@
             document.getElementById('dashReferrals').textContent = referrals.length;
             document.getElementById('dashRefEarnings').textContent = getRefEarnings(currentUser.email).toFixed(1);
 
-            // History
             if (deposits.length === 0) {
                 document.getElementById('historyBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>`;
@@ -815,6 +845,7 @@
             }
 
             updateBonusPreview();
+            updatePaymentModal();
         }
 
         function updateBonusPreview() {
@@ -850,17 +881,15 @@
             const ref = Math.floor(usdt * refPercent / 100);
             const total = usdt + bonus + ref;
 
-            // Simpan data sementara
             pendingDepositData = { usdt, bonus, ref, total };
 
-            // Isi modal
             document.getElementById('modalUsdt').textContent = usdt;
             document.getElementById('modalBonus').textContent = bonus;
             document.getElementById('modalRef').textContent = ref;
             document.getElementById('modalTotal').textContent = total;
             document.getElementById('modalTxHash').value = '';
 
-            // Tampilkan modal
+            updatePaymentModal();
             document.getElementById('paymentModal').classList.add('active');
         });
 
@@ -964,6 +993,8 @@
         }, 3000);
 
         console.log('🟢 SilverChain Dashboard (Beli Token) siap.');
+        console.log('📌 USDT Address dari localStorage:', getUsdtAddress());
+        console.log('📌 QRIS tersedia:', !!getQrisData());
     </script>
 </body>
 </html>
