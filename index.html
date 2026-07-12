@@ -18,7 +18,7 @@
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
             color: #e6edf5;
             min-height: 100vh;
-            padding: 1rem 1rem 6rem;
+            padding: 1.5rem 1rem 6rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,24 +31,24 @@
             background: rgba(18, 34, 72, 0.7);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border-radius: 2rem;
-            padding: 1.5rem 1.2rem;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.12);
-            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 2.8rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
         }
         .section-title {
-            font-size: 1.4rem;
+            font-size: 1.7rem;
             font-weight: 700;
-            margin-bottom: 0.8rem;
+            margin-bottom: 1.6rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
             color: #b0ccff;
         }
         .section-title i {
             color: #6a9eff;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
         }
 
         /* HEADER */
@@ -56,23 +56,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0.3rem 0 0.1rem;
+            padding: 0.5rem 0;
         }
         .header .brand-center {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
             text-decoration: none;
         }
         .header .brand-center i {
-            font-size: 2rem;
+            font-size: 2.6rem;
             background: linear-gradient(145deg, #c8ddff, #6a9eff);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .header .brand-center h1 {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 800;
             background: linear-gradient(145deg, #c8ddff, #6a9eff);
             -webkit-background-clip: text;
@@ -80,25 +80,25 @@
             color: transparent;
         }
         .header .brand-center .ticker {
-            font-size: 0.8rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #5a8ac0;
             background: rgba(60, 120, 255, 0.06);
-            padding: 0.1rem 0.7rem;
+            padding: 0.2rem 1rem;
             border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.08);
         }
 
         /* PROGRESS */
         .progress-wrap {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
-            margin: 0.3rem 0 0.8rem;
-            background: rgba(12, 28, 60, 0.25);
-            padding: 0.7rem 1rem;
+            gap: 0.5rem;
+            margin: 0.5rem 0 1rem;
+            background: rgba(12, 28, 60, 0.3);
+            padding: 0.7rem 1.5rem;
             border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.04);
+            border: 1px solid rgba(80, 140, 255, 0.06);
         }
         .progress-top {
             display: flex;
@@ -106,7 +106,7 @@
             align-items: center;
         }
         .progress-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #8ab0e6;
             display: flex;
             align-items: center;
@@ -118,18 +118,18 @@
         }
         .counter-num {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #b0ccff;
         }
         .counter-num small {
             font-weight: 400;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #5a8ac0;
         }
         .progress-bar-bg {
             width: 100%;
             height: 8px;
-            background: rgba(60, 120, 255, 0.08);
+            background: rgba(60, 120, 255, 0.1);
             border-radius: 20px;
             overflow: hidden;
         }
@@ -138,33 +138,34 @@
             width: 0%;
             background: linear-gradient(90deg, #3a7aff, #7aaeff);
             border-radius: 20px;
-            transition: width 0.6s ease;
+            transition: width 0.8s ease;
+            box-shadow: 0 0 30px rgba(60, 120, 255, 0.2);
         }
 
         /* MEMBER — 1 KOLOM KE BAWAH */
         .member-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 0.4rem;
+            gap: 0.5rem;
         }
         .member-card-item {
-            background: rgba(8, 20, 48, 0.25);
-            border-radius: 0.8rem;
-            padding: 0.4rem 0.6rem;
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            border: 1px solid rgba(80, 140, 255, 0.03);
+            gap: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
         }
         .member-card-item .avatar {
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(145deg, #4a8aff, #1a4ab0);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.9rem;
             color: #fff;
             flex-shrink: 0;
         }
@@ -173,29 +174,29 @@
             min-width: 0;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
         }
         .member-card-item .info .name {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: #b0ccff;
             font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 120px;
+            max-width: 150px;
         }
         .member-card-item .info .sct {
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             color: #7aaeff;
             font-weight: 500;
-            background: rgba(60, 120, 255, 0.06);
-            padding: 0.05rem 0.4rem;
+            background: rgba(60, 120, 255, 0.08);
+            padding: 0.1rem 0.6rem;
             border-radius: 60px;
         }
         .member-card-item .rank {
             color: #5a8ac0;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             font-weight: 600;
             flex-shrink: 0;
         }
@@ -204,170 +205,176 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.4rem;
-            background: rgba(12, 28, 60, 0.2);
-            border-radius: 1.2rem;
-            padding: 0.5rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-            margin-bottom: 0.8rem;
+            gap: 0.6rem;
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 2rem;
+            padding: 0.8rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin-bottom: 1.2rem;
         }
         .stat-item {
             text-align: center;
         }
         .stat-item .num {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #b0ccff;
         }
         .stat-item .label {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
             color: #5a8ac0;
         }
         .stat-item.highlight .num {
             color: #7aaeff;
+            text-shadow: 0 0 20px rgba(60, 120, 255, 0.15);
         }
 
         .subhead {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #8ab0e6;
-            margin: 0.3rem 0 0.7rem;
-            line-height: 1.4;
+            margin: 0.5rem 0 1.2rem;
+            line-height: 1.5;
             border-left: 3px solid #4a8aff;
-            padding-left: 0.7rem;
+            padding-left: 1rem;
         }
 
-        /* FEATURES */
+        /* FEATURES — 2 kolom di mobile, 3 di desktop */
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
         .feature-item {
-            background: rgba(12, 28, 60, 0.4);
-            border-radius: 1rem;
-            padding: 0.7rem 0.5rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
+            background: rgba(12, 28, 60, 0.5);
+            backdrop-filter: blur(6px);
+            border-radius: 1.5rem;
+            padding: 1rem 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
             text-align: center;
         }
         .feature-item i {
             color: #6a9eff;
-            font-size: 1.3rem;
-            margin-bottom: 0.2rem;
+            font-size: 1.6rem;
+            margin-bottom: 0.3rem;
             display: block;
         }
         .feature-item h4 {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.95rem;
             color: #b0ccff;
         }
         .feature-item p {
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             color: #8ab0e6;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         /* WHY */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
         .why-item {
-            background: rgba(12, 28, 60, 0.4);
-            border-radius: 1rem;
-            padding: 0.7rem 0.5rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
+            background: rgba(12, 28, 60, 0.5);
+            backdrop-filter: blur(6px);
+            border-radius: 1.5rem;
+            padding: 1rem 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
             text-align: center;
         }
         .why-item i {
             color: #6a9eff;
-            font-size: 1.3rem;
-            margin-bottom: 0.2rem;
+            font-size: 1.6rem;
+            margin-bottom: 0.3rem;
             display: block;
         }
         .why-item h4 {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.95rem;
             color: #b0ccff;
         }
         .why-item p {
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             color: #8ab0e6;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         /* ROADMAP */
         .roadmap-list {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.6rem;
         }
         .roadmap-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(12, 28, 60, 0.3);
-            padding: 0.5rem 0.8rem;
+            gap: 12px;
+            background: rgba(12, 28, 60, 0.4);
+            backdrop-filter: blur(4px);
+            padding: 0.8rem 1.2rem;
             border-radius: 60px;
-            border-left: 3px solid #4a8aff;
+            border-left: 4px solid #4a8aff;
             position: relative;
         }
         .roadmap-item::after {
             content: "→";
             position: absolute;
-            right: 12px;
+            right: 16px;
             color: #4a8aff;
-            font-size: 0.8rem;
-            opacity: 0.3;
+            font-size: 1rem;
+            opacity: 0.4;
         }
         .roadmap-item .phase {
             font-weight: 700;
             color: #8ab8ff;
-            min-width: 55px;
-            font-size: 0.7rem;
+            min-width: 70px;
+            font-size: 0.85rem;
         }
         .roadmap-item .desc {
             color: #90b8ee;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
         }
 
         /* FAQ */
         .faq-item {
-            background: rgba(12, 28, 60, 0.25);
-            border-radius: 1rem;
-            margin-bottom: 0.4rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
+            background: rgba(12, 28, 60, 0.35);
+            backdrop-filter: blur(4px);
+            border-radius: 1.2rem;
+            margin-bottom: 0.6rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
             overflow: hidden;
         }
         .faq-question {
-            padding: 0.6rem 1rem;
+            padding: 0.8rem 1.2rem;
             font-weight: 600;
             color: #b0ccff;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
         .faq-question i {
             color: #4a8aff;
             transition: 0.25s;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            padding: 0 1rem;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
+            padding: 0 1.2rem;
             color: #8ab0e6;
-            font-size: 0.75rem;
-            line-height: 1.4;
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
         .faq-item.active .faq-answer {
-            max-height: 150px;
-            padding: 0 1rem 0.6rem 1rem;
+            max-height: 200px;
+            padding: 0 1.2rem 1rem 1.2rem;
         }
         .faq-item.active .faq-question i {
             transform: rotate(180deg);
@@ -377,64 +384,65 @@
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.4rem;
+            gap: 0.6rem;
         }
         .contact-item {
-            background: rgba(12, 28, 60, 0.25);
-            padding: 0.4rem 0.6rem;
-            border-radius: 0.8rem;
+            background: rgba(12, 28, 60, 0.3);
+            padding: 0.6rem 1rem;
+            border-radius: 1rem;
             display: flex;
             align-items: center;
-            gap: 6px;
-            border: 1px solid rgba(80, 140, 255, 0.03);
+            gap: 10px;
+            border: 1px solid rgba(80, 140, 255, 0.04);
             text-decoration: none;
             color: #8ab8ff;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
         }
         .contact-item i {
             color: #4a8aff;
-            font-size: 0.9rem;
-            width: 18px;
+            font-size: 1.1rem;
+            width: 20px;
             text-align: center;
             flex-shrink: 0;
         }
         .contact-item span {
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             word-break: break-word;
         }
         .contact-item a {
             color: #8ab8ff;
             text-decoration: none;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
         }
 
         .badge-silver {
-            background: rgba(60, 120, 255, 0.05);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            background: rgba(60, 120, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
-            padding: 0.15rem 0.5rem;
-            font-size: 0.6rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.65rem;
             font-weight: 600;
             color: #8ab8ff;
         }
 
         .btn-hero {
-            background: rgba(60, 120, 255, 0.1);
-            border: 1px solid rgba(80, 140, 255, 0.12);
+            background: rgba(60, 120, 255, 0.12);
+            border: 1px solid rgba(80, 140, 255, 0.15);
             border-radius: 60px;
-            padding: 0.5rem 1.5rem;
+            padding: 0.5rem 1.8rem;
             color: #8ab8ff;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: 0.15s;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         .btn-hero:hover {
-            background: rgba(60, 120, 255, 0.18);
+            background: rgba(60, 120, 255, 0.2);
+            border-color: rgba(80, 140, 255, 0.3);
         }
         .btn-hero i {
             color: #4a8aff;
@@ -442,27 +450,27 @@
 
         .btn-outline {
             background: transparent;
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            border: 1px solid rgba(80, 140, 255, 0.1);
             color: #8ab8ff;
-            padding: 0.2rem 0.7rem;
+            padding: 0.3rem 1rem;
             border-radius: 60px;
             font-weight: 600;
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             cursor: default;
         }
 
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
-            border-left: 3px solid #4a8aff;
+            border-left: 4px solid #4a8aff;
             border-radius: 40px;
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
             color: #b0ccff;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
             display: none;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
         .toast-message.show {
             display: flex;
@@ -488,11 +496,11 @@
         .modal-box {
             background: #0e1e40;
             background: linear-gradient(145deg, #122a5a, #081a38);
-            border-radius: 2rem;
-            padding: 2rem 1.5rem;
-            max-width: 420px;
-            width: 92%;
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            border-radius: 2.5rem;
+            padding: 2.5rem 2.5rem;
+            max-width: 440px;
+            width: 90%;
+            border: 1px solid rgba(80, 140, 255, 0.1);
             box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
             position: relative;
             max-height: 90vh;
@@ -500,67 +508,67 @@
         }
         .modal-box .close-btn {
             position: absolute;
-            top: 12px;
-            right: 16px;
+            top: 16px;
+            right: 20px;
             background: none;
             border: none;
             color: #5a8ac0;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             cursor: pointer;
         }
         .modal-box h2 {
             color: #b0ccff;
-            margin-bottom: 0.3rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
         }
         .modal-box p {
             color: #8ab0e6;
             font-size: 0.85rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         .modal-box .input-field {
             width: 100%;
-            padding: 0.7rem 1rem;
+            padding: 0.9rem 1.2rem;
             border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            border: 1px solid rgba(80, 140, 255, 0.1);
             background: rgba(8, 20, 48, 0.5);
             color: #e6edf5;
-            font-size: 0.9rem;
+            font-size: 1rem;
             outline: none;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
         }
         .modal-box .input-field:focus {
-            border-color: rgba(80, 140, 255, 0.2);
+            border-color: rgba(80, 140, 255, 0.3);
         }
         .modal-box .btn-modal {
             width: 100%;
-            padding: 0.7rem;
+            padding: 0.9rem;
             border-radius: 60px;
             border: none;
             background: linear-gradient(145deg, #4a8aff, #1a4ab0);
             color: #fff;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.15s;
         }
         .modal-box .btn-modal:hover {
-            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.2);
+            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.3);
         }
         .modal-box .btn-modal.secondary {
-            background: rgba(60, 120, 255, 0.08);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.1);
             color: #8ab8ff;
             box-shadow: none;
-            margin-top: 0.4rem;
+            margin-top: 0.5rem;
         }
         .modal-box .btn-modal.secondary:hover {
-            background: rgba(60, 120, 255, 0.12);
+            background: rgba(60, 120, 255, 0.15);
         }
         .modal-box .error-msg {
             color: #ff6a6a;
-            font-size: 0.75rem;
-            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
             display: none;
         }
         .modal-box .error-msg.show {
@@ -568,8 +576,8 @@
         }
         .modal-box .success-msg {
             color: #6aff8a;
-            font-size: 0.75rem;
-            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
             display: none;
         }
         .modal-box .success-msg.show {
@@ -578,26 +586,26 @@
         .modal-box .divider {
             text-align: center;
             color: #5a8ac0;
-            font-size: 0.75rem;
-            margin: 0.5rem 0;
+            font-size: 0.8rem;
+            margin: 0.8rem 0;
         }
 
-        /* BOTTOM NAV — FIXED */
+        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(12, 28, 60, 0.97);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(80, 140, 255, 0.06);
+            background: rgba(12, 28, 60, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(80, 140, 255, 0.08);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0.4rem 0 0.5rem;
+            padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
             color: #5a8ac0;
@@ -606,27 +614,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
-            padding: 0.1rem 0.4rem;
+            gap: 3px;
+            padding: 0.2rem 0.8rem;
             border-radius: 60px;
-            min-width: 45px;
+            min-width: 60px;
             position: relative;
         }
         .bottom-nav a i {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
         .bottom-nav a.active {
             color: #7aaeff;
         }
         .bottom-nav a.active i {
             color: #4a8aff;
+            text-shadow: 0 0 25px rgba(60, 120, 255, 0.3);
+        }
+        .bottom-nav a:hover {
+            color: #b0ccff;
         }
         .bottom-nav a .badge-dot {
             position: absolute;
-            top: 0px;
-            right: 2px;
-            width: 6px;
-            height: 6px;
+            top: 2px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
             background: #f97316;
             border-radius: 50%;
             border: 2px solid rgba(12, 28, 60, 0.9);
@@ -635,48 +647,6 @@
 
         /* DESKTOP */
         @media (min-width: 768px) {
-            body {
-                padding: 1.5rem 1rem 6rem;
-            }
-            .section-card {
-                padding: 2rem 2rem;
-                border-radius: 2.8rem;
-                margin-bottom: 2rem;
-            }
-            .section-title {
-                font-size: 1.7rem;
-                margin-bottom: 1.6rem;
-            }
-            .section-title i {
-                font-size: 1.8rem;
-            }
-            .header .brand-center i {
-                font-size: 2.6rem;
-            }
-            .header .brand-center h1 {
-                font-size: 2.2rem;
-            }
-            .header .brand-center .ticker {
-                font-size: 1rem;
-                padding: 0.2rem 1rem;
-            }
-            .stats-grid {
-                gap: 0.6rem;
-                padding: 0.8rem;
-            }
-            .stat-item .num {
-                font-size: 1.3rem;
-            }
-            .stat-item .label {
-                font-size: 0.6rem;
-            }
-            .subhead {
-                font-size: 0.95rem;
-            }
-            .btn-hero {
-                padding: 0.6rem 2rem;
-                font-size: 0.95rem;
-            }
             .grid-3 {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 1.5rem;
@@ -711,47 +681,50 @@
                 font-size: 0.85rem;
             }
             .member-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 0.8rem;
             }
             .member-card-item {
-                padding: 0.8rem 1rem;
+                padding: 0.8rem 1.2rem;
                 border-radius: 1.2rem;
             }
             .member-card-item .avatar {
-                width: 36px;
-                height: 36px;
+                width: 40px;
+                height: 40px;
                 font-size: 1rem;
             }
             .member-card-item .info .name {
-                font-size: 0.85rem;
+                font-size: 0.9rem;
                 max-width: none;
             }
             .member-card-item .info .sct {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
             .member-card-item .rank {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
-            .roadmap-item {
-                padding: 0.9rem 1.5rem;
+            .progress-wrap {
+                flex-direction: row;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 0.7rem 1.5rem;
             }
-            .roadmap-item .phase {
+            .progress-top {
+                flex: 1;
+                gap: 1rem;
+            }
+            .progress-label {
                 font-size: 0.9rem;
                 min-width: 80px;
             }
-            .roadmap-item .desc {
-                font-size: 0.9rem;
-            }
-            .roadmap-item::after {
+            .counter-num {
                 font-size: 1.2rem;
+                min-width: 100px;
             }
-            .faq-question {
-                padding: 1rem 1.4rem;
-                font-size: 1rem;
-            }
-            .faq-answer {
-                font-size: 0.9rem;
+            .progress-bar-bg {
+                flex: 2;
+                min-width: 120px;
+                height: 8px;
             }
             .contact-grid {
                 gap: 0.8rem;
@@ -768,63 +741,12 @@
             .contact-item span {
                 font-size: 0.85rem;
             }
-            .badge-silver {
-                font-size: 0.7rem;
-                padding: 0.25rem 1rem;
-            }
-            .toast-message {
-                padding: 0.6rem 1.4rem;
-                font-size: 0.85rem;
-            }
-            .modal-box {
-                padding: 2.5rem 2.5rem;
-                border-radius: 2.5rem;
-                max-width: 440px;
-            }
-            .modal-box h2 {
-                font-size: 1.4rem;
-            }
-            .modal-box p {
-                font-size: 0.85rem;
-            }
-            .modal-box .input-field {
-                padding: 0.9rem 1.2rem;
-                font-size: 1rem;
-            }
-            .modal-box .btn-modal {
-                padding: 0.9rem;
-                font-size: 1rem;
-            }
-            .bottom-nav a {
-                font-size: 0.55rem;
-                padding: 0.2rem 0.8rem;
-                min-width: 60px;
-            }
-            .bottom-nav a i {
-                font-size: 1.3rem;
-            }
-            .progress-wrap {
-                flex-direction: row;
-                align-items: center;
-                gap: 1rem;
-                padding: 0.7rem 1.5rem;
-            }
-            .progress-top {
-                flex: 1;
-                gap: 1rem;
-            }
-            .progress-label {
-                font-size: 0.85rem;
+            .roadmap-item .phase {
+                font-size: 0.9rem;
                 min-width: 80px;
             }
-            .counter-num {
-                font-size: 1.1rem;
-                min-width: 100px;
-            }
-            .progress-bar-bg {
-                flex: 2;
-                min-width: 120px;
-                height: 8px;
+            .roadmap-item .desc {
+                font-size: 0.9rem;
             }
         }
 
@@ -834,133 +756,138 @@
             }
             .member-card-item .info .name {
                 max-width: 100px;
-                font-size: 0.7rem;
+                font-size: 0.75rem;
             }
             .member-card-item .info .sct {
-                font-size: 0.6rem;
+                font-size: 0.65rem;
             }
             .member-card-item .avatar {
-                width: 26px;
-                height: 26px;
-                font-size: 0.6rem;
+                width: 30px;
+                height: 30px;
+                font-size: 0.7rem;
             }
             .contact-grid {
                 grid-template-columns: 1fr 1fr;
             }
             .contact-item {
-                font-size: 0.6rem;
-                padding: 0.3rem 0.4rem;
+                font-size: 0.65rem;
+                padding: 0.4rem 0.6rem;
             }
             .contact-item i {
-                font-size: 0.7rem;
-                width: 14px;
+                font-size: 0.8rem;
+                width: 16px;
             }
             .contact-item span {
-                font-size: 0.55rem;
+                font-size: 0.6rem;
             }
             .feature-item {
-                padding: 0.5rem 0.3rem;
+                padding: 0.6rem 0.4rem;
             }
             .feature-item i {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             .feature-item h4 {
-                font-size: 0.65rem;
+                font-size: 0.7rem;
             }
             .feature-item p {
-                font-size: 0.55rem;
+                font-size: 0.6rem;
             }
             .why-item {
-                padding: 0.5rem 0.3rem;
+                padding: 0.6rem 0.4rem;
             }
             .why-item i {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             .why-item h4 {
-                font-size: 0.65rem;
+                font-size: 0.7rem;
             }
             .why-item p {
-                font-size: 0.55rem;
+                font-size: 0.6rem;
             }
             .stats-grid {
-                padding: 0.4rem;
+                padding: 0.5rem;
             }
             .stat-item .num {
                 font-size: 1rem;
             }
             .stat-item .label {
-                font-size: 0.45rem;
+                font-size: 0.5rem;
             }
             .header .brand-center h1 {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
             .header .brand-center i {
-                font-size: 1.4rem;
+                font-size: 1.6rem;
             }
             .header .brand-center .ticker {
-                font-size: 0.6rem;
+                font-size: 0.7rem;
+                padding: 0.1rem 0.6rem;
             }
             .subhead {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
             .bottom-nav a {
                 font-size: 0.45rem;
-                min-width: 35px;
-                padding: 0.05rem 0.2rem;
+                min-width: 40px;
+                padding: 0.1rem 0.3rem;
             }
             .bottom-nav a i {
                 font-size: 1rem;
             }
             .modal-box {
-                padding: 1.5rem 1rem;
+                padding: 1.5rem 1.2rem;
             }
             .progress-wrap {
-                padding: 0.5rem 0.7rem;
+                padding: 0.5rem 0.8rem;
             }
             .progress-label {
                 font-size: 0.7rem;
             }
             .counter-num {
-                font-size: 0.8rem;
+                font-size: 0.85rem;
             }
             .counter-num small {
-                font-size: 0.5rem;
+                font-size: 0.55rem;
             }
             .progress-bar-bg {
                 height: 6px;
             }
             .roadmap-item {
-                padding: 0.35rem 0.6rem;
-            }
-            .roadmap-item .phase {
-                font-size: 0.55rem;
-                min-width: 40px;
-            }
-            .roadmap-item .desc {
-                font-size: 0.55rem;
-            }
-            .roadmap-item::after {
-                font-size: 0.55rem;
-                right: 8px;
-            }
-            .faq-question {
-                font-size: 0.7rem;
                 padding: 0.4rem 0.7rem;
             }
+            .roadmap-item .phase {
+                font-size: 0.6rem;
+                min-width: 45px;
+            }
+            .roadmap-item .desc {
+                font-size: 0.6rem;
+            }
+            .roadmap-item::after {
+                font-size: 0.7rem;
+                right: 10px;
+            }
+            .faq-question {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.8rem;
+            }
             .faq-answer {
-                font-size: 0.65rem;
+                font-size: 0.7rem;
             }
             .badge-silver {
-                font-size: 0.5rem;
-                padding: 0.1rem 0.4rem;
+                font-size: 0.55rem;
+                padding: 0.1rem 0.5rem;
             }
             .btn-hero {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
                 padding: 0.4rem 1.2rem;
             }
             .btn-outline {
-                font-size: 0.5rem;
-                padding: 0.15rem 0.5rem;
+                font-size: 0.55rem;
+                padding: 0.15rem 0.6rem;
+            }
+            .toast-message {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
             }
         }
     </style>
@@ -1013,34 +940,34 @@
                 </div>
             </div>
 
-            <div style="text-align:center; padding:0.3rem 0;">
-                <p style="color:#8ab0e6; font-size:0.85rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda</strong></p>
-                <div id="heroButtonContainer" style="margin-top:0.4rem;">
+            <div style="text-align:center; padding:0.5rem 0;">
+                <p style="color:#8ab0e6; font-size:0.9rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda</strong></p>
+                <div id="heroButtonContainer" style="margin-top:0.5rem;">
                     <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
                 </div>
             </div>
 
-            <div style="text-align:center; font-size:0.55rem; color:#4a7ab0; margin-top:0.5rem; border-top:1px solid rgba(80,140,255,0.04); padding-top:0.5rem;">
+            <div style="text-align:center; font-size:0.6rem; color:#4a7ab0; margin-top:0.6rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.6rem;">
                 <i class="fas fa-shield-alt"></i> Prelaunch DAO · SilverChain Token
             </div>
         </div>
 
-        <!-- MEMBER AKTIF — 1 KOLOM KE BAWAH -->
+        <!-- MEMBER AKTIF — 1 KOLOM -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
             <div class="member-grid" id="memberGrid">
-                <div style="color:#5a8ac0; text-align:center; padding:0.4rem; grid-column:1/-1; font-size:0.8rem;">Memuat...</div>
+                <div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Memuat...</div>
             </div>
         </div>
 
         <!-- ABOUT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang</div>
-            <p style="color:#8ab0e6; line-height:1.5; font-size:0.85rem;">
+            <p style="color:#8ab0e6; line-height:1.6; font-size:0.9rem;">
                 SilverChain adalah token <strong style="color:#b0ccff;">DAO</strong> dengan <strong style="color:#b0ccff;">supply tak terbatas</strong> —
                 terinspirasi dari dogecoin. Layer-2 untuk kecepatan & biaya rendah.
             </p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.5rem;">
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.6rem;">
                 <span class="badge-silver"><i class="fas fa-code"></i> Audit</span>
                 <span class="badge-silver"><i class="fas fa-infinity"></i> Unlimited</span>
                 <span class="badge-silver"><i class="fas fa-users"></i> DAO</span>
@@ -1087,8 +1014,8 @@
         <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
-            <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.4rem;">Whitepaper lengkap SilverChain.</p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.4rem;">
+            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Whitepaper lengkap SilverChain.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
                 <span class="btn-outline"><i class="fas fa-file-pdf"></i> PDF</span>
                 <span class="btn-outline"><i class="fas fa-book-open"></i> Ringkasan</span>
                 <span class="btn-outline"><i class="fas fa-code-branch"></i> GitHub</span>
@@ -1125,7 +1052,7 @@
                 <a href="#" class="contact-item"><i class="fab fa-discord"></i> <span>discord.gg/silver</span></a>
                 <a href="#" class="contact-item"><i class="fas fa-envelope"></i> <span>dao@silverchain.io</span></a>
             </div>
-            <div style="text-align:center; margin-top:0.4rem; font-size:0.7rem; color:#4a7ab0;">
+            <div style="text-align:center; margin-top:0.5rem; font-size:0.75rem; color:#4a7ab0;">
                 <i class="fas fa-map-pin"></i> Singapore & Jakarta
             </div>
         </div>
@@ -1153,7 +1080,7 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
-            <h2 id="modalTitle"><i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:8px;"></i>Login</h2>
+            <h2 id="modalTitle"><i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login</h2>
             <p id="modalSub">Masukkan email untuk login atau daftar.</p>
             <input type="email" class="input-field" id="emailInput" placeholder="email@anda.com" value="demo@silverchain.io" />
             <input type="password" class="input-field" id="passwordInput" placeholder="Password (min 4)" value="123456" />
@@ -1323,7 +1250,7 @@
             const totalSCT = getTotalSCTMinted();
             document.getElementById('statSold').textContent = formatNumber(totalSCT);
 
-            // Member — 1 KOLOM KE BAWAH
+            // Member
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
             const map = {};
             approved.forEach(d => { if (!map[d.email]) map[d.email] = 0;
@@ -1333,7 +1260,7 @@
             const grid = document.getElementById('memberGrid');
             if (sorted.length === 0) {
                 grid.innerHTML =
-                `<div style="color:#5a8ac0; text-align:center; padding:0.4rem; grid-column:1/-1; font-size:0.8rem;">Belum ada member</div>`;
+                    `<div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Belum ada member</div>`;
             } else {
                 let html = '';
                 sorted.slice(0, 10).forEach(([email, total], index) => {
@@ -1353,7 +1280,7 @@
                 if (sorted.length > 10) {
                     html += `
                         <div class="member-card-item" style="border-style:dashed; justify-content:center;">
-                            <div style="color:#5a8ac0; font-size:0.6rem;">+${sorted.length - 10} lainnya</div>
+                            <div style="color:#5a8ac0; font-size:0.7rem;">+${sorted.length - 10} lainnya</div>
                         </div>
                     `;
                 }
@@ -1419,7 +1346,7 @@
                 success.classList.add('show');
                 document.getElementById('switchLabel').textContent = 'Daftar akun baru';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:8px;"></i>Login';
+                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
                 document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
@@ -1439,14 +1366,14 @@
             if (isLogin) {
                 document.getElementById('switchLabel').textContent = 'Kembali ke Login';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-user-plus" style="color:#4a8aff; margin-right:8px;"></i>Daftar';
+                    '<i class="fas fa-user-plus" style="color:#4a8aff; margin-right:10px;"></i>Daftar';
                 document.getElementById('modalSub').textContent = 'Buat akun baru.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali';
             } else {
                 document.getElementById('switchLabel').textContent = 'Daftar akun baru';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:8px;"></i>Login';
+                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
                 document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
