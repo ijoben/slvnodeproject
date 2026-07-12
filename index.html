@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== RESET & GLOBAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -68,7 +69,8 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
-        .feature-item, .why-item {
+        .feature-item,
+        .why-item {
             background: rgba(12, 28, 60, 0.5);
             backdrop-filter: blur(6px);
             border-radius: 2rem;
@@ -76,24 +78,28 @@
             border: 1px solid rgba(80, 140, 255, 0.06);
             transition: 0.2s;
         }
-        .feature-item:hover, .why-item:hover {
+        .feature-item:hover,
+        .why-item:hover {
             border-color: rgba(80, 140, 255, 0.15);
             transform: translateY(-3px);
             background: rgba(20, 44, 88, 0.5);
         }
-        .feature-item i, .why-item i {
+        .feature-item i,
+        .why-item i {
             color: #6a9eff;
             font-size: 2rem;
             margin-bottom: 0.6rem;
             filter: drop-shadow(0 0 10px rgba(60, 120, 255, 0.15));
         }
-        .feature-item h4, .why-item h4 {
+        .feature-item h4,
+        .why-item h4 {
             font-weight: 600;
             font-size: 1.05rem;
             margin-bottom: 0.3rem;
             color: #b0ccff;
         }
-        .feature-item p, .why-item p {
+        .feature-item p,
+        .why-item p {
             font-size: 0.85rem;
             color: #8ab0e6;
             line-height: 1.5;
@@ -264,6 +270,47 @@
             text-shadow: 0 0 20px rgba(60, 120, 255, 0.2);
         }
 
+        /* ===== PROGRESS BAR ===== */
+        .progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 0.5rem 0 1rem;
+            background: rgba(12, 28, 60, 0.3);
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .progress-bar-bg {
+            flex: 2;
+            min-width: 120px;
+            height: 8px;
+            background: rgba(60, 120, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3a7aff, #7aaeff);
+            border-radius: 20px;
+            transition: width 1s ease;
+            box-shadow: 0 0 30px rgba(60, 120, 255, 0.2);
+        }
+        .counter-num {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #b0ccff;
+            min-width: 80px;
+            text-align: right;
+        }
+        .counter-num small {
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #5a8ac0;
+        }
+
         /* ===== LANDING PAGE ===== */
         #landingPage {
             display: block;
@@ -349,6 +396,41 @@
             background: rgba(255, 80, 80, 0.1);
         }
 
+        /* ===== MEMBER BAR ===== */
+        .member-bar {
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            margin: 0.5rem 0 1rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 1.5rem;
+        }
+        .member-bar .member-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: #8ab0e6;
+        }
+        .member-bar .member-item .name {
+            color: #b0ccff;
+            font-weight: 600;
+        }
+        .member-bar .member-item .sct {
+            color: #7aaeff;
+            font-weight: 600;
+        }
+        .member-bar .member-label {
+            color: #5a8ac0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         /* ===== DASHBOARD USER ===== */
         .dash-stats {
             display: grid;
@@ -431,14 +513,14 @@
         .deposit-box .qr-section .qr-placeholder {
             width: 80px;
             height: 80px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2.5rem;
             color: #4a8aff;
-            border: 2px dashed rgba(80,140,255,0.15);
+            border: 2px dashed rgba(80, 140, 255, 0.15);
         }
         .deposit-box .qr-section .qr-text {
             color: #8ab0e6;
@@ -556,8 +638,11 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(8px);
             z-index: 999;
             justify-content: center;
@@ -574,7 +659,7 @@
             max-width: 440px;
             width: 90%;
             border: 1px solid rgba(80, 140, 255, 0.1);
-            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.9);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
             position: relative;
             max-height: 90vh;
             overflow-y: auto;
@@ -751,7 +836,7 @@
             gap: 0.6rem;
             z-index: 100;
             transition: 0.2s;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
         .admin-toggle:hover {
             border-color: rgba(80, 140, 255, 0.3);
@@ -903,62 +988,73 @@
             background: rgba(60, 120, 255, 0.2);
         }
 
-        /* ===== MEMBER YANG SUDAH BELI (BAR) ===== */
-        .member-bar {
-            background: rgba(12, 28, 60, 0.3);
-            border-radius: 60px;
-            padding: 0.6rem 1.5rem;
-            margin: 0.5rem 0 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem 1.5rem;
-        }
-        .member-bar .member-item {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            color: #8ab0e6;
-        }
-        .member-bar .member-item .name {
-            color: #b0ccff;
-            font-weight: 600;
-        }
-        .member-bar .member-item .sct {
-            color: #7aaeff;
-            font-weight: 600;
-        }
-        .member-bar .member-label {
-            color: #5a8ac0;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
         @media (max-width: 700px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .grid-3 { grid-template-columns: 1fr 1fr; }
-            .dash-stats { grid-template-columns: 1fr 1fr; }
-            .admin-panel .admin-stats-grid { grid-template-columns: 1fr 1fr; }
-            .login-bar { flex-direction: column; align-items: stretch; text-align: center; }
-            .deposit-box .row { flex-direction: column; align-items: stretch; }
-            .deposit-box .input-group { max-width: 100%; }
-            .admin-toggle { bottom: 1rem; right: 1rem; padding: 0.4rem 0.8rem; font-size: 0.7rem; }
-            .member-bar { flex-direction: column; align-items: stretch; text-align: center; }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .dash-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .admin-panel .admin-stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .login-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .deposit-box .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .deposit-box .input-group {
+                max-width: 100%;
+            }
+            .admin-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+            }
+            .member-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
         }
         @media (max-width: 480px) {
-            .grid-3 { grid-template-columns: 1fr; }
-            .section-card { padding: 1.5rem 1rem; }
-            .brand h1 { font-size: 1.6rem; }
-            .stats-grid { grid-template-columns: 1fr 1fr 1fr; }
-            .dash-stats { grid-template-columns: 1fr; }
-            .admin-panel .admin-stats-grid { grid-template-columns: 1fr; }
-            .modal-box { padding: 1.8rem 1.5rem; }
-            .deposit-box .address-box { flex-wrap: wrap; }
-            .deposit-box .qr-section { flex-direction: column; align-items: center; text-align: center; }
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .section-card {
+                padding: 1.5rem 1rem;
+            }
+            .brand h1 {
+                font-size: 1.6rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .dash-stats {
+                grid-template-columns: 1fr;
+            }
+            .admin-panel .admin-stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-box {
+                padding: 1.8rem 1.5rem;
+            }
+            .deposit-box .address-box {
+                flex-wrap: wrap;
+            }
+            .deposit-box .qr-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -998,6 +1094,15 @@
                 <span class="member-item"><span class="name">bob@test.com</span> <span class="sct">339 SCT</span></span>
                 <span class="member-item"><span class="name">carol@test.com</span> <span class="sct">169 SCT</span></span>
                 <span class="member-item" style="color:#5a8ac0;">+4 lainnya</span>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="progress-wrap">
+                <span style="font-size:0.85rem; color:#8ab0e6; min-width:80px;"><i class="fas fa-chart-simple"></i> Terjual</span>
+                <div class="progress-bar-bg">
+                    <div class="progress-fill" id="progressFill" style="width: 68%;"></div>
+                </div>
+                <div class="counter-num" id="counterDisplay">1.36M <small>SCT</small></div>
             </div>
 
             <div class="subhead">
@@ -1292,35 +1397,114 @@
 </div>
 
 <script>
-    (function(){
+    (function() {
+        // ============================================================
+        // LOCAL STORAGE KEYS
+        // ============================================================
+        const STORAGE_KEYS = {
+            USERS: 'silverchain_users',
+            DEPOSITS: 'silverchain_deposits',
+            BONUS: 'silverchain_bonus',
+            REF: 'silverchain_ref',
+            CURRENT_USER: 'silverchain_current_user'
+        };
+
         // ============================================================
         // STATE
         // ============================================================
         let currentUser = null;
         let usersDB = [];
         let depositsDB = [];
-
         let bonusPercent = 10;
         let refPercent = 3;
 
         const OWNER_EMAIL = 'admin@silverchain.io';
 
-        // Dummy users
-        usersDB.push({ email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null });
-        usersDB.push({ email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null });
-        usersDB.push({ email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026' });
-        usersDB.push({ email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026' });
-        usersDB.push({ email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123' });
-        usersDB.push({ email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null });
+        // ============================================================
+        // LOAD FROM LOCAL STORAGE
+        // ============================================================
+        function loadFromStorage() {
+            try {
+                const users = localStorage.getItem(STORAGE_KEYS.USERS);
+                if (users) {
+                    usersDB = JSON.parse(users);
+                } else {
+                    // Seed default data
+                    usersDB = [
+                        { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null },
+                        { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null },
+                        { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026' },
+                        { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026' },
+                        { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123' },
+                        { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null }
+                    ];
+                    saveUsers();
+                }
 
-        // Dummy deposits
-        depositsDB.push({ id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130, txHash: '0xabc123...', status: 'approved', timestamp: Date.now() - 86400000 });
-        depositsDB.push({ id: 2, email: 'demo@silverchain.io', usdt: 500, bonus: 50, ref: 15, total: 565, txHash: '0xdef456...', status: 'approved', timestamp: Date.now() - 3600000 });
-        depositsDB.push({ id: 3, email: 'alice@test.com', usdt: 200, bonus: 20, ref: 6, total: 226, txHash: '0xghi789...', status: 'approved', timestamp: Date.now() - 7200000 });
-        depositsDB.push({ id: 4, email: 'bob@test.com', usdt: 300, bonus: 30, ref: 9, total: 339, txHash: '0xjkl012...', status: 'pending', timestamp: Date.now() - 1800000 });
-        depositsDB.push({ id: 5, email: 'carol@test.com', usdt: 150, bonus: 15, ref: 4.5, total: 169.5, txHash: '0xmno345...', status: 'pending', timestamp: Date.now() - 900000 });
+                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
+                if (deposits) {
+                    depositsDB = JSON.parse(deposits);
+                } else {
+                    depositsDB = [
+                        { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130, txHash: '0xabc123...', status: 'approved',
+                            timestamp: Date.now() - 86400000 },
+                        { id: 2, email: 'demo@silverchain.io', usdt: 500, bonus: 50, ref: 15, total: 565, txHash: '0xdef456...', status: 'approved',
+                            timestamp: Date.now() - 3600000 },
+                        { id: 3, email: 'alice@test.com', usdt: 200, bonus: 20, ref: 6, total: 226, txHash: '0xghi789...', status: 'approved',
+                            timestamp: Date.now() - 7200000 },
+                        { id: 4, email: 'bob@test.com', usdt: 300, bonus: 30, ref: 9, total: 339, txHash: '0xjkl012...', status: 'pending',
+                            timestamp: Date.now() - 1800000 },
+                        { id: 5, email: 'carol@test.com', usdt: 150, bonus: 15, ref: 4.5, total: 169.5, txHash: '0xmno345...', status: 'pending',
+                            timestamp: Date.now() - 900000 }
+                    ];
+                    saveDeposits();
+                }
 
-        let depositCounter = 6;
+                const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
+                if (bonus) bonusPercent = parseInt(bonus) || 10;
+
+                const ref = localStorage.getItem(STORAGE_KEYS.REF);
+                if (ref) refPercent = parseInt(ref) || 3;
+
+                const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (savedUser) {
+                    const userData = JSON.parse(savedUser);
+                    const found = usersDB.find(u => u.email === userData.email);
+                    if (found) {
+                        currentUser = found;
+                    } else {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                    }
+                }
+
+            } catch (e) {
+                console.warn('Error loading from localStorage:', e);
+            }
+        }
+
+        // ============================================================
+        // SAVE TO LOCAL STORAGE
+        // ============================================================
+        function saveUsers() {
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
+        }
+
+        function saveDeposits() {
+            localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
+        }
+
+        function saveSettings() {
+            localStorage.setItem(STORAGE_KEYS.BONUS, String(bonusPercent));
+            localStorage.setItem(STORAGE_KEYS.REF, String(refPercent));
+        }
+
+        function saveCurrentUser(user) {
+            if (user) {
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+            } else {
+                localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            }
+        }
 
         // ============================================================
         // DOM REFS
@@ -1365,6 +1549,10 @@
         const copyQRIS = document.getElementById('copyQRIS');
         const adminAddress = document.getElementById('adminAddress');
 
+        const progressFill = document.getElementById('progressFill');
+        const counterDisplay = document.getElementById('counterDisplay');
+        const statSold = document.getElementById('statSold');
+
         const adminToggle = document.getElementById('adminToggle');
         const adminModal = document.getElementById('adminModal');
         const closeAdmin = document.getElementById('closeAdmin');
@@ -1382,6 +1570,7 @@
         const toastText = document.getElementById('toastText');
 
         let isLoginMode = true;
+        let depositCounter = 0;
 
         // ============================================================
         // HELPERS
@@ -1425,8 +1614,13 @@
             return depositsDB.filter(d => d.status === 'pending');
         }
 
-        function getApprovedDeposits() {
-            return depositsDB.filter(d => d.status === 'approved');
+        function getTotalMinted() {
+            return depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+        }
+
+        function getNextId() {
+            if (depositsDB.length === 0) return 1;
+            return Math.max(...depositsDB.map(d => d.id)) + 1;
         }
 
         function showToast(msg, isSuccess = true) {
@@ -1440,6 +1634,16 @@
         // ============================================================
         // UI UPDATE
         // ============================================================
+        function updateProgress() {
+            const total = getTotalMinted();
+            const target = 2000000000; // 2B target
+            const pct = Math.min((total / target) * 100, 100);
+            progressFill.style.width = pct + '%';
+            const totalStr = (total / 1000000000).toFixed(2) + 'B';
+            counterDisplay.textContent = totalStr + ' SCT';
+            if (statSold) statSold.textContent = totalStr;
+        }
+
         function updateUIForUser(user) {
             if (user) {
                 loginStatus.innerHTML = `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${user.email}</strong>`;
@@ -1457,6 +1661,7 @@
                 }
 
                 refreshDashboard();
+                updateProgress();
             } else {
                 loginStatus.innerHTML = `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login`;
                 userInfo.style.display = 'none';
@@ -1465,6 +1670,8 @@
                 landingPage.classList.remove('hidden');
                 userDashboard.classList.remove('visible');
                 adminToggle.classList.remove('visible');
+
+                updateProgress();
             }
         }
 
@@ -1491,9 +1698,12 @@
             } else {
                 let html = '';
                 deposits.slice().reverse().forEach(d => {
-                    const date = new Date(d.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(d.timestamp).toLocaleTimeString('id-ID');
-                    const statusClass = d.status === 'approved' ? 'status-approved' : d.status === 'rejected' ? 'status-rejected' : 'status-pending';
-                    const statusText = d.status === 'approved' ? '✅ Disetujui' : d.status === 'rejected' ? '❌ Ditolak' : '⏳ Pending';
+                    const date = new Date(d.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(d.timestamp)
+                        .toLocaleTimeString('id-ID');
+                    const statusClass = d.status === 'approved' ? 'status-approved' : d.status === 'rejected' ?
+                        'status-rejected' : 'status-pending';
+                    const statusText = d.status === 'approved' ? '✅ Disetujui' : d.status === 'rejected' ? '❌ Ditolak' :
+                        '⏳ Pending';
                     html += `<tr>
                         <td>${date}</td>
                         <td>${d.usdt}</td>
@@ -1508,6 +1718,7 @@
             }
 
             updateDepositPreview();
+            updateProgress();
         }
 
         function updateDepositPreview() {
@@ -1535,6 +1746,7 @@
             }
             const refCode = generateRefCode(email);
             usersDB.push({ email, password, refCode, referredBy: null });
+            saveUsers();
             return { success: true, msg: 'Pendaftaran berhasil! Silakan login.', user: { email, refCode } };
         }
 
@@ -1566,6 +1778,7 @@
                     return;
                 }
                 currentUser = result.user;
+                saveCurrentUser(currentUser);
                 updateUIForUser(currentUser);
                 loginSuccess.textContent = '✅ ' + result.msg;
                 loginSuccess.classList.add('show');
@@ -1621,7 +1834,7 @@
             const total = usdt + bonus + ref;
 
             depositsDB.push({
-                id: depositCounter++,
+                id: getNextId(),
                 email: currentUser.email,
                 usdt: usdt,
                 bonus: bonus,
@@ -1631,6 +1844,7 @@
                 status: 'pending',
                 timestamp: Date.now()
             });
+            saveDeposits();
 
             showToast(`✅ Deposit ${usdt} USDT berhasil dikirim! Menunggu approval admin.`, true);
             txHash.value = '';
@@ -1667,11 +1881,12 @@
         function fallbackCopy(text) {
             const ta = document.createElement('textarea');
             ta.value = text;
-            ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
             document.body.appendChild(ta);
             ta.select();
-            try { document.execCommand('copy'); showToast('📋 Disalin!', true); } 
-            catch(e) { showToast('❌ Gagal menyalin.', false); }
+            try { document.execCommand('copy');
+                showToast('📋 Disalin!', true); } catch (e) { showToast('❌ Gagal menyalin.', false); }
             document.body.removeChild(ta);
         }
 
@@ -1713,9 +1928,12 @@
                         const deposit = depositsDB.find(d => d.id === id);
                         if (deposit) {
                             deposit.status = 'approved';
-                            showToast(`✅ Deposit ${deposit.usdt} USDT dari ${deposit.email} disetujui!`, true);
+                            saveDeposits();
+                            showToast(`✅ Deposit ${deposit.usdt} USDT dari ${deposit.email} disetujui!`,
+                            true);
                             refreshAdminPanel();
                             if (currentUser && currentUser.email === deposit.email) refreshDashboard();
+                            updateProgress();
                         }
                     });
                 });
@@ -1726,7 +1944,9 @@
                         const deposit = depositsDB.find(d => d.id === id);
                         if (deposit) {
                             deposit.status = 'rejected';
-                            showToast(`❌ Deposit ${deposit.usdt} USDT dari ${deposit.email} ditolak.`, false);
+                            saveDeposits();
+                            showToast(`❌ Deposit ${deposit.usdt} USDT dari ${deposit.email} ditolak.`,
+                                false);
                             refreshAdminPanel();
                             if (currentUser && currentUser.email === deposit.email) refreshDashboard();
                         }
@@ -1780,6 +2000,7 @@
             }
             bonusPercent = newBonus;
             refPercent = newRef;
+            saveSettings();
             showToast(`✅ Pengaturan disimpan! Bonus: ${bonusPercent}%, Referral: ${refPercent}%`, true);
             refreshDashboard();
         });
@@ -1836,6 +2057,7 @@
 
         logoutBtn.addEventListener('click', function() {
             currentUser = null;
+            saveCurrentUser(null);
             updateUIForUser(null);
             showToast('👋 Berhasil keluar.', true);
         });
@@ -1857,14 +2079,55 @@
         // ============================================================
         // INIT
         // ============================================================
-        currentUser = null;
-        updateUIForUser(null);
-        console.log('🟢 SilverChain DAO siap.');
+        loadFromStorage();
+        updateUIForUser(currentUser);
+        updateProgress();
+        console.log('🟢 SilverChain DAO siap (LocalStorage).');
         console.log('👑 Owner:', OWNER_EMAIL);
         console.log('📊 Users:', usersDB);
         console.log('📊 Deposits:', depositsDB);
         window.__adminDB = usersDB;
         window.__depositsDB = depositsDB;
+        window.__usersDB = usersDB;
+
+        // Update member bar dari localStorage
+        function updateMemberBar() {
+            const approved = depositsDB.filter(d => d.status === 'approved');
+            const userMap = {};
+            approved.forEach(d => {
+                if (!userMap[d.email]) userMap[d.email] = 0;
+                userMap[d.email] += d.total;
+            });
+            const sorted = Object.entries(userMap).sort((a, b) => b[1] - a[1]);
+            const memberBar = document.getElementById('memberBar');
+            if (memberBar) {
+                // keep first child (label)
+                const label = memberBar.querySelector('.member-label');
+                memberBar.innerHTML = '';
+                memberBar.appendChild(label);
+                sorted.slice(0, 5).forEach(([email, total]) => {
+                    const span = document.createElement('span');
+                    span.className = 'member-item';
+                    span.innerHTML = `<span class="name">${email}</span> <span class="sct">${total.toFixed(1)} SCT</span>`;
+                    memberBar.appendChild(span);
+                });
+                if (sorted.length > 5) {
+                    const more = document.createElement('span');
+                    more.className = 'member-item';
+                    more.style.color = '#5a8ac0';
+                    more.textContent = `+${sorted.length - 5} lainnya`;
+                    memberBar.appendChild(more);
+                }
+            }
+        }
+        updateMemberBar();
+
+        // Update progress setiap 2 detik (untuk realtime feel)
+        setInterval(() => {
+            updateProgress();
+            updateMemberBar();
+        }, 3000);
+
     })();
 </script>
 </body>
