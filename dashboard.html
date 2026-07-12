@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>SilverChain · Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1228;
+            background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
+            color: #e6edf5;
+            min-height: 100vh;
+            padding: 1.5rem 1rem 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 1050px;
+            width: 100%;
+        }
+        .section-card {
+            background: rgba(18, 34, 72, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2.8rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
+            transition: all 0.25s;
+        }
+        .badge-silver {
+            background: rgba(60, 120, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.25rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8ab8ff;
+        }
+        .dash-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .dash-stat {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            text-align: center;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .dash-stat .num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #b0ccff;
+        }
+        .dash-stat .label {
+            font-size: 0.65rem;
+            color: #5a8ac0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .deposit-box {
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 1.8rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin: 1rem 0;
+        }
+        .deposit-box .address-box {
+            background: rgba(8, 20, 48, 0.5);
+            border-radius: 60px;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            flex-wrap: wrap;
+        }
+        .deposit-box .address-box input {
+            background: transparent;
+            border: none;
+            color: #b0ccff;
+            font-size: 0.85rem;
+            width: 100%;
+            outline: none;
+            font-family: monospace;
+            flex: 1;
+            min-width: 120px;
+        }
+        .deposit-box .address-box button {
+            background: rgba(60, 120, 255, 0.1);
+            border: none;
+            color: #8ab8ff;
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+        .deposit-box .address-box button:hover {
+            background: rgba(60, 120, 255, 0.2);
+        }
+        .deposit-box .qr-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(8, 20, 48, 0.2);
+            border-radius: 1.2rem;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+            flex-wrap: wrap;
+        }
+        .deposit-box .qr-section .qr-placeholder {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #4a8aff;
+            border: 2px dashed rgba(80, 140, 255, 0.15);
+        }
+        .deposit-box .qr-section .qr-text {
+            color: #8ab0e6;
+            font-size: 0.8rem;
+            flex: 1;
+        }
+        .deposit-box .qr-section .qr-text strong {
+            color: #b0ccff;
+        }
+        .deposit-box .row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+        .deposit-box .row .label {
+            color: #8ab0e6;
+            font-size: 0.85rem;
+            min-width: 120px;
+        }
+        .deposit-box .input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(8, 20, 48, 0.5);
+            border-radius: 60px;
+            padding: 0.1rem 0.1rem 0.1rem 1.5rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            flex: 1;
+            min-width: 160px;
+            max-width: 300px;
+        }
+        .deposit-box .input-group input {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 0;
+            font-size: 0.95rem;
+            color: #e6edf5;
+            width: 100%;
+            outline: none;
+            font-weight: 500;
+        }
+        .deposit-box .input-group input::placeholder {
+            color: #3a5a8a;
+        }
+        .deposit-box .input-group .unit {
+            background: linear-gradient(145deg, #4a8aff, #2a5ac0);
+            color: #fff;
+            font-weight: 700;
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+        .deposit-box .btn-submit {
+            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
+            border: none;
+            border-radius: 60px;
+            padding: 0.7rem 2rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.25);
+        }
+        .deposit-box .btn-submit:hover {
+            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.35);
+            transform: translateY(-2px);
+        }
+        .deposit-box .btn-submit:active {
+            transform: scale(0.97);
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .history-table th {
+            text-align: left;
+            color: #5a8ac0;
+            font-weight: 600;
+            padding: 0.5rem 0.2rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .history-table td {
+            padding: 0.5rem 0.2rem;
+            color: #8ab0e6;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+        }
+        .history-table .empty {
+            color: #5a8ac0;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+        .status-pending {
+            color: #fbbf24;
+        }
+        .status-approved {
+            color: #6aff8a;
+        }
+        .status-rejected {
+            color: #ff6a6a;
+        }
+        .ref-link-box {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0.3rem 0 1rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .ref-link-box input {
+            background: transparent;
+            border: none;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            width: 100%;
+            outline: none;
+        }
+        .ref-link-box button {
+            background: rgba(60, 120, 255, 0.1);
+            border: none;
+            color: #8ab8ff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #4a8aff;
+            border-radius: 40px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            color: #b0ccff;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
+        }
+
+        /* ===== BOTTOM NAV (mobile first) ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(12, 28, 60, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(80, 140, 255, 0.08);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.5rem 0 0.7rem;
+            z-index: 100;
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .bottom-nav a {
+            color: #5a8ac0;
+            text-decoration: none;
+            font-size: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            transition: 0.15s;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+        }
+        .bottom-nav a i {
+            font-size: 1.3rem;
+        }
+        .bottom-nav a.active {
+            color: #7aaeff;
+        }
+        .bottom-nav a.active i {
+            color: #4a8aff;
+        }
+        .bottom-nav a:hover {
+            color: #b0ccff;
+        }
+
+        /* ===== LOGIN BAR ===== */
+        .login-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(12, 28, 60, 0.3);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin: 0.5rem 0 0.8rem;
+        }
+        .login-bar .status {
+            font-size: 0.85rem;
+            color: #8ab0e6;
+        }
+        .login-bar .status i {
+            color: #4a8aff;
+            margin-right: 6px;
+        }
+        .login-bar .status .highlight {
+            color: #7aaeff;
+            font-weight: 600;
+        }
+        .login-bar .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 80, 80, 0.15);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #ff6a6a;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .login-bar .btn-logout:hover {
+            background: rgba(255, 80, 80, 0.1);
+        }
+        .login-bar .user-badge {
+            background: rgba(60, 120, 255, 0.08);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .login-bar .user-badge i {
+            color: #4a8aff;
+            margin-right: 6px;
+        }
+
+        @media (max-width: 700px) {
+            .dash-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .deposit-box .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .deposit-box .input-group {
+                max-width: 100%;
+            }
+            .login-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+        }
+        @media (max-width: 480px) {
+            .section-card {
+                padding: 1.5rem 1rem;
+            }
+            .dash-stats {
+                grid-template-columns: 1fr;
+            }
+            .deposit-box .address-box {
+                flex-wrap: wrap;
+            }
+            .deposit-box .qr-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .bottom-nav a {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.4rem;
+            }
+            .bottom-nav a i {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== LOGIN BAR ===== -->
+        <div class="login-bar">
+            <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Memuat...</span></div>
+            <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">-</span></span>
+            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+
+        <!-- ===== DASHBOARD ===== -->
+        <div class="section-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                <div>
+                    <h2 style="color:#b0ccff; font-size:1.5rem;"><i class="fas fa-chart-pie" style="color:#4a8aff; margin-right:10px;"></i>Dashboard Member</h2>
+                    <p style="color:#8ab0e6; font-size:0.85rem;">Selamat datang, <strong id="dashUserEmail" style="color:#b0ccff;">-</strong></p>
+                </div>
+                <div>
+                    <span class="badge-silver"><i class="fas fa-code"></i> Kode Ref: <strong id="dashRefCode">-</strong></span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="dash-stats">
+                <div class="dash-stat"><div class="num" id="dashTotalSCT">0</div><div class="label">Total SCT</div></div>
+                <div class="dash-stat"><div class="num" id="dashTotalPurchases">0</div><div class="label">Total Pembelian</div></div>
+                <div class="dash-stat"><div class="num" id="dashReferrals">0</div><div class="label">Referral</div></div>
+                <div class="dash-stat"><div class="num" id="dashRefEarnings">0</div><div class="label">Pendapatan Referral (SCT)</div></div>
+            </div>
+
+            <!-- Referral Link -->
+            <div style="margin:0.5rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                <i class="fas fa-link"></i> Link Referral Anda
+            </div>
+            <div class="ref-link-box">
+                <input type="text" id="dashRefLink" readonly value="https://silverchain.io/ref/-" />
+                <button id="copyDashRef"><i class="fas fa-copy"></i> Salin</button>
+            </div>
+
+            <!-- Deposit -->
+            <div class="deposit-box">
+                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-arrow-down" style="color:#4a8aff;"></i> Deposit & Beli Token</h4>
+                <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">Kirim USDT ke address di bawah, atau scan QRIS, lalu isi hash transaksi & klik submit.</p>
+
+                <div class="address-box">
+                    <input type="text" id="adminAddress" readonly value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="font-family:monospace;" />
+                    <button id="copyAddress"><i class="fas fa-copy"></i> Salin</button>
+                </div>
+
+                <div class="qr-section">
+                    <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
+                    <div class="qr-text">
+                        <strong>QRIS</strong><br />
+                        Scan QRIS untuk pembayaran<br />
+                        <span style="font-size:0.7rem; color:#5a8ac0;">ID: 1234567890 | Nama: SilverChain DAO</span>
+                    </div>
+                    <button id="copyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.3rem 1rem; color:#8ab8ff; cursor:pointer; font-size:0.7rem;"><i class="fas fa-copy"></i> Salin ID</button>
+                </div>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
+                    <div class="input-group">
+                        <input type="number" id="depositAmount" placeholder="0" min="1" step="1" value="100" />
+                        <span class="unit">USDT</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <span class="label"><i class="fas fa-hashtag"></i> Hash Transaksi</span>
+                    <div class="input-group" style="max-width:100%;">
+                        <input type="text" id="txHash" placeholder="0x... atau ID transaksi" style="font-family:monospace; font-size:0.8rem;" />
+                        <span class="unit" style="font-size:0.6rem;">TX</span>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:1rem; margin:0.5rem 0; align-items:center;">
+                    <span style="color:#8ab0e6; font-size:0.8rem;">
+                        <i class="fas fa-gift" style="color:#4a8aff;"></i> Bonus: <strong id="depositBonus" style="color:#b0ccff;">+10 SCT</strong>
+                    </span>
+                    <span style="color:#8ab0e6; font-size:0.8rem;">
+                        <i class="fas fa-user-friends" style="color:#4a8aff;"></i> Referral: <strong id="depositRef" style="color:#b0ccff;">+3 SCT</strong>
+                    </span>
+                    <span style="color:#8ab0e6; font-size:0.8rem;">
+                        <i class="fas fa-arrow-right" style="color:#4a8aff;"></i> Total: <strong id="depositTotal" style="color:#b0ccff;">113 SCT</strong>
+                    </span>
+                </div>
+
+                <button class="btn-submit" id="submitDepositBtn"><i class="fas fa-paper-plane"></i> Kirim Bukti Deposit</button>
+                <p style="color:#5a8ac0; font-size:0.65rem; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
+            </div>
+
+            <!-- History -->
+            <div style="margin-top:1.5rem;">
+                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#4a8aff;"></i> Riwayat Transaksi</h4>
+                <table class="history-table">
+                    <thead><tr><th>Tanggal</th><th>USDT</th><th>Bonus</th><th>Ref</th><th>Total SCT</th><th>Hash TX</th><th>Status</th></tr></thead>
+                    <tbody id="historyBody">
+                        <tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="active">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="dashboard.html">
+            <i class="fas fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="admin.html" id="adminNavLink" style="display:none;">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin</span>
+        </a>
+        <a href="#" id="logoutNavBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Keluar</span>
+        </a>
+    </nav>
+
+    <script>
+        // ============================================================
+        // STORAGE KEYS
+        // ============================================================
+        const STORAGE_KEYS = {
+            USERS: 'silverchain_users',
+            DEPOSITS: 'silverchain_deposits',
+            BONUS: 'silverchain_bonus',
+            REF: 'silverchain_ref',
+            CURRENT_USER: 'silverchain_current_user'
+        };
+        const OWNER_EMAIL = 'admin@silverchain.io';
+
+        let usersDB = [];
+        let depositsDB = [];
+        let currentUser = null;
+        let bonusPercent = 10;
+        let refPercent = 3;
+
+        // ============================================================
+        // LOAD
+        // ============================================================
+        function loadData() {
+            try {
+                const users = localStorage.getItem(STORAGE_KEYS.USERS);
+                if (users) usersDB = JSON.parse(users);
+                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
+                if (deposits) depositsDB = JSON.parse(deposits);
+                const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
+                if (bonus) bonusPercent = parseInt(bonus) || 10;
+                const ref = localStorage.getItem(STORAGE_KEYS.REF);
+                if (ref) refPercent = parseInt(ref) || 3;
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const found = usersDB.find(u => u.email === data.email);
+                    if (found) currentUser = found;
+                }
+            } catch (e) { console.warn('Load error:', e); }
+        }
+
+        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+
+        function getUserDeposits(email) { return depositsDB.filter(d => d.email === email); }
+
+        function getUserTotalSCT(email) {
+            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total,
+            0);
+        }
+
+        function getUserReferrals(email) {
+            const user = findUser(email);
+            if (!user) return [];
+            return usersDB.filter(u => u.referredBy === user.refCode);
+        }
+
+        function getRefEarnings(email) {
+            const user = findUser(email);
+            if (!user) return 0;
+            const referrals = usersDB.filter(u => u.referredBy === user.refCode);
+            let total = 0;
+            referrals.forEach(ref => {
+                depositsDB.filter(d => d.email === ref.email && d.status === 'approved').forEach(d => { total += d
+                        .ref; });
+            });
+            return Math.round(total * 10) / 10;
+        }
+
+        function getNextId() {
+            if (depositsDB.length === 0) return 1;
+            return Math.max(...depositsDB.map(d => d.id)) + 1;
+        }
+
+        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // UI
+        // ============================================================
+        function updateUI() {
+            const isLoggedIn = !!currentUser;
+
+            document.getElementById('loginStatus').innerHTML = isLoggedIn ?
+                `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${currentUser.email}</strong>` :
+                `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan login di beranda`;
+
+            document.getElementById('userEmailDisplay').textContent = isLoggedIn ? currentUser.email : '-';
+
+            if (!isLoggedIn) {
+                document.getElementById('dashUserEmail').textContent = '-';
+                document.getElementById('dashRefCode').textContent = '-';
+                document.getElementById('dashTotalSCT').textContent = '0';
+                document.getElementById('dashTotalPurchases').textContent = '0';
+                document.getElementById('dashReferrals').textContent = '0';
+                document.getElementById('dashRefEarnings').textContent = '0';
+                document.getElementById('dashRefLink').value = 'https://silverchain.io/ref/-';
+                document.getElementById('historyBody').innerHTML =
+                    `<tr><td colspan="7" class="empty">Silakan login terlebih dahulu</td></tr>`;
+                document.getElementById('adminNavLink').style.display = 'none';
+                return;
+            }
+
+            const user = findUser(currentUser.email);
+            if (!user) return;
+
+            document.getElementById('dashUserEmail').textContent = currentUser.email;
+            document.getElementById('dashRefCode').textContent = user.refCode || '-';
+            document.getElementById('dashRefLink').value = `https://silverchain.io/ref/${user.refCode || ''}`;
+
+            const deposits = getUserDeposits(currentUser.email);
+            const approved = deposits.filter(d => d.status === 'approved');
+            document.getElementById('dashTotalSCT').textContent = approved.reduce((sum, d) => sum + d.total, 0).toFixed(1);
+            document.getElementById('dashTotalPurchases').textContent = approved.length;
+            const referrals = getUserReferrals(currentUser.email);
+            document.getElementById('dashReferrals').textContent = referrals.length;
+            document.getElementById('dashRefEarnings').textContent = getRefEarnings(currentUser.email).toFixed(1);
+
+            // History
+            if (deposits.length === 0) {
+                document.getElementById('historyBody').innerHTML =
+                    `<tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>`;
+            } else {
+                let html = '';
+                deposits.slice().reverse().forEach(d => {
+                    const date = new Date(d.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(d.timestamp)
+                        .toLocaleTimeString('id-ID');
+                    const cls = d.status === 'approved' ? 'status-approved' : d.status === 'rejected' ?
+                        'status-rejected' : 'status-pending';
+                    const txt = d.status === 'approved' ? '✅ Disetujui' : d.status === 'rejected' ?
+                        '❌ Ditolak' : '⏳ Pending';
+                    html += `<tr>
+                        <td>${date}</td>
+                        <td>${d.usdt}</td>
+                        <td>${d.bonus}</td>
+                        <td>${d.ref}</td>
+                        <td>${d.total}</td>
+                        <td style="font-family:monospace; font-size:0.65rem;">${d.txHash || '-'}</td>
+                        <td class="${cls}">${txt}</td>
+                    </tr>`;
+                });
+                document.getElementById('historyBody').innerHTML = html;
+            }
+
+            // Admin nav
+            document.getElementById('adminNavLink').style.display =
+                currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase() ? 'flex' : 'none';
+
+            // Bonus preview
+            updateBonusPreview();
+        }
+
+        function updateBonusPreview() {
+            const raw = document.getElementById('depositAmount').value.trim();
+            const usdt = parseFloat(raw) || 0;
+            const bonus = Math.floor(usdt * bonusPercent / 100);
+            const ref = Math.floor(usdt * refPercent / 100);
+            const total = usdt + bonus + ref;
+            document.getElementById('depositBonus').textContent = `+${bonus} SCT`;
+            document.getElementById('depositRef').textContent = `+${ref} SCT`;
+            document.getElementById('depositTotal').textContent = `${total} SCT`;
+        }
+
+        document.getElementById('depositAmount').addEventListener('input', updateBonusPreview);
+        document.getElementById('depositAmount').addEventListener('change', updateBonusPreview);
+
+        // ============================================================
+        // ACTIONS
+        // ============================================================
+        document.getElementById('submitDepositBtn').addEventListener('click', function() {
+            if (!currentUser) {
+                showToast('❌ Silakan login terlebih dahulu.');
+                return;
+            }
+            const raw = document.getElementById('depositAmount').value.trim();
+            const usdt = parseFloat(raw);
+            if (isNaN(usdt) || usdt <= 0) {
+                showToast('❌ Masukkan jumlah USDT yang valid.');
+                return;
+            }
+            const hash = document.getElementById('txHash').value.trim();
+            if (!hash || hash.length < 5) {
+                showToast('❌ Masukkan hash transaksi (min 5 karakter).');
+                return;
+            }
+            const bonus = Math.floor(usdt * bonusPercent / 100);
+            const ref = Math.floor(usdt * refPercent / 100);
+            const total = usdt + bonus + ref;
+            depositsDB.push({
+                id: getNextId(),
+                email: currentUser.email,
+                usdt: usdt,
+                bonus: bonus,
+                ref: ref,
+                total: total,
+                txHash: hash,
+                status: 'pending',
+                timestamp: Date.now()
+            });
+            saveDeposits();
+            showToast(`✅ Deposit ${usdt} USDT berhasil dikirim! Menunggu approval admin.`);
+            document.getElementById('txHash').value = '';
+            updateUI();
+        });
+
+        document.getElementById('copyAddress').addEventListener('click', function() {
+            const addr = document.getElementById('adminAddress').value;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(addr).then(() => showToast('📋 Address USDT disalin!'));
+            } else { fallbackCopy(addr); }
+        });
+
+        document.getElementById('copyQRIS').addEventListener('click', function() {
+            const id = '1234567890';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(id).then(() => showToast('📋 ID QRIS disalin!'));
+            } else { fallbackCopy(id); }
+        });
+
+        document.getElementById('copyDashRef').addEventListener('click', function() {
+            const link = document.getElementById('dashRefLink').value;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(link).then(() => showToast('📋 Link referral disalin!'));
+            } else { fallbackCopy(link); }
+        });
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy');
+                showToast('📋 Disalin!'); } catch (e) { showToast('❌ Gagal menyalin.'); }
+            document.body.removeChild(ta);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            updateUI();
+            showToast('👋 Berhasil keluar.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 500);
+        });
+
+        document.getElementById('logoutNavBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            updateUI();
+            showToast('👋 Berhasil keluar.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 500);
+        });
+
+        // ============================================================
+        // CHECK LOGIN
+        // ============================================================
+        loadData();
+        if (!currentUser) {
+            document.getElementById('loginStatus').innerHTML =
+                `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — <a href="index.html" style="color:#4a8aff;">Login di sini</a>`;
+            document.getElementById('userEmailDisplay').textContent = '-';
+            document.getElementById('dashUserEmail').textContent = '-';
+        }
+        updateUI();
+
+        // Auto update
+        setInterval(() => {
+            loadData();
+            updateUI();
+        }, 3000);
+
+        console.log('🟢 SilverChain Dashboard siap.');
+    </script>
+</body>
+</html>
