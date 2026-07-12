@@ -187,7 +187,7 @@
             color: #8ab8ff;
         }
 
-        /* ===== HEADER BARU ===== */
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: center;
@@ -254,7 +254,7 @@
             width: 0%;
             background: linear-gradient(90deg, #3a7aff, #7aaeff);
             border-radius: 20px;
-            transition: width 1s ease;
+            transition: width 0.8s ease;
             box-shadow: 0 0 30px rgba(60, 120, 255, 0.2);
         }
         .counter-num {
@@ -270,7 +270,7 @@
             color: #5a8ac0;
         }
 
-        /* MEMBER CARD (baru) */
+        /* MEMBER CARD */
         .member-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -327,7 +327,7 @@
             flex-shrink: 0;
         }
 
-        /* BUTTON LOGIN DI HERO */
+        /* BUTTON LOGIN */
         .btn-hero {
             background: rgba(60, 120, 255, 0.12);
             border: 1px solid rgba(80, 140, 255, 0.15);
@@ -723,7 +723,7 @@
             </div>
         </div>
 
-        <!-- ===== MEMBER AKTIF (CARD) ===== -->
+        <!-- ===== MEMBER AKTIF ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
             <div class="member-grid" id="memberGrid">
@@ -844,7 +844,7 @@
             </div>
         </div>
 
-        <!-- ===== CONTACT (mobile first 2 kolom, di HP jadi 1) ===== -->
+        <!-- ===== CONTACT ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
             <div class="contact-grid">
@@ -986,13 +986,12 @@
         }
 
         // ============================================================
-        // UI UPDATE
+        // UPDATE UI (progress, counter, member)
         // ============================================================
         function updateUI() {
             const isLoggedIn = !!currentUser;
-            const isOwner = isLoggedIn && currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
 
-            // Badge di menu Beli Token
+            // Badge
             const badge = document.getElementById('navBadge');
             if (isLoggedIn) {
                 const pending = depositsDB.filter(d => d.email === currentUser.email && d.status === 'pending');
@@ -1018,16 +1017,23 @@
                 });
             }
 
-            // Progress & stat
+            // ===== PROGRESS BAR & COUNTER =====
             const total = getTotalMinted();
-            const target = 2000000000;
+            const target = 2000000000; // 2B target
             const pct = Math.min((total / target) * 100, 100);
-            document.getElementById('progressFill').style.width = pct + '%';
+            
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = pct + '%';
+            
+            // Update counter
             const totalStr = (total / 1000000000).toFixed(2) + 'B';
             document.getElementById('counterDisplay').textContent = totalStr + ' SCT';
             document.getElementById('statSold').textContent = totalStr;
 
-            // Member Aktif (card grid)
+            console.log(`📊 Progress: ${pct.toFixed(1)}% | Total SCT: ${totalStr}`);
+
+            // ===== MEMBER AKTIF =====
             const approved = depositsDB.filter(d => d.status === 'approved');
             const map = {};
             approved.forEach(d => { if (!map[d.email]) map[d.email] = 0;
@@ -1173,6 +1179,17 @@
         });
 
         // ============================================================
+        // STORAGE EVENT — SINKRONISASI REAL-TIME
+        // ============================================================
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS || e.key === STORAGE_KEYS.BONUS || e.key === STORAGE_KEYS.REF) {
+                console.log('🔄 Storage changed, reloading data...');
+                loadData();
+                updateUI();
+            }
+        });
+
+        // ============================================================
         // FAQ ACCORDION
         // ============================================================
         document.querySelectorAll('.faq-question').forEach(q => {
@@ -1192,13 +1209,15 @@
         loadData();
         updateUI();
 
+        // Update setiap 2 detik (realtime)
         setInterval(() => {
             loadData();
             updateUI();
-        }, 3000);
+        }, 2000);
 
         console.log('🟢 SilverChain Landing Page siap.');
         console.log('👑 Owner:', OWNER_EMAIL);
+        console.log('📊 Total SCT minted:', getTotalMinted());
     </script>
 </body>
 </html>
