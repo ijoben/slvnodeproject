@@ -186,87 +186,47 @@
             font-weight: 600;
             color: #8ab8ff;
         }
-        .brand {
+
+        /* ===== HEADER BARU ===== */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.8rem 0 0.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .header .brand-center {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
+            gap: 0.6rem;
+            text-decoration: none;
         }
-        .brand i {
-            font-size: 2.6rem;
+        .header .brand-center i {
+            font-size: 2.2rem;
             color: #b0ccff;
-            filter: drop-shadow(0 0 30px rgba(60, 120, 255, 0.25));
+            filter: drop-shadow(0 0 20px rgba(60, 120, 255, 0.15));
             background: linear-gradient(145deg, #c8ddff, #6a9eff);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .brand h1 {
-            font-size: 2.2rem;
+        .header .brand-center h1 {
+            font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(145deg, #c8ddff, #6a9eff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             letter-spacing: -0.5px;
-            text-shadow: 0 0 40px rgba(60, 120, 255, 0.1);
         }
-        .brand .ticker {
-            font-size: 1rem;
+        .header .brand-center .ticker {
+            font-size: 0.85rem;
             font-weight: 600;
             color: #5a8ac0;
             background: rgba(60, 120, 255, 0.06);
-            padding: 0.2rem 1rem;
+            padding: 0.1rem 0.8rem;
             border-radius: 60px;
             border: 1px solid rgba(80, 140, 255, 0.08);
-        }
-        .dao-slogan {
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            color: #5a8ac0;
-            font-weight: 500;
-            margin-left: 0.2rem;
-            background: rgba(60, 120, 255, 0.04);
-            padding: 0.2rem 1rem;
-            border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .subhead {
-            font-size: 0.95rem;
-            color: #8ab0e6;
-            margin: 0.5rem 0 1.2rem;
-            line-height: 1.5;
-            border-left: 3px solid #4a8aff;
-            padding-left: 1rem;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.6rem;
-            background: rgba(12, 28, 60, 0.3);
-            border-radius: 2rem;
-            padding: 0.8rem;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            margin-bottom: 1.2rem;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-item .num {
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #b0ccff;
-        }
-        .stat-item .label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #5a8ac0;
-        }
-        .stat-item.highlight .num {
-            color: #7aaeff;
-            text-shadow: 0 0 20px rgba(60, 120, 255, 0.2);
         }
 
         /* PROGRESS */
@@ -310,39 +270,61 @@
             color: #5a8ac0;
         }
 
-        /* MEMBER BAR */
-        .member-bar {
-            background: rgba(12, 28, 60, 0.3);
-            border-radius: 60px;
-            padding: 0.6rem 1.5rem;
-            margin: 0.5rem 0 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem 1.5rem;
+        /* MEMBER CARD (baru) */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+            margin: 0.5rem 0;
         }
-        .member-bar .member-item {
+        .member-card-item {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1.2rem;
+            padding: 0.8rem 1rem;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+            transition: 0.15s;
+        }
+        .member-card-item:hover {
+            border-color: rgba(80, 140, 255, 0.12);
+            background: rgba(8, 20, 48, 0.5);
+        }
+        .member-card-item .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .member-card-item .info {
+            flex: 1;
+            min-width: 0;
+        }
+        .member-card-item .info .name {
             font-size: 0.8rem;
-            color: #8ab0e6;
-        }
-        .member-bar .member-item .name {
             color: #b0ccff;
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .member-bar .member-item .sct {
+        .member-card-item .info .sct {
+            font-size: 0.7rem;
             color: #7aaeff;
-            font-weight: 600;
+            font-weight: 500;
         }
-        .member-bar .member-label {
+        .member-card-item .rank {
             color: #5a8ac0;
             font-size: 0.7rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            flex-shrink: 0;
         }
 
         /* BUTTON LOGIN DI HERO */
@@ -379,38 +361,50 @@
             font-size: 0.8rem;
             cursor: default;
         }
-        .unlimited-badge {
-            background: rgba(60, 120, 255, 0.04);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            border-radius: 60px;
-            padding: 0.2rem 1.2rem;
-            font-size: 0.7rem;
-            color: #5a8ac0;
-            font-weight: 500;
-        }
-        .contact-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
+
+        /* CONTACT - mobile first */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
         }
         .contact-item {
             background: rgba(12, 28, 60, 0.3);
-            padding: 0.6rem 1.6rem;
-            border-radius: 60px;
+            padding: 0.8rem 1rem;
+            border-radius: 1.2rem;
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid rgba(80, 140, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.04);
+            transition: 0.15s;
+            text-decoration: none;
+            color: #8ab8ff;
+        }
+        .contact-item:hover {
+            border-color: rgba(80, 140, 255, 0.12);
+            background: rgba(8, 20, 48, 0.4);
         }
         .contact-item i {
             color: #4a8aff;
             font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .contact-item span {
+            font-size: 0.8rem;
+            font-weight: 500;
+            word-break: break-word;
         }
         .contact-item a {
             color: #8ab8ff;
             text-decoration: none;
+            font-size: 0.8rem;
             font-weight: 500;
+            word-break: break-word;
+        }
+        .contact-item a:hover {
+            color: #b0ccff;
         }
 
         .toast-message {
@@ -553,7 +547,7 @@
             margin: 0.8rem 0;
         }
 
-        /* ===== BOTTOM NAV ===== */
+        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -622,10 +616,17 @@
             .grid-3 {
                 grid-template-columns: 1fr 1fr;
             }
-            .member-bar {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
+            .member-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header .brand-center h1 {
+                font-size: 1.4rem;
+            }
+            .header .brand-center i {
+                font-size: 1.8rem;
             }
         }
         @media (max-width: 480px) {
@@ -635,11 +636,11 @@
             .section-card {
                 padding: 1.5rem 1rem;
             }
-            .brand h1 {
-                font-size: 1.6rem;
+            .member-grid {
+                grid-template-columns: 1fr;
             }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr 1fr;
+            .contact-grid {
+                grid-template-columns: 1fr;
             }
             .modal-box {
                 padding: 1.8rem 1.5rem;
@@ -655,63 +656,78 @@
             .bottom-nav a span {
                 font-size: 0.5rem;
             }
+            .header .brand-center h1 {
+                font-size: 1.2rem;
+            }
+            .header .brand-center i {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
 
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="brand-center">
+                <i class="fas fa-coins"></i>
+                <h1>SilverChain</h1>
+                <span class="ticker">SCT</span>
+            </div>
+        </div>
+
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
         <!-- ===== HERO ===== -->
         <div class="section-card hero">
-            <div class="brand">
-                <i class="fas fa-coins"></i>
-                <h1>SilverChain</h1>
-                <span class="ticker">SCT</span>
-                <span class="dao-slogan"><i class="fas fa-users"></i> ORGANISASI OTONOM TERDESENTRALISASI</span>
-                <span class="unlimited-badge"><i class="fas fa-infinity"></i> Supply Tak Terbatas</span>
-            </div>
-
-            <!-- MEMBER BAR -->
-            <div class="member-bar" id="memberBar">
-                <span class="member-label"><i class="fas fa-users"></i> Member Aktif</span>
-                <span class="member-item"><span class="name">demo@silverchain.io</span> <span class="sct">1,695 SCT</span></span>
-                <span class="member-item"><span class="name">alice@test.com</span> <span class="sct">226 SCT</span></span>
-                <span class="member-item"><span class="name">bob@test.com</span> <span class="sct">339 SCT</span></span>
-                <span class="member-item"><span class="name">carol@test.com</span> <span class="sct">169 SCT</span></span>
-            </div>
-
             <!-- PROGRESS -->
             <div class="progress-wrap">
                 <span style="font-size:0.85rem; color:#8ab0e6; min-width:80px;"><i class="fas fa-chart-simple"></i> Terjual</span>
                 <div class="progress-bar-bg">
-                    <div class="progress-fill" id="progressFill" style="width: 68%;"></div>
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
-                <div class="counter-num" id="counterDisplay">1.36M <small>SCT</small></div>
+                <div class="counter-num" id="counterDisplay">0 <small>SCT</small></div>
             </div>
 
-            <div class="subhead">
+            <div class="subhead" style="font-size:0.95rem; color:#8ab0e6; margin:0.5rem 0 1.2rem; line-height:1.5; border-left:3px solid #4a8aff; padding-left:1rem;">
                 <i class="fas fa-bolt" style="color:#4a8aff; margin-right:6px;"></i>
                 Beli token SilverChain, dapatkan <strong style="color:#7aaeff;">bonus</strong> & <strong style="color:#7aaeff;">referral</strong>!
             </div>
 
-            <div class="stats-grid">
-                <div class="stat-item"><div class="num" id="statSold">1.36B</div><div class="label">Token Dicetak</div></div>
-                <div class="stat-item highlight"><div class="num" id="statBonus">10%</div><div class="label">Bonus</div></div>
-                <div class="stat-item"><div class="num" id="statRef">3%</div><div class="label">Referral</div></div>
+            <div class="stats-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.6rem; background:rgba(12,28,60,0.3); border-radius:2rem; padding:0.8rem; backdrop-filter:blur(4px); border:1px solid rgba(80,140,255,0.06); margin-bottom:1.2rem;">
+                <div class="stat-item" style="text-align:center;">
+                    <div class="num" style="font-weight:700; font-size:1.3rem; color:#b0ccff;" id="statSold">0</div>
+                    <div class="label" style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px; color:#5a8ac0;">Token Dicetak</div>
+                </div>
+                <div class="stat-item highlight" style="text-align:center;">
+                    <div class="num" style="font-weight:700; font-size:1.3rem; color:#7aaeff; text-shadow:0 0 20px rgba(60,120,255,0.2);" id="statBonus">10%</div>
+                    <div class="label" style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px; color:#5a8ac0;">Bonus</div>
+                </div>
+                <div class="stat-item" style="text-align:center;">
+                    <div class="num" style="font-weight:700; font-size:1.3rem; color:#b0ccff;" id="statRef">3%</div>
+                    <div class="label" style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px; color:#5a8ac0;">Referral</div>
+                </div>
             </div>
 
-            <div style="text-align:center; padding:1rem 0;">
+            <div style="text-align:center; padding:0.5rem 0;">
                 <p style="color:#8ab0e6; font-size:0.95rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda dengan SilverChain</strong></p>
                 <p style="color:#5a8ac0; font-size:0.8rem; margin-top:0.3rem;">Login atau daftar untuk membeli token dan mulai berinvestasi</p>
-                <div id="heroButtonContainer">
+                <div id="heroButtonContainer" style="margin-top:0.8rem;">
                     <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
                 </div>
             </div>
 
             <div style="text-align:center; font-size:0.7rem; color:#4a7ab0; margin-top:0.8rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
                 <i class="fas fa-shield-alt"></i> Prelaunch DAO · SilverChain Token (SCT)
+            </div>
+        </div>
+
+        <!-- ===== MEMBER AKTIF (CARD) ===== -->
+        <div class="section-card">
+            <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
+            <div class="member-grid" id="memberGrid">
+                <div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1;">Memuat data member...</div>
             </div>
         </div>
 
@@ -828,14 +844,14 @@
             </div>
         </div>
 
-        <!-- ===== CONTACT ===== -->
+        <!-- ===== CONTACT (mobile first 2 kolom, di HP jadi 1) ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
-            <div class="contact-row">
-                <div class="contact-item"><i class="fab fa-twitter"></i> <a href="#">@SilverChain</a></div>
-                <div class="contact-item"><i class="fab fa-telegram"></i> <a href="#">t.me/SilverChain</a></div>
-                <div class="contact-item"><i class="fab fa-discord"></i> <a href="#">discord.gg/silver</a></div>
-                <div class="contact-item"><i class="fas fa-envelope"></i> <a href="#">dao@silverchain.io</a></div>
+            <div class="contact-grid">
+                <a href="#" class="contact-item"><i class="fab fa-twitter"></i> <span>@SilverChain</span></a>
+                <a href="#" class="contact-item"><i class="fab fa-telegram"></i> <span>t.me/SilverChain</span></a>
+                <a href="#" class="contact-item"><i class="fab fa-discord"></i> <span>discord.gg/silver</span></a>
+                <a href="#" class="contact-item"><i class="fas fa-envelope"></i> <span>dao@silverchain.io</span></a>
             </div>
             <div style="text-align:center; margin-top:1rem; font-size:0.8rem; color:#4a7ab0;">
                 <i class="fas fa-map-pin"></i> SilverChain DAO · Singapura & Jakarta
@@ -985,7 +1001,7 @@
                 badge.style.display = 'none';
             }
 
-            // Hero button: jika login tampilkan tombol ke Dashboard, jika tidak tampilkan Login
+            // Hero button
             const heroContainer = document.getElementById('heroButtonContainer');
             if (isLoggedIn) {
                 heroContainer.innerHTML = `
@@ -995,7 +1011,6 @@
                 heroContainer.innerHTML = `
                     <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
                 `;
-                // Re-attach event listener
                 document.getElementById('loginBtn').addEventListener('click', function() {
                     document.getElementById('loginModal').classList.add('active');
                     document.getElementById('emailInput').value = 'demo@silverchain.io';
@@ -1003,7 +1018,7 @@
                 });
             }
 
-            // Progress
+            // Progress & stat
             const total = getTotalMinted();
             const target = 2000000000;
             const pct = Math.min((total / target) * 100, 100);
@@ -1012,28 +1027,41 @@
             document.getElementById('counterDisplay').textContent = totalStr + ' SCT';
             document.getElementById('statSold').textContent = totalStr;
 
-            // Member bar
+            // Member Aktif (card grid)
             const approved = depositsDB.filter(d => d.status === 'approved');
             const map = {};
             approved.forEach(d => { if (!map[d.email]) map[d.email] = 0;
                 map[d.email] += d.total; });
             const sorted = Object.entries(map).sort((a, b) => b[1] - a[1]);
-            const bar = document.getElementById('memberBar');
-            const label = bar.querySelector('.member-label');
-            bar.innerHTML = '';
-            bar.appendChild(label);
-            sorted.slice(0, 5).forEach(([email, total]) => {
-                const el = document.createElement('span');
-                el.className = 'member-item';
-                el.innerHTML = `<span class="name">${email}</span> <span class="sct">${total.toFixed(1)} SCT</span>`;
-                bar.appendChild(el);
-            });
-            if (sorted.length > 5) {
-                const more = document.createElement('span');
-                more.className = 'member-item';
-                more.style.color = '#5a8ac0';
-                more.textContent = `+${sorted.length - 5} lainnya`;
-                bar.appendChild(more);
+
+            const grid = document.getElementById('memberGrid');
+            if (sorted.length === 0) {
+                grid.innerHTML = `<div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1;">Belum ada member aktif</div>`;
+            } else {
+                let html = '';
+                sorted.slice(0, 8).forEach(([email, total], index) => {
+                    const initial = email.charAt(0).toUpperCase();
+                    html += `
+                        <div class="member-card-item">
+                            <div class="avatar">${initial}</div>
+                            <div class="info">
+                                <div class="name">${email}</div>
+                                <div class="sct">${total.toFixed(1)} SCT</div>
+                            </div>
+                            <div class="rank">#${index + 1}</div>
+                        </div>
+                    `;
+                });
+                if (sorted.length > 8) {
+                    html += `
+                        <div class="member-card-item" style="border-style:dashed; border-color:rgba(80,140,255,0.08);">
+                            <div style="color:#5a8ac0; font-size:0.7rem; text-align:center; width:100%;">
+                                +${sorted.length - 8} lainnya
+                            </div>
+                        </div>
+                    `;
+                }
+                grid.innerHTML = html;
             }
         }
 
@@ -1164,7 +1192,6 @@
         loadData();
         updateUI();
 
-        // Auto update setiap 3 detik
         setInterval(() => {
             loadData();
             updateUI();
