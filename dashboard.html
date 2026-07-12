@@ -38,10 +38,6 @@
             border: 1px solid rgba(80, 140, 255, 0.08);
             transition: all 0.25s;
         }
-        .section-card:hover {
-            border-color: rgba(80, 140, 255, 0.2);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(60, 120, 255, 0.03);
-        }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -113,9 +109,6 @@
             cursor: pointer;
             font-size: 0.75rem;
             white-space: nowrap;
-        }
-        .deposit-box .address-box button:hover {
-            background: rgba(60, 120, 255, 0.2);
         }
         .deposit-box .qr-section {
             display: flex;
@@ -212,14 +205,8 @@
         .deposit-box .btn-submit:active {
             transform: scale(0.97);
         }
-        .deposit-box .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
 
-        /* ===== TABLE WRAPPER UNTUK SCROLL HORIZONTAL ===== */
+        /* TABLE WRAPPER SCROLL */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -307,7 +294,7 @@
             display: flex;
         }
 
-        /* ===== BOTTOM NAV ===== */
+        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -340,7 +327,6 @@
         }
         .bottom-nav a i {
             font-size: 1.3rem;
-            transition: 0.2s;
         }
         .bottom-nav a span {
             font-size: 0.55rem;
@@ -369,56 +355,6 @@
             display: none;
         }
 
-        /* ===== LOGIN BAR ===== */
-        .login-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.8rem;
-            background: rgba(12, 28, 60, 0.3);
-            padding: 0.6rem 1.5rem;
-            border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            margin: 0.5rem 0 0.8rem;
-        }
-        .login-bar .status {
-            font-size: 0.85rem;
-            color: #8ab0e6;
-        }
-        .login-bar .status i {
-            color: #4a8aff;
-            margin-right: 6px;
-        }
-        .login-bar .status .highlight {
-            color: #7aaeff;
-            font-weight: 600;
-        }
-        .login-bar .user-badge {
-            background: rgba(60, 120, 255, 0.08);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #b0ccff;
-            font-size: 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .login-bar .user-badge i {
-            color: #4a8aff;
-            margin-right: 6px;
-        }
-        .login-bar .btn-logout {
-            background: transparent;
-            border: 1px solid rgba(255, 80, 80, 0.15);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #ff6a6a;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .login-bar .btn-logout:hover {
-            background: rgba(255, 80, 80, 0.1);
-        }
-
         @media (max-width: 700px) {
             .dash-stats {
                 grid-template-columns: 1fr 1fr;
@@ -430,18 +366,13 @@
             .deposit-box .input-group {
                 max-width: 100%;
             }
-            .login-bar {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
         }
         @media (max-width: 480px) {
             .section-card {
                 padding: 1.5rem 1rem;
             }
             .dash-stats {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
             }
             .deposit-box .address-box {
                 flex-wrap: wrap;
@@ -468,13 +399,6 @@
 <body>
     <div class="container">
 
-        <!-- ===== LOGIN BAR ===== -->
-        <div class="login-bar" id="loginBar">
-            <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Memuat...</span></div>
-            <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">-</span></span>
-            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-        </div>
-
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
         <!-- ===== DASHBOARD ===== -->
@@ -489,7 +413,7 @@
                 </div>
             </div>
 
-            <!-- Stats -->
+            <!-- Stats 4 kolom, di mobile jadi 2 kolom -->
             <div class="dash-stats">
                 <div class="dash-stat"><div class="num" id="dashTotalSCT">0</div><div class="label">Total SCT</div></div>
                 <div class="dash-stat"><div class="num" id="dashTotalPurchases">0</div><div class="label">Total Pembelian</div></div>
@@ -584,7 +508,7 @@
 
     </div>
 
-    <!-- ===== BOTTOM NAV (3 menu) ===== -->
+    <!-- ===== BOTTOM NAV ===== -->
     <nav class="bottom-nav">
         <a href="index.html" id="navHome">
             <i class="fas fa-home"></i>
@@ -687,12 +611,6 @@
         function updateUI() {
             const isLoggedIn = !!currentUser;
 
-            document.getElementById('loginStatus').innerHTML = isLoggedIn ?
-                `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${currentUser.email}</strong>` :
-                `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — <a href="index.html" style="color:#4a8aff;">Login di sini</a>`;
-
-            document.getElementById('userEmailDisplay').textContent = isLoggedIn ? currentUser.email : '-';
-
             // Badge
             const badge = document.getElementById('navBadge');
             if (isLoggedIn) {
@@ -703,7 +621,7 @@
             }
 
             if (!isLoggedIn) {
-                document.getElementById('dashUserEmail').textContent = '-';
+                document.getElementById('dashUserEmail').textContent = 'Silakan login terlebih dahulu';
                 document.getElementById('dashRefCode').textContent = '-';
                 document.getElementById('dashTotalSCT').textContent = '0';
                 document.getElementById('dashTotalPurchases').textContent = '0';
@@ -845,23 +763,10 @@
             document.body.removeChild(ta);
         }
 
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-            currentUser = null;
-            updateUI();
-            showToast('👋 Berhasil keluar.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 500);
-        });
-
         // ============================================================
         // INIT
         // ============================================================
         loadData();
-        if (!currentUser) {
-            document.getElementById('loginStatus').innerHTML =
-                `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — <a href="index.html" style="color:#4a8aff;">Login di sini</a>`;
-            document.getElementById('userEmailDisplay').textContent = '-';
-        }
         updateUI();
 
         setInterval(() => {
