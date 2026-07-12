@@ -412,7 +412,6 @@
             transform: scale(0.97);
         }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -519,7 +518,7 @@
 
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
-        <!-- ===== DASHBOARD ===== -->
+        <!-- DASHBOARD -->
         <div class="section-card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
                 <div>
@@ -551,7 +550,10 @@
             <!-- BUY CARD -->
             <div class="buy-card">
                 <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#4a8aff;"></i> Beli Token</h4>
-                <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">Masukkan jumlah token yang ingin dibeli, lalu klik <strong>Beli Token</strong>.</p>
+                <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
+                    1 USDT = 1 SCT. 
+                    <span id="bonusInfo" style="color:#7aaeff; font-weight:600;">✨ Bonus 10% untuk pembelian pertama!</span>
+                </p>
 
                 <div class="row">
                     <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
@@ -563,13 +565,13 @@
 
                 <div style="display:flex; flex-wrap:wrap; gap:1rem; margin:0.5rem 0; align-items:center;">
                     <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-gift" style="color:#4a8aff;"></i> Bonus: <strong id="depositBonus" style="color:#b0ccff;">+10 SCT</strong>
+                        <i class="fas fa-gift" style="color:#4a8aff;"></i> Bonus: <strong id="depositBonus" style="color:#b0ccff;">0 SCT</strong>
                     </span>
                     <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-user-friends" style="color:#4a8aff;"></i> Referral: <strong id="depositRef" style="color:#b0ccff;">+3 SCT</strong>
+                        <i class="fas fa-user-friends" style="color:#4a8aff;"></i> Referral: <strong id="depositRef" style="color:#b0ccff;">0 SCT</strong>
                     </span>
                     <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-arrow-right" style="color:#4a8aff;"></i> Total: <strong id="depositTotal" style="color:#b0ccff;">113 SCT</strong>
+                        <i class="fas fa-arrow-right" style="color:#4a8aff;"></i> Total: <strong id="depositTotal" style="color:#b0ccff;">0 SCT</strong>
                     </span>
                 </div>
 
@@ -602,7 +604,24 @@
 
     </div>
 
-    <!-- ===== MODAL PAYMENT ===== -->
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <a href="index.html" id="navHome">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="dashboard.html" class="active" id="navBuy">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Beli Token</span>
+            <span class="badge-dot" id="navBadge"></span>
+        </a>
+        <a href="account.html" id="navAccount">
+            <i class="fas fa-user"></i>
+            <span>Akun</span>
+        </a>
+    </nav>
+
+    <!-- MODAL PAYMENT -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-box">
             <button class="close-btn" id="closePaymentModal"><i class="fas fa-times"></i></button>
@@ -611,18 +630,16 @@
 
             <div id="paymentDetails" style="margin:0.5rem 0;">
                 <div class="detail-row"><span class="label">Jumlah USDT</span><span class="value" id="modalUsdt">0</span></div>
-                <div class="detail-row"><span class="label">Bonus 10%</span><span class="value" id="modalBonus">0</span></div>
+                <div class="detail-row"><span class="label">Bonus 10% (Pertama)</span><span class="value" id="modalBonus">0</span></div>
                 <div class="detail-row"><span class="label">Referral 3%</span><span class="value" id="modalRef">0</span></div>
                 <div class="detail-row"><span class="label">Total SCT</span><span class="value" id="modalTotal">0</span></div>
             </div>
 
-            <!-- USDT Address (dari localStorage) -->
             <div class="address-box">
                 <input type="text" id="modalAdminAddress" readonly style="font-family:monospace;" />
                 <button id="modalCopyAddress"><i class="fas fa-copy"></i> Salin</button>
             </div>
 
-            <!-- QRIS (dari localStorage) -->
             <div class="qr-section">
                 <div class="qr-placeholder" id="modalQrPlaceholder">
                     <i class="fas fa-qrcode"></i>
@@ -641,23 +658,6 @@
             <p style="color:#5a8ac0; font-size:0.6rem; text-align:center; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
         </div>
     </div>
-
-    <!-- ===== BOTTOM NAV ===== -->
-    <nav class="bottom-nav">
-        <a href="index.html" id="navHome">
-            <i class="fas fa-home"></i>
-            <span>Beranda</span>
-        </a>
-        <a href="dashboard.html" class="active" id="navBuy">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Beli Token</span>
-            <span class="badge-dot" id="navBadge"></span>
-        </a>
-        <a href="account.html" id="navAccount">
-            <i class="fas fa-user"></i>
-            <span>Akun</span>
-        </a>
-    </nav>
 
     <script>
         // ============================================================
@@ -708,6 +708,10 @@
 
         function getUserDeposits(email) { return depositsDB.filter(d => d.email === email); }
 
+        function getUserApprovedDeposits(email) {
+            return depositsDB.filter(d => d.email === email && d.status === 'approved');
+        }
+
         function getUserTotalSCT(email) {
             return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
         }
@@ -724,7 +728,13 @@
             const referrals = usersDB.filter(u => u.referredBy === user.refCode);
             let total = 0;
             referrals.forEach(ref => {
-                depositsDB.filter(d => d.email === ref.email && d.status === 'approved').forEach(d => { total += d.ref; });
+                // Cari deposit pertama dari referral yang approved (bonus referral hanya 1x)
+                const firstDeposit = depositsDB
+                    .filter(d => d.email === ref.email && d.status === 'approved')
+                    .sort((a, b) => a.timestamp - b.timestamp)[0];
+                if (firstDeposit) {
+                    total += firstDeposit.ref || 0;
+                }
             });
             return Math.round(total * 10) / 10;
         }
@@ -744,11 +754,10 @@
         }
 
         // ============================================================
-        // GET PAYMENT DATA FROM LOCALSTORAGE
+        // GET PAYMENT DATA
         // ============================================================
         function getUsdtAddress() {
-            const stored = localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS);
-            return stored || DEFAULT_USDT;
+            return localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS) || DEFAULT_USDT;
         }
 
         function getQrisData() {
@@ -756,15 +765,10 @@
         }
 
         function updatePaymentModal() {
-            // USDT Address
-            const addressInput = document.getElementById('modalAdminAddress');
-            addressInput.value = getUsdtAddress();
-
-            // QRIS
+            document.getElementById('modalAdminAddress').value = getUsdtAddress();
             const qrisData = getQrisData();
             const placeholder = document.getElementById('modalQrPlaceholder');
             const qrText = document.getElementById('modalQrText');
-
             if (qrisData) {
                 placeholder.innerHTML = `<img src="${qrisData}" alt="QRIS" style="width:100%;height:100%;object-fit:contain;" />`;
                 qrText.textContent = 'QRIS tersedia — scan untuk pembayaran';
@@ -772,6 +776,22 @@
                 placeholder.innerHTML = `<i class="fas fa-qrcode"></i>`;
                 qrText.textContent = 'ID: 1234567890 | Nama: SilverChain DAO';
             }
+        }
+
+        // ============================================================
+        // CEK APAKAH USER PERNAH BELI (untuk bonus pertama)
+        // ============================================================
+        function hasUserPurchasedBefore(email) {
+            const approved = depositsDB.filter(d => d.email === email && d.status === 'approved');
+            return approved.length > 0;
+        }
+
+        // ============================================================
+        // CEK APAKAH REFERRAL SUDAH PERNAH BELI (untuk bonus referral)
+        // ============================================================
+        function hasReferralPurchasedBefore(email) {
+            const approved = depositsDB.filter(d => d.email === email && d.status === 'approved');
+            return approved.length > 0;
         }
 
         // ============================================================
@@ -819,6 +839,18 @@
             document.getElementById('dashReferrals').textContent = referrals.length;
             document.getElementById('dashRefEarnings').textContent = getRefEarnings(currentUser.email).toFixed(1);
 
+            // Info bonus pertama
+            const hasPurchased = hasUserPurchasedBefore(currentUser.email);
+            const bonusInfo = document.getElementById('bonusInfo');
+            if (hasPurchased) {
+                bonusInfo.textContent = '✨ Bonus 10% hanya untuk pembelian pertama!';
+                bonusInfo.style.color = '#fbbf24';
+            } else {
+                bonusInfo.textContent = '✨ Bonus 10% untuk pembelian pertama!';
+                bonusInfo.style.color = '#7aaeff';
+            }
+
+            // History
             if (deposits.length === 0) {
                 document.getElementById('historyBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>`;
@@ -834,8 +866,8 @@
                     html += `<tr>
                         <td>${date}</td>
                         <td>${d.usdt}</td>
-                        <td>${d.bonus}</td>
-                        <td>${d.ref}</td>
+                        <td>${d.bonus || 0}</td>
+                        <td>${d.ref || 0}</td>
                         <td>${d.total}</td>
                         <td style="font-family:monospace; font-size:0.65rem;">${d.txHash || '-'}</td>
                         <td class="${cls}">${txt}</td>
@@ -851,9 +883,35 @@
         function updateBonusPreview() {
             const raw = document.getElementById('depositAmount').value.trim();
             const usdt = parseFloat(raw) || 0;
-            const bonus = Math.floor(usdt * bonusPercent / 100);
-            const ref = Math.floor(usdt * refPercent / 100);
-            const total = usdt + bonus + ref;
+
+            // 1 USDT = 1 SCT
+            let sct = usdt;
+            let bonus = 0;
+            let ref = 0;
+
+            // Bonus 10% hanya jika user belum pernah beli (approved)
+            if (currentUser && !hasUserPurchasedBefore(currentUser.email)) {
+                bonus = Math.floor(usdt * bonusPercent / 100);
+            }
+
+            // Referral 3% — cek apakah user punya referrer (referredBy)
+            const user = findUser(currentUser ? currentUser.email : '');
+            if (user && user.referredBy) {
+                // Cek apakah referrer sudah pernah dapat bonus dari user ini?
+                // Bonus referral hanya 1x per downline
+                const referrer = findUser(user.referredBy);
+                if (referrer) {
+                    // Cek apakah downline ini sudah pernah beli sebelumnya
+                    const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
+                    // Jika belum pernah beli, beri referral
+                    if (downlineDeposits.length === 0) {
+                        ref = Math.floor(usdt * refPercent / 100);
+                    }
+                }
+            }
+
+            const total = sct + bonus + ref;
+
             document.getElementById('depositBonus').textContent = `+${bonus} SCT`;
             document.getElementById('depositRef').textContent = `+${ref} SCT`;
             document.getElementById('depositTotal').textContent = `${total} SCT`;
@@ -877,10 +935,27 @@
                 return;
             }
 
-            const bonus = Math.floor(usdt * bonusPercent / 100);
-            const ref = Math.floor(usdt * refPercent / 100);
-            const total = usdt + bonus + ref;
+            // Hitung ulang bonus & referral
+            let sct = usdt;
+            let bonus = 0;
+            let ref = 0;
 
+            if (!hasUserPurchasedBefore(currentUser.email)) {
+                bonus = Math.floor(usdt * bonusPercent / 100);
+            }
+
+            const user = findUser(currentUser.email);
+            if (user && user.referredBy) {
+                const referrer = findUser(user.referredBy);
+                if (referrer) {
+                    const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
+                    if (downlineDeposits.length === 0) {
+                        ref = Math.floor(usdt * refPercent / 100);
+                    }
+                }
+            }
+
+            const total = sct + bonus + ref;
             pendingDepositData = { usdt, bonus, ref, total };
 
             document.getElementById('modalUsdt').textContent = usdt;
@@ -993,8 +1068,9 @@
         }, 3000);
 
         console.log('🟢 SilverChain Dashboard (Beli Token) siap.');
-        console.log('📌 USDT Address dari localStorage:', getUsdtAddress());
-        console.log('📌 QRIS tersedia:', !!getQrisData());
+        console.log('📌 1 USDT = 1 SCT');
+        console.log('📌 Bonus 10% hanya untuk pembelian pertama');
+        console.log('📌 Referral 3% hanya 1x per downline');
     </script>
 </body>
 </html>
