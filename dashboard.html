@@ -71,89 +71,28 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .deposit-box {
+
+        /* BUY CARD */
+        .buy-card {
             background: rgba(12, 28, 60, 0.3);
             border-radius: 1.8rem;
             padding: 1.5rem;
             border: 1px solid rgba(80, 140, 255, 0.06);
             margin: 1rem 0;
         }
-        .deposit-box .address-box {
-            background: rgba(8, 20, 48, 0.5);
-            border-radius: 60px;
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 0.5rem 0;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            flex-wrap: wrap;
-        }
-        .deposit-box .address-box input {
-            background: transparent;
-            border: none;
-            color: #b0ccff;
-            font-size: 0.85rem;
-            width: 100%;
-            outline: none;
-            font-family: monospace;
-            flex: 1;
-            min-width: 120px;
-        }
-        .deposit-box .address-box button {
-            background: rgba(60, 120, 255, 0.1);
-            border: none;
-            color: #8ab8ff;
-            padding: 0.3rem 1rem;
-            border-radius: 60px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            white-space: nowrap;
-        }
-        .deposit-box .qr-section {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            background: rgba(8, 20, 48, 0.2);
-            border-radius: 1.2rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-            flex-wrap: wrap;
-        }
-        .deposit-box .qr-section .qr-placeholder {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: #4a8aff;
-            border: 2px dashed rgba(80, 140, 255, 0.15);
-        }
-        .deposit-box .qr-section .qr-text {
-            color: #8ab0e6;
-            font-size: 0.8rem;
-            flex: 1;
-        }
-        .deposit-box .qr-section .qr-text strong {
-            color: #b0ccff;
-        }
-        .deposit-box .row {
+        .buy-card .row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             gap: 1rem;
             margin: 0.5rem 0;
         }
-        .deposit-box .row .label {
+        .buy-card .row .label {
             color: #8ab0e6;
             font-size: 0.85rem;
             min-width: 120px;
         }
-        .deposit-box .input-group {
+        .buy-card .input-group {
             display: flex;
             align-items: center;
             background: rgba(8, 20, 48, 0.5);
@@ -164,7 +103,7 @@
             min-width: 160px;
             max-width: 300px;
         }
-        .deposit-box .input-group input {
+        .buy-card .input-group input {
             background: transparent;
             border: none;
             padding: 0.7rem 0;
@@ -174,10 +113,10 @@
             outline: none;
             font-weight: 500;
         }
-        .deposit-box .input-group input::placeholder {
+        .buy-card .input-group input::placeholder {
             color: #3a5a8a;
         }
-        .deposit-box .input-group .unit {
+        .buy-card .input-group .unit {
             background: linear-gradient(145deg, #4a8aff, #2a5ac0);
             color: #fff;
             font-weight: 700;
@@ -186,24 +125,59 @@
             font-size: 0.75rem;
             white-space: nowrap;
         }
-        .deposit-box .btn-submit {
+        .buy-card .btn-buy {
             background: linear-gradient(145deg, #4a8aff, #1a4ab0);
             border: none;
             border-radius: 60px;
-            padding: 0.7rem 2rem;
+            padding: 0.8rem 2rem;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
             box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.25);
+            width: 100%;
         }
-        .deposit-box .btn-submit:hover {
+        .buy-card .btn-buy:hover {
             box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.35);
             transform: translateY(-2px);
         }
-        .deposit-box .btn-submit:active {
+        .buy-card .btn-buy:active {
             transform: scale(0.97);
+        }
+        .buy-card .btn-buy:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .ref-link-box {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0.3rem 0 1rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .ref-link-box input {
+            background: transparent;
+            border: none;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            width: 100%;
+            outline: none;
+        }
+        .ref-link-box button {
+            background: rgba(60, 120, 255, 0.1);
+            border: none;
+            color: #8ab8ff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 0.7rem;
         }
 
         /* TABLE WRAPPER SCROLL */
@@ -250,33 +224,6 @@
             color: #ff6a6a;
         }
 
-        .ref-link-box {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 60px;
-            padding: 0.5rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin: 0.3rem 0 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .ref-link-box input {
-            background: transparent;
-            border: none;
-            color: #b0ccff;
-            font-size: 0.8rem;
-            width: 100%;
-            outline: none;
-        }
-        .ref-link-box button {
-            background: rgba(60, 120, 255, 0.1);
-            border: none;
-            color: #8ab8ff;
-            padding: 0.2rem 0.8rem;
-            border-radius: 60px;
-            cursor: pointer;
-            font-size: 0.7rem;
-        }
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -292,6 +239,179 @@
         }
         .toast-message.show {
             display: flex;
+        }
+
+        /* ===== MODAL PAYMENT ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #0e1e40;
+            background: linear-gradient(145deg, #122a5a, #081a38);
+            border-radius: 2.5rem;
+            padding: 2rem 2rem;
+            max-width: 480px;
+            width: 90%;
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-box .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #5a8ac0;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+        .modal-box h2 {
+            color: #b0ccff;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .modal-box p {
+            color: #8ab0e6;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .modal-box .address-box {
+            background: rgba(8, 20, 48, 0.5);
+            border-radius: 60px;
+            padding: 0.6rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0.5rem 0;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            flex-wrap: wrap;
+        }
+        .modal-box .address-box input {
+            background: transparent;
+            border: none;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            width: 100%;
+            outline: none;
+            font-family: monospace;
+            flex: 1;
+            min-width: 100px;
+        }
+        .modal-box .address-box button {
+            background: rgba(60, 120, 255, 0.1);
+            border: none;
+            color: #8ab8ff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            white-space: nowrap;
+        }
+        .modal-box .qr-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(8, 20, 48, 0.2);
+            border-radius: 1.2rem;
+            padding: 0.8rem 1.2rem;
+            margin: 0.5rem 0;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+            flex-wrap: wrap;
+        }
+        .modal-box .qr-section .qr-placeholder {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #4a8aff;
+            border: 2px dashed rgba(80, 140, 255, 0.15);
+        }
+        .modal-box .qr-section .qr-text {
+            color: #8ab0e6;
+            font-size: 0.75rem;
+            flex: 1;
+        }
+        .modal-box .qr-section .qr-text strong {
+            color: #b0ccff;
+        }
+        .modal-box .input-field {
+            width: 100%;
+            padding: 0.7rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            background: rgba(8, 20, 48, 0.5);
+            color: #e6edf5;
+            font-size: 0.9rem;
+            outline: none;
+            margin: 0.5rem 0;
+            font-family: monospace;
+        }
+        .modal-box .input-field:focus {
+            border-color: rgba(80, 140, 255, 0.3);
+        }
+        .modal-box .input-field::placeholder {
+            color: #3a5a8a;
+        }
+        .modal-box .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.04);
+            font-size: 0.85rem;
+        }
+        .modal-box .detail-row .label {
+            color: #8ab0e6;
+        }
+        .modal-box .detail-row .value {
+            color: #b0ccff;
+            font-weight: 600;
+        }
+        .modal-box .btn-submit-payment {
+            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
+            border: none;
+            border-radius: 60px;
+            padding: 0.8rem;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.15s;
+            width: 100%;
+            margin-top: 0.8rem;
+            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.25);
+        }
+        .modal-box .btn-submit-payment:hover {
+            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.35);
+            transform: translateY(-2px);
+        }
+        .modal-box .btn-submit-payment:active {
+            transform: scale(0.97);
+        }
+        .modal-box .btn-submit-payment:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
         /* BOTTOM NAV */
@@ -359,12 +479,15 @@
             .dash-stats {
                 grid-template-columns: 1fr 1fr;
             }
-            .deposit-box .row {
+            .buy-card .row {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .deposit-box .input-group {
+            .buy-card .input-group {
                 max-width: 100%;
+            }
+            .modal-box {
+                padding: 1.5rem 1.2rem;
             }
         }
         @media (max-width: 480px) {
@@ -373,14 +496,6 @@
             }
             .dash-stats {
                 grid-template-columns: 1fr 1fr;
-            }
-            .deposit-box .address-box {
-                flex-wrap: wrap;
-            }
-            .deposit-box .qr-section {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
             }
             .bottom-nav a {
                 font-size: 0.5rem;
@@ -392,6 +507,11 @@
             }
             .bottom-nav a span {
                 font-size: 0.5rem;
+            }
+            .modal-box .qr-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
         }
     </style>
@@ -413,7 +533,7 @@
                 </div>
             </div>
 
-            <!-- Stats 4 kolom, di mobile jadi 2 kolom -->
+            <!-- Stats -->
             <div class="dash-stats">
                 <div class="dash-stat"><div class="num" id="dashTotalSCT">0</div><div class="label">Total SCT</div></div>
                 <div class="dash-stat"><div class="num" id="dashTotalPurchases">0</div><div class="label">Total Pembelian</div></div>
@@ -430,39 +550,16 @@
                 <button id="copyDashRef"><i class="fas fa-copy"></i> Salin</button>
             </div>
 
-            <!-- Deposit -->
-            <div class="deposit-box">
-                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-arrow-down" style="color:#4a8aff;"></i> Deposit & Beli Token</h4>
-                <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">Kirim USDT ke address di bawah, atau scan QRIS, lalu isi hash transaksi & klik submit.</p>
-
-                <div class="address-box">
-                    <input type="text" id="adminAddress" readonly value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="font-family:monospace;" />
-                    <button id="copyAddress"><i class="fas fa-copy"></i> Salin</button>
-                </div>
-
-                <div class="qr-section">
-                    <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
-                    <div class="qr-text">
-                        <strong>QRIS</strong><br />
-                        Scan QRIS untuk pembayaran<br />
-                        <span style="font-size:0.7rem; color:#5a8ac0;">ID: 1234567890 | Nama: SilverChain DAO</span>
-                    </div>
-                    <button id="copyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.3rem 1rem; color:#8ab8ff; cursor:pointer; font-size:0.7rem;"><i class="fas fa-copy"></i> Salin ID</button>
-                </div>
+            <!-- BUY CARD -->
+            <div class="buy-card">
+                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#4a8aff;"></i> Beli Token</h4>
+                <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">Masukkan jumlah token yang ingin dibeli, lalu klik <strong>Beli Token</strong>.</p>
 
                 <div class="row">
                     <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
                     <div class="input-group">
                         <input type="number" id="depositAmount" placeholder="0" min="1" step="1" value="100" />
                         <span class="unit">USDT</span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <span class="label"><i class="fas fa-hashtag"></i> Hash Transaksi</span>
-                    <div class="input-group" style="max-width:100%;">
-                        <input type="text" id="txHash" placeholder="0x... atau ID transaksi" style="font-family:monospace; font-size:0.8rem;" />
-                        <span class="unit" style="font-size:0.6rem;">TX</span>
                     </div>
                 </div>
 
@@ -478,8 +575,7 @@
                     </span>
                 </div>
 
-                <button class="btn-submit" id="submitDepositBtn"><i class="fas fa-paper-plane"></i> Kirim Bukti Deposit</button>
-                <p style="color:#5a8ac0; font-size:0.65rem; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
+                <button class="btn-buy" id="buyBtn"><i class="fas fa-shopping-cart"></i> Beli Token</button>
             </div>
 
             <!-- History dengan scroll horizontal -->
@@ -506,6 +602,46 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- ===== MODAL PAYMENT ===== -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-box">
+            <button class="close-btn" id="closePaymentModal"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-credit-card" style="color:#4a8aff;"></i> Konfirmasi Pembayaran</h2>
+            <p>Kirim USDT ke address di bawah, lalu isi hash transaksi.</p>
+
+            <!-- Detail transaksi -->
+            <div id="paymentDetails" style="margin:0.5rem 0;">
+                <div class="detail-row"><span class="label">Jumlah USDT</span><span class="value" id="modalUsdt">0</span></div>
+                <div class="detail-row"><span class="label">Bonus 10%</span><span class="value" id="modalBonus">0</span></div>
+                <div class="detail-row"><span class="label">Referral 3%</span><span class="value" id="modalRef">0</span></div>
+                <div class="detail-row"><span class="label">Total SCT</span><span class="value" id="modalTotal">0</span></div>
+            </div>
+
+            <!-- Address USDT -->
+            <div class="address-box">
+                <input type="text" id="modalAdminAddress" readonly value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="font-family:monospace;" />
+                <button id="modalCopyAddress"><i class="fas fa-copy"></i> Salin</button>
+            </div>
+
+            <!-- QRIS -->
+            <div class="qr-section">
+                <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
+                <div class="qr-text">
+                    <strong>QRIS</strong><br />
+                    Scan QRIS untuk pembayaran<br />
+                    <span style="font-size:0.65rem; color:#5a8ac0;">ID: 1234567890 | Nama: SilverChain DAO</span>
+                </div>
+                <button id="modalCopyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.2rem 0.8rem; color:#8ab8ff; cursor:pointer; font-size:0.65rem;"><i class="fas fa-copy"></i> Salin ID</button>
+            </div>
+
+            <!-- Hash Transaksi -->
+            <input type="text" class="input-field" id="modalTxHash" placeholder="Masukkan hash transaksi (0x...)" style="font-family:monospace;" />
+
+            <button class="btn-submit-payment" id="modalSubmitBtn"><i class="fas fa-paper-plane"></i> Kirim Bukti Deposit</button>
+            <p style="color:#5a8ac0; font-size:0.6rem; text-align:center; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
+        </div>
     </div>
 
     <!-- ===== BOTTOM NAV ===== -->
@@ -543,6 +679,7 @@
         let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
+        let pendingDepositData = null;
 
         // ============================================================
         // LOAD
@@ -630,8 +767,11 @@
                 document.getElementById('dashRefLink').value = 'https://silverchain.io/ref/-';
                 document.getElementById('historyBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Silakan login terlebih dahulu</td></tr>`;
+                document.getElementById('buyBtn').disabled = true;
                 return;
             }
+
+            document.getElementById('buyBtn').disabled = false;
 
             const user = findUser(currentUser.email);
             if (!user) return;
@@ -692,9 +832,9 @@
         document.getElementById('depositAmount').addEventListener('change', updateBonusPreview);
 
         // ============================================================
-        // ACTIONS
+        // BUY BUTTON → OPEN MODAL
         // ============================================================
-        document.getElementById('submitDepositBtn').addEventListener('click', function() {
+        document.getElementById('buyBtn').addEventListener('click', function() {
             if (!currentUser) {
                 showToast('❌ Silakan login terlebih dahulu.');
                 return;
@@ -705,50 +845,52 @@
                 showToast('❌ Masukkan jumlah USDT yang valid.');
                 return;
             }
-            const hash = document.getElementById('txHash').value.trim();
-            if (!hash || hash.length < 5) {
-                showToast('❌ Masukkan hash transaksi (min 5 karakter).');
-                return;
-            }
+
             const bonus = Math.floor(usdt * bonusPercent / 100);
             const ref = Math.floor(usdt * refPercent / 100);
             const total = usdt + bonus + ref;
-            depositsDB.push({
-                id: getNextId(),
-                email: currentUser.email,
-                usdt: usdt,
-                bonus: bonus,
-                ref: ref,
-                total: total,
-                txHash: hash,
-                status: 'pending',
-                timestamp: Date.now()
-            });
-            saveDeposits();
-            showToast(`✅ Deposit ${usdt} USDT berhasil dikirim! Menunggu approval admin.`);
-            document.getElementById('txHash').value = '';
-            updateUI();
+
+            // Simpan data sementara
+            pendingDepositData = { usdt, bonus, ref, total };
+
+            // Isi modal
+            document.getElementById('modalUsdt').textContent = usdt;
+            document.getElementById('modalBonus').textContent = bonus;
+            document.getElementById('modalRef').textContent = ref;
+            document.getElementById('modalTotal').textContent = total;
+            document.getElementById('modalTxHash').value = '';
+
+            // Tampilkan modal
+            document.getElementById('paymentModal').classList.add('active');
         });
 
-        document.getElementById('copyAddress').addEventListener('click', function() {
-            const addr = document.getElementById('adminAddress').value;
+        // ============================================================
+        // MODAL ACTIONS
+        // ============================================================
+        document.getElementById('closePaymentModal').addEventListener('click', function() {
+            document.getElementById('paymentModal').classList.remove('active');
+            pendingDepositData = null;
+        });
+
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+                pendingDepositData = null;
+            }
+        });
+
+        document.getElementById('modalCopyAddress').addEventListener('click', function() {
+            const addr = document.getElementById('modalAdminAddress').value;
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(addr).then(() => showToast('📋 Address USDT disalin!'));
             } else { fallbackCopy(addr); }
         });
 
-        document.getElementById('copyQRIS').addEventListener('click', function() {
+        document.getElementById('modalCopyQRIS').addEventListener('click', function() {
             const id = '1234567890';
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(id).then(() => showToast('📋 ID QRIS disalin!'));
             } else { fallbackCopy(id); }
-        });
-
-        document.getElementById('copyDashRef').addEventListener('click', function() {
-            const link = document.getElementById('dashRefLink').value;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(link).then(() => showToast('📋 Link referral disalin!'));
-            } else { fallbackCopy(link); }
         });
 
         function fallbackCopy(text) {
@@ -762,6 +904,53 @@
                 showToast('📋 Disalin!'); } catch (e) { showToast('❌ Gagal menyalin.'); }
             document.body.removeChild(ta);
         }
+
+        // ============================================================
+        // SUBMIT PAYMENT
+        // ============================================================
+        document.getElementById('modalSubmitBtn').addEventListener('click', function() {
+            if (!pendingDepositData) {
+                showToast('❌ Data transaksi tidak valid.');
+                return;
+            }
+
+            const hash = document.getElementById('modalTxHash').value.trim();
+            if (!hash || hash.length < 5) {
+                showToast('❌ Masukkan hash transaksi (min 5 karakter).');
+                return;
+            }
+
+            const { usdt, bonus, ref, total } = pendingDepositData;
+
+            depositsDB.push({
+                id: getNextId(),
+                email: currentUser.email,
+                usdt: usdt,
+                bonus: bonus,
+                ref: ref,
+                total: total,
+                txHash: hash,
+                status: 'pending',
+                timestamp: Date.now()
+            });
+            saveDeposits();
+
+            document.getElementById('paymentModal').classList.remove('active');
+            pendingDepositData = null;
+
+            showToast(`✅ Deposit ${usdt} USDT berhasil dikirim! Menunggu approval admin.`);
+            updateUI();
+        });
+
+        // ============================================================
+        // COPY REFERRAL LINK
+        // ============================================================
+        document.getElementById('copyDashRef').addEventListener('click', function() {
+            const link = document.getElementById('dashRefLink').value;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(link).then(() => showToast('📋 Link referral disalin!'));
+            } else { fallbackCopy(link); }
+        });
 
         // ============================================================
         // INIT
