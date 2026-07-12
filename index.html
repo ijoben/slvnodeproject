@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>SilverChain Token (SCT) · DAO</title>
+    <title>SilverChain · DAO Prelaunch</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET & GLOBAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -35,13 +34,13 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
             border: 1px solid rgba(80, 140, 255, 0.08);
             transition: all 0.25s;
         }
         .section-card:hover {
             border-color: rgba(80, 140, 255, 0.2);
-            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.9), inset 0 0 40px rgba(60, 120, 255, 0.03);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(60, 120, 255, 0.03);
         }
         .section-title {
             font-size: 1.7rem;
@@ -270,7 +269,7 @@
             text-shadow: 0 0 20px rgba(60, 120, 255, 0.2);
         }
 
-        /* ===== PROGRESS BAR ===== */
+        /* PROGRESS */
         .progress-wrap {
             display: flex;
             align-items: center;
@@ -311,23 +310,42 @@
             color: #5a8ac0;
         }
 
-        /* ===== LANDING PAGE ===== */
-        #landingPage {
-            display: block;
+        /* MEMBER BAR */
+        .member-bar {
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            margin: 0.5rem 0 1rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 1.5rem;
         }
-        #landingPage.hidden {
-            display: none;
+        .member-bar .member-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: #8ab0e6;
+        }
+        .member-bar .member-item .name {
+            color: #b0ccff;
+            font-weight: 600;
+        }
+        .member-bar .member-item .sct {
+            color: #7aaeff;
+            font-weight: 600;
+        }
+        .member-bar .member-label {
+            color: #5a8ac0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* ===== DASHBOARD USER ===== */
-        #userDashboard {
-            display: none;
-        }
-        #userDashboard.visible {
-            display: block;
-        }
-
-        /* ===== LOGIN BAR ===== */
+        /* LOGIN BAR */
         .login-bar {
             display: flex;
             flex-wrap: wrap;
@@ -396,245 +414,68 @@
             background: rgba(255, 80, 80, 0.1);
         }
 
-        /* ===== MEMBER BAR ===== */
-        .member-bar {
-            background: rgba(12, 28, 60, 0.3);
-            border-radius: 60px;
-            padding: 0.6rem 1.5rem;
-            margin: 0.5rem 0 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem 1.5rem;
-        }
-        .member-bar .member-item {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            color: #8ab0e6;
-        }
-        .member-bar .member-item .name {
-            color: #b0ccff;
-            font-weight: 600;
-        }
-        .member-bar .member-item .sct {
-            color: #7aaeff;
-            font-weight: 600;
-        }
-        .member-bar .member-label {
-            color: #5a8ac0;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* ===== DASHBOARD USER ===== */
-        .dash-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-        .dash-stat {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 1.5rem;
-            padding: 1.2rem;
-            text-align: center;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .dash-stat .num {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #b0ccff;
-        }
-        .dash-stat .label {
-            font-size: 0.65rem;
-            color: #5a8ac0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .deposit-box {
-            background: rgba(12, 28, 60, 0.3);
-            border-radius: 1.8rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            margin: 1rem 0;
-        }
-        .deposit-box .address-box {
-            background: rgba(8, 20, 48, 0.5);
-            border-radius: 60px;
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 0.5rem 0;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            flex-wrap: wrap;
-        }
-        .deposit-box .address-box input {
+        .btn-outline {
             background: transparent;
-            border: none;
-            color: #b0ccff;
-            font-size: 0.85rem;
-            width: 100%;
-            outline: none;
-            font-family: monospace;
-            flex: 1;
-            min-width: 120px;
-        }
-        .deposit-box .address-box button {
-            background: rgba(60, 120, 255, 0.1);
-            border: none;
+            border: 1px solid rgba(80, 140, 255, 0.1);
             color: #8ab8ff;
-            padding: 0.3rem 1rem;
+            padding: 0.4rem 1.2rem;
             border-radius: 60px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            white-space: nowrap;
-        }
-        .deposit-box .address-box button:hover {
-            background: rgba(60, 120, 255, 0.2);
-        }
-        .deposit-box .qr-section {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            background: rgba(8, 20, 48, 0.2);
-            border-radius: 1.2rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-            flex-wrap: wrap;
-        }
-        .deposit-box .qr-section .qr-placeholder {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: #4a8aff;
-            border: 2px dashed rgba(80, 140, 255, 0.15);
-        }
-        .deposit-box .qr-section .qr-text {
-            color: #8ab0e6;
+            font-weight: 600;
             font-size: 0.8rem;
-            flex: 1;
+            cursor: default;
         }
-        .deposit-box .qr-section .qr-text strong {
-            color: #b0ccff;
-        }
-        .deposit-box .row {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 1rem;
-            margin: 0.5rem 0;
-        }
-        .deposit-box .row .label {
-            color: #8ab0e6;
-            font-size: 0.85rem;
-            min-width: 120px;
-        }
-        .deposit-box .input-group {
-            display: flex;
-            align-items: center;
-            background: rgba(8, 20, 48, 0.5);
-            border-radius: 60px;
-            padding: 0.1rem 0.1rem 0.1rem 1.5rem;
+        .unlimited-badge {
+            background: rgba(60, 120, 255, 0.04);
             border: 1px solid rgba(80, 140, 255, 0.06);
-            flex: 1;
-            min-width: 160px;
-            max-width: 300px;
-        }
-        .deposit-box .input-group input {
-            background: transparent;
-            border: none;
-            padding: 0.7rem 0;
-            font-size: 0.95rem;
-            color: #e6edf5;
-            width: 100%;
-            outline: none;
+            border-radius: 60px;
+            padding: 0.2rem 1.2rem;
+            font-size: 0.7rem;
+            color: #5a8ac0;
             font-weight: 500;
         }
-        .deposit-box .input-group input::placeholder {
-            color: #3a5a8a;
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
         }
-        .deposit-box .input-group .unit {
-            background: linear-gradient(145deg, #4a8aff, #2a5ac0);
-            color: #fff;
-            font-weight: 700;
-            padding: 0.3rem 1.2rem;
+        .contact-item {
+            background: rgba(12, 28, 60, 0.3);
+            padding: 0.6rem 1.6rem;
             border-radius: 60px;
-            font-size: 0.75rem;
-            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(80, 140, 255, 0.06);
         }
-        .deposit-box .btn-submit {
-            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
-            border: none;
-            border-radius: 60px;
-            padding: 0.7rem 2rem;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.25);
+        .contact-item i {
+            color: #4a8aff;
+            font-size: 1.2rem;
         }
-        .deposit-box .btn-submit:hover {
-            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.35);
-            transform: translateY(-2px);
-        }
-        .deposit-box .btn-submit:active {
-            transform: scale(0.97);
-        }
-        .deposit-box .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
+        .contact-item a {
+            color: #8ab8ff;
+            text-decoration: none;
+            font-weight: 500;
         }
 
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #4a8aff;
+            border-radius: 40px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            color: #b0ccff;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
         }
-        .history-table th {
-            text-align: left;
-            color: #5a8ac0;
-            font-weight: 600;
-            padding: 0.5rem 0.2rem;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .history-table td {
-            padding: 0.5rem 0.2rem;
-            color: #8ab0e6;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
-        }
-        .history-table .empty {
-            color: #5a8ac0;
-            text-align: center;
-            padding: 1.5rem 0;
-        }
-        .status-pending {
-            color: #fbbf24;
-        }
-        .status-approved {
-            color: #6aff8a;
-        }
-        .status-rejected {
-            color: #ff6a6a;
+        .toast-message.show {
+            display: flex;
         }
 
-        /* ===== MODAL ===== */
+        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -757,237 +598,6 @@
             margin: 0.8rem 0;
         }
 
-        .toast-message {
-            background: rgba(12, 28, 60, 0.8);
-            backdrop-filter: blur(8px);
-            border-left: 4px solid #4a8aff;
-            border-radius: 40px;
-            padding: 0.6rem 1.4rem;
-            font-size: 0.85rem;
-            color: #b0ccff;
-            margin-bottom: 0.8rem;
-            display: none;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .toast-message.show {
-            display: flex;
-        }
-
-        .contact-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
-        }
-        .contact-item {
-            background: rgba(12, 28, 60, 0.3);
-            padding: 0.6rem 1.6rem;
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .contact-item i {
-            color: #4a8aff;
-            font-size: 1.2rem;
-        }
-        .contact-item a {
-            color: #8ab8ff;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            color: #8ab8ff;
-            padding: 0.4rem 1.2rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: default;
-        }
-        .unlimited-badge {
-            background: rgba(60, 120, 255, 0.04);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            border-radius: 60px;
-            padding: 0.2rem 1.2rem;
-            font-size: 0.7rem;
-            color: #5a8ac0;
-            font-weight: 500;
-        }
-
-        /* ===== ADMIN PANEL ===== */
-        .admin-toggle {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: rgba(18, 34, 72, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(80, 140, 255, 0.15);
-            border-radius: 60px;
-            padding: 0.6rem 1.2rem;
-            color: #8ab8ff;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            gap: 0.6rem;
-            z-index: 100;
-            transition: 0.2s;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-        }
-        .admin-toggle:hover {
-            border-color: rgba(80, 140, 255, 0.3);
-            background: rgba(18, 34, 72, 0.95);
-        }
-        .admin-toggle i {
-            color: #4a8aff;
-        }
-        .admin-toggle.visible {
-            display: flex;
-        }
-
-        .admin-panel {
-            max-width: 750px;
-            width: 95%;
-        }
-        .admin-panel .admin-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.8rem;
-            margin: 1rem 0;
-        }
-        .admin-panel .admin-stat {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 1.2rem;
-            padding: 0.8rem;
-            text-align: center;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .admin-panel .admin-stat .num {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #b0ccff;
-        }
-        .admin-panel .admin-stat .label {
-            font-size: 0.55rem;
-            color: #5a8ac0;
-            text-transform: uppercase;
-        }
-        .admin-panel .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-        }
-        .admin-panel .admin-table th {
-            text-align: left;
-            color: #5a8ac0;
-            font-weight: 600;
-            padding: 0.3rem 0.2rem;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .admin-panel .admin-table td {
-            padding: 0.3rem 0.2rem;
-            color: #8ab0e6;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
-            font-size: 0.7rem;
-        }
-        .admin-panel .admin-table .empty {
-            color: #5a8ac0;
-            text-align: center;
-            padding: 0.8rem 0;
-        }
-        .admin-panel .badge-admin {
-            background: rgba(60, 120, 255, 0.06);
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            border-radius: 60px;
-            padding: 0.15rem 0.6rem;
-            font-size: 0.6rem;
-            color: #8ab8ff;
-        }
-        .admin-panel .owner-badge {
-            background: rgba(255, 200, 60, 0.1);
-            border: 1px solid rgba(255, 200, 60, 0.15);
-            border-radius: 60px;
-            padding: 0.15rem 0.6rem;
-            font-size: 0.6rem;
-            color: #fcd34d;
-        }
-        .admin-panel .btn-approve {
-            background: rgba(60, 220, 80, 0.15);
-            border: 1px solid rgba(60, 220, 80, 0.2);
-            border-radius: 60px;
-            padding: 0.1rem 0.6rem;
-            color: #6aff8a;
-            font-size: 0.6rem;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-        .admin-panel .btn-approve:hover {
-            background: rgba(60, 220, 80, 0.25);
-        }
-        .admin-panel .btn-reject {
-            background: rgba(255, 60, 60, 0.15);
-            border: 1px solid rgba(255, 60, 60, 0.2);
-            border-radius: 60px;
-            padding: 0.1rem 0.6rem;
-            color: #ff6a6a;
-            font-size: 0.6rem;
-            cursor: pointer;
-            transition: 0.1s;
-            margin-left: 4px;
-        }
-        .admin-panel .btn-reject:hover {
-            background: rgba(255, 60, 60, 0.25);
-        }
-        .admin-panel .settings-group {
-            background: rgba(8, 20, 48, 0.2);
-            border-radius: 1.2rem;
-            padding: 1rem;
-            margin: 0.8rem 0;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .admin-panel .settings-group .row {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.8rem;
-            margin: 0.3rem 0;
-        }
-        .admin-panel .settings-group label {
-            color: #8ab0e6;
-            font-size: 0.8rem;
-            min-width: 120px;
-        }
-        .admin-panel .settings-group input {
-            background: rgba(8, 20, 48, 0.5);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            border-radius: 60px;
-            padding: 0.3rem 1rem;
-            color: #e6edf5;
-            font-size: 0.85rem;
-            width: 80px;
-            outline: none;
-        }
-        .admin-panel .settings-group input:focus {
-            border-color: rgba(80, 140, 255, 0.2);
-        }
-        .admin-panel .settings-group .btn-save {
-            background: rgba(60, 120, 255, 0.1);
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #8ab8ff;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-        .admin-panel .settings-group .btn-save:hover {
-            background: rgba(60, 120, 255, 0.2);
-        }
-
         @media (max-width: 700px) {
             .grid-2 {
                 grid-template-columns: 1fr;
@@ -995,29 +605,10 @@
             .grid-3 {
                 grid-template-columns: 1fr 1fr;
             }
-            .dash-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-            .admin-panel .admin-stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
             .login-bar {
                 flex-direction: column;
                 align-items: stretch;
                 text-align: center;
-            }
-            .deposit-box .row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .deposit-box .input-group {
-                max-width: 100%;
-            }
-            .admin-toggle {
-                bottom: 1rem;
-                right: 1rem;
-                padding: 0.4rem 0.8rem;
-                font-size: 0.7rem;
             }
             .member-bar {
                 flex-direction: column;
@@ -1038,45 +629,31 @@
             .stats-grid {
                 grid-template-columns: 1fr 1fr 1fr;
             }
-            .dash-stats {
-                grid-template-columns: 1fr;
-            }
-            .admin-panel .admin-stats-grid {
-                grid-template-columns: 1fr;
-            }
             .modal-box {
                 padding: 1.8rem 1.5rem;
-            }
-            .deposit-box .address-box {
-                flex-wrap: wrap;
-            }
-            .deposit-box .qr-section {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-<div class="container">
+    <div class="container">
 
-    <!-- ===== LOGIN BAR ===== -->
-    <div class="login-bar" id="loginBar">
-        <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login</div>
-        <button class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
-        <div id="userInfo" style="display:none; display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap;">
-            <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">user@example.com</span></span>
-            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        <!-- ===== LOGIN BAR ===== -->
+        <div class="login-bar" id="loginBar">
+            <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login</div>
+            <button class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
+            <div id="userInfo" style="display:none; display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap;">
+                <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">user@example.com</span></span>
+                <a href="dashboard.html" class="btn-login" style="background:rgba(60,120,255,0.12); border:1px solid rgba(80,140,255,0.15); border-radius:60px; padding:0.3rem 1.2rem; color:#8ab8ff; font-weight:600; font-size:0.8rem; cursor:pointer; text-decoration:none; transition:0.15s;">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+                <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+            </div>
         </div>
-    </div>
 
-    <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
-    <!-- ============================================================ -->
-    <!-- ===== LANDING PAGE (belum login) ===== -->
-    <!-- ============================================================ -->
-    <div id="landingPage">
+        <!-- ===== HERO ===== -->
         <div class="section-card hero">
             <div class="brand">
                 <i class="fas fa-coins"></i>
@@ -1086,17 +663,16 @@
                 <span class="unlimited-badge"><i class="fas fa-infinity"></i> Supply Tak Terbatas</span>
             </div>
 
-            <!-- MEMBER BAR — orang yang sudah beli -->
+            <!-- MEMBER BAR -->
             <div class="member-bar" id="memberBar">
                 <span class="member-label"><i class="fas fa-users"></i> Member Aktif</span>
                 <span class="member-item"><span class="name">demo@silverchain.io</span> <span class="sct">1,695 SCT</span></span>
                 <span class="member-item"><span class="name">alice@test.com</span> <span class="sct">226 SCT</span></span>
                 <span class="member-item"><span class="name">bob@test.com</span> <span class="sct">339 SCT</span></span>
                 <span class="member-item"><span class="name">carol@test.com</span> <span class="sct">169 SCT</span></span>
-                <span class="member-item" style="color:#5a8ac0;">+4 lainnya</span>
             </div>
 
-            <!-- PROGRESS BAR -->
+            <!-- PROGRESS -->
             <div class="progress-wrap">
                 <span style="font-size:0.85rem; color:#8ab0e6; min-width:80px;"><i class="fas fa-chart-simple"></i> Terjual</span>
                 <div class="progress-bar-bg">
@@ -1106,7 +682,7 @@
             </div>
 
             <div class="subhead">
-                <i class="fas fa-bolt" style="color:#4a8aff; margin-right:6px;"></i> 
+                <i class="fas fa-bolt" style="color:#4a8aff; margin-right:6px;"></i>
                 Beli token SilverChain, dapatkan <strong style="color:#7aaeff;">bonus</strong> & <strong style="color:#7aaeff;">referral</strong>!
             </div>
 
@@ -1129,11 +705,11 @@
             </div>
         </div>
 
-        <!-- About, Features, Why, Roadmap, Whitepaper, FAQ, Contact -->
+        <!-- ===== ABOUT ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang SilverChain DAO</div>
             <p style="color:#8ab0e6; line-height:1.7; margin-bottom:0.5rem;">
-                SilverChain adalah token <strong style="color:#b0ccff;">Organisasi Otonom Terdesentralisasi (DAO)</strong> dengan <strong style="color:#b0ccff;">supply tak terbatas</strong> — 
+                SilverChain adalah token <strong style="color:#b0ccff;">Organisasi Otonom Terdesentralisasi (DAO)</strong> dengan <strong style="color:#b0ccff;">supply tak terbatas</strong> —
                 terinspirasi dari model dogecoin. Dibangun di atas Layer-2 untuk kecepatan & biaya rendah.
             </p>
             <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.8rem;">
@@ -1144,28 +720,61 @@
             </div>
         </div>
 
+        <!-- ===== FEATURES ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-star"></i> Fitur Unggulan</div>
             <div class="grid-3">
-                <div class="feature-item"><i class="fas fa-bolt"></i><h4>Kecepatan Kilat</h4><p>Konfirmasi < 2 detik, biaya hampir nol.</p></div>
-                <div class="feature-item"><i class="fas fa-shield-alt"></i><h4>Keamanan Tinggi</h4><p>Diaudit oleh CertiK & bug bounty aktif.</p></div>
-                <div class="feature-item"><i class="fas fa-wallet"></i><h4>Integrasi Wallet</h4><p>Mendukung MetaMask, TrustWallet, WalletConnect.</p></div>
-                <div class="feature-item"><i class="fas fa-percent"></i><h4>Bonus & Referral</h4><p>Bonus pembelian + referral seumur hidup.</p></div>
-                <div class="feature-item"><i class="fas fa-chart-line"></i><h4>Staking & Yield</h4><p>Staking SCT dengan APR hingga 45%.</p></div>
-                <div class="feature-item"><i class="fas fa-users"></i><h4>Tata Kelola DAO</h4><p>Pemegang token memberi suara untuk proposal.</p></div>
+                <div class="feature-item"><i class="fas fa-bolt"></i>
+                    <h4>Kecepatan Kilat</h4>
+                    <p>Konfirmasi < 2 detik, biaya hampir nol.</p>
+                </div>
+                <div class="feature-item"><i class="fas fa-shield-alt"></i>
+                    <h4>Keamanan Tinggi</h4>
+                    <p>Diaudit oleh CertiK & bug bounty aktif.</p>
+                </div>
+                <div class="feature-item"><i class="fas fa-wallet"></i>
+                    <h4>Integrasi Wallet</h4>
+                    <p>Mendukung MetaMask, TrustWallet, WalletConnect.</p>
+                </div>
+                <div class="feature-item"><i class="fas fa-percent"></i>
+                    <h4>Bonus & Referral</h4>
+                    <p>Bonus pembelian + referral seumur hidup.</p>
+                </div>
+                <div class="feature-item"><i class="fas fa-chart-line"></i>
+                    <h4>Staking & Yield</h4>
+                    <p>Staking SCT dengan APR hingga 45%.</p>
+                </div>
+                <div class="feature-item"><i class="fas fa-users"></i>
+                    <h4>Tata Kelola DAO</h4>
+                    <p>Pemegang token memberi suara untuk proposal.</p>
+                </div>
             </div>
         </div>
 
+        <!-- ===== WHY ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question-circle"></i> Mengapa SilverChain?</div>
             <div class="grid-2">
-                <div class="why-item"><i class="fas fa-gem"></i><h4>Komunitas Dulu</h4><p>DAO sejati dengan supply tak terbatas.</p></div>
-                <div class="why-item"><i class="fas fa-hand-holding-usd"></i><h4>Ekosistem Berhadiah</h4><p>Bonus & referral membuat setiap pembelian lebih berharga.</p></div>
-                <div class="why-item"><i class="fas fa-rocket"></i><h4>Roadmap Ambisius</h4><p>Listing CEX tier-1, kemitraan gaming, dan metaverse.</p></div>
-                <div class="why-item"><i class="fas fa-shield"></i><h4>Transparansi</h4><p>Kontrak terverifikasi, tim doxed, likuiditas terkunci.</p></div>
+                <div class="why-item"><i class="fas fa-gem"></i>
+                    <h4>Komunitas Dulu</h4>
+                    <p>DAO sejati dengan supply tak terbatas.</p>
+                </div>
+                <div class="why-item"><i class="fas fa-hand-holding-usd"></i>
+                    <h4>Ekosistem Berhadiah</h4>
+                    <p>Bonus & referral membuat setiap pembelian lebih berharga.</p>
+                </div>
+                <div class="why-item"><i class="fas fa-rocket"></i>
+                    <h4>Roadmap Ambisius</h4>
+                    <p>Listing CEX tier-1, kemitraan gaming, dan metaverse.</p>
+                </div>
+                <div class="why-item"><i class="fas fa-shield"></i>
+                    <h4>Transparansi</h4>
+                    <p>Kontrak terverifikasi, tim doxed, likuiditas terkunci.</p>
+                </div>
             </div>
         </div>
 
+        <!-- ===== ROADMAP ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
@@ -1177,6 +786,7 @@
             </div>
         </div>
 
+        <!-- ===== WHITEPAPER ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#8ab0e6; margin-bottom:0.8rem;">Whitepaper lengkap SilverChain mencakup spesifikasi teknis, tokenomics, konsensus, dan tata kelola DAO.</p>
@@ -1187,6 +797,7 @@
             </div>
         </div>
 
+        <!-- ===== FAQ ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
@@ -1207,6 +818,7 @@
             </div>
         </div>
 
+        <!-- ===== CONTACT ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
             <div class="contact-row">
@@ -1219,166 +831,10 @@
                 <i class="fas fa-map-pin"></i> SilverChain DAO · Singapura & Jakarta
             </div>
         </div>
+
     </div>
 
-    <!-- ============================================================ -->
-    <!-- ===== USER DASHBOARD (login) ===== -->
-    <!-- ============================================================ -->
-    <div id="userDashboard">
-        <div class="section-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-                <div>
-                    <h2 style="color:#b0ccff; font-size:1.5rem;"><i class="fas fa-chart-pie" style="color:#4a8aff; margin-right:10px;"></i>Dashboard Member</h2>
-                    <p style="color:#8ab0e6; font-size:0.85rem;">Selamat datang, <strong id="dashUserEmail" style="color:#b0ccff;">user@example.com</strong></p>
-                </div>
-                <div style="display:flex; gap:0.5rem;">
-                    <span class="badge-silver"><i class="fas fa-code"></i> Kode Ref: <strong id="dashRefCode">SILVER2026</strong></span>
-                </div>
-            </div>
-
-            <!-- Stats -->
-            <div class="dash-stats">
-                <div class="dash-stat"><div class="num" id="dashTotalSCT">0</div><div class="label">Total SCT</div></div>
-                <div class="dash-stat"><div class="num" id="dashTotalPurchases">0</div><div class="label">Total Pembelian</div></div>
-                <div class="dash-stat"><div class="num" id="dashReferrals">0</div><div class="label">Referral</div></div>
-                <div class="dash-stat"><div class="num" id="dashRefEarnings">0</div><div class="label">Pendapatan Referral (SCT)</div></div>
-            </div>
-
-            <!-- Referral Link -->
-            <div style="margin:0.5rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
-                <i class="fas fa-link"></i> Link Referral Anda
-            </div>
-            <div class="ref-link-box" style="background:rgba(8,20,48,0.3); border-radius:60px; padding:0.5rem 1rem; display:flex; align-items:center; gap:0.8rem; margin:0.3rem 0 1rem; border:1px solid rgba(80,140,255,0.06);">
-                <input type="text" id="dashRefLink" readonly value="https://silverchain.io/ref/SILVER2026" style="background:transparent; border:none; color:#b0ccff; font-size:0.8rem; width:100%; outline:none;" />
-                <button id="copyDashRef" style="background:rgba(60,120,255,0.1); border:none; color:#8ab8ff; padding:0.2rem 0.8rem; border-radius:60px; cursor:pointer; font-size:0.7rem;"><i class="fas fa-copy"></i> Salin</button>
-            </div>
-
-            <!-- Deposit / Buy Section -->
-            <div class="deposit-box">
-                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-arrow-down" style="color:#4a8aff;"></i> Deposit & Beli Token</h4>
-                <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">Kirim USDT ke address di bawah, atau scan QRIS, lalu isi hash transaksi & klik submit.</p>
-
-                <!-- USDT Address -->
-                <div class="address-box">
-                    <input type="text" id="adminAddress" readonly value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="font-family:monospace;" />
-                    <button id="copyAddress"><i class="fas fa-copy"></i> Salin</button>
-                </div>
-
-                <!-- QRIS -->
-                <div class="qr-section">
-                    <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
-                    <div class="qr-text">
-                        <strong>QRIS</strong><br />
-                        Scan QRIS untuk pembayaran<br />
-                        <span style="font-size:0.7rem; color:#5a8ac0;">ID: 1234567890 | Nama: SilverChain DAO</span>
-                    </div>
-                    <button id="copyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.3rem 1rem; color:#8ab8ff; cursor:pointer; font-size:0.7rem;"><i class="fas fa-copy"></i> Salin ID</button>
-                </div>
-
-                <!-- Jumlah & Hash -->
-                <div class="row">
-                    <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
-                    <div class="input-group">
-                        <input type="number" id="depositAmount" placeholder="0" min="1" step="1" value="100" />
-                        <span class="unit">USDT</span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <span class="label"><i class="fas fa-hashtag"></i> Hash Transaksi</span>
-                    <div class="input-group" style="max-width:100%;">
-                        <input type="text" id="txHash" placeholder="0x... atau ID transaksi" style="font-family:monospace; font-size:0.8rem;" />
-                        <span class="unit" style="font-size:0.6rem;">TX</span>
-                    </div>
-                </div>
-
-                <div style="display:flex; flex-wrap:wrap; gap:1rem; margin:0.5rem 0; align-items:center;">
-                    <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-gift" style="color:#4a8aff;"></i> Bonus: <strong id="depositBonus" style="color:#b0ccff;">+10 SCT</strong>
-                    </span>
-                    <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-user-friends" style="color:#4a8aff;"></i> Referral: <strong id="depositRef" style="color:#b0ccff;">+3 SCT</strong>
-                    </span>
-                    <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-arrow-right" style="color:#4a8aff;"></i> Total: <strong id="depositTotal" style="color:#b0ccff;">113 SCT</strong>
-                    </span>
-                </div>
-
-                <button class="btn-submit" id="submitDepositBtn"><i class="fas fa-paper-plane"></i> Kirim Bukti Deposit</button>
-                <p style="color:#5a8ac0; font-size:0.65rem; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
-            </div>
-
-            <!-- History -->
-            <div style="margin-top:1.5rem;">
-                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#4a8aff;"></i> Riwayat Transaksi</h4>
-                <table class="history-table" id="historyTable">
-                    <thead><tr><th>Tanggal</th><th>Jumlah USDT</th><th>Bonus</th><th>Referral</th><th>Total SCT</th><th>Hash TX</th><th>Status</th></tr></thead>
-                    <tbody id="historyBody">
-                        <tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ===== ADMIN PANEL ===== -->
-    <!-- ============================================================ -->
-    <button class="admin-toggle" id="adminToggle">
-        <i class="fas fa-user-shield"></i> Panel Admin
-    </button>
-
-    <div class="modal-overlay" id="adminModal">
-        <div class="modal-box admin-panel">
-            <button class="close-btn" id="closeAdmin"><i class="fas fa-times"></i></button>
-            <h2><i class="fas fa-user-shield" style="color:#4a8aff; margin-right:10px;"></i>Panel Admin <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span></h2>
-            <p style="margin-bottom:0.5rem;">Kelola pengguna, deposit, dan pengaturan bonus</p>
-
-            <div class="settings-group">
-                <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
-                <div class="row">
-                    <label>Bonus (%)</label>
-                    <input type="number" id="adminBonusPercent" value="10" min="0" max="100" />
-                    <label style="min-width:80px;">Referral (%)</label>
-                    <input type="number" id="adminRefPercent" value="3" min="0" max="100" />
-                    <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Simpan</button>
-                </div>
-            </div>
-
-            <div class="admin-stats-grid">
-                <div class="admin-stat"><div class="num" id="adminTotalUsers">0</div><div class="label">Total Pengguna</div></div>
-                <div class="admin-stat"><div class="num" id="adminTotalDeposits">0</div><div class="label">Total Deposit</div></div>
-                <div class="admin-stat"><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending</div></div>
-                <div class="admin-stat"><div class="num" id="adminTotalSCTMinted">0</div><div class="label">Total SCT Dicetak</div></div>
-            </div>
-
-            <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
-                <i class="fas fa-clock"></i> Deposit Pending
-            </div>
-            <table class="admin-table" id="adminPendingTable">
-                <thead><tr><th>User</th><th>USDT</th><th>Bonus</th><th>Ref</th><th>Total SCT</th><th>Hash TX</th><th>Aksi</th></tr></thead>
-                <tbody id="adminPendingBody">
-                    <tr><td colspan="7" class="empty">Tidak ada pending</td></tr>
-                </tbody>
-            </table>
-
-            <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
-                <i class="fas fa-users"></i> Semua Pengguna
-            </div>
-            <table class="admin-table" id="adminUserTable">
-                <thead><tr><th>Email</th><th>Kode Ref</th><th>Direferral</th><th>Total SCT</th></tr></thead>
-                <tbody id="adminUserBody">
-                    <tr><td colspan="4" class="empty">Memuat...</td></tr>
-                </tbody>
-            </table>
-
-            <div style="margin-top:1rem; font-size:0.7rem; color:#5a8ac0; text-align:center; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
-                <i class="fas fa-database"></i> Backend admin — data dummy untuk demo
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== LOGIN / REGISTER MODAL ===== -->
+    <!-- ===== LOGIN MODAL ===== -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
@@ -1394,10 +850,7 @@
         </div>
     </div>
 
-</div>
-
-<script>
-    (function() {
+    <script>
         // ============================================================
         // LOCAL STORAGE KEYS
         // ============================================================
@@ -1409,27 +862,22 @@
             CURRENT_USER: 'silverchain_current_user'
         };
 
-        // ============================================================
-        // STATE
-        // ============================================================
-        let currentUser = null;
         let usersDB = [];
         let depositsDB = [];
+        let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
-
         const OWNER_EMAIL = 'admin@silverchain.io';
 
         // ============================================================
-        // LOAD FROM LOCAL STORAGE
+        // LOAD DATA
         // ============================================================
-        function loadFromStorage() {
+        function loadData() {
             try {
                 const users = localStorage.getItem(STORAGE_KEYS.USERS);
                 if (users) {
                     usersDB = JSON.parse(users);
                 } else {
-                    // Seed default data
                     usersDB = [
                         { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null },
                         { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null },
@@ -1438,7 +886,7 @@
                         { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123' },
                         { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null }
                     ];
-                    saveUsers();
+                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
                 }
 
                 const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
@@ -1446,295 +894,109 @@
                     depositsDB = JSON.parse(deposits);
                 } else {
                     depositsDB = [
-                        { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130, txHash: '0xabc123...', status: 'approved',
-                            timestamp: Date.now() - 86400000 },
-                        { id: 2, email: 'demo@silverchain.io', usdt: 500, bonus: 50, ref: 15, total: 565, txHash: '0xdef456...', status: 'approved',
-                            timestamp: Date.now() - 3600000 },
-                        { id: 3, email: 'alice@test.com', usdt: 200, bonus: 20, ref: 6, total: 226, txHash: '0xghi789...', status: 'approved',
-                            timestamp: Date.now() - 7200000 },
-                        { id: 4, email: 'bob@test.com', usdt: 300, bonus: 30, ref: 9, total: 339, txHash: '0xjkl012...', status: 'pending',
-                            timestamp: Date.now() - 1800000 },
-                        { id: 5, email: 'carol@test.com', usdt: 150, bonus: 15, ref: 4.5, total: 169.5, txHash: '0xmno345...', status: 'pending',
-                            timestamp: Date.now() - 900000 }
+                        { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130,
+                            txHash: '0xabc123...', status: 'approved', timestamp: Date.now() - 86400000 },
+                        { id: 2, email: 'demo@silverchain.io', usdt: 500, bonus: 50, ref: 15, total: 565,
+                            txHash: '0xdef456...', status: 'approved', timestamp: Date.now() - 3600000 },
+                        { id: 3, email: 'alice@test.com', usdt: 200, bonus: 20, ref: 6, total: 226,
+                            txHash: '0xghi789...', status: 'approved', timestamp: Date.now() - 7200000 },
+                        { id: 4, email: 'bob@test.com', usdt: 300, bonus: 30, ref: 9, total: 339,
+                            txHash: '0xjkl012...', status: 'pending', timestamp: Date.now() - 1800000 },
+                        { id: 5, email: 'carol@test.com', usdt: 150, bonus: 15, ref: 4.5, total: 169.5,
+                            txHash: '0xmno345...', status: 'pending', timestamp: Date.now() - 900000 }
                     ];
-                    saveDeposits();
+                    localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
                 }
 
                 const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
                 if (bonus) bonusPercent = parseInt(bonus) || 10;
-
                 const ref = localStorage.getItem(STORAGE_KEYS.REF);
                 if (ref) refPercent = parseInt(ref) || 3;
 
-                const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-                if (savedUser) {
-                    const userData = JSON.parse(savedUser);
-                    const found = usersDB.find(u => u.email === userData.email);
-                    if (found) {
-                        currentUser = found;
-                    } else {
-                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-                    }
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const found = usersDB.find(u => u.email === data.email);
+                    if (found) currentUser = found;
                 }
-
-            } catch (e) {
-                console.warn('Error loading from localStorage:', e);
-            }
+            } catch (e) { console.warn('Load error:', e); }
         }
 
-        // ============================================================
-        // SAVE TO LOCAL STORAGE
-        // ============================================================
-        function saveUsers() {
-            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
-        }
+        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
 
-        function saveDeposits() {
-            localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
-        }
-
-        function saveSettings() {
-            localStorage.setItem(STORAGE_KEYS.BONUS, String(bonusPercent));
-            localStorage.setItem(STORAGE_KEYS.REF, String(refPercent));
-        }
+        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
 
         function saveCurrentUser(user) {
-            if (user) {
-                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
-            } else {
-                localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-            }
+            if (user) localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+            else localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
         }
 
-        // ============================================================
-        // DOM REFS
-        // ============================================================
-        const landingPage = document.getElementById('landingPage');
-        const userDashboard = document.getElementById('userDashboard');
-
-        const loginBtn = document.getElementById('loginBtn');
-        const loginModal = document.getElementById('loginModal');
-        const closeModal = document.getElementById('closeModal');
-        const actionBtn = document.getElementById('actionBtn');
-        const switchBtn = document.getElementById('switchBtn');
-        const switchLabel = document.getElementById('switchLabel');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalSub = document.getElementById('modalSub');
-        const emailInput = document.getElementById('emailInput');
-        const passwordInput = document.getElementById('passwordInput');
-        const loginError = document.getElementById('loginError');
-        const loginSuccess = document.getElementById('loginSuccess');
-        const loginStatus = document.getElementById('loginStatus');
-        const userInfo = document.getElementById('userInfo');
-        const userEmailDisplay = document.getElementById('userEmailDisplay');
-        const logoutBtn = document.getElementById('logoutBtn');
-
-        const dashUserEmail = document.getElementById('dashUserEmail');
-        const dashRefCode = document.getElementById('dashRefCode');
-        const dashTotalSCT = document.getElementById('dashTotalSCT');
-        const dashTotalPurchases = document.getElementById('dashTotalPurchases');
-        const dashReferrals = document.getElementById('dashReferrals');
-        const dashRefEarnings = document.getElementById('dashRefEarnings');
-        const dashRefLink = document.getElementById('dashRefLink');
-        const copyDashRef = document.getElementById('copyDashRef');
-        const historyBody = document.getElementById('historyBody');
-
-        const depositAmount = document.getElementById('depositAmount');
-        const txHash = document.getElementById('txHash');
-        const depositBonus = document.getElementById('depositBonus');
-        const depositRef = document.getElementById('depositRef');
-        const depositTotal = document.getElementById('depositTotal');
-        const submitDepositBtn = document.getElementById('submitDepositBtn');
-        const copyAddress = document.getElementById('copyAddress');
-        const copyQRIS = document.getElementById('copyQRIS');
-        const adminAddress = document.getElementById('adminAddress');
-
-        const progressFill = document.getElementById('progressFill');
-        const counterDisplay = document.getElementById('counterDisplay');
-        const statSold = document.getElementById('statSold');
-
-        const adminToggle = document.getElementById('adminToggle');
-        const adminModal = document.getElementById('adminModal');
-        const closeAdmin = document.getElementById('closeAdmin');
-        const adminTotalUsers = document.getElementById('adminTotalUsers');
-        const adminTotalDeposits = document.getElementById('adminTotalDeposits');
-        const adminPendingDeposits = document.getElementById('adminPendingDeposits');
-        const adminTotalSCTMinted = document.getElementById('adminTotalSCTMinted');
-        const adminPendingBody = document.getElementById('adminPendingBody');
-        const adminUserBody = document.getElementById('adminUserBody');
-        const adminBonusPercent = document.getElementById('adminBonusPercent');
-        const adminRefPercent = document.getElementById('adminRefPercent');
-        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-
-        const toast = document.getElementById('toastMessage');
-        const toastText = document.getElementById('toastText');
-
-        let isLoginMode = true;
-        let depositCounter = 0;
-
-        // ============================================================
-        // HELPERS
-        // ============================================================
-        function findUser(email) {
-            return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase());
-        }
-
-        function generateRefCode(email) {
-            return email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900).toString();
-        }
-
-        function getUserDeposits(email) {
-            return depositsDB.filter(d => d.email === email);
-        }
+        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
         function getUserTotalSCT(email) {
-            const deposits = getUserDeposits(email);
-            return deposits.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
-        }
-
-        function getUserReferrals(email) {
-            const user = findUser(email);
-            if (!user) return [];
-            return usersDB.filter(u => u.referredBy === user.refCode);
-        }
-
-        function getRefEarnings(email) {
-            const user = findUser(email);
-            if (!user) return 0;
-            const referrals = usersDB.filter(u => u.referredBy === user.refCode);
-            let total = 0;
-            referrals.forEach(ref => {
-                const deposits = getUserDeposits(ref.email);
-                deposits.filter(d => d.status === 'approved').forEach(d => { total += d.ref; });
-            });
-            return Math.round(total * 10) / 10;
-        }
-
-        function getPendingDeposits() {
-            return depositsDB.filter(d => d.status === 'pending');
+            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total,
+            0);
         }
 
         function getTotalMinted() {
             return depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
         }
 
-        function getNextId() {
-            if (depositsDB.length === 0) return 1;
-            return Math.max(...depositsDB.map(d => d.id)) + 1;
-        }
-
-        function showToast(msg, isSuccess = true) {
-            toastText.textContent = msg;
-            toast.style.display = 'flex';
-            toast.style.borderLeftColor = '#4a8aff';
-            clearTimeout(window.toastTimeout);
-            window.toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 4000);
-        }
-
         // ============================================================
         // UI UPDATE
         // ============================================================
-        function updateProgress() {
-            const total = getTotalMinted();
-            const target = 2000000000; // 2B target
-            const pct = Math.min((total / target) * 100, 100);
-            progressFill.style.width = pct + '%';
-            const totalStr = (total / 1000000000).toFixed(2) + 'B';
-            counterDisplay.textContent = totalStr + ' SCT';
-            if (statSold) statSold.textContent = totalStr;
-        }
+        function updateUI() {
+            const isLoggedIn = !!currentUser;
+            const status = document.getElementById('loginStatus');
+            const userInfo = document.getElementById('userInfo');
+            const userEmail = document.getElementById('userEmailDisplay');
 
-        function updateUIForUser(user) {
-            if (user) {
-                loginStatus.innerHTML = `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${user.email}</strong>`;
+            if (isLoggedIn) {
+                status.innerHTML =
+                    `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${currentUser.email}</strong>`;
                 userInfo.style.display = 'flex';
-                userEmailDisplay.textContent = user.email;
-                loginBtn.style.display = 'none';
-
-                landingPage.classList.add('hidden');
-                userDashboard.classList.add('visible');
-
-                if (user.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
-                    adminToggle.classList.add('visible');
-                } else {
-                    adminToggle.classList.remove('visible');
-                }
-
-                refreshDashboard();
-                updateProgress();
+                userEmail.textContent = currentUser.email;
+                document.getElementById('loginBtn').style.display = 'none';
             } else {
-                loginStatus.innerHTML = `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login`;
+                status.innerHTML =
+                    `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login`;
                 userInfo.style.display = 'none';
-                loginBtn.style.display = 'inline-block';
-
-                landingPage.classList.remove('hidden');
-                userDashboard.classList.remove('visible');
-                adminToggle.classList.remove('visible');
-
-                updateProgress();
-            }
-        }
-
-        function refreshDashboard() {
-            if (!currentUser) return;
-            const email = currentUser.email;
-            const user = findUser(email);
-            if (!user) return;
-
-            dashUserEmail.textContent = email;
-            dashRefCode.textContent = user.refCode;
-
-            const deposits = getUserDeposits(email);
-            const approved = deposits.filter(d => d.status === 'approved');
-            dashTotalSCT.textContent = approved.reduce((sum, d) => sum + d.total, 0).toFixed(1);
-            dashTotalPurchases.textContent = approved.length;
-            const referrals = getUserReferrals(email);
-            dashReferrals.textContent = referrals.length;
-            dashRefEarnings.textContent = getRefEarnings(email).toFixed(1);
-            dashRefLink.value = `https://silverchain.io/ref/${user.refCode}`;
-
-            if (deposits.length === 0) {
-                historyBody.innerHTML = `<tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>`;
-            } else {
-                let html = '';
-                deposits.slice().reverse().forEach(d => {
-                    const date = new Date(d.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(d.timestamp)
-                        .toLocaleTimeString('id-ID');
-                    const statusClass = d.status === 'approved' ? 'status-approved' : d.status === 'rejected' ?
-                        'status-rejected' : 'status-pending';
-                    const statusText = d.status === 'approved' ? '✅ Disetujui' : d.status === 'rejected' ? '❌ Ditolak' :
-                        '⏳ Pending';
-                    html += `<tr>
-                        <td>${date}</td>
-                        <td>${d.usdt}</td>
-                        <td>${d.bonus}</td>
-                        <td>${d.ref}</td>
-                        <td>${d.total}</td>
-                        <td style="font-family:monospace; font-size:0.65rem;">${d.txHash || '-'}</td>
-                        <td class="${statusClass}">${statusText}</td>
-                    </tr>`;
-                });
-                historyBody.innerHTML = html;
+                document.getElementById('loginBtn').style.display = 'inline-block';
             }
 
-            updateDepositPreview();
-            updateProgress();
-        }
+            // Progress
+            const total = getTotalMinted();
+            const target = 2000000000;
+            const pct = Math.min((total / target) * 100, 100);
+            document.getElementById('progressFill').style.width = pct + '%';
+            const totalStr = (total / 1000000000).toFixed(2) + 'B';
+            document.getElementById('counterDisplay').textContent = totalStr + ' SCT';
+            document.getElementById('statSold').textContent = totalStr;
 
-        function updateDepositPreview() {
-            const raw = depositAmount.value.trim();
-            const usdt = parseFloat(raw) || 0;
-            const bonus = Math.floor(usdt * bonusPercent / 100);
-            const ref = Math.floor(usdt * refPercent / 100);
-            const total = usdt + bonus + ref;
-            depositBonus.textContent = `+${bonus} SCT`;
-            depositRef.textContent = `+${ref} SCT`;
-            depositTotal.textContent = `${total} SCT`;
+            // Member bar
+            const approved = depositsDB.filter(d => d.status === 'approved');
+            const map = {};
+            approved.forEach(d => { if (!map[d.email]) map[d.email] = 0;
+                map[d.email] += d.total; });
+            const sorted = Object.entries(map).sort((a, b) => b[1] - a[1]);
+            const bar = document.getElementById('memberBar');
+            const label = bar.querySelector('.member-label');
+            bar.innerHTML = '';
+            bar.appendChild(label);
+            sorted.slice(0, 5).forEach(([email, total]) => {
+                const el = document.createElement('span');
+                el.className = 'member-item';
+                el.innerHTML = `<span class="name">${email}</span> <span class="sct">${total.toFixed(1)} SCT</span>`;
+                bar.appendChild(el);
+            });
+            if (sorted.length > 5) {
+                const more = document.createElement('span');
+                more.className = 'member-item';
+                more.style.color = '#5a8ac0';
+                more.textContent = `+${sorted.length - 5} lainnya`;
+                bar.appendChild(more);
+            }
         }
-
-        depositAmount.addEventListener('input', updateDepositPreview);
-        depositAmount.addEventListener('change', updateDepositPreview);
-        updateDepositPreview();
 
         // ============================================================
         // AUTH
@@ -1744,10 +1006,10 @@
             if (!email || !email.includes('@') || password.length < 4) {
                 return { success: false, msg: 'Email atau password tidak valid (min 4 karakter).' };
             }
-            const refCode = generateRefCode(email);
+            const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
             usersDB.push({ email, password, refCode, referredBy: null });
             saveUsers();
-            return { success: true, msg: 'Pendaftaran berhasil! Silakan login.', user: { email, refCode } };
+            return { success: true, msg: 'Pendaftaran berhasil! Silakan login.' };
         }
 
         function loginUser(email, password) {
@@ -1758,308 +1020,105 @@
         }
 
         function handleAuth() {
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            loginError.classList.remove('show');
-            loginSuccess.classList.remove('show');
+            const email = document.getElementById('emailInput').value.trim();
+            const password = document.getElementById('passwordInput').value.trim();
+            const error = document.getElementById('loginError');
+            const success = document.getElementById('loginSuccess');
+            error.classList.remove('show');
+            success.classList.remove('show');
 
             if (!email || !email.includes('@') || password.length < 4) {
-                loginError.textContent = 'Harap masukkan email dan password yang valid (min 4 karakter).';
-                loginError.classList.add('show');
+                error.textContent = 'Harap masukkan email dan password yang valid (min 4 karakter).';
+                error.classList.add('show');
                 return;
             }
 
-            if (isLoginMode) {
-                const result = loginUser(email, password);
-                if (!result.success) {
-                    loginError.textContent = result.msg;
-                    loginError.classList.add('show');
-                    return;
-                }
+            const isLogin = document.getElementById('switchLabel').textContent === 'Daftar akun baru';
+            const result = isLogin ? loginUser(email, password) : registerUser(email, password);
+            if (!result.success) {
+                error.textContent = result.msg;
+                error.classList.add('show');
+                return;
+            }
+            if (isLogin) {
                 currentUser = result.user;
                 saveCurrentUser(currentUser);
-                updateUIForUser(currentUser);
-                loginSuccess.textContent = '✅ ' + result.msg;
-                loginSuccess.classList.add('show');
+                success.textContent = '✅ ' + result.msg;
+                success.classList.add('show');
                 setTimeout(() => {
-                    loginModal.classList.remove('active');
-                    loginSuccess.classList.remove('show');
+                    document.getElementById('loginModal').classList.remove('active');
+                    success.classList.remove('show');
+                    updateUI();
+                    window.location.href = 'dashboard.html';
                 }, 1000);
-                showToast(`✅ Selamat datang ${email}!`, true);
             } else {
-                const result = registerUser(email, password);
-                if (!result.success) {
-                    loginError.textContent = result.msg;
-                    loginError.classList.add('show');
-                    return;
-                }
-                loginSuccess.textContent = '✅ ' + result.msg + ' Silakan login.';
-                loginSuccess.classList.add('show');
-                isLoginMode = true;
-                switchLabel.textContent = 'Daftar akun baru';
-                modalTitle.innerHTML = '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
-                modalSub.textContent = 'Masukkan email untuk login.';
-                actionBtn.innerHTML = '<i class="fas fa-check"></i> Login';
-                loginError.classList.remove('show');
-                setTimeout(() => {
-                    loginSuccess.classList.remove('show');
-                }, 2000);
+                success.textContent = '✅ ' + result.msg + ' Silakan login.';
+                success.classList.add('show');
+                document.getElementById('switchLabel').textContent = 'Daftar akun baru';
+                document.getElementById('modalTitle').innerHTML =
+                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
+                document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
+                document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
+                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar akun baru';
+                setTimeout(() => { success.classList.remove('show'); }, 2000);
             }
         }
-
-        // ============================================================
-        // DEPOSIT
-        // ============================================================
-        submitDepositBtn.addEventListener('click', function() {
-            if (!currentUser) {
-                showToast('❌ Silakan login terlebih dahulu.', false);
-                return;
-            }
-            const raw = depositAmount.value.trim();
-            const usdt = parseFloat(raw);
-            if (isNaN(usdt) || usdt <= 0) {
-                showToast('❌ Masukkan jumlah USDT yang valid.', false);
-                return;
-            }
-
-            const hash = txHash.value.trim();
-            if (!hash || hash.length < 5) {
-                showToast('❌ Masukkan hash transaksi (min 5 karakter).', false);
-                return;
-            }
-
-            const bonus = Math.floor(usdt * bonusPercent / 100);
-            const ref = Math.floor(usdt * refPercent / 100);
-            const total = usdt + bonus + ref;
-
-            depositsDB.push({
-                id: getNextId(),
-                email: currentUser.email,
-                usdt: usdt,
-                bonus: bonus,
-                ref: ref,
-                total: total,
-                txHash: hash,
-                status: 'pending',
-                timestamp: Date.now()
-            });
-            saveDeposits();
-
-            showToast(`✅ Deposit ${usdt} USDT berhasil dikirim! Menunggu approval admin.`, true);
-            txHash.value = '';
-            refreshDashboard();
-        });
-
-        copyAddress.addEventListener('click', function() {
-            const addr = adminAddress.value;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(addr).then(() => {
-                    showToast('📋 Address USDT disalin!', true);
-                }).catch(() => { fallbackCopy(addr); });
-            } else { fallbackCopy(addr); }
-        });
-
-        copyQRIS.addEventListener('click', function() {
-            const qrisId = '1234567890';
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(qrisId).then(() => {
-                    showToast('📋 ID QRIS disalin!', true);
-                }).catch(() => { fallbackCopy(qrisId); });
-            } else { fallbackCopy(qrisId); }
-        });
-
-        copyDashRef.addEventListener('click', function() {
-            const link = dashRefLink.value;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(link).then(() => {
-                    showToast('📋 Link referral disalin!', true);
-                }).catch(() => { fallbackCopy(link); });
-            } else { fallbackCopy(link); }
-        });
-
-        function fallbackCopy(text) {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try { document.execCommand('copy');
-                showToast('📋 Disalin!', true); } catch (e) { showToast('❌ Gagal menyalin.', false); }
-            document.body.removeChild(ta);
-        }
-
-        // ============================================================
-        // ADMIN
-        // ============================================================
-        function refreshAdminPanel() {
-            adminTotalUsers.textContent = usersDB.length;
-            const allDeposits = depositsDB.length;
-            adminTotalDeposits.textContent = allDeposits;
-            const pending = getPendingDeposits();
-            adminPendingDeposits.textContent = pending.length;
-            const totalSCT = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
-            adminTotalSCTMinted.textContent = totalSCT.toFixed(1);
-
-            if (pending.length === 0) {
-                adminPendingBody.innerHTML = `<tr><td colspan="7" class="empty">Tidak ada pending</td></tr>`;
-            } else {
-                let html = '';
-                pending.forEach(d => {
-                    html += `<tr>
-                        <td>${d.email}</td>
-                        <td>${d.usdt}</td>
-                        <td>${d.bonus}</td>
-                        <td>${d.ref}</td>
-                        <td>${d.total}</td>
-                        <td style="font-family:monospace; font-size:0.6rem;">${d.txHash || '-'}</td>
-                        <td>
-                            <button class="btn-approve" data-id="${d.id}">✅ Approve</button>
-                            <button class="btn-reject" data-id="${d.id}">✖ Reject</button>
-                        </td>
-                    </tr>`;
-                });
-                adminPendingBody.innerHTML = html;
-
-                adminPendingBody.querySelectorAll('.btn-approve').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.dataset.id);
-                        const deposit = depositsDB.find(d => d.id === id);
-                        if (deposit) {
-                            deposit.status = 'approved';
-                            saveDeposits();
-                            showToast(`✅ Deposit ${deposit.usdt} USDT dari ${deposit.email} disetujui!`,
-                            true);
-                            refreshAdminPanel();
-                            if (currentUser && currentUser.email === deposit.email) refreshDashboard();
-                            updateProgress();
-                        }
-                    });
-                });
-
-                adminPendingBody.querySelectorAll('.btn-reject').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.dataset.id);
-                        const deposit = depositsDB.find(d => d.id === id);
-                        if (deposit) {
-                            deposit.status = 'rejected';
-                            saveDeposits();
-                            showToast(`❌ Deposit ${deposit.usdt} USDT dari ${deposit.email} ditolak.`,
-                                false);
-                            refreshAdminPanel();
-                            if (currentUser && currentUser.email === deposit.email) refreshDashboard();
-                        }
-                    });
-                });
-            }
-
-            if (usersDB.length === 0) {
-                adminUserBody.innerHTML = `<tr><td colspan="4" class="empty">Belum ada pengguna</td></tr>`;
-            } else {
-                let html = '';
-                usersDB.forEach(u => {
-                    const isOwner = u.email === OWNER_EMAIL;
-                    const total = getUserTotalSCT(u.email);
-                    html += `<tr>
-                        <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
-                        <td><span class="badge-admin">${u.refCode}</span></td>
-                        <td>${u.referredBy || '-'}</td>
-                        <td>${total.toFixed(1)}</td>
-                    </tr>`;
-                });
-                adminUserBody.innerHTML = html;
-            }
-        }
-
-        adminToggle.addEventListener('click', function() {
-            if (!currentUser || currentUser.email.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
-                showToast('❌ Panel admin hanya untuk owner.', false);
-                return;
-            }
-            adminBonusPercent.value = bonusPercent;
-            adminRefPercent.value = refPercent;
-            refreshAdminPanel();
-            adminModal.classList.add('active');
-        });
-
-        closeAdmin.addEventListener('click', function() {
-            adminModal.classList.remove('active');
-        });
-
-        adminModal.addEventListener('click', function(e) {
-            if (e.target === adminModal) adminModal.classList.remove('active');
-        });
-
-        saveSettingsBtn.addEventListener('click', function() {
-            const newBonus = parseInt(adminBonusPercent.value) || 0;
-            const newRef = parseInt(adminRefPercent.value) || 0;
-            if (newBonus < 0 || newRef < 0) {
-                showToast('❌ Nilai tidak boleh negatif.', false);
-                return;
-            }
-            bonusPercent = newBonus;
-            refPercent = newRef;
-            saveSettings();
-            showToast(`✅ Pengaturan disimpan! Bonus: ${bonusPercent}%, Referral: ${refPercent}%`, true);
-            refreshDashboard();
-        });
 
         // ============================================================
         // EVENT LISTENERS
         // ============================================================
-        loginBtn.addEventListener('click', function() {
-            isLoginMode = true;
-            switchLabel.textContent = 'Daftar akun baru';
-            modalTitle.innerHTML = '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
-            modalSub.textContent = 'Masukkan email untuk login.';
-            actionBtn.innerHTML = '<i class="fas fa-check"></i> Login';
-            loginError.classList.remove('show');
-            loginSuccess.classList.remove('show');
-            emailInput.value = 'demo@silverchain.io';
-            passwordInput.value = '123456';
-            loginModal.classList.add('active');
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('emailInput').value = 'demo@silverchain.io';
+            document.getElementById('passwordInput').value = '123456';
         });
 
-        closeModal.addEventListener('click', function() {
-            loginModal.classList.remove('active');
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('loginModal').classList.remove('active');
         });
 
-        switchBtn.addEventListener('click', function() {
-            isLoginMode = !isLoginMode;
-            if (isLoginMode) {
-                switchLabel.textContent = 'Daftar akun baru';
-                modalTitle.innerHTML = '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
-                modalSub.textContent = 'Masukkan email untuk login.';
-                actionBtn.innerHTML = '<i class="fas fa-check"></i> Login';
+        document.getElementById('switchBtn').addEventListener('click', function() {
+            const isLogin = document.getElementById('switchLabel').textContent === 'Daftar akun baru';
+            if (isLogin) {
+                document.getElementById('switchLabel').textContent = 'Kembali ke Login';
+                document.getElementById('modalTitle').innerHTML =
+                    '<i class="fas fa-user-plus" style="color:#4a8aff; margin-right:10px;"></i>Daftar';
+                document.getElementById('modalSub').textContent = 'Buat akun baru.';
+                document.getElementById('actionBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
+                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali ke Login';
             } else {
-                switchLabel.textContent = 'Kembali ke Login';
-                modalTitle.innerHTML = '<i class="fas fa-user-plus" style="color:#4a8aff; margin-right:10px;"></i>Daftar';
-                modalSub.textContent = 'Buat akun baru.';
-                actionBtn.innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
+                document.getElementById('switchLabel').textContent = 'Daftar akun baru';
+                document.getElementById('modalTitle').innerHTML =
+                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
+                document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
+                document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
+                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar akun baru';
             }
-            loginError.classList.remove('show');
-            loginSuccess.classList.remove('show');
+            document.getElementById('loginError').classList.remove('show');
+            document.getElementById('loginSuccess').classList.remove('show');
         });
 
-        actionBtn.addEventListener('click', handleAuth);
+        document.getElementById('actionBtn').addEventListener('click', handleAuth);
 
-        emailInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') { passwordInput.focus(); }
+        document.getElementById('emailInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('passwordInput').focus();
         });
-        passwordInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') { handleAuth(); }
-        });
-
-        loginModal.addEventListener('click', function(e) {
-            if (e.target === loginModal) loginModal.classList.remove('active');
+        document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleAuth();
         });
 
-        logoutBtn.addEventListener('click', function() {
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('active');
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
             currentUser = null;
             saveCurrentUser(null);
-            updateUIForUser(null);
-            showToast('👋 Berhasil keluar.', true);
+            updateUI();
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = '👋 Berhasil keluar.';
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
         });
 
         // ============================================================
@@ -2079,56 +1138,17 @@
         // ============================================================
         // INIT
         // ============================================================
-        loadFromStorage();
-        updateUIForUser(currentUser);
-        updateProgress();
-        console.log('🟢 SilverChain DAO siap (LocalStorage).');
-        console.log('👑 Owner:', OWNER_EMAIL);
-        console.log('📊 Users:', usersDB);
-        console.log('📊 Deposits:', depositsDB);
-        window.__adminDB = usersDB;
-        window.__depositsDB = depositsDB;
-        window.__usersDB = usersDB;
+        loadData();
+        updateUI();
 
-        // Update member bar dari localStorage
-        function updateMemberBar() {
-            const approved = depositsDB.filter(d => d.status === 'approved');
-            const userMap = {};
-            approved.forEach(d => {
-                if (!userMap[d.email]) userMap[d.email] = 0;
-                userMap[d.email] += d.total;
-            });
-            const sorted = Object.entries(userMap).sort((a, b) => b[1] - a[1]);
-            const memberBar = document.getElementById('memberBar');
-            if (memberBar) {
-                // keep first child (label)
-                const label = memberBar.querySelector('.member-label');
-                memberBar.innerHTML = '';
-                memberBar.appendChild(label);
-                sorted.slice(0, 5).forEach(([email, total]) => {
-                    const span = document.createElement('span');
-                    span.className = 'member-item';
-                    span.innerHTML = `<span class="name">${email}</span> <span class="sct">${total.toFixed(1)} SCT</span>`;
-                    memberBar.appendChild(span);
-                });
-                if (sorted.length > 5) {
-                    const more = document.createElement('span');
-                    more.className = 'member-item';
-                    more.style.color = '#5a8ac0';
-                    more.textContent = `+${sorted.length - 5} lainnya`;
-                    memberBar.appendChild(more);
-                }
-            }
-        }
-        updateMemberBar();
-
-        // Update progress setiap 2 detik (untuk realtime feel)
+        // Auto update setiap 3 detik
         setInterval(() => {
-            updateProgress();
-            updateMemberBar();
+            loadData();
+            updateUI();
         }, 3000);
 
-    })();
-</script>
+        console.log('🟢 SilverChain Landing Page siap.');
+        console.log('👑 Owner:', OWNER_EMAIL);
+    </script>
 </body>
 </html>
