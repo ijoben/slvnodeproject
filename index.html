@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +19,7 @@
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
             color: #e6edf5;
             min-height: 100vh;
-            padding: 1.5rem 1rem 6rem;
+            padding: 1rem 0.8rem 6rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,148 +32,130 @@
             background: rgba(18, 34, 72, 0.7);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border-radius: 2.8rem;
-            padding: 2rem 2rem;
-            margin-bottom: 2rem;
+            border-radius: 2rem;
+            padding: 1.5rem 1.2rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
             border: 1px solid rgba(80, 140, 255, 0.08);
-            transition: all 0.25s;
-        }
-        .section-card:hover {
-            border-color: rgba(80, 140, 255, 0.2);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(60, 120, 255, 0.03);
         }
         .section-title {
-            font-size: 1.7rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 1.6rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             color: #b0ccff;
-            letter-spacing: -0.3px;
-            text-shadow: 0 0 30px rgba(60, 120, 255, 0.08);
         }
         .section-title i {
             color: #6a9eff;
-            font-size: 1.8rem;
-            filter: drop-shadow(0 0 12px rgba(60, 120, 255, 0.2));
+            font-size: 1.4rem;
         }
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
         }
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            gap: 1rem;
         }
         .feature-item,
         .why-item {
             background: rgba(12, 28, 60, 0.5);
             backdrop-filter: blur(6px);
-            border-radius: 2rem;
-            padding: 1.4rem 1.2rem;
+            border-radius: 1.5rem;
+            padding: 1rem 1rem;
             border: 1px solid rgba(80, 140, 255, 0.06);
-            transition: 0.2s;
-        }
-        .feature-item:hover,
-        .why-item:hover {
-            border-color: rgba(80, 140, 255, 0.15);
-            transform: translateY(-3px);
-            background: rgba(20, 44, 88, 0.5);
         }
         .feature-item i,
         .why-item i {
             color: #6a9eff;
-            font-size: 2rem;
-            margin-bottom: 0.6rem;
-            filter: drop-shadow(0 0 10px rgba(60, 120, 255, 0.15));
+            font-size: 1.6rem;
+            margin-bottom: 0.4rem;
         }
         .feature-item h4,
         .why-item h4 {
             font-weight: 600;
-            font-size: 1.05rem;
-            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
             color: #b0ccff;
         }
         .feature-item p,
         .why-item p {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #8ab0e6;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .roadmap-list {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
         .roadmap-item {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             background: rgba(12, 28, 60, 0.4);
             backdrop-filter: blur(4px);
-            padding: 0.9rem 1.5rem;
+            padding: 0.7rem 1rem;
             border-radius: 60px;
             border-left: 4px solid #4a8aff;
-            transition: 0.15s;
             position: relative;
         }
         .roadmap-item::after {
             content: "→";
             position: absolute;
-            right: 20px;
+            right: 14px;
             color: #4a8aff;
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.5;
         }
         .roadmap-item .phase {
             font-weight: 700;
             color: #8ab8ff;
-            min-width: 80px;
+            min-width: 65px;
+            font-size: 0.8rem;
         }
         .roadmap-item .desc {
             color: #90b8ee;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
         }
         .faq-item {
             background: rgba(12, 28, 60, 0.35);
             backdrop-filter: blur(4px);
-            border-radius: 1.5rem;
-            margin-bottom: 0.7rem;
+            border-radius: 1.2rem;
+            margin-bottom: 0.5rem;
             border: 1px solid rgba(80, 140, 255, 0.06);
             overflow: hidden;
-            transition: 0.2s;
         }
         .faq-question {
-            padding: 1rem 1.4rem;
+            padding: 0.8rem 1.2rem;
             font-weight: 600;
             color: #b0ccff;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            user-select: none;
+            font-size: 0.9rem;
         }
         .faq-question i {
             color: #4a8aff;
             transition: 0.25s;
-            font-size: 1rem;
         }
         .faq-answer {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
-            padding: 0 1.4rem;
+            padding: 0 1.2rem;
             color: #8ab0e6;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
         .faq-item.active .faq-answer {
             max-height: 200px;
-            padding: 0 1.4rem 1.2rem 1.4rem;
+            padding: 0 1.2rem 1rem 1.2rem;
         }
         .faq-item.active .faq-question i {
             transform: rotate(180deg);
@@ -181,80 +164,94 @@
             background: rgba(60, 120, 255, 0.06);
             border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
-            padding: 0.25rem 1rem;
-            font-size: 0.7rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.65rem;
             font-weight: 600;
             color: #8ab8ff;
         }
 
-        /* HEADER */
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0.8rem 0 0.2rem;
-            margin-bottom: 0.5rem;
+            padding: 0.5rem 0 0.2rem;
         }
         .header .brand-center {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.5rem;
             text-decoration: none;
         }
         .header .brand-center i {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             color: #b0ccff;
-            filter: drop-shadow(0 0 20px rgba(60, 120, 255, 0.15));
             background: linear-gradient(145deg, #c8ddff, #6a9eff);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .header .brand-center h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(145deg, #c8ddff, #6a9eff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
         }
         .header .brand-center .ticker {
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: #5a8ac0;
             background: rgba(60, 120, 255, 0.06);
-            padding: 0.1rem 0.8rem;
+            padding: 0.1rem 0.6rem;
             border-radius: 60px;
             border: 1px solid rgba(80, 140, 255, 0.08);
         }
 
-        /* PROGRESS BAR — Acuan USDT */
+        /* ===== PROGRESS BAR — RESPONSIVE ===== */
         .progress-wrap {
             display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
             margin: 0.5rem 0 1rem;
             background: rgba(12, 28, 60, 0.3);
-            padding: 0.7rem 1.5rem;
+            padding: 0.8rem 1rem;
             border-radius: 60px;
             border: 1px solid rgba(80, 140, 255, 0.06);
         }
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
         .progress-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #8ab0e6;
-            min-width: 80px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            font-weight: 500;
         }
         .progress-label i {
             color: #4a8aff;
         }
+        .counter-num {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #b0ccff;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .counter-num small {
+            font-weight: 400;
+            font-size: 0.65rem;
+            color: #5a8ac0;
+        }
         .progress-bar-bg {
-            flex: 2;
-            min-width: 120px;
+            width: 100%;
             height: 8px;
             background: rgba(60, 120, 255, 0.1);
             border-radius: 20px;
@@ -268,49 +265,32 @@
             transition: width 0.8s ease;
             box-shadow: 0 0 30px rgba(60, 120, 255, 0.2);
         }
-        .counter-num {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #b0ccff;
-            min-width: 100px;
-            text-align: right;
-        }
-        .counter-num small {
-            font-weight: 400;
-            font-size: 0.7rem;
-            color: #5a8ac0;
-        }
 
-        /* MEMBER CARD */
+        /* ===== MEMBER CARD ===== */
         .member-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 0.8rem;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.6rem;
             margin: 0.5rem 0;
         }
         .member-card-item {
             background: rgba(8, 20, 48, 0.3);
-            border-radius: 1.2rem;
-            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+            padding: 0.6rem 0.8rem;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.6rem;
             border: 1px solid rgba(80, 140, 255, 0.04);
-            transition: 0.15s;
-        }
-        .member-card-item:hover {
-            border-color: rgba(80, 140, 255, 0.12);
-            background: rgba(8, 20, 48, 0.5);
         }
         .member-card-item .avatar {
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: linear-gradient(145deg, #4a8aff, #1a4ab0);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.8rem;
             color: #fff;
             flex-shrink: 0;
         }
@@ -319,7 +299,7 @@
             min-width: 0;
         }
         .member-card-item .info .name {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #b0ccff;
             font-weight: 600;
             white-space: nowrap;
@@ -327,13 +307,13 @@
             text-overflow: ellipsis;
         }
         .member-card-item .info .sct {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #7aaeff;
             font-weight: 500;
         }
         .member-card-item .rank {
             color: #5a8ac0;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             flex-shrink: 0;
         }
@@ -342,16 +322,16 @@
             background: rgba(60, 120, 255, 0.12);
             border: 1px solid rgba(80, 140, 255, 0.15);
             border-radius: 60px;
-            padding: 0.6rem 2rem;
+            padding: 0.5rem 1.5rem;
             color: #8ab8ff;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: 0.15s;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         .btn-hero:hover {
             background: rgba(60, 120, 255, 0.2);
@@ -365,51 +345,41 @@
             background: transparent;
             border: 1px solid rgba(80, 140, 255, 0.1);
             color: #8ab8ff;
-            padding: 0.4rem 1.2rem;
+            padding: 0.3rem 1rem;
             border-radius: 60px;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             cursor: default;
         }
 
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
+            gap: 0.6rem;
         }
         .contact-item {
             background: rgba(12, 28, 60, 0.3);
-            padding: 0.8rem 1rem;
-            border-radius: 1.2rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             border: 1px solid rgba(80, 140, 255, 0.04);
-            transition: 0.15s;
             text-decoration: none;
             color: #8ab8ff;
-        }
-        .contact-item:hover {
-            border-color: rgba(80, 140, 255, 0.12);
-            background: rgba(8, 20, 48, 0.4);
+            font-size: 0.75rem;
         }
         .contact-item i {
             color: #4a8aff;
-            font-size: 1.2rem;
-            width: 24px;
+            font-size: 1rem;
+            width: 20px;
             text-align: center;
             flex-shrink: 0;
-        }
-        .contact-item span {
-            font-size: 0.8rem;
-            font-weight: 500;
-            word-break: break-word;
         }
         .contact-item a {
             color: #8ab8ff;
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.75rem;
             word-break: break-word;
         }
         .contact-item a:hover {
@@ -421,13 +391,13 @@
             backdrop-filter: blur(8px);
             border-left: 4px solid #4a8aff;
             border-radius: 40px;
-            padding: 0.6rem 1.4rem;
-            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
             color: #b0ccff;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             display: none;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
         .toast-message.show {
             display: flex;
@@ -452,10 +422,10 @@
         .modal-box {
             background: #0e1e40;
             background: linear-gradient(145deg, #122a5a, #081a38);
-            border-radius: 2.5rem;
-            padding: 2.5rem 2.5rem;
-            max-width: 440px;
-            width: 90%;
+            border-radius: 2rem;
+            padding: 2rem 1.5rem;
+            max-width: 420px;
+            width: 92%;
             border: 1px solid rgba(80, 140, 255, 0.1);
             box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
             position: relative;
@@ -464,76 +434,67 @@
         }
         .modal-box .close-btn {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: 12px;
+            right: 16px;
             background: none;
             border: none;
             color: #5a8ac0;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             cursor: pointer;
         }
         .modal-box h2 {
             color: #b0ccff;
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
+            margin-bottom: 0.3rem;
+            font-size: 1.2rem;
         }
         .modal-box p {
             color: #8ab0e6;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
         }
         .modal-box .input-field {
             width: 100%;
-            padding: 0.9rem 1.2rem;
+            padding: 0.7rem 1rem;
             border-radius: 60px;
             border: 1px solid rgba(80, 140, 255, 0.1);
             background: rgba(8, 20, 48, 0.5);
             color: #e6edf5;
-            font-size: 1rem;
+            font-size: 0.9rem;
             outline: none;
-            margin-bottom: 0.8rem;
-            transition: 0.15s;
+            margin-bottom: 0.6rem;
         }
         .modal-box .input-field:focus {
             border-color: rgba(80, 140, 255, 0.3);
-            box-shadow: 0 0 30px rgba(60, 120, 255, 0.05);
-        }
-        .modal-box .input-field::placeholder {
-            color: #3a5a8a;
         }
         .modal-box .btn-modal {
             width: 100%;
-            padding: 0.9rem;
+            padding: 0.7rem;
             border-radius: 60px;
             border: none;
             background: linear-gradient(145deg, #4a8aff, #1a4ab0);
             color: #fff;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.2);
         }
         .modal-box .btn-modal:hover {
             box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.3);
-        }
-        .modal-box .btn-modal:active {
-            transform: scale(0.97);
         }
         .modal-box .btn-modal.secondary {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
             color: #8ab8ff;
             box-shadow: none;
-            margin-top: 0.5rem;
+            margin-top: 0.4rem;
         }
         .modal-box .btn-modal.secondary:hover {
             background: rgba(60, 120, 255, 0.15);
         }
         .modal-box .error-msg {
             color: #ff6a6a;
-            font-size: 0.8rem;
-            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
             display: none;
         }
         .modal-box .error-msg.show {
@@ -541,8 +502,8 @@
         }
         .modal-box .success-msg {
             color: #6aff8a;
-            font-size: 0.8rem;
-            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
             display: none;
         }
         .modal-box .success-msg.show {
@@ -551,8 +512,8 @@
         .modal-box .divider {
             text-align: center;
             color: #5a8ac0;
-            font-size: 0.8rem;
-            margin: 0.8rem 0;
+            font-size: 0.7rem;
+            margin: 0.5rem 0;
         }
 
         .bottom-nav {
@@ -562,120 +523,353 @@
             right: 0;
             background: rgba(12, 28, 60, 0.95);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid rgba(80, 140, 255, 0.08);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0.4rem 0 0.6rem;
+            padding: 0.3rem 0 0.5rem;
             z-index: 100;
             box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
             color: #5a8ac0;
             text-decoration: none;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            transition: 0.2s;
-            padding: 0.2rem 0.8rem;
+            gap: 2px;
+            padding: 0.15rem 0.4rem;
             border-radius: 60px;
-            min-width: 60px;
+            min-width: 45px;
             position: relative;
         }
         .bottom-nav a i {
-            font-size: 1.3rem;
-            transition: 0.2s;
-        }
-        .bottom-nav a span {
-            font-size: 0.55rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
+            font-size: 1.1rem;
         }
         .bottom-nav a.active {
             color: #7aaeff;
         }
         .bottom-nav a.active i {
             color: #4a8aff;
-            text-shadow: 0 0 25px rgba(60, 120, 255, 0.3);
-        }
-        .bottom-nav a:hover {
-            color: #b0ccff;
+            text-shadow: 0 0 20px rgba(60, 120, 255, 0.2);
         }
         .bottom-nav a .badge-dot {
             position: absolute;
-            top: 2px;
-            right: 4px;
-            width: 8px;
-            height: 8px;
+            top: 0px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
             background: #f97316;
             border-radius: 50%;
             border: 2px solid rgba(12, 28, 60, 0.9);
             display: none;
         }
 
-        @media (max-width: 700px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.4rem;
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 1.5rem;
+            padding: 0.6rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin-bottom: 1rem;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-item .num {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #b0ccff;
+        }
+        .stat-item .label {
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #5a8ac0;
+        }
+        .stat-item.highlight .num {
+            color: #7aaeff;
+            text-shadow: 0 0 20px rgba(60, 120, 255, 0.15);
+        }
+        .subhead {
+            font-size: 0.85rem;
+            color: #8ab0e6;
+            margin: 0.3rem 0 0.8rem;
+            line-height: 1.4;
+            border-left: 3px solid #4a8aff;
+            padding-left: 0.7rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 768px) {
+            body {
+                padding: 1.5rem 1rem 6rem;
             }
-            .grid-3 {
-                grid-template-columns: 1fr 1fr;
+            .section-card {
+                padding: 2rem 2rem;
+                border-radius: 2.8rem;
+                margin-bottom: 2rem;
             }
-            .member-grid {
-                grid-template-columns: 1fr 1fr;
+            .section-title {
+                font-size: 1.7rem;
+                margin-bottom: 1.6rem;
             }
-            .contact-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .header .brand-center h1 {
-                font-size: 1.4rem;
-            }
-            .header .brand-center i {
+            .section-title i {
                 font-size: 1.8rem;
             }
-            .progress-wrap {
-                flex-direction: column;
-                align-items: stretch;
+            .grid-2 {
+                gap: 1.5rem;
+            }
+            .grid-3 {
+                gap: 1.5rem;
+            }
+            .feature-item,
+            .why-item {
+                padding: 1.4rem 1.2rem;
+                border-radius: 2rem;
+            }
+            .feature-item i,
+            .why-item i {
+                font-size: 2rem;
+            }
+            .feature-item h4,
+            .why-item h4 {
+                font-size: 1.05rem;
+            }
+            .feature-item p,
+            .why-item p {
+                font-size: 0.85rem;
+            }
+            .roadmap-item {
+                padding: 0.9rem 1.5rem;
+            }
+            .roadmap-item .phase {
+                min-width: 80px;
+                font-size: 0.9rem;
+            }
+            .roadmap-item .desc {
+                font-size: 0.9rem;
+            }
+            .faq-question {
+                padding: 1rem 1.4rem;
+                font-size: 1rem;
+            }
+            .faq-answer {
+                font-size: 0.9rem;
+            }
+            .badge-silver {
+                font-size: 0.7rem;
+                padding: 0.25rem 1rem;
+            }
+            .header .brand-center i {
+                font-size: 2.6rem;
+            }
+            .header .brand-center h1 {
+                font-size: 2.2rem;
+            }
+            .header .brand-center .ticker {
+                font-size: 1rem;
+                padding: 0.2rem 1rem;
+            }
+            .member-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
                 gap: 0.8rem;
             }
+            .member-card-item {
+                padding: 0.8rem 1rem;
+                border-radius: 1.2rem;
+            }
+            .member-card-item .avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            .member-card-item .info .name {
+                font-size: 0.8rem;
+            }
+            .member-card-item .info .sct {
+                font-size: 0.7rem;
+            }
+            .member-card-item .rank {
+                font-size: 0.7rem;
+            }
+            .btn-hero {
+                padding: 0.6rem 2rem;
+                font-size: 0.95rem;
+            }
+            .btn-outline {
+                padding: 0.4rem 1.2rem;
+                font-size: 0.8rem;
+            }
+            .contact-grid {
+                gap: 0.8rem;
+            }
+            .contact-item {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+                border-radius: 60px;
+            }
+            .contact-item i {
+                font-size: 1.2rem;
+                width: 24px;
+            }
+            .contact-item a {
+                font-size: 0.85rem;
+            }
+            .toast-message {
+                padding: 0.6rem 1.4rem;
+                font-size: 0.85rem;
+            }
+            .modal-box {
+                padding: 2.5rem 2.5rem;
+                border-radius: 2.5rem;
+                max-width: 440px;
+            }
+            .modal-box h2 {
+                font-size: 1.4rem;
+            }
+            .modal-box p {
+                font-size: 0.85rem;
+            }
+            .modal-box .input-field {
+                padding: 0.9rem 1.2rem;
+                font-size: 1rem;
+            }
+            .modal-box .btn-modal {
+                padding: 0.9rem;
+                font-size: 1rem;
+            }
+            .stats-grid {
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            .stat-item .num {
+                font-size: 1.3rem;
+            }
+            .stat-item .label {
+                font-size: 0.6rem;
+            }
+            .subhead {
+                font-size: 0.95rem;
+                margin: 0.5rem 0 1.2rem;
+            }
+            .bottom-nav a {
+                font-size: 0.55rem;
+                padding: 0.2rem 0.8rem;
+                min-width: 60px;
+            }
+            .bottom-nav a i {
+                font-size: 1.3rem;
+            }
+            /* Progress bar desktop */
+            .progress-wrap {
+                flex-direction: row;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 0.7rem 1.5rem;
+            }
+            .progress-top {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                flex: 1;
+            }
+            .progress-label {
+                font-size: 0.85rem;
+                min-width: 80px;
+            }
             .counter-num {
-                text-align: left;
+                font-size: 1.1rem;
+                min-width: 100px;
+            }
+            .progress-bar-bg {
+                flex: 2;
+                min-width: 120px;
+            }
+            .progress-wrap {
+                flex-direction: row;
             }
         }
+
         @media (max-width: 480px) {
             .grid-3 {
                 grid-template-columns: 1fr;
             }
-            .section-card {
-                padding: 1.5rem 1rem;
-            }
             .member-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
             }
             .contact-grid {
                 grid-template-columns: 1fr;
             }
-            .modal-box {
-                padding: 1.8rem 1.5rem;
+            .section-card {
+                padding: 1rem 0.8rem;
+                border-radius: 1.5rem;
             }
-            .bottom-nav a {
-                font-size: 0.5rem;
-                padding: 0.1rem 0.3rem;
-                min-width: 45px;
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                padding: 0.4rem;
             }
-            .bottom-nav a i {
-                font-size: 1.1rem;
+            .stat-item .num {
+                font-size: 0.9rem;
             }
-            .bottom-nav a span {
-                font-size: 0.5rem;
+            .stat-item .label {
+                font-size: 0.45rem;
             }
             .header .brand-center h1 {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
             .header .brand-center i {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+            }
+            .header .brand-center .ticker {
+                font-size: 0.6rem;
+                padding: 0.05rem 0.5rem;
+            }
+            .subhead {
+                font-size: 0.75rem;
+            }
+            .bottom-nav a {
+                font-size: 0.45rem;
+                padding: 0.1rem 0.2rem;
+                min-width: 35px;
+            }
+            .bottom-nav a i {
+                font-size: 0.9rem;
+            }
+            .modal-box {
+                padding: 1.5rem 1rem;
+            }
+            .progress-wrap {
+                padding: 0.6rem 0.8rem;
+                border-radius: 40px;
+                gap: 0.3rem;
+            }
+            .progress-label {
+                font-size: 0.65rem;
+            }
+            .counter-num {
+                font-size: 0.8rem;
+            }
+            .counter-num small {
+                font-size: 0.5rem;
+            }
+            .progress-bar-bg {
+                height: 6px;
+            }
+            .member-card-item .info .name {
+                font-size: 0.6rem;
+            }
+            .member-card-item .info .sct {
+                font-size: 0.55rem;
+            }
+            .member-card-item .avatar {
+                width: 24px;
+                height: 24px;
+                font-size: 0.65rem;
             }
         }
     </style>
@@ -696,44 +890,47 @@
 
         <!-- HERO -->
         <div class="section-card hero">
-            <!-- PROGRESS BAR — ACUAN USDT -->
+
+            <!-- ===== PROGRESS BAR — RESPONSIVE ===== -->
             <div class="progress-wrap">
-                <span class="progress-label"><i class="fas fa-dollar-sign"></i> Terkumpul</span>
+                <div class="progress-top">
+                    <span class="progress-label"><i class="fas fa-dollar-sign"></i> Terkumpul</span>
+                    <span class="counter-num" id="counterDisplay">$0 <small>USDT</small></span>
+                </div>
                 <div class="progress-bar-bg">
                     <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
-                <div class="counter-num" id="counterDisplay">$0 <small>USDT</small></div>
             </div>
 
-            <div class="subhead" style="font-size:0.95rem; color:#8ab0e6; margin:0.5rem 0 1.2rem; line-height:1.5; border-left:3px solid #4a8aff; padding-left:1rem;">
-                <i class="fas fa-bolt" style="color:#4a8aff; margin-right:6px;"></i>
+            <div class="subhead">
+                <i class="fas fa-bolt" style="color:#4a8aff; margin-right:4px;"></i>
                 Beli token SilverChain, dapatkan <strong style="color:#7aaeff;">bonus</strong> & <strong style="color:#7aaeff;">referral</strong>!
             </div>
 
-            <div class="stats-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.6rem; background:rgba(12,28,60,0.3); border-radius:2rem; padding:0.8rem; backdrop-filter:blur(4px); border:1px solid rgba(80,140,255,0.06); margin-bottom:1.2rem;">
-                <div class="stat-item" style="text-align:center;">
-                    <div class="num" style="font-weight:700; font-size:1.3rem; color:#b0ccff;" id="statSold">0</div>
-                    <div class="label" style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px; color:#5a8ac0;">Token Dicetak</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="num" id="statSold">0</div>
+                    <div class="label">Token Dicetak</div>
                 </div>
-                <div class="stat-item highlight" style="text-align:center;">
-                    <div class="num" style="font-weight:700; font-size:1.3rem; color:#7aaeff; text-shadow:0 0 20px rgba(60,120,255,0.2);" id="statBonus">10%</div>
-                    <div class="label" style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px; color:#5a8ac0;">Bonus</div>
+                <div class="stat-item highlight">
+                    <div class="num" id="statBonus">10%</div>
+                    <div class="label">Bonus</div>
                 </div>
-                <div class="stat-item" style="text-align:center;">
-                    <div class="num" style="font-weight:700; font-size:1.3rem; color:#b0ccff;" id="statRef">3%</div>
-                    <div class="label" style="font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px; color:#5a8ac0;">Referral</div>
-                </div>
-            </div>
-
-            <div style="text-align:center; padding:0.5rem 0;">
-                <p style="color:#8ab0e6; font-size:0.95rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda dengan SilverChain</strong></p>
-                <p style="color:#5a8ac0; font-size:0.8rem; margin-top:0.3rem;">Login atau daftar untuk membeli token dan mulai berinvestasi</p>
-                <div id="heroButtonContainer" style="margin-top:0.8rem;">
-                    <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
+                <div class="stat-item">
+                    <div class="num" id="statRef">3%</div>
+                    <div class="label">Referral</div>
                 </div>
             </div>
 
-            <div style="text-align:center; font-size:0.7rem; color:#4a7ab0; margin-top:0.8rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
+            <div style="text-align:center; padding:0.3rem 0;">
+                <p style="color:#8ab0e6; font-size:0.85rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda dengan SilverChain</strong></p>
+                <p style="color:#5a8ac0; font-size:0.7rem; margin-top:0.2rem;">Login atau daftar untuk membeli token</p>
+                <div id="heroButtonContainer" style="margin-top:0.5rem;">
+                    <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
+                </div>
+            </div>
+
+            <div style="text-align:center; font-size:0.6rem; color:#4a7ab0; margin-top:0.5rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.5rem;">
                 <i class="fas fa-shield-alt"></i> Prelaunch DAO · SilverChain Token (SCT)
             </div>
         </div>
@@ -742,128 +939,104 @@
         <div class="section-card">
             <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
             <div class="member-grid" id="memberGrid">
-                <div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1;">Memuat data member...</div>
+                <div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.8rem;">Memuat data member...</div>
             </div>
         </div>
 
-        <!-- ABOUT, FEATURES, WHY, ROADMAP, WHITEPAPER, FAQ, CONTACT (sama seperti sebelumnya) -->
+        <!-- ABOUT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang SilverChain DAO</div>
-            <p style="color:#8ab0e6; line-height:1.7; margin-bottom:0.5rem;">
+            <p style="color:#8ab0e6; line-height:1.6; font-size:0.85rem;">
                 SilverChain adalah token <strong style="color:#b0ccff;">Organisasi Otonom Terdesentralisasi (DAO)</strong> dengan <strong style="color:#b0ccff;">supply tak terbatas</strong> —
                 terinspirasi dari model dogecoin. Dibangun di atas Layer-2 untuk kecepatan & biaya rendah.
             </p>
-            <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.8rem;">
-                <span class="badge-silver"><i class="fas fa-code"></i> Audit Smart Contract</span>
-                <span class="badge-silver"><i class="fas fa-infinity"></i> Supply Tak Terbatas</span>
-                <span class="badge-silver"><i class="fas fa-users"></i> Dikelola DAO</span>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem;">
+                <span class="badge-silver"><i class="fas fa-code"></i> Audit</span>
+                <span class="badge-silver"><i class="fas fa-infinity"></i> Unlimited</span>
+                <span class="badge-silver"><i class="fas fa-users"></i> DAO</span>
                 <span class="badge-silver"><i class="fas fa-globe"></i> Multi-chain</span>
             </div>
         </div>
 
+        <!-- FEATURES -->
         <div class="section-card">
-            <div class="section-title"><i class="fas fa-star"></i> Fitur Unggulan</div>
+            <div class="section-title"><i class="fas fa-star"></i> Fitur</div>
             <div class="grid-3">
-                <div class="feature-item"><i class="fas fa-bolt"></i>
-                    <h4>Kecepatan Kilat</h4>
-                    <p>Konfirmasi < 2 detik, biaya hampir nol.</p>
-                </div>
-                <div class="feature-item"><i class="fas fa-shield-alt"></i>
-                    <h4>Keamanan Tinggi</h4>
-                    <p>Diaudit oleh CertiK & bug bounty aktif.</p>
-                </div>
-                <div class="feature-item"><i class="fas fa-wallet"></i>
-                    <h4>Integrasi Wallet</h4>
-                    <p>Mendukung MetaMask, TrustWallet, WalletConnect.</p>
-                </div>
-                <div class="feature-item"><i class="fas fa-percent"></i>
-                    <h4>Bonus & Referral</h4>
-                    <p>Bonus pembelian + referral seumur hidup.</p>
-                </div>
-                <div class="feature-item"><i class="fas fa-chart-line"></i>
-                    <h4>Staking & Yield</h4>
-                    <p>Staking SCT dengan APR hingga 45%.</p>
-                </div>
-                <div class="feature-item"><i class="fas fa-users"></i>
-                    <h4>Tata Kelola DAO</h4>
-                    <p>Pemegang token memberi suara untuk proposal.</p>
-                </div>
+                <div class="feature-item"><i class="fas fa-bolt"></i><h4>Kecepatan Kilat</h4><p>Konfirmasi < 2 detik</p></div>
+                <div class="feature-item"><i class="fas fa-shield-alt"></i><h4>Keamanan</h4><p>Audit CertiK</p></div>
+                <div class="feature-item"><i class="fas fa-wallet"></i><h4>Wallet</h4><p>MetaMask, TrustWallet</p></div>
+                <div class="feature-item"><i class="fas fa-percent"></i><h4>Bonus & Referral</h4><p>10% + 3%</p></div>
+                <div class="feature-item"><i class="fas fa-chart-line"></i><h4>Staking</h4><p>APR hingga 45%</p></div>
+                <div class="feature-item"><i class="fas fa-users"></i><h4>DAO</h4><p>Tata kelola komunitas</p></div>
             </div>
         </div>
 
+        <!-- WHY -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question-circle"></i> Mengapa SilverChain?</div>
             <div class="grid-2">
-                <div class="why-item"><i class="fas fa-gem"></i>
-                    <h4>Komunitas Dulu</h4>
-                    <p>DAO sejati dengan supply tak terbatas.</p>
-                </div>
-                <div class="why-item"><i class="fas fa-hand-holding-usd"></i>
-                    <h4>Ekosistem Berhadiah</h4>
-                    <p>Bonus & referral membuat setiap pembelian lebih berharga.</p>
-                </div>
-                <div class="why-item"><i class="fas fa-rocket"></i>
-                    <h4>Roadmap Ambisius</h4>
-                    <p>Listing CEX tier-1, kemitraan gaming, dan metaverse.</p>
-                </div>
-                <div class="why-item"><i class="fas fa-shield"></i>
-                    <h4>Transparansi</h4>
-                    <p>Kontrak terverifikasi, tim doxed, likuiditas terkunci.</p>
-                </div>
+                <div class="why-item"><i class="fas fa-gem"></i><h4>Komunitas</h4><p>DAO sejati dengan supply tak terbatas.</p></div>
+                <div class="why-item"><i class="fas fa-hand-holding-usd"></i><h4>Ekosistem</h4><p>Bonus & referral menguntungkan.</p></div>
+                <div class="why-item"><i class="fas fa-rocket"></i><h4>Roadmap</h4><p>CEX, gaming, metaverse.</p></div>
+                <div class="why-item"><i class="fas fa-shield"></i><h4>Transparansi</h4><p>Kontrak terverifikasi.</p></div>
             </div>
         </div>
 
+        <!-- ROADMAP -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
-                <div class="roadmap-item"><span class="phase">Q1 2026</span><span class="desc">Peluncuran DAO, token sale, audit & pembangunan komunitas.</span></div>
-                <div class="roadmap-item"><span class="phase">Q2 2026</span><span class="desc">Listing DEX (Uniswap, PancakeSwap), pool staking.</span></div>
-                <div class="roadmap-item"><span class="phase">Q3 2026</span><span class="desc">Integrasi game metaverse, kemitraan strategis pertama.</span></div>
-                <div class="roadmap-item"><span class="phase">Q4 2026</span><span class="desc">Listing CEX tier-1, tata kelola DAO sepenuhnya aktif.</span></div>
-                <div class="roadmap-item"><span class="phase">2027</span><span class="desc">Ekspansi multi-chain, SilverChain Pay.</span></div>
+                <div class="roadmap-item"><span class="phase">Q1 2026</span><span class="desc">Launch DAO & token sale</span></div>
+                <div class="roadmap-item"><span class="phase">Q2 2026</span><span class="desc">Listing DEX & staking</span></div>
+                <div class="roadmap-item"><span class="phase">Q3 2026</span><span class="desc">Game & metaverse</span></div>
+                <div class="roadmap-item"><span class="phase">Q4 2026</span><span class="desc">CEX & DAO live</span></div>
+                <div class="roadmap-item"><span class="phase">2027</span><span class="desc">Multi-chain expansion</span></div>
             </div>
         </div>
 
+        <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
-            <p style="color:#8ab0e6; margin-bottom:0.8rem;">Whitepaper lengkap SilverChain mencakup spesifikasi teknis, tokenomics, konsensus, dan tata kelola DAO.</p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.8rem;">
-                <span class="btn-outline"><i class="fas fa-file-pdf"></i> Whitepaper v2.1 (PDF)</span>
-                <span class="btn-outline"><i class="fas fa-book-open"></i> Lightpaper (Ringkasan)</span>
-                <span class="btn-outline"><i class="fas fa-code-branch"></i> Repo GitHub</span>
+            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Whitepaper lengkap SilverChain.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                <span class="btn-outline"><i class="fas fa-file-pdf"></i> PDF</span>
+                <span class="btn-outline"><i class="fas fa-book-open"></i> Ringkasan</span>
+                <span class="btn-outline"><i class="fas fa-code-branch"></i> GitHub</span>
             </div>
         </div>
 
+        <!-- FAQ -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
-                <div class="faq-question">Apa itu SilverChain Token (SCT)? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Token utilitas yang dikelola DAO dengan supply tak terbatas, dibangun di Layer-2.</div>
+                <div class="faq-question">Apa itu SilverChain? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Token DAO dengan supply tak terbatas, Layer-2.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Bagaimana cara membeli token? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Login, kirim USDT ke address admin atau QRIS, lalu admin akan approve deposit Anda.</div>
+                <div class="faq-question">Cara beli? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Login → kirim USDT → admin approve.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Berapa persentase referral? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Anda mendapat 3% dari setiap pembelian yang menggunakan kode referral Anda.</div>
+                <div class="faq-question">Referral? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">3% dari setiap pembelian.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Kapan trading dimulai? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Setelah prelaunch, token akan listing di DEX (Q2 2026) dan CEX (Q4 2026).</div>
+                <div class="faq-question">Trading mulai? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">DEX Q2 2026, CEX Q4 2026.</div>
             </div>
         </div>
 
+        <!-- CONTACT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
             <div class="contact-grid">
-                <a href="#" class="contact-item"><i class="fab fa-twitter"></i> <span>@SilverChain</span></a>
-                <a href="#" class="contact-item"><i class="fab fa-telegram"></i> <span>t.me/SilverChain</span></a>
-                <a href="#" class="contact-item"><i class="fab fa-discord"></i> <span>discord.gg/silver</span></a>
-                <a href="#" class="contact-item"><i class="fas fa-envelope"></i> <span>dao@silverchain.io</span></a>
+                <a href="#" class="contact-item"><i class="fab fa-twitter"></i> @SilverChain</a>
+                <a href="#" class="contact-item"><i class="fab fa-telegram"></i> t.me/SilverChain</a>
+                <a href="#" class="contact-item"><i class="fab fa-discord"></i> discord.gg/silver</a>
+                <a href="#" class="contact-item"><i class="fas fa-envelope"></i> dao@silverchain.io</a>
             </div>
-            <div style="text-align:center; margin-top:1rem; font-size:0.8rem; color:#4a7ab0;">
-                <i class="fas fa-map-pin"></i> SilverChain DAO · Singapura & Jakarta
+            <div style="text-align:center; margin-top:0.5rem; font-size:0.7rem; color:#4a7ab0;">
+                <i class="fas fa-map-pin"></i> Singapore & Jakarta
             </div>
         </div>
 
@@ -877,7 +1050,7 @@
         </a>
         <a href="dashboard.html" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
-            <span>Beli Token</span>
+            <span>Beli</span>
             <span class="badge-dot" id="navBadge"></span>
         </a>
         <a href="account.html" id="navAccount">
@@ -890,10 +1063,10 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
-            <h2 id="modalTitle"><i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login</h2>
+            <h2 id="modalTitle"><i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:8px;"></i>Login</h2>
             <p id="modalSub">Masukkan email untuk login atau daftar.</p>
             <input type="email" class="input-field" id="emailInput" placeholder="email@anda.com" value="demo@silverchain.io" />
-            <input type="password" class="input-field" id="passwordInput" placeholder="Password (min 4 karakter)" value="123456" />
+            <input type="password" class="input-field" id="passwordInput" placeholder="Password (min 4)" value="123456" />
             <button class="btn-modal" id="actionBtn"><i class="fas fa-check"></i> Login</button>
             <div class="error-msg" id="loginError"><i class="fas fa-exclamation-circle"></i> Harap isi semua bidang.</div>
             <div class="success-msg" id="loginSuccess"><i class="fas fa-check-circle"></i> Berhasil!</div>
@@ -914,7 +1087,7 @@
             CURRENT_USER: 'silverchain_current_user'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
-        const TARGET_USDT = 1000000; // Target 1 Juta USDT
+        const TARGET_USDT = 1000000;
 
         let usersDB = [];
         let depositsDB = [];
@@ -945,7 +1118,6 @@
                 const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
                 if (deposits) {
                     depositsDB = JSON.parse(deposits);
-                    console.log('✅ Deposits loaded:', depositsDB.length, 'items');
                 } else {
                     depositsDB = [
                         { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130,
@@ -960,7 +1132,6 @@
                             txHash: '0xmno345...', status: 'pending', timestamp: Date.now() - 900000 }
                     ];
                     localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
-                    console.log('📦 Default deposits created');
                 }
 
                 const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
@@ -974,9 +1145,7 @@
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
                 }
-            } catch (e) { 
-                console.error('❌ Load error:', e);
-            }
+            } catch (e) { console.error('Load error:', e); }
         }
 
         function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
@@ -989,20 +1158,16 @@
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
         // ============================================================
-        // FUNGSI UTAMA — Acuan USDT
+        // FUNGSI UTAMA
         // ============================================================
         function getTotalUSDT() {
-            // Hanya ambil deposit yang statusnya 'approved'
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
-            const total = approved.reduce((sum, d) => sum + d.usdt, 0);
-            console.log('💰 Total USDT terkumpul (approved):', total);
-            return total;
+            return approved.reduce((sum, d) => sum + d.usdt, 0);
         }
 
         function getTotalSCTMinted() {
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
-            const total = approved.reduce((sum, d) => sum + d.total, 0);
-            return total;
+            return approved.reduce((sum, d) => sum + d.total, 0);
         }
 
         function formatNumber(num) {
@@ -1021,8 +1186,6 @@
         // UPDATE UI
         // ============================================================
         function updateUI() {
-            console.log('🔄 Updating UI...');
-
             const isLoggedIn = !!currentUser;
 
             // Badge
@@ -1042,7 +1205,7 @@
                 `;
             } else {
                 heroContainer.innerHTML = `
-                    <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
+                    <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
                 `;
                 document.getElementById('loginBtn').addEventListener('click', function() {
                     document.getElementById('loginModal').classList.add('active');
@@ -1051,18 +1214,13 @@
                 });
             }
 
-            // ===== PROGRESS BAR — ACUAN USDT =====
+            // ===== PROGRESS BAR =====
             const totalUSDT = getTotalUSDT();
             const pct = Math.min((totalUSDT / TARGET_USDT) * 100, 100);
-            
-            const progressFill = document.getElementById('progressFill');
-            progressFill.style.width = pct + '%';
-            
-            document.getElementById('counterDisplay').textContent = formatCurrency(totalUSDT) + ' USDT';
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('counterDisplay').innerHTML = formatCurrency(totalUSDT) + ' <small>USDT</small>';
 
-            console.log(`📊 Progress USDT: ${pct.toFixed(1)}% | Total: $${totalUSDT}`);
-
-            // ===== STATS: Token Dicetak =====
+            // ===== STATS =====
             const totalSCT = getTotalSCTMinted();
             document.getElementById('statSold').textContent = formatNumber(totalSCT);
 
@@ -1075,7 +1233,7 @@
 
             const grid = document.getElementById('memberGrid');
             if (sorted.length === 0) {
-                grid.innerHTML = `<div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1;">Belum ada member aktif</div>`;
+                grid.innerHTML = `<div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.8rem;">Belum ada member aktif</div>`;
             } else {
                 let html = '';
                 sorted.slice(0, 8).forEach(([email, total], index) => {
@@ -1093,8 +1251,8 @@
                 });
                 if (sorted.length > 8) {
                     html += `
-                        <div class="member-card-item" style="border-style:dashed; border-color:rgba(80,140,255,0.08);">
-                            <div style="color:#5a8ac0; font-size:0.7rem; text-align:center; width:100%;">
+                        <div class="member-card-item" style="border-style:dashed;">
+                            <div style="color:#5a8ac0; font-size:0.65rem; text-align:center; width:100%;">
                                 +${sorted.length - 8} lainnya
                             </div>
                         </div>
@@ -1105,12 +1263,12 @@
         }
 
         // ============================================================
-        // AUTH (sama seperti sebelumnya)
+        // AUTH
         // ============================================================
         function registerUser(email, password) {
             if (findUser(email)) return { success: false, msg: 'Email sudah terdaftar.' };
             if (!email || !email.includes('@') || password.length < 4) {
-                return { success: false, msg: 'Email atau password tidak valid (min 4 karakter).' };
+                return { success: false, msg: 'Email atau password tidak valid (min 4).' };
             }
             const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
             usersDB.push({ email, password, refCode, referredBy: null });
@@ -1120,7 +1278,7 @@
 
         function loginUser(email, password) {
             const user = findUser(email);
-            if (!user) return { success: false, msg: 'Email tidak ditemukan. Silakan daftar.' };
+            if (!user) return { success: false, msg: 'Email tidak ditemukan.' };
             if (user.password !== password) return { success: false, msg: 'Password salah.' };
             return { success: true, msg: 'Login berhasil!', user };
         }
@@ -1134,7 +1292,7 @@
             success.classList.remove('show');
 
             if (!email || !email.includes('@') || password.length < 4) {
-                error.textContent = 'Harap masukkan email dan password yang valid (min 4 karakter).';
+                error.textContent = 'Harap masukkan email dan password yang valid.';
                 error.classList.add('show');
                 return;
             }
@@ -1162,7 +1320,7 @@
                 success.classList.add('show');
                 document.getElementById('switchLabel').textContent = 'Daftar akun baru';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
+                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:8px;"></i>Login';
                 document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar akun baru';
@@ -1182,14 +1340,14 @@
             if (isLogin) {
                 document.getElementById('switchLabel').textContent = 'Kembali ke Login';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-user-plus" style="color:#4a8aff; margin-right:10px;"></i>Daftar';
+                    '<i class="fas fa-user-plus" style="color:#4a8aff; margin-right:8px;"></i>Daftar';
                 document.getElementById('modalSub').textContent = 'Buat akun baru.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali ke Login';
             } else {
                 document.getElementById('switchLabel').textContent = 'Daftar akun baru';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
+                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:8px;"></i>Login';
                 document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar akun baru';
@@ -1216,7 +1374,6 @@
         // ============================================================
         window.addEventListener('storage', function(e) {
             if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS) {
-                console.log('🔄 Storage changed, reloading data...');
                 loadData();
                 updateUI();
             }
@@ -1242,14 +1399,10 @@
         function forceFixData() {
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
             if (approved.length === 0 && depositsDB.length > 0) {
-                console.warn('⚠️ Tidak ada deposit approved! Mengubah beberapa menjadi approved...');
                 depositsDB.forEach((d, index) => {
-                    if (index < 2) {
-                        d.status = 'approved';
-                    }
+                    if (index < 2) d.status = 'approved';
                 });
                 saveDeposits();
-                console.log('✅ Force fix: beberapa deposit diubah menjadi approved');
             }
         }
 
@@ -1261,19 +1414,12 @@
         updateUI();
 
         setInterval(() => {
-            const oldTotal = getTotalUSDT();
             loadData();
             updateUI();
-            const newTotal = getTotalUSDT();
-            if (oldTotal !== newTotal) {
-                console.log('🔄 Data updated! USDT changed:', oldTotal, '→', newTotal);
-            }
-        }, 1000);
+        }, 2000);
 
         console.log('🟢 SilverChain Landing Page siap.');
-        console.log('👑 Owner:', OWNER_EMAIL);
-        console.log('💰 Total USDT terkumpul:', getTotalUSDT());
-        console.log('📦 Deposits DB:', depositsDB);
+        console.log('💰 Total USDT:', getTotalUSDT());
     </script>
 </body>
 </html>
