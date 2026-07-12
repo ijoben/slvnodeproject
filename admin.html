@@ -149,6 +149,44 @@
         .btn-reject:hover {
             background: rgba(255, 60, 60, 0.25);
         }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin: 1rem 0 1.5rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            padding-bottom: 0.3rem;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            color: #5a8ac0;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .tab-btn:hover {
+            color: #8ab8ff;
+            background: rgba(60, 120, 255, 0.05);
+        }
+        .tab-btn.active {
+            color: #7aaeff;
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== PAYMENT SETTINGS ===== */
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
             border-radius: 1.2rem;
@@ -161,37 +199,91 @@
             flex-wrap: wrap;
             align-items: center;
             gap: 0.8rem;
-            margin: 0.3rem 0;
+            margin: 0.5rem 0;
         }
         .settings-group label {
             color: #8ab0e6;
             font-size: 0.8rem;
             min-width: 120px;
         }
-        .settings-group input {
+        .settings-group input[type="text"],
+        .settings-group input[type="number"] {
             background: rgba(8, 20, 48, 0.5);
             border: 1px solid rgba(80, 140, 255, 0.06);
             border-radius: 60px;
-            padding: 0.3rem 1rem;
+            padding: 0.4rem 1rem;
             color: #e6edf5;
             font-size: 0.85rem;
-            width: 80px;
             outline: none;
+            flex: 1;
+            min-width: 150px;
         }
-        .settings-group input:focus {
+        .settings-group input[type="text"]:focus,
+        .settings-group input[type="number"]:focus {
             border-color: rgba(80, 140, 255, 0.2);
         }
-        .btn-save {
+        .settings-group input[type="file"] {
+            color: #8ab0e6;
+            font-size: 0.8rem;
+        }
+        .settings-group .btn-save {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
-            padding: 0.2rem 1rem;
+            padding: 0.3rem 1.2rem;
             color: #8ab8ff;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             cursor: pointer;
+            transition: 0.1s;
         }
-        .btn-save:hover {
+        .settings-group .btn-save:hover {
             background: rgba(60, 120, 255, 0.2);
+        }
+        .settings-group .qr-preview {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .settings-group .qr-preview img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            background: #fff;
+        }
+        .settings-group .qr-preview .placeholder {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #4a8aff;
+            border: 2px dashed rgba(80, 140, 255, 0.15);
+        }
+
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #4a8aff;
+            border-radius: 40px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            color: #b0ccff;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
         }
 
         /* BOTTOM NAV */
@@ -244,26 +336,24 @@
             color: #b0ccff;
         }
 
-        .toast-message {
-            background: rgba(12, 28, 60, 0.8);
-            backdrop-filter: blur(8px);
-            border-left: 4px solid #4a8aff;
-            border-radius: 40px;
-            padding: 0.6rem 1.4rem;
-            font-size: 0.85rem;
-            color: #b0ccff;
-            margin-bottom: 0.8rem;
-            display: none;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .toast-message.show {
-            display: flex;
-        }
-
         @media (max-width: 700px) {
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+            .tabs {
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+            .tab-btn {
+                text-align: center;
+            }
+            .settings-group .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .settings-group input[type="text"],
+            .settings-group input[type="number"] {
+                min-width: unset;
             }
         }
         @media (max-width: 480px) {
@@ -284,6 +374,11 @@
             .bottom-nav a span {
                 font-size: 0.5rem;
             }
+            .settings-group .qr-preview {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -298,69 +393,120 @@
                 <i class="fas fa-user-shield" style="color:#4a8aff; margin-right:10px;"></i>Panel Admin
                 <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
             </h2>
-            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, dan pengaturan bonus</p>
+            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, pengaturan bonus & payment</p>
 
-            <!-- Settings -->
-            <div class="settings-group">
-                <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
-                <div class="row">
-                    <label>Bonus (%)</label>
-                    <input type="number" id="adminBonusPercent" value="10" min="0" max="100" />
-                    <label style="min-width:80px;">Referral (%)</label>
-                    <input type="number" id="adminRefPercent" value="3" min="0" max="100" />
-                    <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Simpan</button>
+            <!-- ===== TABS ===== -->
+            <div class="tabs" id="tabContainer">
+                <button class="tab-btn active" data-tab="tabStats"><i class="fas fa-chart-bar"></i> Statistik</button>
+                <button class="tab-btn" data-tab="tabPending"><i class="fas fa-clock"></i> Pending</button>
+                <button class="tab-btn" data-tab="tabUsers"><i class="fas fa-users"></i> Pengguna</button>
+                <button class="tab-btn" data-tab="tabSettings"><i class="fas fa-sliders-h"></i> Pengaturan</button>
+                <button class="tab-btn" data-tab="tabPayment"><i class="fas fa-credit-card"></i> Payment</button>
+            </div>
+
+            <!-- ===== TAB 1: STATISTIK ===== -->
+            <div class="tab-content active" id="tabStats">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat"><div class="num" id="adminTotalUsers">0</div><div class="label">Total Pengguna</div></div>
+                    <div class="admin-stat"><div class="num" id="adminTotalDeposits">0</div><div class="label">Total Deposit</div></div>
+                    <div class="admin-stat"><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending</div></div>
+                    <div class="admin-stat"><div class="num" id="adminTotalSCTMinted">0</div><div class="label">Total SCT Dicetak</div></div>
                 </div>
             </div>
 
-            <!-- Stats -->
-            <div class="admin-stats-grid">
-                <div class="admin-stat"><div class="num" id="adminTotalUsers">0</div><div class="label">Total Pengguna</div></div>
-                <div class="admin-stat"><div class="num" id="adminTotalDeposits">0</div><div class="label">Total Deposit</div></div>
-                <div class="admin-stat"><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending</div></div>
-                <div class="admin-stat"><div class="num" id="adminTotalSCTMinted">0</div><div class="label">Total SCT Dicetak</div></div>
+            <!-- ===== TAB 2: DEPOSIT PENDING ===== -->
+            <div class="tab-content" id="tabPending">
+                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                    <i class="fas fa-clock"></i> Deposit Pending
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>USDT</th>
+                                <th>Bonus</th>
+                                <th>Ref</th>
+                                <th>Total SCT</th>
+                                <th>Hash TX</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminPendingBody">
+                            <tr><td colspan="7" class="empty">Tidak ada pending</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- Pending dengan scroll -->
-            <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
-                <i class="fas fa-clock"></i> Deposit Pending
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>USDT</th>
-                            <th>Bonus</th>
-                            <th>Ref</th>
-                            <th>Total SCT</th>
-                            <th>Hash TX</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminPendingBody">
-                        <tr><td colspan="7" class="empty">Tidak ada pending</td></tr>
-                    </tbody>
-                </table>
+            <!-- ===== TAB 3: SEMUA PENGGUNA ===== -->
+            <div class="tab-content" id="tabUsers">
+                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                    <i class="fas fa-users"></i> Semua Pengguna
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Kode Ref</th>
+                                <th>Direferral</th>
+                                <th>Total SCT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserBody">
+                            <tr><td colspan="4" class="empty">Memuat...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- All Users dengan scroll -->
-            <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
-                <i class="fas fa-users"></i> Semua Pengguna
+            <!-- ===== TAB 4: PENGATURAN BONUS & REFERRAL ===== -->
+            <div class="tab-content" id="tabSettings">
+                <div class="settings-group">
+                    <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
+                    <div class="row">
+                        <label>Bonus (%)</label>
+                        <input type="number" id="adminBonusPercent" value="10" min="0" max="100" />
+                        <label style="min-width:80px;">Referral (%)</label>
+                        <input type="number" id="adminRefPercent" value="3" min="0" max="100" />
+                        <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+                </div>
             </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Kode Ref</th>
-                            <th>Direferral</th>
-                            <th>Total SCT</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminUserBody">
-                        <tr><td colspan="4" class="empty">Memuat...</td></tr>
-                    </tbody>
-                </table>
+
+            <!-- ===== TAB 5: PAYMENT (USDT Address & QRIS) ===== -->
+            <div class="tab-content" id="tabPayment">
+                <div class="settings-group">
+                    <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
+
+                    <!-- USDT Address -->
+                    <div class="row">
+                        <label><i class="fab fa-ethereum"></i> USDT Address</label>
+                        <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" />
+                        <button class="btn-save" id="saveUsdtBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+
+                    <!-- QRIS Upload -->
+                    <div class="row" style="margin-top:0.8rem;">
+                        <label><i class="fas fa-qrcode"></i> QRIS Image</label>
+                        <input type="file" id="qrisUpload" accept="image/*" />
+                        <button class="btn-save" id="uploadQrisBtn"><i class="fas fa-upload"></i> Upload</button>
+                    </div>
+
+                    <!-- QRIS Preview -->
+                    <div class="qr-preview" id="qrisPreviewContainer">
+                        <div class="placeholder" id="qrisPlaceholder">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <img id="qrisPreviewImg" style="display:none;" alt="QRIS" />
+                        <span style="color:#5a8ac0; font-size:0.75rem;" id="qrisStatus">Belum ada QRIS</span>
+                    </div>
+
+                    <p style="color:#5a8ac0; font-size:0.7rem; margin-top:0.3rem;">
+                        <i class="fas fa-info-circle"></i> Address USDT & QRIS akan digunakan di halaman pembelian token.
+                    </p>
+                </div>
             </div>
 
             <div style="margin-top:1rem; font-size:0.7rem; color:#5a8ac0; text-align:center; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
@@ -395,7 +541,9 @@
             DEPOSITS: 'silverchain_deposits',
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
-            CURRENT_USER: 'silverchain_current_user'
+            CURRENT_USER: 'silverchain_current_user',
+            USDT_ADDRESS: 'silverchain_usdt_address',
+            QRIS_DATA: 'silverchain_qris_data'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
 
@@ -424,6 +572,9 @@
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
                 }
+                // Load USDT address
+                const usdt = localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS);
+                if (usdt) document.getElementById('adminUsdtAddress').value = usdt;
             } catch (e) { console.warn('Load error:', e); }
         }
 
@@ -450,6 +601,32 @@
         }
 
         // ============================================================
+        // TABS
+        // ============================================================
+        function initTabs() {
+            const btns = document.querySelectorAll('.tab-btn');
+            const contents = {
+                tabStats: document.getElementById('tabStats'),
+                tabPending: document.getElementById('tabPending'),
+                tabUsers: document.getElementById('tabUsers'),
+                tabSettings: document.getElementById('tabSettings'),
+                tabPayment: document.getElementById('tabPayment')
+            };
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    btns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    Object.keys(contents).forEach(key => {
+                        contents[key].classList.remove('active');
+                    });
+                    const target = contents[this.dataset.tab];
+                    if (target) target.classList.add('active');
+                });
+            });
+        }
+
+        // ============================================================
         // UI
         // ============================================================
         function updateUI() {
@@ -467,12 +644,20 @@
                 document.getElementById('adminBonusPercent').disabled = true;
                 document.getElementById('adminRefPercent').disabled = true;
                 document.getElementById('saveSettingsBtn').style.display = 'none';
+                document.getElementById('adminUsdtAddress').disabled = true;
+                document.getElementById('saveUsdtBtn').style.display = 'none';
+                document.getElementById('qrisUpload').disabled = true;
+                document.getElementById('uploadQrisBtn').style.display = 'none';
                 return;
             }
 
             document.getElementById('adminBonusPercent').disabled = false;
             document.getElementById('adminRefPercent').disabled = false;
             document.getElementById('saveSettingsBtn').style.display = 'inline-block';
+            document.getElementById('adminUsdtAddress').disabled = false;
+            document.getElementById('saveUsdtBtn').style.display = 'inline-block';
+            document.getElementById('qrisUpload').disabled = false;
+            document.getElementById('uploadQrisBtn').style.display = 'inline-block';
             document.getElementById('adminBonusPercent').value = bonusPercent;
             document.getElementById('adminRefPercent').value = refPercent;
 
@@ -551,7 +736,59 @@
                 });
                 document.getElementById('adminUserBody').innerHTML = html;
             }
+
+            // QRIS Preview
+            loadQrisPreview();
         }
+
+        // ============================================================
+        // QRIS FUNCTIONS
+        // ============================================================
+        function loadQrisPreview() {
+            try {
+                const qrisData = localStorage.getItem(STORAGE_KEYS.QRIS_DATA);
+                const placeholder = document.getElementById('qrisPlaceholder');
+                const img = document.getElementById('qrisPreviewImg');
+                const status = document.getElementById('qrisStatus');
+
+                if (qrisData) {
+                    img.src = qrisData;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    status.textContent = '✅ QRIS terupload';
+                    status.style.color = '#6aff8a';
+                } else {
+                    img.style.display = 'none';
+                    placeholder.style.display = 'flex';
+                    status.textContent = 'Belum ada QRIS';
+                    status.style.color = '#5a8ac0';
+                }
+            } catch (e) { console.warn('QRIS load error:', e); }
+        }
+
+        document.getElementById('uploadQrisBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('qrisUpload');
+            const file = fileInput.files[0];
+            if (!file) {
+                showToast('❌ Pilih file gambar terlebih dahulu.');
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                showToast('❌ Harap upload file gambar.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    localStorage.setItem(STORAGE_KEYS.QRIS_DATA, e.target.result);
+                    showToast('✅ QRIS berhasil diupload!');
+                    loadQrisPreview();
+                } catch (err) {
+                    showToast('❌ Gagal menyimpan QRIS. Ukuran terlalu besar?');
+                }
+            };
+            reader.readAsDataURL(file);
+        });
 
         // ============================================================
         // ACTIONS
@@ -569,10 +806,21 @@
             showToast(`✅ Pengaturan disimpan! Bonus: ${bonusPercent}%, Referral: ${refPercent}%`);
         });
 
+        document.getElementById('saveUsdtBtn').addEventListener('click', function() {
+            const address = document.getElementById('adminUsdtAddress').value.trim();
+            if (!address || address.length < 10) {
+                showToast('❌ Masukkan address USDT yang valid.');
+                return;
+            }
+            localStorage.setItem(STORAGE_KEYS.USDT_ADDRESS, address);
+            showToast('✅ Address USDT berhasil disimpan!');
+        });
+
         // ============================================================
         // INIT
         // ============================================================
         loadData();
+        initTabs();
         updateUI();
 
         setInterval(() => {
