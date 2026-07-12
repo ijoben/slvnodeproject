@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET & GLOBAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -346,74 +345,28 @@
             letter-spacing: 0.5px;
         }
 
-        /* LOGIN BAR */
-        .login-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.8rem;
-            background: rgba(12, 28, 60, 0.3);
-            padding: 0.6rem 1.5rem;
-            border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            margin: 0.5rem 0 0.8rem;
-        }
-        .login-bar .status {
-            font-size: 0.85rem;
-            color: #8ab0e6;
-        }
-        .login-bar .status i {
-            color: #4a8aff;
-            margin-right: 6px;
-        }
-        .login-bar .status .highlight {
-            color: #7aaeff;
-            font-weight: 600;
-        }
-        .login-bar .btn-login {
+        /* BUTTON LOGIN DI HERO */
+        .btn-hero-login {
             background: rgba(60, 120, 255, 0.12);
             border: 1px solid rgba(80, 140, 255, 0.15);
             border-radius: 60px;
-            padding: 0.3rem 1.2rem;
+            padding: 0.6rem 2rem;
             color: #8ab8ff;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: 0.15s;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .login-bar .btn-login:hover {
+        .btn-hero-login:hover {
             background: rgba(60, 120, 255, 0.2);
             border-color: rgba(80, 140, 255, 0.3);
         }
-        .login-bar .btn-login i {
-            margin-right: 6px;
+        .btn-hero-login i {
             color: #4a8aff;
-        }
-        .login-bar .user-badge {
-            background: rgba(60, 120, 255, 0.08);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #b0ccff;
-            font-size: 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .login-bar .user-badge i {
-            color: #4a8aff;
-            margin-right: 6px;
-        }
-        .login-bar .btn-logout {
-            background: transparent;
-            border: 1px solid rgba(255, 80, 80, 0.15);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #ff6a6a;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .login-bar .btn-logout:hover {
-            background: rgba(255, 80, 80, 0.1);
         }
 
         .btn-outline {
@@ -600,7 +553,7 @@
             margin: 0.8rem 0;
         }
 
-        /* ===== BOTTOM NAV (3 menu) ===== */
+        /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -650,20 +603,16 @@
         .bottom-nav a:hover {
             color: #b0ccff;
         }
-        .bottom-nav a.hidden-nav {
-            display: none;
-        }
-
-        /* Badge notif kecil */
         .bottom-nav a .badge-dot {
             position: absolute;
             top: 2px;
             right: 4px;
             width: 8px;
             height: 8px;
-            background: #4a8aff;
+            background: #f97316;
             border-radius: 50%;
             border: 2px solid rgba(12, 28, 60, 0.9);
+            display: none;
         }
 
         @media (max-width: 700px) {
@@ -672,11 +621,6 @@
             }
             .grid-3 {
                 grid-template-columns: 1fr 1fr;
-            }
-            .login-bar {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
             }
             .member-bar {
                 flex-direction: column;
@@ -716,16 +660,6 @@
 </head>
 <body>
     <div class="container">
-
-        <!-- ===== LOGIN BAR ===== -->
-        <div class="login-bar" id="loginBar">
-            <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login</div>
-            <button class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
-            <div id="userInfo" style="display:none; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-                <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">user@example.com</span></span>
-                <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-            </div>
-        </div>
 
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
@@ -771,9 +705,7 @@
             <div style="text-align:center; padding:1rem 0;">
                 <p style="color:#8ab0e6; font-size:0.95rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda dengan SilverChain</strong></p>
                 <p style="color:#5a8ac0; font-size:0.8rem; margin-top:0.3rem;">Login atau daftar untuk membeli token dan mulai berinvestasi</p>
-                <button class="btn-login" style="margin-top:1rem; padding:0.6rem 2rem; font-size:1rem; background:rgba(60,120,255,0.15); border:1px solid rgba(80,140,255,0.2); border-radius:60px; color:#8ab8ff; cursor:pointer;" onclick="document.getElementById('loginBtn').click()">
-                    <i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang
-                </button>
+                <button class="btn-hero-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar Sekarang</button>
             </div>
 
             <div style="text-align:center; font-size:0.7rem; color:#4a7ab0; margin-top:0.8rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
@@ -910,7 +842,7 @@
 
     </div>
 
-    <!-- ===== BOTTOM NAV (3 menu) ===== -->
+    <!-- ===== BOTTOM NAV ===== -->
     <nav class="bottom-nav">
         <a href="index.html" class="active" id="navHome">
             <i class="fas fa-home"></i>
@@ -919,7 +851,7 @@
         <a href="dashboard.html" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
             <span>Beli Token</span>
-            <span class="badge-dot" id="navBadge" style="display:none;"></span>
+            <span class="badge-dot" id="navBadge"></span>
         </a>
         <a href="account.html" id="navAccount">
             <i class="fas fa-user"></i>
@@ -1040,31 +972,18 @@
         // ============================================================
         function updateUI() {
             const isLoggedIn = !!currentUser;
-            const status = document.getElementById('loginStatus');
-            const userInfo = document.getElementById('userInfo');
-            const userEmail = document.getElementById('userEmailDisplay');
 
+            // Badge di menu Beli Token
+            const badge = document.getElementById('navBadge');
             if (isLoggedIn) {
-                status.innerHTML =
-                    `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${currentUser.email}</strong>`;
-                userInfo.style.display = 'flex';
-                userEmail.textContent = currentUser.email;
-                document.getElementById('loginBtn').style.display = 'none';
-
-                // Tampilkan badge di menu Beli Token jika ada pending
                 const pending = depositsDB.filter(d => d.email === currentUser.email && d.status === 'pending');
-                const badge = document.getElementById('navBadge');
                 if (pending.length > 0) {
                     badge.style.display = 'block';
                 } else {
                     badge.style.display = 'none';
                 }
             } else {
-                status.innerHTML =
-                    `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — silakan daftar atau login`;
-                userInfo.style.display = 'none';
-                document.getElementById('loginBtn').style.display = 'inline-block';
-                document.getElementById('navBadge').style.display = 'none';
+                badge.style.display = 'none';
             }
 
             // Progress
@@ -1214,17 +1133,6 @@
             if (e.target === this) this.classList.remove('active');
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            currentUser = null;
-            saveCurrentUser(null);
-            updateUI();
-            const toast = document.getElementById('toastMessage');
-            document.getElementById('toastText').textContent = '👋 Berhasil keluar.';
-            toast.style.display = 'flex';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
-            window.location.href = 'index.html';
-        });
-
         // ============================================================
         // FAQ ACCORDION
         // ============================================================
@@ -1238,13 +1146,6 @@
             });
         });
         document.querySelector('.faq-item')?.classList.add('active');
-
-        // ============================================================
-        // NAVIGATION ACTIVE STATE
-        // ============================================================
-        // Di index.html, menu Beranda aktif
-        document.querySelectorAll('.bottom-nav a').forEach(a => a.classList.remove('active'));
-        document.getElementById('navHome').classList.add('active');
 
         // ============================================================
         // INIT
