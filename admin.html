@@ -38,6 +38,10 @@
             border: 1px solid rgba(80, 140, 255, 0.08);
             transition: all 0.25s;
         }
+        .section-card:hover {
+            border-color: rgba(80, 140, 255, 0.2);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(60, 120, 255, 0.03);
+        }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -86,30 +90,42 @@
             color: #5a8ac0;
             text-transform: uppercase;
         }
-        .admin-table {
+
+        /* ===== TABLE WRAPPER UNTUK SCROLL HORIZONTAL ===== */
+        .table-wrapper {
             width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 0.5rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+        }
+        .table-wrapper table {
+            width: 100%;
+            min-width: 700px;
             border-collapse: collapse;
             font-size: 0.75rem;
-            margin-top: 0.5rem;
         }
-        .admin-table th {
+        .table-wrapper table th {
             text-align: left;
             color: #5a8ac0;
             font-weight: 600;
-            padding: 0.3rem 0.2rem;
+            padding: 0.3rem 0.8rem;
             border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            white-space: nowrap;
         }
-        .admin-table td {
-            padding: 0.3rem 0.2rem;
+        .table-wrapper table td {
+            padding: 0.3rem 0.8rem;
             color: #8ab0e6;
             border-bottom: 1px solid rgba(80, 140, 255, 0.03);
-            font-size: 0.7rem;
+            white-space: nowrap;
         }
-        .admin-table .empty {
+        .table-wrapper table .empty {
             color: #5a8ac0;
             text-align: center;
             padding: 0.8rem 0;
         }
+
         .btn-approve {
             background: rgba(60, 220, 80, 0.15);
             border: 1px solid rgba(60, 220, 80, 0.2);
@@ -188,37 +204,46 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(12, 28, 60, 0.9);
+            background: rgba(12, 28, 60, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid rgba(80, 140, 255, 0.08);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0.5rem 0 0.7rem;
+            padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
             color: #5a8ac0;
             text-decoration: none;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
-            transition: 0.15s;
+            gap: 3px;
+            transition: 0.2s;
             padding: 0.2rem 0.8rem;
             border-radius: 60px;
+            min-width: 60px;
+            position: relative;
         }
         .bottom-nav a i {
             font-size: 1.3rem;
+            transition: 0.2s;
+        }
+        .bottom-nav a span {
+            font-size: 0.55rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
         .bottom-nav a.active {
             color: #7aaeff;
         }
         .bottom-nav a.active i {
             color: #4a8aff;
+            text-shadow: 0 0 25px rgba(60, 120, 255, 0.3);
         }
         .bottom-nav a:hover {
             color: #b0ccff;
@@ -247,6 +272,18 @@
             color: #7aaeff;
             font-weight: 600;
         }
+        .login-bar .user-badge {
+            background: rgba(60, 120, 255, 0.08);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .login-bar .user-badge i {
+            color: #4a8aff;
+            margin-right: 6px;
+        }
         .login-bar .btn-logout {
             background: transparent;
             border: 1px solid rgba(255, 80, 80, 0.15);
@@ -260,18 +297,7 @@
         .login-bar .btn-logout:hover {
             background: rgba(255, 80, 80, 0.1);
         }
-        .login-bar .user-badge {
-            background: rgba(60, 120, 255, 0.08);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #b0ccff;
-            font-size: 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .login-bar .user-badge i {
-            color: #4a8aff;
-            margin-right: 6px;
-        }
+
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -308,10 +334,14 @@
             }
             .bottom-nav a {
                 font-size: 0.5rem;
-                padding: 0.1rem 0.4rem;
+                padding: 0.1rem 0.3rem;
+                min-width: 45px;
             }
             .bottom-nav a i {
                 font-size: 1.1rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.5rem;
             }
         }
     </style>
@@ -356,27 +386,48 @@
                 <div class="admin-stat"><div class="num" id="adminTotalSCTMinted">0</div><div class="label">Total SCT Dicetak</div></div>
             </div>
 
-            <!-- Pending -->
+            <!-- Pending dengan scroll -->
             <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
                 <i class="fas fa-clock"></i> Deposit Pending
             </div>
-            <table class="admin-table">
-                <thead><tr><th>User</th><th>USDT</th><th>Bonus</th><th>Ref</th><th>Total SCT</th><th>Hash TX</th><th>Aksi</th></tr></thead>
-                <tbody id="adminPendingBody">
-                    <tr><td colspan="7" class="empty">Tidak ada pending</td></tr>
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>USDT</th>
+                            <th>Bonus</th>
+                            <th>Ref</th>
+                            <th>Total SCT</th>
+                            <th>Hash TX</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminPendingBody">
+                        <tr><td colspan="7" class="empty">Tidak ada pending</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- All Users -->
+            <!-- All Users dengan scroll -->
             <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
                 <i class="fas fa-users"></i> Semua Pengguna
             </div>
-            <table class="admin-table">
-                <thead><tr><th>Email</th><th>Kode Ref</th><th>Direferral</th><th>Total SCT</th></tr></thead>
-                <tbody id="adminUserBody">
-                    <tr><td colspan="4" class="empty">Memuat...</td></tr>
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Kode Ref</th>
+                            <th>Direferral</th>
+                            <th>Total SCT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUserBody">
+                        <tr><td colspan="4" class="empty">Memuat...</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div style="margin-top:1rem; font-size:0.7rem; color:#5a8ac0; text-align:center; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
                 <i class="fas fa-database"></i> Data tersimpan di localStorage
@@ -387,21 +438,17 @@
 
     <!-- ===== BOTTOM NAV ===== -->
     <nav class="bottom-nav">
-        <a href="index.html">
+        <a href="index.html" id="navHome">
             <i class="fas fa-home"></i>
             <span>Beranda</span>
         </a>
-        <a href="dashboard.html">
-            <i class="fas fa-chart-pie"></i>
-            <span>Dashboard</span>
+        <a href="dashboard.html" id="navBuy">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Beli Token</span>
         </a>
-        <a href="admin.html" class="active">
-            <i class="fas fa-user-shield"></i>
-            <span>Admin</span>
-        </a>
-        <a href="#" id="logoutNavBtn">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Keluar</span>
+        <a href="account.html" class="active" id="navAccount">
+            <i class="fas fa-user"></i>
+            <span>Akun</span>
         </a>
     </nav>
 
@@ -458,8 +505,7 @@
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
         function getUserTotalSCT(email) {
-            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total,
-            0);
+            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
         }
 
         function showToast(msg) {
@@ -596,15 +642,6 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-            currentUser = null;
-            updateUI();
-            showToast('👋 Berhasil keluar.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 500);
-        });
-
-        document.getElementById('logoutNavBtn').addEventListener('click', function(e) {
-            e.preventDefault();
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
             currentUser = null;
             updateUI();
