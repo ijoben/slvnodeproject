@@ -218,25 +218,37 @@
             transform: none !important;
             box-shadow: none !important;
         }
-        .history-table {
+
+        /* ===== TABLE WRAPPER UNTUK SCROLL HORIZONTAL ===== */
+        .table-wrapper {
             width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 0.5rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+        }
+        .table-wrapper table {
+            width: 100%;
+            min-width: 700px;
             border-collapse: collapse;
             font-size: 0.8rem;
-            margin-top: 0.5rem;
         }
-        .history-table th {
+        .table-wrapper table th {
             text-align: left;
             color: #5a8ac0;
             font-weight: 600;
-            padding: 0.5rem 0.2rem;
+            padding: 0.5rem 0.8rem;
             border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            white-space: nowrap;
         }
-        .history-table td {
-            padding: 0.5rem 0.2rem;
+        .table-wrapper table td {
+            padding: 0.5rem 0.8rem;
             color: #8ab0e6;
             border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+            white-space: nowrap;
         }
-        .history-table .empty {
+        .table-wrapper table .empty {
             color: #5a8ac0;
             text-align: center;
             padding: 1.5rem 0;
@@ -250,6 +262,7 @@
         .status-rejected {
             color: #ff6a6a;
         }
+
         .ref-link-box {
             background: rgba(8, 20, 48, 0.3);
             border-radius: 60px;
@@ -545,15 +558,27 @@
                 <p style="color:#5a8ac0; font-size:0.65rem; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
             </div>
 
-            <!-- History -->
+            <!-- History dengan scroll horizontal -->
             <div style="margin-top:1.5rem;">
                 <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#4a8aff;"></i> Riwayat Transaksi</h4>
-                <table class="history-table">
-                    <thead><tr><th>Tanggal</th><th>USDT</th><th>Bonus</th><th>Ref</th><th>Total SCT</th><th>Hash TX</th><th>Status</th></tr></thead>
-                    <tbody id="historyBody">
-                        <tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>USDT</th>
+                                <th>Bonus</th>
+                                <th>Ref</th>
+                                <th>Total SCT</th>
+                                <th>Hash TX</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
