@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>SilverChain · Akun</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1228;
+            background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
+            color: #e6edf5;
+            min-height: 100vh;
+            padding: 1.5rem 1rem 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 1050px;
+            width: 100%;
+        }
+        .section-card {
+            background: rgba(18, 34, 72, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2.8rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
+            transition: all 0.25s;
+        }
+        .section-card:hover {
+            border-color: rgba(80, 140, 255, 0.2);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(60, 120, 255, 0.03);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #b0ccff;
+        }
+        .section-title i {
+            color: #6a9eff;
+            font-size: 1.6rem;
+        }
+        .badge-silver {
+            background: rgba(60, 120, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.25rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8ab8ff;
+        }
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #4a8aff;
+            border-radius: 40px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            color: #b0ccff;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
+        }
+
+        /* ===== LOGIN BAR ===== */
+        .login-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(12, 28, 60, 0.3);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin: 0.5rem 0 0.8rem;
+        }
+        .login-bar .status {
+            font-size: 0.85rem;
+            color: #8ab0e6;
+        }
+        .login-bar .status i {
+            color: #4a8aff;
+            margin-right: 6px;
+        }
+        .login-bar .status .highlight {
+            color: #7aaeff;
+            font-weight: 600;
+        }
+        .login-bar .user-badge {
+            background: rgba(60, 120, 255, 0.08);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .login-bar .user-badge i {
+            color: #4a8aff;
+            margin-right: 6px;
+        }
+        .login-bar .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 80, 80, 0.15);
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            color: #ff6a6a;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .login-bar .btn-logout:hover {
+            background: rgba(255, 80, 80, 0.1);
+        }
+
+        /* ===== PROFIL ===== */
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #fff;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 30px rgba(60, 120, 255, 0.2);
+        }
+        .profile-name {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #b0ccff;
+        }
+        .profile-email {
+            text-align: center;
+            color: #8ab0e6;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        .profile-stat {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1.2rem;
+            padding: 0.8rem;
+            text-align: center;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .profile-stat .num {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #b0ccff;
+        }
+        .profile-stat .label {
+            font-size: 0.6rem;
+            color: #5a8ac0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .info-row .label {
+            color: #8ab0e6;
+            font-size: 0.85rem;
+        }
+        .info-row .value {
+            color: #b0ccff;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .info-row .value code {
+            background: rgba(8, 20, 48, 0.3);
+            padding: 0.1rem 0.6rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            color: #8ab8ff;
+        }
+
+        .btn-danger {
+            background: rgba(255, 60, 60, 0.1);
+            border: 1px solid rgba(255, 60, 60, 0.2);
+            border-radius: 60px;
+            padding: 0.7rem 2rem;
+            color: #ff6a6a;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.15s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .btn-danger:hover {
+            background: rgba(255, 60, 60, 0.2);
+        }
+        .btn-danger i {
+            margin-right: 8px;
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(12, 28, 60, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(80, 140, 255, 0.08);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.4rem 0 0.6rem;
+            z-index: 100;
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+        }
+        .bottom-nav a {
+            color: #5a8ac0;
+            text-decoration: none;
+            font-size: 0.55rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            transition: 0.2s;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            min-width: 60px;
+            position: relative;
+        }
+        .bottom-nav a i {
+            font-size: 1.3rem;
+            transition: 0.2s;
+        }
+        .bottom-nav a span {
+            font-size: 0.55rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .bottom-nav a.active {
+            color: #7aaeff;
+        }
+        .bottom-nav a.active i {
+            color: #4a8aff;
+            text-shadow: 0 0 25px rgba(60, 120, 255, 0.3);
+        }
+        .bottom-nav a:hover {
+            color: #b0ccff;
+        }
+
+        @media (max-width: 700px) {
+            .login-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .profile-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .section-card {
+                padding: 1.5rem 1rem;
+            }
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+            .bottom-nav a {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.3rem;
+                min-width: 45px;
+            }
+            .bottom-nav a i {
+                font-size: 1.1rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.5rem;
+            }
+            .info-row {
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== LOGIN BAR ===== -->
+        <div class="login-bar" id="loginBar">
+            <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Memuat...</span></div>
+            <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">-</span></span>
+            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+
+        <!-- ===== PROFIL ===== -->
+        <div class="section-card">
+            <div class="profile-avatar" id="profileAvatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-name" id="profileName">-</div>
+            <div class="profile-email" id="profileEmail">-</div>
+
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="num" id="statTotalSCT">0</div>
+                    <div class="label">Total SCT</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="num" id="statPurchases">0</div>
+                    <div class="label">Pembelian</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="num" id="statPending">0</div>
+                    <div class="label">Pending</div>
+                </div>
+            </div>
+
+            <div style="margin:1rem 0;">
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-envelope"></i> Email</span>
+                    <span class="value" id="infoEmail">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-code"></i> Kode Referral</span>
+                    <span class="value"><code id="infoRefCode">-</code></span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-link"></i> Link Referral</span>
+                    <span class="value" style="font-size:0.7rem; font-family:monospace;" id="infoRefLink">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-user-tag"></i> Role</span>
+                    <span class="value" id="infoRole">Member</span>
+                </div>
+            </div>
+
+            <button class="btn-danger" id="logoutBtn2"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="bottom-nav">
+        <a href="index.html" id="navHome">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="dashboard.html" id="navBuy">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Beli Token</span>
+        </a>
+        <a href="account.html" class="active" id="navAccount">
+            <i class="fas fa-user"></i>
+            <span>Akun</span>
+        </a>
+    </nav>
+
+    <script>
+        // ============================================================
+        // STORAGE KEYS
+        // ============================================================
+        const STORAGE_KEYS = {
+            USERS: 'silverchain_users',
+            DEPOSITS: 'silverchain_deposits',
+            BONUS: 'silverchain_bonus',
+            REF: 'silverchain_ref',
+            CURRENT_USER: 'silverchain_current_user'
+        };
+        const OWNER_EMAIL = 'admin@silverchain.io';
+
+        let usersDB = [];
+        let depositsDB = [];
+        let currentUser = null;
+
+        // ============================================================
+        // LOAD
+        // ============================================================
+        function loadData() {
+            try {
+                const users = localStorage.getItem(STORAGE_KEYS.USERS);
+                if (users) usersDB = JSON.parse(users);
+                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
+                if (deposits) depositsDB = JSON.parse(deposits);
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const found = usersDB.find(u => u.email === data.email);
+                    if (found) currentUser = found;
+                }
+            } catch (e) { console.warn('Load error:', e); }
+        }
+
+        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+
+        function getUserTotalSCT(email) {
+            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // UI
+        // ============================================================
+        function updateUI() {
+            const isLoggedIn = !!currentUser;
+
+            document.getElementById('loginStatus').innerHTML = isLoggedIn ?
+                `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${currentUser.email}</strong>` :
+                `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — <a href="index.html" style="color:#4a8aff;">Login di sini</a>`;
+
+            document.getElementById('userEmailDisplay').textContent = isLoggedIn ? currentUser.email : '-';
+
+            if (!isLoggedIn) {
+                document.getElementById('profileName').textContent = '-';
+                document.getElementById('profileEmail').textContent = 'Silakan login terlebih dahulu';
+                document.getElementById('statTotalSCT').textContent = '0';
+                document.getElementById('statPurchases').textContent = '0';
+                document.getElementById('statPending').textContent = '0';
+                document.getElementById('infoEmail').textContent = '-';
+                document.getElementById('infoRefCode').textContent = '-';
+                document.getElementById('infoRefLink').textContent = '-';
+                document.getElementById('infoRole').textContent = '-';
+                return;
+            }
+
+            const user = findUser(currentUser.email);
+            if (!user) return;
+
+            // Profil
+            document.getElementById('profileName').textContent = currentUser.email.split('@')[0];
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('infoEmail').textContent = currentUser.email;
+            document.getElementById('infoRefCode').textContent = user.refCode || '-';
+            document.getElementById('infoRefLink').textContent = `https://silverchain.io/ref/${user.refCode || ''}`;
+
+            const isOwner = currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+            document.getElementById('infoRole').textContent = isOwner ? '👑 Owner / Admin' : 'Member';
+
+            // Stats
+            const deposits = depositsDB.filter(d => d.email === currentUser.email);
+            const approved = deposits.filter(d => d.status === 'approved');
+            const pending = deposits.filter(d => d.status === 'pending');
+            document.getElementById('statTotalSCT').textContent = approved.reduce((sum, d) => sum + d.total, 0).toFixed(1);
+            document.getElementById('statPurchases').textContent = approved.length;
+            document.getElementById('statPending').textContent = pending.length;
+        }
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function logout() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            updateUI();
+            showToast('👋 Berhasil keluar.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 500);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+        document.getElementById('logoutBtn2').addEventListener('click', logout);
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadData();
+        updateUI();
+
+        // Auto update
+        setInterval(() => {
+            loadData();
+            updateUI();
+        }, 3000);
+
+        console.log('🟢 SilverChain Account Page siap.');
+    </script>
+</body>
+</html>
