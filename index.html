@@ -187,7 +187,7 @@
             color: #8ab8ff;
         }
 
-        /* ===== HEADER ===== */
+        /* HEADER */
         .header {
             display: flex;
             justify-content: center;
@@ -327,7 +327,6 @@
             flex-shrink: 0;
         }
 
-        /* BUTTON LOGIN */
         .btn-hero {
             background: rgba(60, 120, 255, 0.12);
             border: 1px solid rgba(80, 140, 255, 0.15);
@@ -362,7 +361,6 @@
             cursor: default;
         }
 
-        /* CONTACT - mobile first */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -424,7 +422,6 @@
             display: flex;
         }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -547,7 +544,6 @@
             margin: 0.8rem 0;
         }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -668,7 +664,7 @@
 <body>
     <div class="container">
 
-        <!-- ===== HEADER ===== -->
+        <!-- HEADER -->
         <div class="header">
             <div class="brand-center">
                 <i class="fas fa-coins"></i>
@@ -679,7 +675,7 @@
 
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
-        <!-- ===== HERO ===== -->
+        <!-- HERO -->
         <div class="section-card hero">
             <!-- PROGRESS -->
             <div class="progress-wrap">
@@ -723,7 +719,7 @@
             </div>
         </div>
 
-        <!-- ===== MEMBER AKTIF ===== -->
+        <!-- MEMBER AKTIF -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
             <div class="member-grid" id="memberGrid">
@@ -731,7 +727,7 @@
             </div>
         </div>
 
-        <!-- ===== ABOUT ===== -->
+        <!-- ABOUT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang SilverChain DAO</div>
             <p style="color:#8ab0e6; line-height:1.7; margin-bottom:0.5rem;">
@@ -746,7 +742,7 @@
             </div>
         </div>
 
-        <!-- ===== FEATURES ===== -->
+        <!-- FEATURES -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-star"></i> Fitur Unggulan</div>
             <div class="grid-3">
@@ -777,7 +773,7 @@
             </div>
         </div>
 
-        <!-- ===== WHY ===== -->
+        <!-- WHY -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question-circle"></i> Mengapa SilverChain?</div>
             <div class="grid-2">
@@ -800,7 +796,7 @@
             </div>
         </div>
 
-        <!-- ===== ROADMAP ===== -->
+        <!-- ROADMAP -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
@@ -812,7 +808,7 @@
             </div>
         </div>
 
-        <!-- ===== WHITEPAPER ===== -->
+        <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#8ab0e6; margin-bottom:0.8rem;">Whitepaper lengkap SilverChain mencakup spesifikasi teknis, tokenomics, konsensus, dan tata kelola DAO.</p>
@@ -823,7 +819,7 @@
             </div>
         </div>
 
-        <!-- ===== FAQ ===== -->
+        <!-- FAQ -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
@@ -844,7 +840,7 @@
             </div>
         </div>
 
-        <!-- ===== CONTACT ===== -->
+        <!-- CONTACT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
             <div class="contact-grid">
@@ -860,7 +856,7 @@
 
     </div>
 
-    <!-- ===== BOTTOM NAV ===== -->
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <a href="index.html" class="active" id="navHome">
             <i class="fas fa-home"></i>
@@ -877,7 +873,7 @@
         </a>
     </nav>
 
-    <!-- ===== LOGIN MODAL ===== -->
+    <!-- LOGIN MODAL -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
@@ -935,6 +931,7 @@
                 const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
                 if (deposits) {
                     depositsDB = JSON.parse(deposits);
+                    console.log('✅ Deposits loaded:', depositsDB.length, 'items');
                 } else {
                     depositsDB = [
                         { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130,
@@ -949,6 +946,7 @@
                             txHash: '0xmno345...', status: 'pending', timestamp: Date.now() - 900000 }
                     ];
                     localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
+                    console.log('📦 Default deposits created');
                 }
 
                 const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
@@ -962,7 +960,9 @@
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
                 }
-            } catch (e) { console.warn('Load error:', e); }
+            } catch (e) { 
+                console.error('❌ Load error:', e);
+            }
         }
 
         function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
@@ -982,13 +982,17 @@
         }
 
         function getTotalMinted() {
-            return depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+            const total = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+            console.log('📊 Total SCT minted (approved):', total);
+            return total;
         }
 
         // ============================================================
-        // UPDATE UI (progress, counter, member)
+        // UPDATE UI
         // ============================================================
         function updateUI() {
+            console.log('🔄 Updating UI...');
+
             const isLoggedIn = !!currentUser;
 
             // Badge
@@ -1019,14 +1023,12 @@
 
             // ===== PROGRESS BAR & COUNTER =====
             const total = getTotalMinted();
-            const target = 2000000000; // 2B target
+            const target = 2000000000;
             const pct = Math.min((total / target) * 100, 100);
             
-            // Update progress bar
             const progressFill = document.getElementById('progressFill');
             progressFill.style.width = pct + '%';
             
-            // Update counter
             const totalStr = (total / 1000000000).toFixed(2) + 'B';
             document.getElementById('counterDisplay').textContent = totalStr + ' SCT';
             document.getElementById('statSold').textContent = totalStr;
@@ -1182,7 +1184,7 @@
         // STORAGE EVENT — SINKRONISASI REAL-TIME
         // ============================================================
         window.addEventListener('storage', function(e) {
-            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS || e.key === STORAGE_KEYS.BONUS || e.key === STORAGE_KEYS.REF) {
+            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS) {
                 console.log('🔄 Storage changed, reloading data...');
                 loadData();
                 updateUI();
@@ -1209,15 +1211,21 @@
         loadData();
         updateUI();
 
-        // Update setiap 2 detik (realtime)
+        // Update setiap 1 detik (realtime)
         setInterval(() => {
+            const oldTotal = getTotalMinted();
             loadData();
             updateUI();
-        }, 2000);
+            const newTotal = getTotalMinted();
+            if (oldTotal !== newTotal) {
+                console.log('🔄 Data updated! Total changed:', oldTotal, '→', newTotal);
+            }
+        }, 1000);
 
         console.log('🟢 SilverChain Landing Page siap.');
         console.log('👑 Owner:', OWNER_EMAIL);
         console.log('📊 Total SCT minted:', getTotalMinted());
+        console.log('📦 Deposits DB:', depositsDB);
     </script>
 </body>
 </html>
