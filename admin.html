@@ -38,10 +38,6 @@
             border: 1px solid rgba(80, 140, 255, 0.08);
             transition: all 0.25s;
         }
-        .section-card:hover {
-            border-color: rgba(80, 140, 255, 0.2);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(60, 120, 255, 0.03);
-        }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -91,7 +87,7 @@
             text-transform: uppercase;
         }
 
-        /* ===== TABLE WRAPPER UNTUK SCROLL HORIZONTAL ===== */
+        /* TABLE WRAPPER SCROLL */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -198,7 +194,7 @@
             background: rgba(60, 120, 255, 0.2);
         }
 
-        /* ===== BOTTOM NAV ===== */
+        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -231,7 +227,6 @@
         }
         .bottom-nav a i {
             font-size: 1.3rem;
-            transition: 0.2s;
         }
         .bottom-nav a span {
             font-size: 0.55rem;
@@ -247,55 +242,6 @@
         }
         .bottom-nav a:hover {
             color: #b0ccff;
-        }
-
-        .login-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.8rem;
-            background: rgba(12, 28, 60, 0.3);
-            padding: 0.6rem 1.5rem;
-            border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            margin: 0.5rem 0 0.8rem;
-        }
-        .login-bar .status {
-            font-size: 0.85rem;
-            color: #8ab0e6;
-        }
-        .login-bar .status i {
-            color: #4a8aff;
-            margin-right: 6px;
-        }
-        .login-bar .status .highlight {
-            color: #7aaeff;
-            font-weight: 600;
-        }
-        .login-bar .user-badge {
-            background: rgba(60, 120, 255, 0.08);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #b0ccff;
-            font-size: 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .login-bar .user-badge i {
-            color: #4a8aff;
-            margin-right: 6px;
-        }
-        .login-bar .btn-logout {
-            background: transparent;
-            border: 1px solid rgba(255, 80, 80, 0.15);
-            border-radius: 60px;
-            padding: 0.2rem 1rem;
-            color: #ff6a6a;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .login-bar .btn-logout:hover {
-            background: rgba(255, 80, 80, 0.1);
         }
 
         .toast-message {
@@ -318,11 +264,6 @@
         @media (max-width: 700px) {
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
-            }
-            .login-bar {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
             }
         }
         @media (max-width: 480px) {
@@ -348,13 +289,6 @@
 </head>
 <body>
     <div class="container">
-
-        <!-- ===== LOGIN BAR ===== -->
-        <div class="login-bar">
-            <div class="status" id="loginStatus"><i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Memuat...</span></div>
-            <span class="user-badge" id="userBadge"><i class="fas fa-user-check"></i> <span id="userEmailDisplay">-</span></span>
-            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-        </div>
 
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
@@ -521,12 +455,6 @@
         function updateUI() {
             const isOwner = currentUser && currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
 
-            document.getElementById('loginStatus').innerHTML = currentUser ?
-                `<i class="fas fa-circle" style="color:#4a8aff;"></i> <span class="highlight">Login sebagai</span> <strong>${currentUser.email}</strong>` :
-                `<i class="fas fa-circle" style="color:#5a8ac0;"></i> <span class="highlight">Belum login</span> — <a href="index.html" style="color:#4a8aff;">Login di sini</a>`;
-
-            document.getElementById('userEmailDisplay').textContent = currentUser ? currentUser.email : '-';
-
             if (!isOwner) {
                 document.getElementById('adminTotalUsers').textContent = '🔒';
                 document.getElementById('adminTotalDeposits').textContent = '🔒';
@@ -639,14 +567,6 @@
             refPercent = newRef;
             saveSettings();
             showToast(`✅ Pengaturan disimpan! Bonus: ${bonusPercent}%, Referral: ${refPercent}%`);
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-            currentUser = null;
-            updateUI();
-            showToast('👋 Berhasil keluar.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 500);
         });
 
         // ============================================================
