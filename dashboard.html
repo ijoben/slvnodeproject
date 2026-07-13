@@ -145,7 +145,90 @@
             color: #5a8ac0;
         }
 
-        /* WD FORM */
+        /* BUY CARD */
+        .buy-card {
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 1.8rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin: 1rem 0;
+        }
+        .buy-card .row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+        .buy-card .row .label {
+            color: #8ab0e6;
+            font-size: 0.85rem;
+            min-width: 120px;
+            font-weight: 500;
+        }
+        .buy-card .input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(8, 20, 48, 0.5);
+            border-radius: 60px;
+            padding: 0.1rem 0.1rem 0.1rem 1.5rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            flex: 1;
+            min-width: 160px;
+            max-width: 320px;
+        }
+        .buy-card .input-group input {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 0;
+            font-size: 0.95rem;
+            color: #e6edf5;
+            width: 100%;
+            outline: none;
+            font-weight: 500;
+        }
+        .buy-card .input-group input::placeholder {
+            color: #3a5a8a;
+            font-weight: 400;
+        }
+        .buy-card .input-group .unit {
+            background: linear-gradient(145deg, #4a8aff, #2a5ac0);
+            color: #fff;
+            font-weight: 700;
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .buy-card .btn-buy {
+            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
+            border: none;
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.25);
+            width: 100%;
+        }
+        .buy-card .btn-buy:hover {
+            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.35);
+            transform: translateY(-2px);
+        }
+        .buy-card .btn-buy:active {
+            transform: scale(0.97);
+        }
+        .buy-card .btn-buy:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* WD BOX */
         .wd-box {
             background: rgba(12, 28, 60, 0.3);
             border-radius: 1.5rem;
@@ -164,6 +247,7 @@
             color: #8ab0e6;
             font-size: 0.8rem;
             min-width: 100px;
+            font-weight: 500;
         }
         .wd-box .input-group {
             display: flex;
@@ -174,7 +258,7 @@
             border: 1px solid rgba(80, 140, 255, 0.06);
             flex: 1;
             min-width: 140px;
-            max-width: 250px;
+            max-width: 280px;
         }
         .wd-box .input-group input {
             background: transparent;
@@ -188,6 +272,7 @@
         }
         .wd-box .input-group input::placeholder {
             color: #3a5a8a;
+            font-weight: 400;
         }
         .wd-box .input-group .unit {
             background: linear-gradient(145deg, #4a8aff, #2a5ac0);
@@ -197,6 +282,7 @@
             border-radius: 60px;
             font-size: 0.65rem;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .wd-box .btn-wd {
             background: linear-gradient(145deg, #4a8aff, #1a4ab0);
@@ -224,7 +310,35 @@
             box-shadow: none !important;
         }
 
-        /* TABLE */
+        .ref-link-box {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0.3rem 0 1rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .ref-link-box input {
+            background: transparent;
+            border: none;
+            color: #b0ccff;
+            font-size: 0.8rem;
+            width: 100%;
+            outline: none;
+        }
+        .ref-link-box button {
+            background: rgba(60, 120, 255, 0.1);
+            border: none;
+            color: #8ab8ff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        /* TABLE WRAPPER */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -266,34 +380,6 @@
         }
         .status-rejected {
             color: #ff6a6a;
-        }
-
-        .ref-link-box {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 60px;
-            padding: 0.5rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin: 0.3rem 0 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .ref-link-box input {
-            background: transparent;
-            border: none;
-            color: #b0ccff;
-            font-size: 0.8rem;
-            width: 100%;
-            outline: none;
-        }
-        .ref-link-box button {
-            background: rgba(60, 120, 255, 0.1);
-            border: none;
-            color: #8ab8ff;
-            padding: 0.2rem 0.8rem;
-            border-radius: 60px;
-            cursor: pointer;
-            font-size: 0.7rem;
         }
 
         .toast-message {
@@ -550,6 +636,13 @@
             .saldo-grid {
                 grid-template-columns: 1fr 1fr;
             }
+            .buy-card .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .buy-card .input-group {
+                max-width: 100%;
+            }
             .wd-box .row {
                 flex-direction: column;
                 align-items: stretch;
@@ -599,6 +692,17 @@
             }
             .tab-btn {
                 text-align: center;
+            }
+            .buy-card .input-group {
+                padding: 0.1rem 0.1rem 0.1rem 1rem;
+            }
+            .buy-card .input-group input {
+                font-size: 0.85rem;
+                padding: 0.5rem 0;
+            }
+            .buy-card .input-group .unit {
+                padding: 0.2rem 0.8rem;
+                font-size: 0.65rem;
             }
         }
     </style>
@@ -652,18 +756,18 @@
                     <button id="copyDashRef"><i class="fas fa-copy"></i> Salin</button>
                 </div>
 
-                <div class="buy-card" style="background:rgba(12,28,60,0.3); border-radius:1.8rem; padding:1.5rem; border:1px solid rgba(80,140,255,0.06); margin:1rem 0;">
+                <div class="buy-card">
                     <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#4a8aff;"></i> Beli Token</h4>
                     <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
                         1 USDT = 1 SCT.
                         <span id="bonusInfo" style="color:#7aaeff; font-weight:600;">✨ Bonus 10% untuk pembelian pertama!</span>
                     </p>
 
-                    <div class="row" style="display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin:0.5rem 0;">
-                        <span class="label" style="color:#8ab0e6; font-size:0.85rem; min-width:120px;"><i class="fas fa-coins"></i> Jumlah USDT</span>
-                        <div class="input-group" style="display:flex; align-items:center; background:rgba(8,20,48,0.5); border-radius:60px; padding:0.1rem 0.1rem 0.1rem 1.5rem; border:1px solid rgba(80,140,255,0.06); flex:1; min-width:160px; max-width:300px;">
+                    <div class="row">
+                        <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
+                        <div class="input-group">
                             <input type="number" id="depositAmount" placeholder="0" min="1" step="1" value="100" />
-                            <span class="unit" style="background:linear-gradient(145deg, #4a8aff, #2a5ac0); color:#fff; font-weight:700; padding:0.3rem 1.2rem; border-radius:60px; font-size:0.75rem; white-space:nowrap;">USDT</span>
+                            <span class="unit">USDT</span>
                         </div>
                     </div>
 
@@ -679,9 +783,7 @@
                         </span>
                     </div>
 
-                    <button class="btn-buy" id="buyBtn" style="background:linear-gradient(145deg, #4a8aff, #1a4ab0); border:none; border-radius:60px; padding:0.8rem 2rem; font-weight:700; font-size:1rem; color:#fff; cursor:pointer; transition:0.15s; box-shadow:0 8px 30px -6px rgba(60,120,255,0.25); width:100%;">
-                        <i class="fas fa-shopping-cart"></i> Beli Token
-                    </button>
+                    <button class="btn-buy" id="buyBtn"><i class="fas fa-shopping-cart"></i> Beli Token</button>
                 </div>
             </div>
 
@@ -788,7 +890,7 @@
         </a>
     </nav>
 
-    <!-- MODAL PAYMENT (sama seperti sebelumnya) -->
+    <!-- MODAL PAYMENT -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-box">
             <button class="close-btn" id="closePaymentModal"><i class="fas fa-times"></i></button>
@@ -875,42 +977,14 @@
 
         function getUserDeposits(email) { return depositsDB.filter(d => d.email === email); }
 
-        function getUserTotalSCT(email) {
-            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
-        }
-
-        function getUserReferrals(email) {
-            const user = findUser(email);
-            if (!user) return [];
-            return usersDB.filter(u => u.referredBy === user.refCode);
-        }
-
-        function getRefEarnings(email) {
-            const user = findUser(email);
-            if (!user) return 0;
-            const referrals = usersDB.filter(u => u.referredBy === user.refCode);
-            let total = 0;
-            referrals.forEach(ref => {
-                const firstDeposit = depositsDB
-                    .filter(d => d.email === ref.email && d.status === 'approved')
-                    .sort((a, b) => a.timestamp - b.timestamp)[0];
-                if (firstDeposit) {
-                    total += firstDeposit.ref || 0;
-                }
-            });
-            return Math.round(total * 10) / 10;
-        }
-
-        // ===== SALDO PERSONAL & REFERRAL =====
+        // ===== SALDO FUNCTIONS =====
         function getSaldoPersonal(email) {
             const deposits = getUserDeposits(email);
             const approved = deposits.filter(d => d.status === 'approved');
-            // Saldo pribadi = total SCT dari pembelian sendiri (tanpa referral)
             return approved.reduce((sum, d) => sum + (d.usdt + (d.bonus || 0)), 0);
         }
 
         function getSaldoReferral(email) {
-            // Saldo referral = total referral yang didapat dari downline (ref)
             const user = findUser(email);
             if (!user) return 0;
             const referrals = usersDB.filter(u => u.referredBy === user.refCode);
@@ -923,7 +997,6 @@
                     total += firstDeposit.ref || 0;
                 }
             });
-            // Kurangi yang sudah di-withdraw
             const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
             const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
             return Math.round((total - totalWd) * 10) / 10;
@@ -1304,7 +1377,6 @@
                 return;
             }
 
-            // Simpan permintaan WD
             withdrawalsDB.push({
                 id: getNextWdId(),
                 email: currentUser.email,
