@@ -734,7 +734,7 @@
                 <div class="saldo-card">
                     <div class="label">💎 Saldo Referral</div>
                     <div class="amount referral" id="saldoReferral">0</div>
-                    <div class="sub">SCT — <span style="color:#7aaeff;">Bisa di-withdraw</span></div>
+                    <div class="sub">USDT — <span style="color:#7aaeff;">Bisa di-withdraw</span></div>
                 </div>
             </div>
 
@@ -790,16 +790,16 @@
             <!-- TAB 2: WITHDRAW -->
             <div class="tab-content" id="tabWithdraw">
                 <div class="wd-box">
-                    <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-arrow-up" style="color:#4a8aff;"></i> Withdraw Saldo Referral</h4>
+                    <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-arrow-up" style="color:#4a8aff;"></i> Withdraw Saldo Referral (USDT)</h4>
                     <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
-                        Saldo referral bisa di-withdraw ke wallet Anda. Minimal WD: <strong style="color:#7aaeff;">10 SCT</strong>
+                        Saldo referral dalam USDT bisa di-withdraw ke wallet Anda. Minimal WD: <strong style="color:#7aaeff;">10 USDT</strong>
                     </p>
 
                     <div class="row">
-                        <span class="label"><i class="fas fa-coins"></i> Jumlah SCT</span>
+                        <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
                         <div class="input-group">
                             <input type="number" id="wdAmount" placeholder="0" min="10" step="1" />
-                            <span class="unit">SCT</span>
+                            <span class="unit">USDT</span>
                         </div>
                     </div>
 
@@ -813,7 +813,7 @@
 
                     <div style="display:flex; flex-wrap:wrap; gap:0.8rem; margin:0.5rem 0; align-items:center;">
                         <span style="color:#8ab0e6; font-size:0.75rem;">
-                            Saldo Referral: <strong id="wdSaldoTersedia" style="color:#7aaeff;">0 SCT</strong>
+                            Saldo Referral: <strong id="wdSaldoTersedia" style="color:#7aaeff;">0 USDT</strong>
                         </span>
                         <span style="color:#5a8ac0; font-size:0.7rem;">
                             <i class="fas fa-info-circle"></i> WD akan diproses oleh admin
@@ -977,7 +977,7 @@
 
         function getUserDeposits(email) { return depositsDB.filter(d => d.email === email); }
 
-        // ===== SALDO FUNCTIONS =====
+        // ===== SALDO FUNGSI =====
         function getSaldoPersonal(email) {
             const deposits = getUserDeposits(email);
             const approved = deposits.filter(d => d.status === 'approved');
@@ -990,16 +990,19 @@
             const referrals = usersDB.filter(u => u.referredBy === user.refCode);
             let total = 0;
             referrals.forEach(ref => {
+                // Cari deposit pertama dari referral yang approved
                 const firstDeposit = depositsDB
                     .filter(d => d.email === ref.email && d.status === 'approved')
                     .sort((a, b) => a.timestamp - b.timestamp)[0];
                 if (firstDeposit) {
-                    total += firstDeposit.ref || 0;
+                    // Bonus referral = 3% dari USDT (bukan dari SCT)
+                    total += firstDeposit.usdt * refPercent / 100;
                 }
             });
+            // Kurangi yang sudah di-withdraw
             const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
             const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
-            return Math.round((total - totalWd) * 10) / 10;
+            return Math.round((total - totalWd) * 100) / 100;
         }
 
         function getNextId() {
@@ -1096,7 +1099,7 @@
                 document.getElementById('dashRefLink').value = 'https://silverchain.io/ref/-';
                 document.getElementById('saldoPersonal').textContent = '0';
                 document.getElementById('saldoReferral').textContent = '0';
-                document.getElementById('wdSaldoTersedia').textContent = '0 SCT';
+                document.getElementById('wdSaldoTersedia').textContent = '0 USDT';
                 document.getElementById('historyBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Silakan login terlebih dahulu</td></tr>`;
                 document.getElementById('wdHistoryBody').innerHTML =
@@ -1122,7 +1125,7 @@
             const saldoReferral = getSaldoReferral(currentUser.email);
             document.getElementById('saldoPersonal').textContent = saldoPersonal.toFixed(1);
             document.getElementById('saldoReferral').textContent = saldoReferral.toFixed(1);
-            document.getElementById('wdSaldoTersedia').textContent = saldoReferral.toFixed(1) + ' SCT';
+            document.getElementById('wdSaldoTersedia').textContent = saldoReferral.toFixed(1) + ' USDT';
 
             // Info bonus pertama
             const hasPurchased = hasUserPurchasedBefore(currentUser.email);
@@ -1179,7 +1182,7 @@
                     const addrShort = w.address ? w.address.substring(0, 8) + '...' : '-';
                     html += `<tr>
                         <td>${date}</td>
-                        <td>${w.amount} SCT</td>
+                        <td>${w.amount} USDT</td>
                         <td style="font-family:monospace; font-size:0.65rem;">${addrShort}</td>
                         <td class="${cls}">${txt}</td>
                     </tr>`;
@@ -1350,7 +1353,7 @@
         });
 
         // ============================================================
-        // WITHDRAW
+        // WITHDRAW (USDT)
         // ============================================================
         document.getElementById('wdSubmitBtn').addEventListener('click', function() {
             if (!currentUser) {
@@ -1362,7 +1365,7 @@
             const address = document.getElementById('wdAddress').value.trim();
 
             if (isNaN(amount) || amount < MIN_WITHDRAW) {
-                showToast(`❌ Minimal WD adalah ${MIN_WITHDRAW} SCT.`);
+                showToast(`❌ Minimal WD adalah ${MIN_WITHDRAW} USDT.`);
                 return;
             }
 
@@ -1373,7 +1376,7 @@
 
             const saldoReferral = getSaldoReferral(currentUser.email);
             if (amount > saldoReferral) {
-                showToast(`❌ Saldo referral tidak cukup. Saldo: ${saldoReferral.toFixed(1)} SCT`);
+                showToast(`❌ Saldo referral tidak cukup. Saldo: ${saldoReferral.toFixed(1)} USDT`);
                 return;
             }
 
@@ -1387,7 +1390,7 @@
             });
             saveWithdrawals();
 
-            showToast(`✅ Permintaan withdraw ${amount} SCT berhasil diajukan! Menunggu approval admin.`);
+            showToast(`✅ Permintaan withdraw ${amount} USDT berhasil diajukan! Menunggu approval admin.`);
             document.getElementById('wdAmount').value = '';
             document.getElementById('wdAddress').value = '';
             updateUI();
@@ -1408,8 +1411,7 @@
         console.log('🟢 SilverChain Dashboard siap.');
         console.log('📌 1 USDT = 1 SCT');
         console.log('📌 Bonus 10% hanya untuk pembelian pertama');
-        console.log('📌 Referral 3% hanya 1x per downline');
-        console.log('📌 WD hanya untuk saldo referral');
+        console.log('📌 Referral 3% dalam USDT — bisa di-WD');
     </script>
 </body>
 </html>
