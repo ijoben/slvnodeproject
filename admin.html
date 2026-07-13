@@ -34,8 +34,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -62,6 +62,8 @@
             font-size: 0.6rem;
             color: #c0c0c0;
         }
+
+        /* ADMIN STATS GRID */
         .admin-stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -74,6 +76,12 @@
             padding: 0.8rem;
             text-align: center;
             border: 1px solid rgba(80, 140, 255, 0.06);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .admin-stat:hover {
+            background: rgba(8, 20, 48, 0.5);
+            border-color: rgba(80, 140, 255, 0.15);
         }
         .admin-stat .num {
             font-size: 1.3rem;
@@ -84,6 +92,11 @@
             font-size: 0.55rem;
             color: #a0a0a0;
             text-transform: uppercase;
+        }
+        .admin-stat .icon {
+            font-size: 1.5rem;
+            color: #c0c0c0;
+            margin-bottom: 0.2rem;
         }
 
         /* TABLE WRAPPER */
@@ -148,42 +161,7 @@
             background: rgba(255, 60, 60, 0.25);
         }
 
-        /* TABS */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-            margin: 1rem 0 1.2rem;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
-            padding-bottom: 0.3rem;
-        }
-        .tab-btn {
-            background: transparent;
-            border: none;
-            padding: 0.4rem 1.2rem;
-            border-radius: 60px;
-            color: #a0a0a0;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .tab-btn:hover {
-            color: #c0c0c0;
-            background: rgba(60, 120, 255, 0.05);
-        }
-        .tab-btn.active {
-            color: #e0e0e0;
-            background: rgba(60, 120, 255, 0.1);
-            border: 1px solid rgba(80, 140, 255, 0.1);
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
+        /* SETTINGS GROUP */
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
             border-radius: 1.2rem;
@@ -235,6 +213,7 @@
             color: #c0c0c0;
             font-size: 0.7rem;
             cursor: pointer;
+            transition: 0.15s;
         }
         .btn-save:hover {
             background: rgba(60, 120, 255, 0.2);
@@ -248,6 +227,7 @@
             background: rgba(255, 60, 60, 0.2);
         }
 
+        /* BOTTOM NAV - KHUSUS ADMIN */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -296,9 +276,14 @@
         .bottom-nav a:hover {
             color: #e8e8e8;
         }
+        .bottom-nav .nav-divider {
+            width: 1px;
+            height: 30px;
+            background: rgba(80, 140, 255, 0.06);
+        }
 
         .toast-message {
-            background: rgba(12, 28, 60, 0.8);
+            background: rgba(12,28,60,0.9);
             backdrop-filter: blur(8px);
             border-left: 4px solid #c0c0c0;
             border-radius: 40px;
@@ -310,9 +295,8 @@
             align-items: center;
             gap: 0.6rem;
         }
-        .toast-message.show {
-            display: flex;
-        }
+        .toast-message.show { display: flex; }
+        .toast-message i { color: #c0c0c0; }
 
         .footer-copyright {
             text-align: center;
@@ -323,16 +307,40 @@
             margin-top: 1rem;
         }
 
+        /* QRIS Preview */
+        .qr-preview {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(8,20,48,0.3);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .qr-preview .placeholder {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #c0c0c0;
+            border: 2px dashed rgba(80,140,255,0.15);
+        }
+        .qr-preview img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 0.8rem;
+            border: 1px solid rgba(80,140,255,0.06);
+            background: #fff;
+        }
+
         @media (max-width: 700px) {
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
-            }
-            .tabs {
-                flex-direction: column;
-                gap: 0.2rem;
-            }
-            .tab-btn {
-                text-align: center;
             }
             .settings-group .row {
                 flex-direction: column;
@@ -344,14 +352,6 @@
             .settings-group label {
                 min-width: auto;
             }
-        }
-        @media (max-width: 480px) {
-            .section-card {
-                padding: 1.5rem 1rem;
-            }
-            .admin-stats-grid {
-                grid-template-columns: 1fr;
-            }
             .bottom-nav a {
                 font-size: 0.5rem;
                 padding: 0.1rem 0.3rem;
@@ -362,6 +362,28 @@
             }
             .bottom-nav a span {
                 font-size: 0.5rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .section-card {
+                padding: 1.5rem 1rem;
+            }
+            .admin-stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .bottom-nav a {
+                font-size: 0.45rem;
+                min-width: 40px;
+                padding: 0.1rem 0.2rem;
+            }
+            .bottom-nav a i {
+                font-size: 1rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.45rem;
             }
         }
     </style>
@@ -378,28 +400,59 @@
             </h2>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, withdraw & pengaturan</p>
 
-            <!-- TABS -->
-            <div class="tabs" id="tabContainer">
-                <button class="tab-btn active" data-tab="tabStats"><i class="fas fa-chart-bar"></i> Statistik</button>
-                <button class="tab-btn" data-tab="tabPending"><i class="fas fa-clock"></i> Deposit Pending</button>
-                <button class="tab-btn" data-tab="tabWithdraw"><i class="fas fa-arrow-up"></i> Withdraw</button>
-                <button class="tab-btn" data-tab="tabUsers"><i class="fas fa-users"></i> Pengguna</button>
-                <button class="tab-btn" data-tab="tabSettings"><i class="fas fa-sliders-h"></i> Pengaturan</button>
-                <button class="tab-btn" data-tab="tabPayment"><i class="fas fa-credit-card"></i> Payment</button>
-            </div>
-
-            <!-- TAB 1: STATISTIK -->
-            <div class="tab-content active" id="tabStats">
-                <div class="admin-stats-grid">
-                    <div class="admin-stat"><div class="num" id="adminTotalUsers">0</div><div class="label">Total Pengguna</div></div>
-                    <div class="admin-stat"><div class="num" id="adminTotalDeposits">0</div><div class="label">Total Deposit</div></div>
-                    <div class="admin-stat"><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending</div></div>
-                    <div class="admin-stat"><div class="num" id="adminTotalUSDTMinted">0</div><div class="label">Total USDT Dicetak</div></div>
+            <!-- STATS GRID (Card Statistik) -->
+            <div class="admin-stats-grid" id="statsGrid">
+                <div class="admin-stat" data-tab="tabUsers">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <div class="num" id="adminTotalUsers">0</div>
+                    <div class="label">Total Pengguna</div>
+                </div>
+                <div class="admin-stat" data-tab="tabPending">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <div class="num" id="adminPendingDeposits">0</div>
+                    <div class="label">Pending Deposit</div>
+                </div>
+                <div class="admin-stat" data-tab="tabWithdraw">
+                    <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                    <div class="num" id="adminPendingWithdraw">0</div>
+                    <div class="label">Pending Withdraw</div>
+                </div>
+                <div class="admin-stat" data-tab="tabStats">
+                    <div class="icon"><i class="fas fa-chart-bar"></i></div>
+                    <div class="num" id="adminTotalUSDTMinted">0</div>
+                    <div class="label">Total USDT Dicetak</div>
                 </div>
             </div>
 
-            <!-- TAB 2: DEPOSIT PENDING -->
-            <div class="tab-content" id="tabPending">
+            <!-- ========================================================== -->
+            <!-- USER MANAGEMENT -->
+            <!-- ========================================================== -->
+            <div id="tabUsers" style="display:none;">
+                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
+                    <i class="fas fa-users"></i> Semua Pengguna
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Kode Ref</th>
+                                <th>Direferral</th>
+                                <th>Total USDT</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserBody">
+                            <tr><td colspan="5" class="empty">Memuat...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ========================================================== -->
+            <!-- DEPOSIT PENDING -->
+            <!-- ========================================================== -->
+            <div id="tabPending" style="display:none;">
                 <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
                     <i class="fas fa-clock"></i> Deposit Pending
                 </div>
@@ -423,8 +476,10 @@
                 </div>
             </div>
 
-            <!-- TAB 3: WITHDRAW -->
-            <div class="tab-content" id="tabWithdraw">
+            <!-- ========================================================== -->
+            <!-- WITHDRAW -->
+            <!-- ========================================================== -->
+            <div id="tabWithdraw" style="display:none;">
                 <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
                     <i class="fas fa-arrow-up"></i> Permintaan Withdraw
                 </div>
@@ -446,30 +501,10 @@
                 </div>
             </div>
 
-            <!-- TAB 4: PENGGUNA -->
-            <div class="tab-content" id="tabUsers">
-                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
-                    <i class="fas fa-users"></i> Semua Pengguna
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Kode Ref</th>
-                                <th>Direferral</th>
-                                <th>Total USDT</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminUserBody">
-                            <tr><td colspan="4" class="empty">Memuat...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- TAB 5: PENGATURAN -->
-            <div class="tab-content" id="tabSettings">
+            <!-- ========================================================== -->
+            <!-- SETTINGS -->
+            <!-- ========================================================== -->
+            <div id="tabSettings" style="display:none;">
                 <!-- Bonus & Referral -->
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
@@ -527,13 +562,15 @@
                 </div>
             </div>
 
-            <!-- TAB 6: PAYMENT -->
-            <div class="tab-content" id="tabPayment">
+            <!-- ========================================================== -->
+            <!-- PAYMENT -->
+            <!-- ========================================================== -->
+            <div id="tabPayment" style="display:none;">
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
                     <div class="row">
                         <label><i class="fab fa-ethereum"></i> USDT Address</label>
-                        <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" />
+                        <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="width:350px;" />
                         <button class="btn-save" id="saveUsdtBtn"><i class="fas fa-save"></i> Simpan</button>
                     </div>
                     <div class="row" style="margin-top:0.8rem;">
@@ -541,11 +578,9 @@
                         <input type="file" id="qrisUpload" accept="image/*" />
                         <button class="btn-save" id="uploadQrisBtn"><i class="fas fa-upload"></i> Upload</button>
                     </div>
-                    <div class="qr-preview" id="qrisPreviewContainer" style="margin:0.5rem 0; padding:0.5rem; background:rgba(8,20,48,0.3); border-radius:1rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-                        <div class="placeholder" id="qrisPlaceholder" style="width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:0.8rem;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#c0c0c0;border:2px dashed rgba(80,140,255,0.15);">
-                            <i class="fas fa-qrcode"></i>
-                        </div>
-                        <img id="qrisPreviewImg" style="display:none; max-width:120px; max-height:120px; border-radius:0.8rem; border:1px solid rgba(80,140,255,0.06); background:#fff;" alt="QRIS" />
+                    <div class="qr-preview" id="qrisPreviewContainer">
+                        <div class="placeholder" id="qrisPlaceholder"><i class="fas fa-qrcode"></i></div>
+                        <img id="qrisPreviewImg" style="display:none;" alt="QRIS" />
                         <span style="color:#a0a0a0; font-size:0.75rem;" id="qrisStatus">Belum ada QRIS</span>
                     </div>
                     <p style="color:#a0a0a0; font-size:0.7rem; margin-top:0.3rem;">
@@ -559,19 +594,34 @@
 
     </div>
 
-    <!-- BOTTOM NAV -->
+    <!-- ========================================================== -->
+    <!-- BOTTOM NAV - KHUSUS ADMIN -->
+    <!-- ========================================================== -->
     <nav class="bottom-nav">
-        <a href="/" id="navHome">
-            <i class="fas fa-home"></i>
-            <span>Beranda</span>
+        <a href="#" class="active" data-tab="tabStats" id="navStats">
+            <i class="fas fa-chart-bar"></i>
+            <span>Statistik</span>
         </a>
-        <a href="dashboard" id="navBuy">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Beli Token</span>
+        <div class="nav-divider"></div>
+        <a href="#" data-tab="tabUsers" id="navUsers">
+            <i class="fas fa-users"></i>
+            <span>User</span>
         </a>
-        <a href="account" class="active" id="navAccount">
-            <i class="fas fa-user"></i>
-            <span>Akun</span>
+        <a href="#" data-tab="tabPending" id="navDeposit">
+            <i class="fas fa-clock"></i>
+            <span>Deposit</span>
+        </a>
+        <a href="#" data-tab="tabWithdraw" id="navWithdraw">
+            <i class="fas fa-arrow-up"></i>
+            <span>Withdraw</span>
+        </a>
+        <a href="#" data-tab="tabSettings" id="navSettings">
+            <i class="fas fa-sliders-h"></i>
+            <span>Setting</span>
+        </a>
+        <a href="#" data-tab="tabPayment" id="navPayment">
+            <i class="fas fa-credit-card"></i>
+            <span>Payment</span>
         </a>
     </nav>
 
@@ -628,22 +678,17 @@
         }
 
         function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
-
         function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
-
         function saveWithdrawals() { localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB)); }
-
         function saveSettings() {
             localStorage.setItem(STORAGE_KEYS.BONUS, String(bonusPercent));
             localStorage.setItem(STORAGE_KEYS.REF, String(refPercent));
         }
-
         function saveFullSettings() {
             localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
         }
 
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
-
         function getUserTotalUSDT(email) {
             return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
         }
@@ -656,118 +701,132 @@
         }
 
         // ============================================================
-        // TABS
+        // BOTTOM NAV - TAB SWITCHING
         // ============================================================
-        function initTabs() {
-            const btns = document.querySelectorAll('.tab-btn');
-            const contents = {
-                tabStats: document.getElementById('tabStats'),
-                tabPending: document.getElementById('tabPending'),
-                tabWithdraw: document.getElementById('tabWithdraw'),
-                tabUsers: document.getElementById('tabUsers'),
-                tabSettings: document.getElementById('tabSettings'),
-                tabPayment: document.getElementById('tabPayment')
-            };
+        const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
+        const statCards = document.querySelectorAll('.admin-stat[data-tab]');
 
-            btns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    btns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    Object.keys(contents).forEach(key => {
-                        contents[key].classList.remove('active');
-                    });
-                    const target = contents[this.dataset.tab];
-                    if (target) target.classList.add('active');
-                });
+        // Semua tab content
+        const tabContents = {
+            tabStats: document.getElementById('statsGrid'),
+            tabUsers: document.getElementById('tabUsers'),
+            tabPending: document.getElementById('tabPending'),
+            tabWithdraw: document.getElementById('tabWithdraw'),
+            tabSettings: document.getElementById('tabSettings'),
+            tabPayment: document.getElementById('tabPayment')
+        };
+
+        // Sembunyikan semua tab kecuali stats
+        function showTab(tabId) {
+            // Hide semua tab content
+            Object.keys(tabContents).forEach(key => {
+                if (tabContents[key]) {
+                    tabContents[key].style.display = 'none';
+                }
+            });
+
+            // Tampilkan tab yang dipilih
+            const target = tabContents[tabId];
+            if (target) {
+                target.style.display = 'block';
+            }
+
+            // Update active class di bottom nav
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.tab === tabId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update active class di stat cards
+            statCards.forEach(card => {
+                card.style.borderColor = 'rgba(80,140,255,0.06)';
+                card.style.background = 'rgba(8,20,48,0.3)';
+                if (card.dataset.tab === tabId) {
+                    card.style.borderColor = 'rgba(80,140,255,0.2)';
+                    card.style.background = 'rgba(8,20,48,0.5)';
+                }
             });
         }
 
-        // ============================================================
-        // LOAD SETTINGS UI
-        // ============================================================
-        function loadSettingsUI() {
-            // Brand
-            document.getElementById('adminBrandName').value = settings.brandName || '';
-            document.getElementById('adminLogoUrl').value = settings.logoImage || '';
+        // Event listener untuk bottom nav
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.dataset.tab;
+                showTab(tabId);
+                // Jika tab yang dipilih adalah stats, scroll ke atas
+                if (tabId === 'tabStats') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
 
-            // Kontak
-            document.getElementById('adminTwitter').value = settings.contactTwitter || '';
-            document.getElementById('adminTelegram').value = settings.contactTelegram || '';
-            document.getElementById('adminDiscord').value = settings.contactDiscord || '';
-            document.getElementById('adminContactEmail').value = settings.contactEmail || '';
-        }
+        // Event listener untuk stat cards (klik card langsung ke tab terkait)
+        statCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                showTab(tabId);
+                if (tabId === 'tabStats') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
 
         // ============================================================
-        // UI
+        // UI UPDATE
         // ============================================================
         function updateUI() {
             const isOwner = currentUser && currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
 
             if (!isOwner) {
                 document.getElementById('adminTotalUsers').textContent = '🔒';
-                document.getElementById('adminTotalDeposits').textContent = '🔒';
                 document.getElementById('adminPendingDeposits').textContent = '🔒';
+                document.getElementById('adminPendingWithdraw').textContent = '🔒';
                 document.getElementById('adminTotalUSDTMinted').textContent = '🔒';
+                document.getElementById('adminUserBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
                 document.getElementById('adminPendingBody').innerHTML =
                     `<tr><td colspan="7" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
                 document.getElementById('adminWdBody').innerHTML =
                     `<tr><td colspan="5" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
-                document.getElementById('adminUserBody').innerHTML =
-                    `<tr><td colspan="4" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
-                document.getElementById('adminBonusPercent').disabled = true;
-                document.getElementById('adminRefPercent').disabled = true;
-                document.getElementById('saveSettingsBtn').style.display = 'none';
-                document.getElementById('adminUsdtAddress').disabled = true;
-                document.getElementById('saveUsdtBtn').style.display = 'none';
-                document.getElementById('qrisUpload').disabled = true;
-                document.getElementById('uploadQrisBtn').style.display = 'none';
-                document.getElementById('adminBrandName').disabled = true;
-                document.getElementById('saveBrandBtn').style.display = 'none';
-                document.getElementById('adminLogoUrl').disabled = true;
-                document.getElementById('saveLogoBtn').style.display = 'none';
-                document.getElementById('resetLogoBtn').style.display = 'none';
-                document.getElementById('adminTwitter').disabled = true;
-                document.getElementById('saveTwitterBtn').style.display = 'none';
-                document.getElementById('adminTelegram').disabled = true;
-                document.getElementById('saveTelegramBtn').style.display = 'none';
-                document.getElementById('adminDiscord').disabled = true;
-                document.getElementById('saveDiscordBtn').style.display = 'none';
-                document.getElementById('adminContactEmail').disabled = true;
-                document.getElementById('saveContactEmailBtn').style.display = 'none';
                 return;
             }
 
-            document.getElementById('adminBonusPercent').disabled = false;
-            document.getElementById('adminRefPercent').disabled = false;
-            document.getElementById('saveSettingsBtn').style.display = 'inline-block';
-            document.getElementById('adminUsdtAddress').disabled = false;
-            document.getElementById('saveUsdtBtn').style.display = 'inline-block';
-            document.getElementById('qrisUpload').disabled = false;
-            document.getElementById('uploadQrisBtn').style.display = 'inline-block';
-            document.getElementById('adminBrandName').disabled = false;
-            document.getElementById('saveBrandBtn').style.display = 'inline-block';
-            document.getElementById('adminLogoUrl').disabled = false;
-            document.getElementById('saveLogoBtn').style.display = 'inline-block';
-            document.getElementById('resetLogoBtn').style.display = 'inline-block';
-            document.getElementById('adminTwitter').disabled = false;
-            document.getElementById('saveTwitterBtn').style.display = 'inline-block';
-            document.getElementById('adminTelegram').disabled = false;
-            document.getElementById('saveTelegramBtn').style.display = 'inline-block';
-            document.getElementById('adminDiscord').disabled = false;
-            document.getElementById('saveDiscordBtn').style.display = 'inline-block';
-            document.getElementById('adminContactEmail').disabled = false;
-            document.getElementById('saveContactEmailBtn').style.display = 'inline-block';
+            // Stats
+            document.getElementById('adminTotalUsers').textContent = usersDB.length;
+            const pending = depositsDB.filter(d => d.status === 'pending');
+            document.getElementById('adminPendingDeposits').textContent = pending.length;
+            const wdPending = withdrawalsDB.filter(w => w.status === 'pending');
+            document.getElementById('adminPendingWithdraw').textContent = wdPending.length;
+            const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+            document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
 
+            // Settings values
             document.getElementById('adminBonusPercent').value = bonusPercent;
             document.getElementById('adminRefPercent').value = refPercent;
 
-            // Stats
-            document.getElementById('adminTotalUsers').textContent = usersDB.length;
-            document.getElementById('adminTotalDeposits').textContent = depositsDB.length;
-            const pending = depositsDB.filter(d => d.status === 'pending');
-            document.getElementById('adminPendingDeposits').textContent = pending.length;
-            const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
-            document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
+            // User Table
+            if (usersDB.length === 0) {
+                document.getElementById('adminUserBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">Belum ada pengguna</td></tr>`;
+            } else {
+                let html = '';
+                usersDB.forEach(u => {
+                    const isOwnerUser = u.email === OWNER_EMAIL;
+                    const total = getUserTotalUSDT(u.email);
+                    const status = u.verified ? '✅ Verified' : '⏳ Pending';
+                    html += `<tr>
+                        <td>${u.email} ${isOwnerUser ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
+                        <td><span class="badge-admin">${u.refCode || '-'}</span></td>
+                        <td>${u.referredBy || '-'}</td>
+                        <td>${total.toFixed(1)}</td>
+                        <td>${status}</td>
+                    </tr>`;
+                });
+                document.getElementById('adminUserBody').innerHTML = html;
+            }
 
             // Pending Deposit
             if (pending.length === 0) {
@@ -779,9 +838,9 @@
                     html += `<tr>
                         <td>${d.email}</td>
                         <td>${d.usdt}</td>
-                        <td>${d.bonus}</td>
-                        <td>${d.ref}</td>
-                        <td>${d.total}</td>
+                        <td>${d.bonus || 0}</td>
+                        <td>${d.ref || 0}</td>
+                        <td>${d.total || d.usdt}</td>
                         <td style="font-family:monospace; font-size:0.6rem;">${d.txHash || '-'}</td>
                         <td>
                             <button class="btn-approve" data-id="${d.id}" data-type="deposit">✅ Approve</button>
@@ -803,7 +862,6 @@
                         }
                     });
                 });
-
                 document.querySelectorAll('#adminPendingBody .btn-reject').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const id = parseInt(this.dataset.id);
@@ -819,7 +877,6 @@
             }
 
             // Withdraw Pending
-            const wdPending = withdrawalsDB.filter(w => w.status === 'pending');
             if (wdPending.length === 0) {
                 document.getElementById('adminWdBody').innerHTML =
                     `<tr><td colspan="5" class="empty">Tidak ada permintaan withdraw</td></tr>`;
@@ -854,7 +911,6 @@
                         }
                     });
                 });
-
                 document.querySelectorAll('#adminWdBody .btn-reject').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const id = parseInt(this.dataset.id);
@@ -869,29 +925,8 @@
                 });
             }
 
-            // All users
-            if (usersDB.length === 0) {
-                document.getElementById('adminUserBody').innerHTML =
-                    `<tr><td colspan="4" class="empty">Belum ada pengguna</td></tr>`;
-            } else {
-                let html = '';
-                usersDB.forEach(u => {
-                    const isOwner = u.email === OWNER_EMAIL;
-                    const total = getUserTotalUSDT(u.email);
-                    html += `<tr>
-                        <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
-                        <td><span class="badge-admin">${u.refCode || '-'}</span></td>
-                        <td>${u.referredBy || '-'}</td>
-                        <td>${total.toFixed(1)}</td>
-                    </tr>`;
-                });
-                document.getElementById('adminUserBody').innerHTML = html;
-            }
-
             // QRIS Preview
             loadQrisPreview();
-
-            // Load Settings UI
             loadSettingsUI();
         }
 
@@ -945,7 +980,24 @@
         });
 
         // ============================================================
-        // ACTIONS
+        // LOAD SETTINGS UI
+        // ============================================================
+        function loadSettingsUI() {
+            document.getElementById('adminBrandName').value = settings.brandName || '';
+            document.getElementById('adminLogoUrl').value = settings.logoImage || '';
+            document.getElementById('adminTwitter').value = settings.contactTwitter || '';
+            document.getElementById('adminTelegram').value = settings.contactTelegram || '';
+            document.getElementById('adminDiscord').value = settings.contactDiscord || '';
+            document.getElementById('adminContactEmail').value = settings.contactEmail || '';
+            
+            const usdtAddr = localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS);
+            if (usdtAddr) {
+                document.getElementById('adminUsdtAddress').value = usdtAddr;
+            }
+        }
+
+        // ============================================================
+        // SAVE SETTINGS
         // ============================================================
         document.getElementById('saveSettingsBtn').addEventListener('click', function() {
             const newBonus = parseInt(document.getElementById('adminBonusPercent').value) || 0;
@@ -970,7 +1022,7 @@
             showToast('✅ Address USDT berhasil disimpan!');
         });
 
-        // ===== BRAND SETTINGS =====
+        // Brand Settings
         document.getElementById('saveBrandBtn').addEventListener('click', function() {
             const name = document.getElementById('adminBrandName').value.trim();
             if (name) {
@@ -1005,7 +1057,7 @@
             }
         });
 
-        // ===== KONTAK SETTINGS =====
+        // Kontak Settings
         function saveContact(key, value) {
             if (value) {
                 settings[key] = value;
@@ -1019,15 +1071,12 @@
         document.getElementById('saveTwitterBtn').addEventListener('click', function() {
             saveContact('contactTwitter', document.getElementById('adminTwitter').value.trim());
         });
-
         document.getElementById('saveTelegramBtn').addEventListener('click', function() {
             saveContact('contactTelegram', document.getElementById('adminTelegram').value.trim());
         });
-
         document.getElementById('saveDiscordBtn').addEventListener('click', function() {
             saveContact('contactDiscord', document.getElementById('adminDiscord').value.trim());
         });
-
         document.getElementById('saveContactEmailBtn').addEventListener('click', function() {
             const email = document.getElementById('adminContactEmail').value.trim();
             if (email && email.includes('@')) {
@@ -1043,7 +1092,19 @@
         // INIT
         // ============================================================
         loadData();
-        initTabs();
+
+        // Cek login
+        if (!currentUser || currentUser.email.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
+            // Jika bukan owner, tampilkan pesan
+            document.querySelector('.section-card h2').innerHTML = `
+                <i class="fas fa-user-shield" style="color:#c0c0c0; margin-right:10px;"></i>Panel Admin
+                <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
+            `;
+            document.querySelector('.section-card p').textContent = 'Silakan login sebagai admin untuk mengakses panel ini.';
+        }
+
+        // Tampilkan tab Stats secara default
+        showTab('tabStats');
         updateUI();
 
         setInterval(() => {
@@ -1053,6 +1114,7 @@
 
         console.log('🟢 SilverChain Admin Panel siap.');
         console.log('👑 Owner:', OWNER_EMAIL);
+        console.log('📌 Bottom Nav: Statistik | User | Deposit | Withdraw | Setting | Payment');
     </script>
 </body>
 </html>
