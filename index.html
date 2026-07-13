@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
@@ -35,8 +35,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
         }
         .section-title {
             font-size: 1.7rem;
@@ -146,7 +146,7 @@
             background: linear-gradient(90deg, #c0c0c0, #e8e8e8);
             border-radius: 20px;
             transition: width 0.8s ease;
-            box-shadow: 0 0 30px rgba(192, 192, 192, 0.1);
+            box-shadow: 0 0 30px rgba(192,192,192,0.1);
         }
 
         /* MEMBER */
@@ -236,7 +236,7 @@
         }
         .stat-item.highlight .num {
             color: #c0c0c0;
-            text-shadow: 0 0 20px rgba(192, 192, 192, 0.1);
+            text-shadow: 0 0 20px rgba(192,192,192,0.1);
         }
 
         .subhead {
@@ -475,7 +475,7 @@
             align-items: center;
             padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -498,7 +498,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -800,7 +800,7 @@
             </div>
         </div>
 
-        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Success</span></div>
 
         <!-- HERO -->
         <div class="section-card hero">
@@ -808,7 +808,7 @@
             <!-- PROGRESS -->
             <div class="progress-wrap">
                 <div class="progress-top">
-                    <span class="progress-label"><i class="fas fa-dollar-sign"></i> Terkumpul</span>
+                    <span class="progress-label"><i class="fas fa-dollar-sign"></i> Raised</span>
                     <span class="counter-num" id="counterDisplay">$0 <small>USDT</small></span>
                 </div>
                 <div class="progress-bar-bg">
@@ -818,13 +818,13 @@
 
             <div class="subhead">
                 <i class="fas fa-bolt" style="color:#c0c0c0; margin-right:6px;"></i>
-                Beli token SilverChain, dapatkan <strong style="color:#e0e0e0;">bonus</strong> & <strong style="color:#e0e0e0;">referral</strong>!
+                Buy SilverChain tokens and earn <strong style="color:#e0e0e0;">bonus</strong> & <strong style="color:#e0e0e0;">referral</strong> rewards!
             </div>
 
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="num" id="statSold">0</div>
-                    <div class="label">Token Dicetak</div>
+                    <div class="label">Tokens Minted</div>
                 </div>
                 <div class="stat-item highlight">
                     <div class="num" id="statBonus">10%</div>
@@ -837,61 +837,61 @@
             </div>
 
             <div style="text-align:center; padding:0.5rem 0;">
-                <p style="color:#c0c0c0; font-size:0.9rem;">🚀 <strong style="color:#e0e0e0;">Mulai perjalanan Anda</strong></p>
+                <p style="color:#c0c0c0; font-size:0.9rem;">🚀 <strong style="color:#e0e0e0;">Start your journey</strong></p>
                 <div id="heroButtonContainer" style="margin-top:0.5rem;">
-                    <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Daftar</a>
+                    <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Register</a>
                 </div>
             </div>
 
             <div style="text-align:center; font-size:0.6rem; color:#888888; margin-top:0.6rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.6rem;">
-                <i class="fas fa-shield-alt"></i> Prelaunch DAO · SilverChain Token
+                <i class="fas fa-shield-alt"></i> DAO Prelaunch · SilverChain Token
             </div>
         </div>
 
-        <!-- MEMBER AKTIF -->
+        <!-- ACTIVE MEMBERS -->
         <div class="section-card">
-            <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
+            <div class="section-title"><i class="fas fa-users"></i> Active Members</div>
             <div class="member-grid" id="memberGrid">
-                <div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Memuat...</div>
+                <div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Loading...</div>
             </div>
         </div>
 
         <!-- ABOUT -->
         <div class="section-card">
-            <div class="section-title"><i class="fas fa-info-circle"></i> Tentang</div>
+            <div class="section-title"><i class="fas fa-info-circle"></i> About</div>
             <p style="color:#c0c0c0; line-height:1.6; font-size:0.9rem;">
-                SilverChain adalah token <strong style="color:#e0e0e0;">DAO</strong> dengan <strong style="color:#e0e0e0;">supply tak terbatas</strong> —
-                terinspirasi dari dogecoin. Layer-2 untuk kecepatan & biaya rendah.
+                SilverChain is a <strong style="color:#e0e0e0;">DAO</strong> token with <strong style="color:#e0e0e0;">unlimited supply</strong> —
+                inspired by dogecoin. Layer-2 for speed & low fees.
             </p>
             <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.6rem;">
-                <span class="badge-silver"><i class="fas fa-code"></i> Audit</span>
+                <span class="badge-silver"><i class="fas fa-code"></i> Audited</span>
                 <span class="badge-silver"><i class="fas fa-infinity"></i> Unlimited</span>
                 <span class="badge-silver"><i class="fas fa-users"></i> DAO</span>
                 <span class="badge-silver"><i class="fas fa-globe"></i> Multi-chain</span>
             </div>
         </div>
 
-        <!-- FITUR -->
+        <!-- FEATURES -->
         <div class="section-card">
-            <div class="section-title"><i class="fas fa-star"></i> Fitur</div>
+            <div class="section-title"><i class="fas fa-star"></i> Features</div>
             <div class="grid-3">
-                <div class="feature-item"><i class="fas fa-bolt"></i><h4>Kecepatan</h4><p>< 2 detik</p></div>
-                <div class="feature-item"><i class="fas fa-shield-alt"></i><h4>Keamanan</h4><p>CertiK</p></div>
+                <div class="feature-item"><i class="fas fa-bolt"></i><h4>Speed</h4><p>< 2 seconds</p></div>
+                <div class="feature-item"><i class="fas fa-shield-alt"></i><h4>Security</h4><p>CertiK</p></div>
                 <div class="feature-item"><i class="fas fa-wallet"></i><h4>Wallet</h4><p>MetaMask</p></div>
                 <div class="feature-item"><i class="fas fa-percent"></i><h4>Bonus</h4><p>10% + 3%</p></div>
                 <div class="feature-item"><i class="fas fa-chart-line"></i><h4>Staking</h4><p>45% APR</p></div>
-                <div class="feature-item"><i class="fas fa-users"></i><h4>DAO</h4><p>Komunitas</p></div>
+                <div class="feature-item"><i class="fas fa-users"></i><h4>DAO</h4><p>Community</p></div>
             </div>
         </div>
 
-        <!-- MENGAPA -->
+        <!-- WHY -->
         <div class="section-card">
-            <div class="section-title"><i class="fas fa-question-circle"></i> Mengapa?</div>
+            <div class="section-title"><i class="fas fa-question-circle"></i> Why SilverChain?</div>
             <div class="grid-2">
-                <div class="why-item"><i class="fas fa-gem"></i><h4>Komunitas</h4><p>DAO sejati</p></div>
-                <div class="why-item"><i class="fas fa-hand-holding-usd"></i><h4>Ekosistem</h4><p>Bonus & referral</p></div>
+                <div class="why-item"><i class="fas fa-gem"></i><h4>Community</h4><p>True DAO</p></div>
+                <div class="why-item"><i class="fas fa-hand-holding-usd"></i><h4>Ecosystem</h4><p>Bonus & referral</p></div>
                 <div class="why-item"><i class="fas fa-rocket"></i><h4>Roadmap</h4><p>CEX & gaming</p></div>
-                <div class="why-item"><i class="fas fa-shield"></i><h4>Transparan</h4><p>Kontrak terverifikasi</p></div>
+                <div class="why-item"><i class="fas fa-shield"></i><h4>Transparent</h4><p>Verified contract</p></div>
             </div>
         </div>
 
@@ -899,21 +899,21 @@
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
-                <div class="roadmap-item"><span class="phase">Q1 2026</span><span class="desc">Launch DAO & sale</span></div>
-                <div class="roadmap-item"><span class="phase">Q2 2026</span><span class="desc">DEX & staking</span></div>
-                <div class="roadmap-item"><span class="phase">Q3 2026</span><span class="desc">Game & metaverse</span></div>
-                <div class="roadmap-item"><span class="phase">Q4 2026</span><span class="desc">CEX & DAO live</span></div>
-                <div class="roadmap-item"><span class="phase">2027</span><span class="desc">Multi-chain</span></div>
+                <div class="roadmap-item"><span class="phase">Q1 2026</span><span class="desc">DAO Launch & Sale</span></div>
+                <div class="roadmap-item"><span class="phase">Q2 2026</span><span class="desc">DEX & Staking</span></div>
+                <div class="roadmap-item"><span class="phase">Q3 2026</span><span class="desc">Game & Metaverse</span></div>
+                <div class="roadmap-item"><span class="phase">Q4 2026</span><span class="desc">CEX & DAO Live</span></div>
+                <div class="roadmap-item"><span class="phase">2027</span><span class="desc">Multi-chain Expansion</span></div>
             </div>
         </div>
 
         <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
-            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Whitepaper lengkap SilverChain.</p>
+            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Complete SilverChain whitepaper available.</p>
             <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
                 <span class="btn-outline"><i class="fas fa-file-pdf"></i> PDF</span>
-                <span class="btn-outline"><i class="fas fa-book-open"></i> Ringkasan</span>
+                <span class="btn-outline"><i class="fas fa-book-open"></i> Summary</span>
                 <span class="btn-outline"><i class="fas fa-code-branch"></i> GitHub</span>
             </div>
         </div>
@@ -922,26 +922,26 @@
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
-                <div class="faq-question">Apa itu SilverChain? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Token DAO dengan supply tak terbatas, Layer-2.</div>
+                <div class="faq-question">What is SilverChain? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">A DAO token with unlimited supply, built on Layer-2.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Cara beli? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Login → kirim USDT → admin approve.</div>
+                <div class="faq-question">How to buy? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Login → send USDT → admin approves.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Referral? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">3% dari pembelian.</div>
+                <div class="faq-question">Referral program? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">3% from each purchase.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Trading mulai? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-question">When trading starts? <i class="fas fa-chevron-down"></i></div>
                 <div class="faq-answer">DEX Q2 2026, CEX Q4 2026.</div>
             </div>
         </div>
 
-        <!-- KONTAK -->
+        <!-- CONTACT -->
         <div class="section-card">
-            <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
+            <div class="section-title"><i class="fas fa-address-card"></i> Contact</div>
             <div class="contact-grid" id="contactGrid">
                 <a href="#" class="contact-item" id="contactTwitter"><i class="fab fa-twitter"></i> <span>@SilverChain</span></a>
                 <a href="#" class="contact-item" id="contactTelegram"><i class="fab fa-telegram"></i> <span>t.me/SilverChain</span></a>
@@ -957,16 +957,16 @@
     <nav class="bottom-nav">
         <a href="/" class="active" id="navHome">
             <i class="fas fa-home"></i>
-            <span>Beranda</span>
+            <span>Home</span>
         </a>
         <a href="/dashboard" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
-            <span>Beli</span>
+            <span>Buy</span>
             <span class="badge-dot" id="navBadge"></span>
         </a>
         <a href="/account" id="navAccount">
             <i class="fas fa-user"></i>
-            <span>Akun</span>
+            <span>Account</span>
         </a>
     </nav>
 
@@ -1050,14 +1050,14 @@
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
         // ============================================================
-        // FUNGSI
+        // FUNCTIONS
         // ============================================================
         function getTotalUSDT() {
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
             return approved.reduce((sum, d) => sum + d.usdt, 0);
         }
 
-        function getTotalSCTMinted() {
+        function getTotalMinted() {
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
             return approved.reduce((sum, d) => sum + d.total, 0);
         }
@@ -1102,7 +1102,7 @@
                 document.getElementById('brandName').textContent = settings.brandName;
             }
 
-            // Kontak
+            // Contacts
             if (settings.contactTwitter) {
                 const el = document.getElementById('contactTwitter');
                 if (el) {
@@ -1156,7 +1156,7 @@
                 `;
             } else {
                 heroContainer.innerHTML = `
-                    <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Daftar</a>
+                    <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Register</a>
                 `;
             }
 
@@ -1167,8 +1167,8 @@
             document.getElementById('counterDisplay').innerHTML = formatCurrency(totalUSDT) + ' <small>USDT</small>';
 
             // Stats
-            const totalSCT = getTotalSCTMinted();
-            document.getElementById('statSold').textContent = formatNumber(totalSCT);
+            const totalMinted = getTotalMinted();
+            document.getElementById('statSold').textContent = formatNumber(totalMinted);
 
             // Member
             const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
@@ -1180,7 +1180,7 @@
             const grid = document.getElementById('memberGrid');
             if (sorted.length === 0) {
                 grid.innerHTML =
-                    `<div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Belum ada member</div>`;
+                    `<div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">No members yet</div>`;
             } else {
                 let html = '';
                 sorted.slice(0, 10).forEach(([email, total], index) => {
@@ -1200,7 +1200,7 @@
                 if (sorted.length > 10) {
                     html += `
                         <div class="member-card-item" style="border-style:dashed; justify-content:center;">
-                            <div style="color:#a0a0a0; font-size:0.7rem;">+${sorted.length - 10} lainnya</div>
+                            <div style="color:#a0a0a0; font-size:0.7rem;">+${sorted.length - 10} more</div>
                         </div>
                     `;
                 }
@@ -1260,9 +1260,9 @@
             updateUI();
         }, 3000);
 
-        console.log('🟢 SilverChain Landing Page siap.');
-        console.log('💰 Total USDT:', getTotalUSDT());
-        console.log('🔐 Login di: /auth');
+        console.log('🟢 SilverChain Landing Page ready.');
+        console.log('💰 Total USDT raised:', getTotalUSDT());
+        console.log('🔐 Login at: /auth');
     </script>
 </body>
 </html>
