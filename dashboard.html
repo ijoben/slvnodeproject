@@ -1,3 +1,6 @@
+## 📁 File `dashboard.html` (Revisi — Tab Horizontal, Hapus Link Referral & Tulisan Referral)
+
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -7,7 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -47,69 +49,6 @@
             font-weight: 600;
             color: #8ab8ff;
         }
-        .badge-success {
-            background: rgba(60, 220, 80, 0.1);
-            border: 1px solid rgba(60, 220, 80, 0.15);
-            border-radius: 60px;
-            padding: 0.15rem 0.6rem;
-            font-size: 0.55rem;
-            font-weight: 600;
-            color: #6aff8a;
-        }
-        .badge-warning {
-            background: rgba(250, 200, 60, 0.1);
-            border: 1px solid rgba(250, 200, 60, 0.15);
-            border-radius: 60px;
-            padding: 0.15rem 0.6rem;
-            font-size: 0.55rem;
-            font-weight: 600;
-            color: #fbbf24;
-        }
-        .badge-danger {
-            background: rgba(255, 60, 60, 0.1);
-            border: 1px solid rgba(255, 60, 60, 0.15);
-            border-radius: 60px;
-            padding: 0.15rem 0.6rem;
-            font-size: 0.55rem;
-            font-weight: 600;
-            color: #ff6a6a;
-        }
-
-        /* TABS */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-            margin: 1rem 0 1.2rem;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
-            padding-bottom: 0.3rem;
-        }
-        .tab-btn {
-            background: transparent;
-            border: none;
-            padding: 0.4rem 1.2rem;
-            border-radius: 60px;
-            color: #5a8ac0;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .tab-btn:hover {
-            color: #8ab8ff;
-            background: rgba(60, 120, 255, 0.05);
-        }
-        .tab-btn.active {
-            color: #7aaeff;
-            background: rgba(60, 120, 255, 0.1);
-            border: 1px solid rgba(80, 140, 255, 0.1);
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
 
         /* SALDO CARDS */
         .saldo-grid {
@@ -145,13 +84,60 @@
             color: #5a8ac0;
         }
 
+        /* TABS — HORIZONTAL (scroll di HP) */
+        .tabs-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 1rem 0 1.2rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            scrollbar-width: none;
+        }
+        .tabs-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+        .tabs {
+            display: flex;
+            gap: 0.3rem;
+            min-width: max-content;
+            padding: 0 0.2rem;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            color: #5a8ac0;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.15s;
+            white-space: nowrap;
+        }
+        .tab-btn:hover {
+            color: #8ab8ff;
+            background: rgba(60, 120, 255, 0.05);
+        }
+        .tab-btn.active {
+            color: #7aaeff;
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
         /* BUY CARD */
         .buy-card {
             background: rgba(12, 28, 60, 0.3);
             border-radius: 1.8rem;
             padding: 1.5rem;
             border: 1px solid rgba(80, 140, 255, 0.06);
-            margin: 1rem 0;
+            margin: 0.5rem 0;
         }
         .buy-card .row {
             display: flex;
@@ -308,34 +294,6 @@
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none !important;
-        }
-
-        .ref-link-box {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 60px;
-            padding: 0.5rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin: 0.3rem 0 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .ref-link-box input {
-            background: transparent;
-            border: none;
-            color: #b0ccff;
-            font-size: 0.8rem;
-            width: 100%;
-            outline: none;
-        }
-        .ref-link-box button {
-            background: rgba(60, 120, 255, 0.1);
-            border: none;
-            color: #8ab8ff;
-            padding: 0.2rem 0.8rem;
-            border-radius: 60px;
-            cursor: pointer;
-            font-size: 0.7rem;
         }
 
         /* TABLE WRAPPER */
@@ -650,17 +608,15 @@
             .wd-box .input-group {
                 max-width: 100%;
             }
-            .tabs {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 0.2rem;
+            .modal-box {
+                padding: 1.5rem 1.2rem;
+            }
+            .tabs-wrapper {
+                margin: 0.8rem 0 1rem;
             }
             .tab-btn {
                 font-size: 0.7rem;
-                padding: 0.3rem 0.8rem;
-            }
-            .modal-box {
-                padding: 1.5rem 1.2rem;
+                padding: 0.3rem 0.9rem;
             }
         }
         @media (max-width: 480px) {
@@ -686,13 +642,6 @@
                 align-items: center;
                 text-align: center;
             }
-            .tabs {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .tab-btn {
-                text-align: center;
-            }
             .buy-card .input-group {
                 padding: 0.1rem 0.1rem 0.1rem 1rem;
             }
@@ -703,6 +652,10 @@
             .buy-card .input-group .unit {
                 padding: 0.2rem 0.8rem;
                 font-size: 0.65rem;
+            }
+            .tab-btn {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.7rem;
             }
         }
     </style>
@@ -738,24 +691,17 @@
                 </div>
             </div>
 
-            <!-- TABS -->
-            <div class="tabs" id="tabContainer">
-                <button class="tab-btn active" data-tab="tabBuy"><i class="fas fa-shopping-cart"></i> Beli Token</button>
-                <button class="tab-btn" data-tab="tabWithdraw"><i class="fas fa-arrow-up"></i> Withdraw</button>
-                <button class="tab-btn" data-tab="tabHistory"><i class="fas fa-history"></i> Riwayat</button>
+            <!-- TABS — HORIZONTAL SCROLL -->
+            <div class="tabs-wrapper">
+                <div class="tabs" id="tabContainer">
+                    <button class="tab-btn active" data-tab="tabBuy"><i class="fas fa-shopping-cart"></i> Beli Token</button>
+                    <button class="tab-btn" data-tab="tabWithdraw"><i class="fas fa-arrow-up"></i> Withdraw</button>
+                    <button class="tab-btn" data-tab="tabHistory"><i class="fas fa-history"></i> Riwayat</button>
+                </div>
             </div>
 
             <!-- TAB 1: BELI TOKEN -->
             <div class="tab-content active" id="tabBuy">
-                <!-- Referral Link -->
-                <div style="margin:0.5rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
-                    <i class="fas fa-link"></i> Link Referral Anda
-                </div>
-                <div class="ref-link-box">
-                    <input type="text" id="dashRefLink" readonly value="https://silverchain.io/ref/-" />
-                    <button id="copyDashRef"><i class="fas fa-copy"></i> Salin</button>
-                </div>
-
                 <div class="buy-card">
                     <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#4a8aff;"></i> Beli Token</h4>
                     <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
@@ -774,9 +720,6 @@
                     <div style="display:flex; flex-wrap:wrap; gap:1rem; margin:0.5rem 0; align-items:center;">
                         <span style="color:#8ab0e6; font-size:0.8rem;">
                             <i class="fas fa-gift" style="color:#4a8aff;"></i> Bonus: <strong id="depositBonus" style="color:#b0ccff;">0 SCT</strong>
-                        </span>
-                        <span style="color:#8ab0e6; font-size:0.8rem;">
-                            <i class="fas fa-user-friends" style="color:#4a8aff;"></i> Referral: <strong id="depositRef" style="color:#b0ccff;">0 SCT</strong>
                         </span>
                         <span style="color:#8ab0e6; font-size:0.8rem;">
                             <i class="fas fa-arrow-right" style="color:#4a8aff;"></i> Total: <strong id="depositTotal" style="color:#b0ccff;">0 SCT</strong>
@@ -899,7 +842,6 @@
             <div id="paymentDetails" style="margin:0.5rem 0;">
                 <div class="detail-row"><span class="label">Jumlah USDT</span><span class="value" id="modalUsdt">0</span></div>
                 <div class="detail-row"><span class="label">Bonus 10% (Pertama)</span><span class="value" id="modalBonus">0</span></div>
-                <div class="detail-row"><span class="label">Referral 3%</span><span class="value" id="modalRef">0</span></div>
                 <div class="detail-row"><span class="label">Total SCT</span><span class="value" id="modalTotal">0</span></div>
             </div>
             <div class="address-box">
@@ -990,16 +932,13 @@
             const referrals = usersDB.filter(u => u.referredBy === user.refCode);
             let total = 0;
             referrals.forEach(ref => {
-                // Cari deposit pertama dari referral yang approved
                 const firstDeposit = depositsDB
                     .filter(d => d.email === ref.email && d.status === 'approved')
                     .sort((a, b) => a.timestamp - b.timestamp)[0];
                 if (firstDeposit) {
-                    // Bonus referral = 3% dari USDT (bukan dari SCT)
                     total += firstDeposit.usdt * refPercent / 100;
                 }
             });
-            // Kurangi yang sudah di-withdraw
             const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
             const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
             return Math.round((total - totalWd) * 100) / 100;
@@ -1096,7 +1035,6 @@
             if (!isLoggedIn) {
                 document.getElementById('dashUserEmail').textContent = 'Silakan login terlebih dahulu';
                 document.getElementById('dashRefCode').textContent = '-';
-                document.getElementById('dashRefLink').value = 'https://silverchain.io/ref/-';
                 document.getElementById('saldoPersonal').textContent = '0';
                 document.getElementById('saldoReferral').textContent = '0';
                 document.getElementById('wdSaldoTersedia').textContent = '0 USDT';
@@ -1117,8 +1055,6 @@
 
             document.getElementById('dashUserEmail').textContent = currentUser.email;
             document.getElementById('dashRefCode').textContent = user.refCode || '-';
-            const domain = window.location.host;
-            document.getElementById('dashRefLink').value = `https://${domain}/?ref=${user.refCode}`;
 
             // Saldo
             const saldoPersonal = getSaldoPersonal(currentUser.email);
@@ -1156,7 +1092,6 @@
                         <td>${date}</td>
                         <td>${d.usdt}</td>
                         <td>${d.bonus || 0}</td>
-                        <td>${d.ref || 0}</td>
                         <td>${d.total}</td>
                         <td style="font-family:monospace; font-size:0.65rem;">${d.txHash || '-'}</td>
                         <td class="${cls}">${txt}</td>
@@ -1200,23 +1135,13 @@
 
             let sct = usdt;
             let bonus = 0;
-            let ref = 0;
 
             if (currentUser && !hasUserPurchasedBefore(currentUser.email)) {
                 bonus = Math.floor(usdt * bonusPercent / 100);
             }
 
-            const user = findUser(currentUser ? currentUser.email : '');
-            if (user && user.referredBy) {
-                const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
-                if (downlineDeposits.length === 0) {
-                    ref = Math.floor(usdt * refPercent / 100);
-                }
-            }
-
-            const total = sct + bonus + ref;
+            const total = sct + bonus;
             document.getElementById('depositBonus').textContent = `+${bonus} SCT`;
-            document.getElementById('depositRef').textContent = `+${ref} SCT`;
             document.getElementById('depositTotal').textContent = `${total} SCT`;
         }
 
@@ -1240,26 +1165,16 @@
 
             let sct = usdt;
             let bonus = 0;
-            let ref = 0;
 
             if (!hasUserPurchasedBefore(currentUser.email)) {
                 bonus = Math.floor(usdt * bonusPercent / 100);
             }
 
-            const user = findUser(currentUser.email);
-            if (user && user.referredBy) {
-                const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
-                if (downlineDeposits.length === 0) {
-                    ref = Math.floor(usdt * refPercent / 100);
-                }
-            }
-
-            const total = sct + bonus + ref;
-            pendingDepositData = { usdt, bonus, ref, total };
+            const total = sct + bonus;
+            pendingDepositData = { usdt, bonus, total };
 
             document.getElementById('modalUsdt').textContent = usdt;
             document.getElementById('modalBonus').textContent = bonus;
-            document.getElementById('modalRef').textContent = ref;
             document.getElementById('modalTotal').textContent = total;
             document.getElementById('modalTxHash').value = '';
 
@@ -1320,14 +1235,13 @@
                 return;
             }
 
-            const { usdt, bonus, ref, total } = pendingDepositData;
+            const { usdt, bonus, total } = pendingDepositData;
 
             depositsDB.push({
                 id: getNextId(),
                 email: currentUser.email,
                 usdt: usdt,
                 bonus: bonus,
-                ref: ref,
                 total: total,
                 txHash: hash,
                 status: 'pending',
@@ -1340,16 +1254,6 @@
 
             showToast(`✅ Deposit ${usdt} USDT berhasil dikirim! Menunggu approval admin.`);
             updateUI();
-        });
-
-        // ============================================================
-        // COPY REFERRAL LINK
-        // ============================================================
-        document.getElementById('copyDashRef').addEventListener('click', function() {
-            const link = document.getElementById('dashRefLink').value;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(link).then(() => showToast('📋 Link referral disalin!'));
-            } else { fallbackCopy(link); }
         });
 
         // ============================================================
