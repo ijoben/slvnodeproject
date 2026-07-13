@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -368,7 +369,7 @@
                 <div class="saldo-card">
                     <div class="label">💎 Saldo Referral</div>
                     <div class="amount referral" id="saldoReferral">0</div>
-                    <div class="sub">SCT — <span style="color:#7aaeff;">Bisa di-withdraw</span></div>
+                    <div class="sub">USDT — <span style="color:#7aaeff;">Bisa di-withdraw</span></div>
                 </div>
             </div>
 
@@ -450,11 +451,13 @@
             CURRENT_USER: 'silverchain_current_user'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
+        const MIN_WITHDRAW = 10;
 
         let usersDB = [];
         let depositsDB = [];
         let withdrawalsDB = [];
         let currentUser = null;
+        let refPercent = 3;
 
         // ============================================================
         // LOAD
@@ -473,12 +476,15 @@
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
                 }
+                // Ambil refPercent dari localStorage
+                const ref = localStorage.getItem(STORAGE_KEYS.REF);
+                if (ref) refPercent = parseInt(ref) || 3;
             } catch (e) { console.warn('Load error:', e); }
         }
 
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
-        // ===== SALDO FUNCTIONS =====
+        // ===== SALDO FUNGSI =====
         function getSaldoPersonal(email) {
             const deposits = depositsDB.filter(d => d.email === email && d.status === 'approved');
             return deposits.reduce((sum, d) => sum + (d.usdt + (d.bonus || 0)), 0);
@@ -494,12 +500,12 @@
                     .filter(d => d.email === ref.email && d.status === 'approved')
                     .sort((a, b) => a.timestamp - b.timestamp)[0];
                 if (firstDeposit) {
-                    total += firstDeposit.ref || 0;
+                    total += firstDeposit.usdt * refPercent / 100;
                 }
             });
             const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
             const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
-            return Math.round((total - totalWd) * 10) / 10;
+            return Math.round((total - totalWd) * 100) / 100;
         }
 
         function showToast(msg) {
@@ -568,7 +574,7 @@
                     const addrShort = w.address ? w.address.substring(0, 8) + '...' : '-';
                     html += `<tr>
                         <td>${date}</td>
-                        <td>${w.amount} SCT</td>
+                        <td>${w.amount} USDT</td>
                         <td style="font-family:monospace; font-size:0.65rem;">${addrShort}</td>
                         <td class="${cls}">${txt}</td>
                     </tr>`;
@@ -609,6 +615,7 @@
         }, 3000);
 
         console.log('🟢 SilverChain Account Page siap.');
+        console.log('📌 Bonus referral dalam USDT — bisa di-WD');
     </script>
 </body>
 </html>
