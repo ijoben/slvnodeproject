@@ -462,7 +462,7 @@
             }
         }
 
-        /* TABLET & HP - BOTTOM NAV RATA SEMPURNA */
+        /* TABLET & HP - BOTTOM NAV LEBIH BESAR */
         @media (max-width: 768px) {
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
@@ -488,29 +488,32 @@
                 min-width: auto;
             }
 
-            /* BOTTOM NAV HP - RATA KIRI KANAN */
+            /* BOTTOM NAV HP - LEBIH BESAR & MUDAH DIPENCET */
             .bottom-nav {
-                padding: 0.3rem 0.5rem 0.5rem;
+                padding: 0.5rem 0.5rem 0.7rem;
                 gap: 0;
                 justify-content: space-between;
             }
             .bottom-nav a {
-                padding: 0.2rem 0;
+                padding: 0.4rem 0;
                 min-width: 0;
                 flex: 1;
                 text-align: center;
+                min-height: 50px;
+                justify-content: center;
             }
             .bottom-nav a i {
-                font-size: 1.1rem;
+                font-size: 1.4rem;
             }
             .bottom-nav a span {
-                font-size: 0.45rem;
+                font-size: 0.55rem;
                 line-height: 1.2;
+                margin-top: 2px;
             }
             .bottom-nav .nav-divider {
-                height: 22px;
+                height: 30px;
                 flex-shrink: 0;
-                margin: 0 0.1rem;
+                margin: 0 0.2rem;
             }
 
             /* HEADER - LOGOUT DI HP */
@@ -527,7 +530,7 @@
                 font-size: 0.5rem;
             }
             .btn-logout {
-                padding: 0.3rem 0.7rem;
+                padding: 0.4rem 0.8rem;
                 font-size: 0.7rem;
                 gap: 0.3rem;
                 flex-shrink: 0;
@@ -536,7 +539,7 @@
                 display: none;
             }
             .btn-logout i {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
         }
 
@@ -551,44 +554,47 @@
                 gap: 0.4rem;
             }
             .admin-stat {
-                padding: 0.5rem 0.3rem;
+                padding: 0.6rem 0.3rem;
                 border-radius: 1rem;
             }
             .admin-stat .num {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             .admin-stat .icon {
-                font-size: 1rem;
+                font-size: 1.1rem;
                 margin-bottom: 0.1rem;
             }
             .admin-stat .label {
-                font-size: 0.45rem;
+                font-size: 0.5rem;
             }
             .admin-stat .sub {
-                font-size: 0.4rem;
+                font-size: 0.45rem;
             }
 
-            /* BOTTOM NAV HP KECIL - RATA SEMPURNA */
+            /* BOTTOM NAV HP - TETAP BESAR */
             .bottom-nav {
-                padding: 0.25rem 0.3rem 0.4rem;
+                padding: 0.4rem 0.3rem 0.6rem;
                 gap: 0;
                 justify-content: space-between;
             }
             .bottom-nav a {
-                padding: 0.15rem 0;
+                padding: 0.3rem 0;
                 flex: 1;
                 text-align: center;
+                min-height: 44px;
+                justify-content: center;
             }
             .bottom-nav a i {
-                font-size: 0.9rem;
+                font-size: 1.2rem;
             }
             .bottom-nav a span {
-                font-size: 0.38rem;
+                font-size: 0.48rem;
                 line-height: 1.1;
+                margin-top: 1px;
             }
             .bottom-nav .nav-divider {
-                height: 16px;
-                margin: 0 0.05rem;
+                height: 24px;
+                margin: 0 0.1rem;
             }
 
             .admin-header h2 {
@@ -598,11 +604,11 @@
                 font-size: 0.8rem;
             }
             .btn-logout {
-                padding: 0.2rem 0.5rem;
+                padding: 0.25rem 0.6rem;
                 border-radius: 60px;
             }
             .btn-logout i {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
             }
 
             .table-wrapper table {
@@ -643,26 +649,29 @@
         /* HP SANGAT KECIL */
         @media (max-width: 360px) {
             .bottom-nav {
-                padding: 0.2rem 0.15rem 0.35rem;
+                padding: 0.3rem 0.2rem 0.5rem;
+            }
+            .bottom-nav a {
+                min-height: 38px;
+                padding: 0.25rem 0;
             }
             .bottom-nav a i {
-                font-size: 0.8rem;
+                font-size: 1rem;
             }
             .bottom-nav a span {
-                font-size: 0.32rem;
+                font-size: 0.4rem;
             }
             .bottom-nav .nav-divider {
-                height: 14px;
-                margin: 0 0.03rem;
+                height: 20px;
             }
             .admin-header h2 {
                 font-size: 0.75rem;
             }
             .btn-logout i {
-                font-size: 0.7rem;
+                font-size: 0.8rem;
             }
             .admin-stat .num {
-                font-size: 0.85rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -933,19 +942,25 @@
         let settings = {};
 
         // ============================================================
-        // CHECK AUTH - Redirect ke /auth jika belum login sebagai admin
+        // CHECK AUTH - Redirect ke /admin jika admin, /dashboard jika user
         // ============================================================
         function checkAuth() {
             const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
             if (saved) {
                 const data = JSON.parse(saved);
                 const found = usersDB.find(u => u.email === data.email);
-                if (found && found.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                if (found) {
                     currentUser = found;
-                    return true;
+                    // Jika admin, tetap di /admin
+                    if (found.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                        return true;
+                    }
+                    // Jika user biasa, redirect ke /dashboard
+                    window.location.href = '/dashboard';
+                    return false;
                 }
             }
-            // Jika bukan admin, redirect ke /auth
+            // Jika belum login, redirect ke /auth
             window.location.href = '/auth';
             return false;
         }
@@ -1413,7 +1428,7 @@
         // ============================================================
         loadData();
 
-        // Cek auth - redirect ke /auth jika belum login sebagai admin
+        // Cek auth - redirect sesuai role
         if (!checkAuth()) {
             // checkAuth akan redirect, kode di bawah tidak akan dijalankan
         }
