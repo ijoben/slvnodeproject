@@ -16,7 +16,7 @@
             font-family: 'Inter', sans-serif;
             background: #0a1228;
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
-            color: #e6edf5;
+            color: #d4d4d4;
             min-height: 100vh;
             padding: 1.5rem 1rem 6rem;
             display: flex;
@@ -44,7 +44,7 @@
             padding: 0.25rem 1rem;
             font-size: 0.7rem;
             font-weight: 600;
-            color: #8ab8ff;
+            color: #c0c0c0;
         }
         .owner-badge {
             background: rgba(255, 200, 60, 0.1);
@@ -60,7 +60,7 @@
             border-radius: 60px;
             padding: 0.15rem 0.6rem;
             font-size: 0.6rem;
-            color: #8ab8ff;
+            color: #c0c0c0;
         }
         .admin-stats-grid {
             display: grid;
@@ -78,11 +78,11 @@
         .admin-stat .num {
             font-size: 1.3rem;
             font-weight: 700;
-            color: #b0ccff;
+            color: #e0e0e0;
         }
         .admin-stat .label {
             font-size: 0.55rem;
-            color: #5a8ac0;
+            color: #a0a0a0;
             text-transform: uppercase;
         }
 
@@ -103,7 +103,7 @@
         }
         .table-wrapper table th {
             text-align: left;
-            color: #5a8ac0;
+            color: #a0a0a0;
             font-weight: 600;
             padding: 0.3rem 0.8rem;
             border-bottom: 1px solid rgba(80, 140, 255, 0.06);
@@ -111,12 +111,12 @@
         }
         .table-wrapper table td {
             padding: 0.3rem 0.8rem;
-            color: #8ab0e6;
+            color: #c0c0c0;
             border-bottom: 1px solid rgba(80, 140, 255, 0.03);
             white-space: nowrap;
         }
         .table-wrapper table .empty {
-            color: #5a8ac0;
+            color: #a0a0a0;
             text-align: center;
             padding: 0.8rem 0;
         }
@@ -162,18 +162,18 @@
             border: none;
             padding: 0.4rem 1.2rem;
             border-radius: 60px;
-            color: #5a8ac0;
+            color: #a0a0a0;
             font-weight: 600;
             font-size: 0.75rem;
             cursor: pointer;
             transition: 0.15s;
         }
         .tab-btn:hover {
-            color: #8ab8ff;
+            color: #c0c0c0;
             background: rgba(60, 120, 255, 0.05);
         }
         .tab-btn.active {
-            color: #7aaeff;
+            color: #e0e0e0;
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
         }
@@ -199,7 +199,7 @@
             margin: 0.3rem 0;
         }
         .settings-group label {
-            color: #8ab0e6;
+            color: #c0c0c0;
             font-size: 0.8rem;
             min-width: 120px;
         }
@@ -208,7 +208,7 @@
             border: 1px solid rgba(80, 140, 255, 0.06);
             border-radius: 60px;
             padding: 0.3rem 1rem;
-            color: #e6edf5;
+            color: #d4d4d4;
             font-size: 0.85rem;
             width: 80px;
             outline: none;
@@ -216,17 +216,36 @@
         .settings-group input:focus {
             border-color: rgba(80, 140, 255, 0.2);
         }
+        .settings-group input[type="text"] {
+            width: 250px;
+            max-width: 100%;
+        }
+        .settings-group input[type="file"] {
+            width: auto;
+            background: transparent;
+            padding: 0.3rem 0;
+            border: none;
+            color: #c0c0c0;
+        }
         .btn-save {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
             padding: 0.2rem 1rem;
-            color: #8ab8ff;
+            color: #c0c0c0;
             font-size: 0.7rem;
             cursor: pointer;
         }
         .btn-save:hover {
             background: rgba(60, 120, 255, 0.2);
+        }
+        .btn-save.danger {
+            background: rgba(255, 60, 60, 0.1);
+            border-color: rgba(255, 60, 60, 0.15);
+            color: #ff6a6a;
+        }
+        .btn-save.danger:hover {
+            background: rgba(255, 60, 60, 0.2);
         }
 
         .bottom-nav {
@@ -246,7 +265,7 @@
             box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
-            color: #5a8ac0;
+            color: #a0a0a0;
             text-decoration: none;
             font-size: 0.55rem;
             display: flex;
@@ -268,24 +287,24 @@
             letter-spacing: 0.3px;
         }
         .bottom-nav a.active {
-            color: #7aaeff;
+            color: #e0e0e0;
         }
         .bottom-nav a.active i {
-            color: #4a8aff;
-            text-shadow: 0 0 25px rgba(60, 120, 255, 0.3);
+            color: #c0c0c0;
+            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
         }
         .bottom-nav a:hover {
-            color: #b0ccff;
+            color: #e8e8e8;
         }
 
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
-            border-left: 4px solid #4a8aff;
+            border-left: 4px solid #c0c0c0;
             border-radius: 40px;
             padding: 0.6rem 1.4rem;
             font-size: 0.85rem;
-            color: #b0ccff;
+            color: #e0e0e0;
             margin-bottom: 0.8rem;
             display: none;
             align-items: center;
@@ -293,6 +312,15 @@
         }
         .toast-message.show {
             display: flex;
+        }
+
+        .footer-copyright {
+            text-align: center;
+            color: #888888;
+            font-size: 0.7rem;
+            padding: 1rem 0 0.5rem;
+            border-top: 1px solid rgba(80, 140, 255, 0.05);
+            margin-top: 1rem;
         }
 
         @media (max-width: 700px) {
@@ -305,6 +333,16 @@
             }
             .tab-btn {
                 text-align: center;
+            }
+            .settings-group .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .settings-group input[type="text"] {
+                width: 100%;
+            }
+            .settings-group label {
+                min-width: auto;
             }
         }
         @media (max-width: 480px) {
@@ -334,11 +372,11 @@
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
         <div class="section-card">
-            <h2 style="color:#b0ccff; font-size:1.5rem;">
-                <i class="fas fa-user-shield" style="color:#4a8aff; margin-right:10px;"></i>Panel Admin
+            <h2 style="color:#e0e0e0; font-size:1.5rem;">
+                <i class="fas fa-user-shield" style="color:#c0c0c0; margin-right:10px;"></i>Panel Admin
                 <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
             </h2>
-            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, withdraw & pengaturan</p>
+            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, withdraw & pengaturan</p>
 
             <!-- TABS -->
             <div class="tabs" id="tabContainer">
@@ -356,13 +394,13 @@
                     <div class="admin-stat"><div class="num" id="adminTotalUsers">0</div><div class="label">Total Pengguna</div></div>
                     <div class="admin-stat"><div class="num" id="adminTotalDeposits">0</div><div class="label">Total Deposit</div></div>
                     <div class="admin-stat"><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending</div></div>
-                    <div class="admin-stat"><div class="num" id="adminTotalSCTMinted">0</div><div class="label">Total SCT Dicetak</div></div>
+                    <div class="admin-stat"><div class="num" id="adminTotalUSDTMinted">0</div><div class="label">Total USDT Dicetak</div></div>
                 </div>
             </div>
 
             <!-- TAB 2: DEPOSIT PENDING -->
             <div class="tab-content" id="tabPending">
-                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
                     <i class="fas fa-clock"></i> Deposit Pending
                 </div>
                 <div class="table-wrapper">
@@ -373,7 +411,7 @@
                                 <th>USDT</th>
                                 <th>Bonus</th>
                                 <th>Ref</th>
-                                <th>Total SCT</th>
+                                <th>Total</th>
                                 <th>Hash TX</th>
                                 <th>Aksi</th>
                             </tr>
@@ -387,7 +425,7 @@
 
             <!-- TAB 3: WITHDRAW -->
             <div class="tab-content" id="tabWithdraw">
-                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
                     <i class="fas fa-arrow-up"></i> Permintaan Withdraw
                 </div>
                 <div class="table-wrapper">
@@ -395,7 +433,7 @@
                         <thead>
                             <tr>
                                 <th>User</th>
-                                <th>Jumlah SCT</th>
+                                <th>Jumlah USDT</th>
                                 <th>Address</th>
                                 <th>Tanggal</th>
                                 <th>Aksi</th>
@@ -410,7 +448,7 @@
 
             <!-- TAB 4: PENGGUNA -->
             <div class="tab-content" id="tabUsers">
-                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
                     <i class="fas fa-users"></i> Semua Pengguna
                 </div>
                 <div class="table-wrapper">
@@ -420,7 +458,7 @@
                                 <th>Email</th>
                                 <th>Kode Ref</th>
                                 <th>Direferral</th>
-                                <th>Total SCT</th>
+                                <th>Total USDT</th>
                             </tr>
                         </thead>
                         <tbody id="adminUserBody">
@@ -432,8 +470,9 @@
 
             <!-- TAB 5: PENGATURAN -->
             <div class="tab-content" id="tabSettings">
+                <!-- Bonus & Referral -->
                 <div class="settings-group">
-                    <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
+                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
                     <div class="row">
                         <label>Bonus (%)</label>
                         <input type="number" id="adminBonusPercent" value="10" min="0" max="100" />
@@ -442,12 +481,56 @@
                         <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Simpan</button>
                     </div>
                 </div>
+
+                <!-- Brand Settings -->
+                <div class="settings-group">
+                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-paint-brush"></i> Brand / Tampilan</h5>
+                    <div class="row">
+                        <label><i class="fas fa-tag"></i> Nama Brand</label>
+                        <input type="text" id="adminBrandName" placeholder="SilverChain" style="width:200px;" />
+                        <button class="btn-save" id="saveBrandBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+                    <div class="row">
+                        <label><i class="fas fa-image"></i> Logo (URL/Base64)</label>
+                        <input type="text" id="adminLogoUrl" placeholder="URL gambar atau base64" style="width:300px;" />
+                        <button class="btn-save" id="saveLogoBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+                    <div class="row">
+                        <label><i class="fas fa-undo"></i> Reset Logo ke Icon</label>
+                        <button class="btn-save danger" id="resetLogoBtn"><i class="fas fa-undo"></i> Reset</button>
+                    </div>
+                </div>
+
+                <!-- Kontak & Sosial Media -->
+                <div class="settings-group">
+                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-address-card"></i> Kontak & Sosial Media</h5>
+                    <div class="row">
+                        <label><i class="fab fa-twitter"></i> Twitter URL</label>
+                        <input type="text" id="adminTwitter" placeholder="https://twitter.com/SilverChain" style="width:300px;" />
+                        <button class="btn-save" id="saveTwitterBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+                    <div class="row">
+                        <label><i class="fab fa-telegram"></i> Telegram URL</label>
+                        <input type="text" id="adminTelegram" placeholder="https://t.me/SilverChain" style="width:300px;" />
+                        <button class="btn-save" id="saveTelegramBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+                    <div class="row">
+                        <label><i class="fab fa-discord"></i> Discord URL</label>
+                        <input type="text" id="adminDiscord" placeholder="https://discord.gg/silver" style="width:300px;" />
+                        <button class="btn-save" id="saveDiscordBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+                    <div class="row">
+                        <label><i class="fas fa-envelope"></i> Email Kontak</label>
+                        <input type="text" id="adminContactEmail" placeholder="dao@silverchain.io" style="width:300px;" />
+                        <button class="btn-save" id="saveContactEmailBtn"><i class="fas fa-save"></i> Simpan</button>
+                    </div>
+                </div>
             </div>
 
             <!-- TAB 6: PAYMENT -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
-                    <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
+                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
                     <div class="row">
                         <label><i class="fab fa-ethereum"></i> USDT Address</label>
                         <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" />
@@ -459,21 +542,19 @@
                         <button class="btn-save" id="uploadQrisBtn"><i class="fas fa-upload"></i> Upload</button>
                     </div>
                     <div class="qr-preview" id="qrisPreviewContainer" style="margin:0.5rem 0; padding:0.5rem; background:rgba(8,20,48,0.3); border-radius:1rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-                        <div class="placeholder" id="qrisPlaceholder" style="width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:0.8rem;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#4a8aff;border:2px dashed rgba(80,140,255,0.15);">
+                        <div class="placeholder" id="qrisPlaceholder" style="width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:0.8rem;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#c0c0c0;border:2px dashed rgba(80,140,255,0.15);">
                             <i class="fas fa-qrcode"></i>
                         </div>
                         <img id="qrisPreviewImg" style="display:none; max-width:120px; max-height:120px; border-radius:0.8rem; border:1px solid rgba(80,140,255,0.06); background:#fff;" alt="QRIS" />
-                        <span style="color:#5a8ac0; font-size:0.75rem;" id="qrisStatus">Belum ada QRIS</span>
+                        <span style="color:#a0a0a0; font-size:0.75rem;" id="qrisStatus">Belum ada QRIS</span>
                     </div>
-                    <p style="color:#5a8ac0; font-size:0.7rem; margin-top:0.3rem;">
+                    <p style="color:#a0a0a0; font-size:0.7rem; margin-top:0.3rem;">
                         <i class="fas fa-info-circle"></i> Address USDT & QRIS akan digunakan di halaman pembelian token.
                     </p>
                 </div>
             </div>
 
-            <div style="margin-top:1rem; font-size:0.7rem; color:#5a8ac0; text-align:center; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.8rem;">
-                <i class="fas fa-database"></i> Data tersimpan di localStorage
-            </div>
+            <div class="footer-copyright">Copyright 2026</div>
         </div>
 
     </div>
@@ -506,7 +587,8 @@
             REF: 'silverchain_ref',
             CURRENT_USER: 'silverchain_current_user',
             USDT_ADDRESS: 'silverchain_usdt_address',
-            QRIS_DATA: 'silverchain_qris_data'
+            QRIS_DATA: 'silverchain_qris_data',
+            SETTINGS: 'silverchain_settings'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
 
@@ -516,6 +598,7 @@
         let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
+        let settings = {};
 
         // ============================================================
         // LOAD
@@ -538,6 +621,9 @@
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
                 }
+                const settingsData = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+                if (settingsData) settings = JSON.parse(settingsData);
+                else settings = {};
             } catch (e) { console.warn('Load error:', e); }
         }
 
@@ -552,9 +638,13 @@
             localStorage.setItem(STORAGE_KEYS.REF, String(refPercent));
         }
 
+        function saveFullSettings() {
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+        }
+
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
-        function getUserTotalSCT(email) {
+        function getUserTotalUSDT(email) {
             return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
         }
 
@@ -593,6 +683,21 @@
         }
 
         // ============================================================
+        // LOAD SETTINGS UI
+        // ============================================================
+        function loadSettingsUI() {
+            // Brand
+            document.getElementById('adminBrandName').value = settings.brandName || '';
+            document.getElementById('adminLogoUrl').value = settings.logoImage || '';
+
+            // Kontak
+            document.getElementById('adminTwitter').value = settings.contactTwitter || '';
+            document.getElementById('adminTelegram').value = settings.contactTelegram || '';
+            document.getElementById('adminDiscord').value = settings.contactDiscord || '';
+            document.getElementById('adminContactEmail').value = settings.contactEmail || '';
+        }
+
+        // ============================================================
         // UI
         // ============================================================
         function updateUI() {
@@ -602,7 +707,7 @@
                 document.getElementById('adminTotalUsers').textContent = '🔒';
                 document.getElementById('adminTotalDeposits').textContent = '🔒';
                 document.getElementById('adminPendingDeposits').textContent = '🔒';
-                document.getElementById('adminTotalSCTMinted').textContent = '🔒';
+                document.getElementById('adminTotalUSDTMinted').textContent = '🔒';
                 document.getElementById('adminPendingBody').innerHTML =
                     `<tr><td colspan="7" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
                 document.getElementById('adminWdBody').innerHTML =
@@ -616,6 +721,19 @@
                 document.getElementById('saveUsdtBtn').style.display = 'none';
                 document.getElementById('qrisUpload').disabled = true;
                 document.getElementById('uploadQrisBtn').style.display = 'none';
+                document.getElementById('adminBrandName').disabled = true;
+                document.getElementById('saveBrandBtn').style.display = 'none';
+                document.getElementById('adminLogoUrl').disabled = true;
+                document.getElementById('saveLogoBtn').style.display = 'none';
+                document.getElementById('resetLogoBtn').style.display = 'none';
+                document.getElementById('adminTwitter').disabled = true;
+                document.getElementById('saveTwitterBtn').style.display = 'none';
+                document.getElementById('adminTelegram').disabled = true;
+                document.getElementById('saveTelegramBtn').style.display = 'none';
+                document.getElementById('adminDiscord').disabled = true;
+                document.getElementById('saveDiscordBtn').style.display = 'none';
+                document.getElementById('adminContactEmail').disabled = true;
+                document.getElementById('saveContactEmailBtn').style.display = 'none';
                 return;
             }
 
@@ -626,6 +744,20 @@
             document.getElementById('saveUsdtBtn').style.display = 'inline-block';
             document.getElementById('qrisUpload').disabled = false;
             document.getElementById('uploadQrisBtn').style.display = 'inline-block';
+            document.getElementById('adminBrandName').disabled = false;
+            document.getElementById('saveBrandBtn').style.display = 'inline-block';
+            document.getElementById('adminLogoUrl').disabled = false;
+            document.getElementById('saveLogoBtn').style.display = 'inline-block';
+            document.getElementById('resetLogoBtn').style.display = 'inline-block';
+            document.getElementById('adminTwitter').disabled = false;
+            document.getElementById('saveTwitterBtn').style.display = 'inline-block';
+            document.getElementById('adminTelegram').disabled = false;
+            document.getElementById('saveTelegramBtn').style.display = 'inline-block';
+            document.getElementById('adminDiscord').disabled = false;
+            document.getElementById('saveDiscordBtn').style.display = 'inline-block';
+            document.getElementById('adminContactEmail').disabled = false;
+            document.getElementById('saveContactEmailBtn').style.display = 'inline-block';
+
             document.getElementById('adminBonusPercent').value = bonusPercent;
             document.getElementById('adminRefPercent').value = refPercent;
 
@@ -635,7 +767,7 @@
             const pending = depositsDB.filter(d => d.status === 'pending');
             document.getElementById('adminPendingDeposits').textContent = pending.length;
             const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
-            document.getElementById('adminTotalSCTMinted').textContent = totalMinted.toFixed(1);
+            document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
 
             // Pending Deposit
             if (pending.length === 0) {
@@ -699,7 +831,7 @@
                     const addrShort = w.address ? w.address.substring(0, 10) + '...' : '-';
                     html += `<tr>
                         <td>${w.email}</td>
-                        <td>${w.amount} SCT</td>
+                        <td>${w.amount} USDT</td>
                         <td style="font-family:monospace; font-size:0.6rem;">${addrShort}</td>
                         <td>${date}</td>
                         <td>
@@ -717,7 +849,7 @@
                         if (wd) {
                             wd.status = 'approved';
                             saveWithdrawals();
-                            showToast(`✅ Withdraw ${wd.amount} SCT dari ${wd.email} disetujui!`);
+                            showToast(`✅ Withdraw ${wd.amount} USDT dari ${wd.email} disetujui!`);
                             updateUI();
                         }
                     });
@@ -730,7 +862,7 @@
                         if (wd) {
                             wd.status = 'rejected';
                             saveWithdrawals();
-                            showToast(`❌ Withdraw ${wd.amount} SCT dari ${wd.email} ditolak.`);
+                            showToast(`❌ Withdraw ${wd.amount} USDT dari ${wd.email} ditolak.`);
                             updateUI();
                         }
                     });
@@ -745,7 +877,7 @@
                 let html = '';
                 usersDB.forEach(u => {
                     const isOwner = u.email === OWNER_EMAIL;
-                    const total = getUserTotalSCT(u.email);
+                    const total = getUserTotalUSDT(u.email);
                     html += `<tr>
                         <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
                         <td><span class="badge-admin">${u.refCode || '-'}</span></td>
@@ -758,6 +890,9 @@
 
             // QRIS Preview
             loadQrisPreview();
+
+            // Load Settings UI
+            loadSettingsUI();
         }
 
         // ============================================================
@@ -780,7 +915,7 @@
                     img.style.display = 'none';
                     placeholder.style.display = 'flex';
                     status.textContent = 'Belum ada QRIS';
-                    status.style.color = '#5a8ac0';
+                    status.style.color = '#a0a0a0';
                 }
             } catch (e) { console.warn('QRIS load error:', e); }
         }
@@ -833,6 +968,75 @@
             }
             localStorage.setItem(STORAGE_KEYS.USDT_ADDRESS, address);
             showToast('✅ Address USDT berhasil disimpan!');
+        });
+
+        // ===== BRAND SETTINGS =====
+        document.getElementById('saveBrandBtn').addEventListener('click', function() {
+            const name = document.getElementById('adminBrandName').value.trim();
+            if (name) {
+                settings.brandName = name;
+                saveFullSettings();
+                showToast('✅ Nama brand berhasil disimpan!');
+            } else {
+                showToast('❌ Masukkan nama brand.');
+            }
+        });
+
+        document.getElementById('saveLogoBtn').addEventListener('click', function() {
+            const url = document.getElementById('adminLogoUrl').value.trim();
+            if (url) {
+                settings.logoImage = url;
+                settings.logoType = 'image';
+                saveFullSettings();
+                showToast('✅ Logo berhasil disimpan!');
+            } else {
+                showToast('❌ Masukkan URL gambar logo.');
+            }
+        });
+
+        document.getElementById('resetLogoBtn').addEventListener('click', function() {
+            if (confirm('Reset logo ke icon default?')) {
+                settings.logoImage = '';
+                settings.logoType = 'icon';
+                settings.logoIcon = 'fas fa-coins';
+                saveFullSettings();
+                document.getElementById('adminLogoUrl').value = '';
+                showToast('✅ Logo direset ke icon default.');
+            }
+        });
+
+        // ===== KONTAK SETTINGS =====
+        function saveContact(key, value) {
+            if (value) {
+                settings[key] = value;
+                saveFullSettings();
+                showToast(`✅ ${key} berhasil disimpan!`);
+            } else {
+                showToast('❌ Masukkan URL yang valid.');
+            }
+        }
+
+        document.getElementById('saveTwitterBtn').addEventListener('click', function() {
+            saveContact('contactTwitter', document.getElementById('adminTwitter').value.trim());
+        });
+
+        document.getElementById('saveTelegramBtn').addEventListener('click', function() {
+            saveContact('contactTelegram', document.getElementById('adminTelegram').value.trim());
+        });
+
+        document.getElementById('saveDiscordBtn').addEventListener('click', function() {
+            saveContact('contactDiscord', document.getElementById('adminDiscord').value.trim());
+        });
+
+        document.getElementById('saveContactEmailBtn').addEventListener('click', function() {
+            const email = document.getElementById('adminContactEmail').value.trim();
+            if (email && email.includes('@')) {
+                settings.contactEmail = email;
+                saveFullSettings();
+                showToast('✅ Email kontak berhasil disimpan!');
+            } else {
+                showToast('❌ Masukkan email yang valid.');
+            }
         });
 
         // ============================================================
