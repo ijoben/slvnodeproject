@@ -305,50 +305,6 @@
             color: #a0a0a0;
         }
 
-        /* TABLE WD HISTORY */
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-top: 0.5rem;
-            border-radius: 1.2rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-        }
-        .table-wrapper table {
-            width: 100%;
-            min-width: 500px;
-            border-collapse: collapse;
-            font-size: 0.75rem;
-        }
-        .table-wrapper table th {
-            text-align: left;
-            color: #a0a0a0;
-            font-weight: 600;
-            padding: 0.4rem 0.8rem;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
-            white-space: nowrap;
-        }
-        .table-wrapper table td {
-            padding: 0.4rem 0.8rem;
-            color: #c0c0c0;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
-            white-space: nowrap;
-        }
-        .table-wrapper table .empty {
-            color: #a0a0a0;
-            text-align: center;
-            padding: 1.5rem 0;
-        }
-        .status-pending {
-            color: #fbbf24;
-        }
-        .status-approved {
-            color: #6aff8a;
-        }
-        .status-rejected {
-            color: #ff6a6a;
-        }
-
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -539,26 +495,6 @@
                 <div class="password-result" id="passwordResult"></div>
             </div>
 
-            <!-- RIWAYAT WITHDRAW -->
-            <div style="margin-top:1.5rem;">
-                <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-clock" style="color:#c0c0c0;"></i> Riwayat Withdraw</h4>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Jumlah</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="wdHistoryBody">
-                            <tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <!-- TOMBOL ADMIN -->
             <button class="btn-admin" id="adminPanelBtn"><i class="fas fa-user-shield"></i> Panel Admin</button>
 
@@ -601,7 +537,6 @@
             SETTINGS: 'silverchain_settings'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
-        const MIN_WITHDRAW = 10;
 
         let usersDB = [];
         let depositsDB = [];
@@ -773,8 +708,6 @@
                 document.getElementById('infoRefLink').textContent = '-';
                 document.getElementById('infoRole').textContent = '-';
                 document.getElementById('adminPanelBtn').style.display = 'none';
-                document.getElementById('wdHistoryBody').innerHTML =
-                    `<tr><td colspan="4" class="empty">Silakan login terlebih dahulu</td></tr>`;
                 document.getElementById('changePasswordBtn').disabled = true;
                 return;
             }
@@ -800,31 +733,6 @@
             const saldoReferral = getSaldoReferral(currentUser.email);
             document.getElementById('saldoPersonal').textContent = saldoPersonal.toFixed(1);
             document.getElementById('saldoReferral').textContent = saldoReferral.toFixed(1);
-
-            // Riwayat WD
-            const wdHistory = withdrawalsDB.filter(w => w.email === currentUser.email);
-            if (wdHistory.length === 0) {
-                document.getElementById('wdHistoryBody').innerHTML =
-                    `<tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>`;
-            } else {
-                let html = '';
-                wdHistory.slice().reverse().forEach(w => {
-                    const date = new Date(w.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(w.timestamp)
-                        .toLocaleTimeString('id-ID');
-                    const cls = w.status === 'approved' ? 'status-approved' : w.status === 'rejected' ?
-                        'status-rejected' : 'status-pending';
-                    const txt = w.status === 'approved' ? '✅ Disetujui' : w.status === 'rejected' ?
-                        '❌ Ditolak' : '⏳ Pending';
-                    const addrShort = w.address ? w.address.substring(0, 8) + '...' : '-';
-                    html += `<tr>
-                        <td>${date}</td>
-                        <td>${w.amount} USDT</td>
-                        <td style="font-family:monospace; font-size:0.65rem;">${addrShort}</td>
-                        <td class="${cls}">${txt}</td>
-                    </tr>`;
-                });
-                document.getElementById('wdHistoryBody').innerHTML = html;
-            }
         }
 
         // ============================================================
