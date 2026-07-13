@@ -35,8 +35,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -93,7 +93,7 @@
             font-size: 2.5rem;
             color: #fff;
             margin: 0 auto 1rem;
-            box-shadow: 0 8px 30px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px rgba(192,192,192,0.15);
         }
         .profile-name {
             text-align: center;
@@ -163,6 +163,105 @@
             border-radius: 60px;
             font-size: 0.75rem;
             color: #c0c0c0;
+        }
+
+        /* ===== UBAH PASSWORD ===== */
+        .change-password-section {
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(80, 140, 255, 0.06);
+            padding-top: 1.2rem;
+        }
+        .change-password-section h4 {
+            color: #e0e0e0;
+            margin-bottom: 0.8rem;
+        }
+        .change-password-section h4 i {
+            color: #c0c0c0;
+            margin-right: 8px;
+        }
+        .password-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
+        }
+        .password-form .input-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        .password-form .input-group label {
+            display: block;
+            color: #a0a0a0;
+            font-size: 0.65rem;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .password-form .input-group input {
+            width: 100%;
+            background: rgba(8, 20, 48, 0.5);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 60px;
+            padding: 0.6rem 1.2rem;
+            color: #d4d4d4;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .password-form .input-group input:focus {
+            border-color: rgba(80, 140, 255, 0.2);
+        }
+        .password-form .input-group input::placeholder {
+            color: #666666;
+        }
+        .btn-change-password {
+            background: linear-gradient(145deg, #c0c0c0, #888888);
+            border: none;
+            border-radius: 60px;
+            padding: 0.6rem 1.8rem;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 0.6rem;
+            align-self: flex-end;
+            white-space: nowrap;
+        }
+        .btn-change-password:hover {
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.2);
+            transform: translateY(-2px);
+        }
+        .btn-change-password:active {
+            transform: scale(0.97);
+        }
+        .btn-change-password:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .password-result {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            display: none;
+            padding: 0.5rem 1rem;
+            border-radius: 60px;
+            width: 100%;
+        }
+        .password-result.success {
+            display: block;
+            background: rgba(60, 220, 80, 0.1);
+            border: 1px solid rgba(60, 220, 80, 0.15);
+            color: #6aff8a;
+        }
+        .password-result.error {
+            display: block;
+            background: rgba(255, 60, 60, 0.1);
+            border: 1px solid rgba(255, 60, 60, 0.15);
+            color: #ff6a6a;
+        }
+        .password-result i {
+            margin-right: 8px;
         }
 
         .btn-danger {
@@ -264,7 +363,7 @@
             align-items: center;
             padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -293,7 +392,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -316,7 +415,6 @@
             display: flex;
         }
 
-        /* Footer Copyright */
         .footer-copyright {
             text-align: center;
             color: #888888;
@@ -329,6 +427,17 @@
         @media (max-width: 700px) {
             .saldo-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+            .password-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .password-form .input-group {
+                min-width: 100%;
+            }
+            .btn-change-password {
+                align-self: stretch;
+                text-align: center;
             }
         }
         @media (max-width: 480px) {
@@ -352,6 +461,10 @@
             .info-row {
                 flex-direction: column;
                 gap: 0.2rem;
+            }
+            .password-result {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
             }
         }
     </style>
@@ -403,6 +516,29 @@
                 </div>
             </div>
 
+            <!-- ===== UBAH PASSWORD ===== -->
+            <div class="change-password-section">
+                <h4><i class="fas fa-key"></i> Ubah Password</h4>
+                <div class="password-form">
+                    <div class="input-group">
+                        <label>Password Saat Ini</label>
+                        <input type="password" id="currentPassword" placeholder="Masukkan password saat ini" />
+                    </div>
+                    <div class="input-group">
+                        <label>Password Baru</label>
+                        <input type="password" id="newPassword" placeholder="Minimal 4 karakter" />
+                    </div>
+                    <div class="input-group">
+                        <label>Konfirmasi Password Baru</label>
+                        <input type="password" id="confirmPassword" placeholder="Ulangi password baru" />
+                    </div>
+                    <button class="btn-change-password" id="changePasswordBtn">
+                        <i class="fas fa-save"></i> Ubah Password
+                    </button>
+                </div>
+                <div class="password-result" id="passwordResult"></div>
+            </div>
+
             <!-- RIWAYAT WITHDRAW -->
             <div style="margin-top:1.5rem;">
                 <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-clock" style="color:#c0c0c0;"></i> Riwayat Withdraw</h4>
@@ -441,11 +577,11 @@
             <i class="fas fa-home"></i>
             <span>Beranda</span>
         </a>
-        <a href="dashboard" id="navBuy">
+        <a href="/dashboard" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
             <span>Beli Token</span>
         </a>
-        <a href="account" class="active" id="navAccount">
+        <a href="/account" class="active" id="navAccount">
             <i class="fas fa-user"></i>
             <span>Akun</span>
         </a>
@@ -500,6 +636,8 @@
             } catch (e) { console.warn('Load error:', e); }
         }
 
+        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
+
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
         // ===== SALDO FUNGSI =====
@@ -534,6 +672,91 @@
         }
 
         // ============================================================
+        // UBAH PASSWORD
+        // ============================================================
+        document.getElementById('changePasswordBtn').addEventListener('click', function() {
+            const current = document.getElementById('currentPassword').value.trim();
+            const newPass = document.getElementById('newPassword').value.trim();
+            const confirm = document.getElementById('confirmPassword').value.trim();
+            const result = document.getElementById('passwordResult');
+
+            // Reset result
+            result.className = 'password-result';
+            result.style.display = 'none';
+
+            // Validasi
+            if (!current) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Masukkan password saat ini.';
+                result.style.display = 'block';
+                return;
+            }
+
+            if (newPass.length < 4) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password baru minimal 4 karakter.';
+                result.style.display = 'block';
+                return;
+            }
+
+            if (newPass !== confirm) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Konfirmasi password tidak cocok.';
+                result.style.display = 'block';
+                return;
+            }
+
+            // Cek user
+            const user = findUser(currentUser.email);
+            if (!user) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Akun tidak ditemukan.';
+                result.style.display = 'block';
+                return;
+            }
+
+            // Cek password saat ini
+            if (user.password !== current) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password saat ini salah.';
+                result.style.display = 'block';
+                return;
+            }
+
+            // Update password
+            user.password = newPass;
+            saveUsers();
+
+            // Bersihkan form
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+
+            // Tampilkan sukses
+            result.className = 'password-result success';
+            result.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Password berhasil diubah!';
+            result.style.display = 'block';
+
+            showToast('✅ Password berhasil diubah!');
+
+            // Hilangkan pesan sukses setelah 5 detik
+            setTimeout(() => {
+                result.style.display = 'none';
+            }, 5000);
+        });
+
+        // Enter key support untuk form password
+        document.getElementById('currentPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('newPassword').focus();
+        });
+        document.getElementById('newPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('confirmPassword').focus();
+        });
+        document.getElementById('confirmPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('changePasswordBtn').click();
+        });
+
+        // ============================================================
         // UI
         // ============================================================
         function updateUI() {
@@ -552,8 +775,11 @@
                 document.getElementById('adminPanelBtn').style.display = 'none';
                 document.getElementById('wdHistoryBody').innerHTML =
                     `<tr><td colspan="4" class="empty">Silakan login terlebih dahulu</td></tr>`;
+                document.getElementById('changePasswordBtn').disabled = true;
                 return;
             }
+
+            document.getElementById('changePasswordBtn').disabled = false;
 
             const user = findUser(currentUser.email);
             if (!user) return;
@@ -609,7 +835,7 @@
             currentUser = null;
             updateUI();
             showToast('👋 Berhasil keluar.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 500);
+            setTimeout(() => { window.location.href = '/'; }, 500);
         }
 
         document.getElementById('logoutBtn').addEventListener('click', logout);
@@ -618,7 +844,7 @@
         // ADMIN PANEL BUTTON
         // ============================================================
         document.getElementById('adminPanelBtn').addEventListener('click', function() {
-            window.location.href = 'admin.html';
+            window.location.href = '/admin';
         });
 
         // ============================================================
@@ -634,6 +860,7 @@
 
         console.log('🟢 SilverChain Account Page siap.');
         console.log('📌 Bonus referral dalam USDT — bisa di-WD');
+        console.log('🔑 Fitur Ubah Password tersedia di halaman ini');
     </script>
 </body>
 </html>
