@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>SilverChain · Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1228;
+            background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
+            color: #d4d4d4;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .auth-container {
+            max-width: 440px;
+            width: 100%;
+            background: rgba(18, 34, 72, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2.8rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
+        }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .auth-logo i {
+            font-size: 3rem;
+            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .auth-logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 0.2rem;
+        }
+
+        /* TABS */
+        .auth-tabs {
+            display: flex;
+            gap: 0.3rem;
+            background: rgba(8,20,48,0.3);
+            border-radius: 60px;
+            padding: 0.3rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(80,140,255,0.06);
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 60px;
+            background: transparent;
+            color: #888888;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .auth-tab.active {
+            background: rgba(192,192,192,0.12);
+            color: #e0e0e0;
+            border: 1px solid rgba(80,140,255,0.06);
+        }
+        .auth-tab:hover:not(.active) {
+            color: #c0c0c0;
+        }
+
+        .auth-panel {
+            display: none;
+        }
+        .auth-panel.active {
+            display: block;
+        }
+
+        .auth-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 0.2rem;
+        }
+        .auth-sub {
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80,140,255,0.1);
+            background: rgba(8,20,48,0.5);
+            color: #d4d4d4;
+            font-size: 0.95rem;
+            outline: none;
+            margin-bottom: 0.7rem;
+            transition: border-color 0.2s;
+        }
+        .input-field:focus {
+            border-color: rgba(80,140,255,0.3);
+        }
+        .input-field::placeholder {
+            color: #666666;
+        }
+        .input-field:disabled {
+            opacity: 0.5;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: 60px;
+            border: none;
+            background: linear-gradient(145deg, #c0c0c0, #888888);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 0.3rem;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.2);
+            transform: translateY(-2px);
+        }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80,140,255,0.1);
+            background: transparent;
+            color: #c0c0c0;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 0.4rem;
+        }
+        .btn-secondary:hover {
+            background: rgba(60,120,255,0.05);
+        }
+
+        .error-msg {
+            color: #ff6a6a;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .error-msg.show { display: flex; }
+        .error-msg i { font-size: 0.9rem; }
+
+        .success-msg {
+            color: #6aff8a;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .success-msg.show { display: flex; }
+        .success-msg i { font-size: 0.9rem; }
+
+        .divider {
+            text-align: center;
+            color: #666666;
+            font-size: 0.75rem;
+            margin: 0.8rem 0;
+            position: relative;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: rgba(80,140,255,0.08);
+        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .forgot-link {
+            text-align: right;
+            margin: -0.2rem 0 0.8rem;
+        }
+        .forgot-link button {
+            background: none;
+            border: none;
+            color: #888888;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .forgot-link button:hover { color: #c0c0c0; }
+
+        .otp-timer {
+            color: #888888;
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .otp-timer span { color: #c0c0c0; font-weight: 600; }
+
+        .toast-message {
+            background: rgba(12,28,60,0.9);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #c0c0c0;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show { display: flex; }
+        .toast-message i { color: #c0c0c0; }
+
+        .back-link {
+            text-align: center;
+            margin-top: 0.8rem;
+        }
+        .back-link button {
+            background: none;
+            border: none;
+            color: #888888;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .back-link button:hover { color: #c0c0c0; }
+        .back-link button i { margin-right: 0.4rem; }
+
+        @media (max-width: 480px) {
+            .auth-container { padding: 1.5rem 1rem; }
+            .auth-logo i { font-size: 2.2rem; }
+            .auth-logo h1 { font-size: 1.4rem; }
+            .auth-tab { font-size: 0.7rem; padding: 0.5rem; }
+            .auth-title { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-container">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+        <i class="fas fa-coins"></i>
+        <h1 id="brandName">SilverChain</h1>
+    </div>
+
+    <!-- Toast -->
+    <div id="toastMessage" class="toast-message">
+        <i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs" id="authTabs">
+        <button class="auth-tab active" data-panel="panelLogin"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button class="auth-tab" data-panel="panelRegister"><i class="fas fa-user-plus"></i> Daftar</button>
+        <button class="auth-tab" data-panel="panelForgot"><i class="fas fa-key"></i> Lupa</button>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- PANEL 1: LOGIN -->
+    <!-- ========================================================== -->
+    <div class="auth-panel active" id="panelLogin">
+        <div class="auth-title">🔐 Login</div>
+        <div class="auth-sub">Masuk ke akun Anda</div>
+
+        <input type="email" class="input-field" id="loginEmail" placeholder="Email" value="demo@silverchain.io" />
+        <input type="password" class="input-field" id="loginPassword" placeholder="Password" value="123456" />
+
+        <div class="forgot-link">
+            <button id="gotoForgotBtn">Lupa password?</button>
+        </div>
+
+        <button class="btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+
+        <div class="error-msg" id="loginError"><i class="fas fa-exclamation-circle"></i> <span id="loginErrorText">Error</span></div>
+        <div class="success-msg" id="loginSuccess"><i class="fas fa-check-circle"></i> <span id="loginSuccessText">Berhasil</span></div>
+
+        <div class="divider">atau</div>
+
+        <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
+            Belum punya akun? <button id="gotoRegisterBtn" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Daftar Sekarang</button>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- PANEL 2: REGISTER + OTP -->
+    <!-- ========================================================== -->
+    <div class="auth-panel" id="panelRegister">
+        <!-- Sub-Panel: Form Registrasi -->
+        <div id="registerForm">
+            <div class="auth-title">📝 Daftar Akun</div>
+            <div class="auth-sub">Buat akun baru di SilverChain</div>
+
+            <input type="email" class="input-field" id="regEmail" placeholder="Email" />
+            <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
+            <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Konfirmasi Password" />
+
+            <button class="btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Daftar & Kirim OTP</button>
+
+            <div class="error-msg" id="regError"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText">Error</span></div>
+
+            <div class="divider">atau</div>
+
+            <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
+                Sudah punya akun? <button id="gotoLoginFromRegister" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
+            </div>
+        </div>
+
+        <!-- Sub-Panel: Verifikasi OTP -->
+        <div id="otpForm" style="display:none;">
+            <div class="auth-title">🔐 Verifikasi Email</div>
+            <div class="auth-sub" id="otpEmailDisplay">Kode OTP telah dikirim ke email@anda.com</div>
+
+            <input type="text" class="input-field" id="otpInput" placeholder="Masukkan kode OTP (6 digit)" maxlength="6" />
+
+            <button class="btn-primary" id="verifyOtpBtn"><i class="fas fa-check"></i> Verifikasi</button>
+            <button class="btn-secondary" id="resendOtpBtn"><i class="fas fa-redo"></i> Kirim Ulang OTP</button>
+
+            <div class="otp-timer">Kode berlaku selama <span id="otpCountdown">5:00</span></div>
+
+            <div class="error-msg" id="otpError"><i class="fas fa-exclamation-circle"></i> <span id="otpErrorText">Error</span></div>
+            <div class="success-msg" id="otpSuccess"><i class="fas fa-check-circle"></i> <span id="otpSuccessText">Berhasil</span></div>
+
+            <div class="back-link">
+                <button id="backToRegisterBtn"><i class="fas fa-arrow-left"></i> Kembali</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- PANEL 3: FORGOT PASSWORD -->
+    <!-- ========================================================== -->
+    <div class="auth-panel" id="panelForgot">
+        <div class="auth-title">🔑 Lupa Password</div>
+        <div class="auth-sub">Masukkan email Anda, kami akan kirim link reset</div>
+
+        <input type="email" class="input-field" id="forgotEmail" placeholder="Email" />
+
+        <button class="btn-primary" id="forgotBtn"><i class="fas fa-paper-plane"></i> Kirim Link Reset</button>
+
+        <div class="error-msg" id="forgotError"><i class="fas fa-exclamation-circle"></i> <span id="forgotErrorText">Error</span></div>
+        <div class="success-msg" id="forgotSuccess"><i class="fas fa-check-circle"></i> <span id="forgotSuccessText">Berhasil</span></div>
+
+        <div class="divider">atau</div>
+
+        <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
+            Ingat password? <button id="gotoLoginFromForgot" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ============================================================
+// STORAGE KEYS
+// ============================================================
+const STORAGE_KEYS = {
+    USERS: 'silverchain_users',
+    CURRENT_USER: 'silverchain_current_user',
+    PENDING_REF: 'silverchain_pending_ref',
+    SETTINGS: 'silverchain_settings'
+};
+const OWNER_EMAIL = 'admin@silverchain.io';
+
+let usersDB = [];
+let registeredEmail = '';
+let registeredPassword = '';
+let otpTimer = null;
+let otpCountdown = 300;
+
+// ============================================================
+// LOAD DATA
+// ============================================================
+function loadData() {
+    try {
+        const users = localStorage.getItem(STORAGE_KEYS.USERS);
+        if (users) usersDB = JSON.parse(users);
+        else {
+            usersDB = [
+                { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null, verified: true },
+                { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null, verified: true },
+                { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026', verified: true },
+                { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026', verified: true },
+                { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123', verified: true },
+                { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null, verified: true }
+            ];
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
+        }
+    } catch (e) { console.warn('Load error:', e); }
+}
+
+function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
+
+function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+
+function showToast(msg) {
+    const toast = document.getElementById('toastMessage');
+    document.getElementById('toastText').textContent = msg;
+    toast.style.display = 'flex';
+    setTimeout(() => { toast.style.display = 'none'; }, 3500);
+}
+
+// ============================================================
+// LOAD SETTINGS
+// ============================================================
+function loadSettings() {
+    try {
+        const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+        if (data) {
+            const settings = JSON.parse(data);
+            if (settings.brandName) {
+                document.getElementById('brandName').textContent = settings.brandName;
+            }
+        }
+    } catch (e) {}
+}
+
+// ============================================================
+// TABS NAVIGATION
+// ============================================================
+const tabs = document.querySelectorAll('.auth-tab');
+const panels = {
+    panelLogin: document.getElementById('panelLogin'),
+    panelRegister: document.getElementById('panelRegister'),
+    panelForgot: document.getElementById('panelForgot')
+};
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        Object.keys(panels).forEach(key => {
+            panels[key].classList.remove('active');
+        });
+        const target = panels[this.dataset.panel];
+        if (target) target.classList.add('active');
+        // Reset OTP form jika pindah tab
+        if (this.dataset.panel !== 'panelRegister') {
+            document.getElementById('otpForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            stopOtpTimer();
+        }
+        // Hide error/success
+        document.querySelectorAll('.error-msg, .success-msg').forEach(el => el.classList.remove('show'));
+    });
+});
+
+// ============================================================
+// NAVIGATION HELPER
+// ============================================================
+function switchTab(tabId) {
+    tabs.forEach(t => t.classList.remove('active'));
+    document.querySelector(`[data-panel="${tabId}"]`).classList.add('active');
+    Object.keys(panels).forEach(key => {
+        panels[key].classList.remove('active');
+    });
+    panels[tabId].classList.add('active');
+}
+
+document.getElementById('gotoRegisterBtn').addEventListener('click', () => switchTab('panelRegister'));
+document.getElementById('gotoLoginFromRegister').addEventListener('click', () => switchTab('panelLogin'));
+document.getElementById('gotoLoginFromForgot').addEventListener('click', () => switchTab('panelLogin'));
+document.getElementById('gotoForgotBtn').addEventListener('click', () => switchTab('panelForgot'));
+
+// ============================================================
+// LOGIN
+// ============================================================
+document.getElementById('loginBtn').addEventListener('click', function() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const error = document.getElementById('loginError');
+    const success = document.getElementById('loginSuccess');
+
+    error.classList.remove('show');
+    success.classList.remove('show');
+
+    if (!email || !email.includes('@') || password.length < 4) {
+        document.getElementById('loginErrorText').textContent = 'Email atau password tidak valid.';
+        error.classList.add('show');
+        return;
+    }
+
+    const user = findUser(email);
+    if (!user) {
+        document.getElementById('loginErrorText').textContent = 'Email tidak ditemukan.';
+        error.classList.add('show');
+        return;
+    }
+    if (user.password !== password) {
+        document.getElementById('loginErrorText').textContent = 'Password salah.';
+        error.classList.add('show');
+        return;
+    }
+    if (!user.verified) {
+        document.getElementById('loginErrorText').textContent = 'Email belum diverifikasi. Cek email Anda.';
+        error.classList.add('show');
+        return;
+    }
+
+    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+    document.getElementById('loginSuccessText').textContent = 'Login berhasil! Mengalihkan...';
+    success.classList.add('show');
+
+    setTimeout(() => {
+        window.location.href = '/dashboard';
+    }, 800);
+});
+
+// Enter key support
+document.getElementById('loginEmail').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('loginPassword').focus();
+});
+document.getElementById('loginPassword').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('loginBtn').click();
+});
+document.getElementById('regEmail').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('regPassword').focus();
+});
+document.getElementById('regPassword').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('regPasswordConfirm').focus();
+});
+document.getElementById('regPasswordConfirm').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('registerBtn').click();
+});
+document.getElementById('otpInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('verifyOtpBtn').click();
+});
+document.getElementById('forgotEmail').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('forgotBtn').click();
+});
+
+// ============================================================
+// REGISTER + OTP
+// ============================================================
+document.getElementById('registerBtn').addEventListener('click', function() {
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value.trim();
+    const confirm = document.getElementById('regPasswordConfirm').value.trim();
+    const error = document.getElementById('regError');
+
+    error.classList.remove('show');
+
+    if (!email || !email.includes('@')) {
+        document.getElementById('regErrorText').textContent = 'Masukkan email yang valid.';
+        error.classList.add('show');
+        return;
+    }
+    if (password.length < 4) {
+        document.getElementById('regErrorText').textContent = 'Password minimal 4 karakter.';
+        error.classList.add('show');
+        return;
+    }
+    if (password !== confirm) {
+        document.getElementById('regErrorText').textContent = 'Konfirmasi password tidak cocok.';
+        error.classList.add('show');
+        return;
+    }
+    if (findUser(email)) {
+        document.getElementById('regErrorText').textContent = 'Email sudah terdaftar.';
+        error.classList.add('show');
+        return;
+    }
+
+    registeredEmail = email;
+    registeredPassword = password;
+
+    // Simulasi kirim OTP (di production panggil API)
+    document.getElementById('otpEmailDisplay').textContent = `Kode OTP telah dikirim ke ${email}`;
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('otpForm').style.display = 'block';
+    startOtpTimer();
+
+    showToast('📧 Kode OTP telah dikirim ke email Anda (demo: 123456)');
+
+    // Untuk demo, set OTP ke 123456
+    window._demoOtp = '123456';
+});
+
+// ============================================================
+// OTP TIMER
+// ============================================================
+function startOtpTimer() {
+    otpCountdown = 300;
+    updateOtpDisplay();
+    clearInterval(otpTimer);
+    otpTimer = setInterval(() => {
+        otpCountdown--;
+        updateOtpDisplay();
+        if (otpCountdown <= 0) {
+            clearInterval(otpTimer);
+            document.getElementById('otpCountdown').textContent = 'Kadaluarsa';
+        }
+    }, 1000);
+}
+
+function updateOtpDisplay() {
+    const mins = Math.floor(otpCountdown / 60);
+    const secs = otpCountdown % 60;
+    document.getElementById('otpCountdown').textContent =
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function stopOtpTimer() {
+    clearInterval(otpTimer);
+}
+
+// ============================================================
+// VERIFY OTP
+// ============================================================
+document.getElementById('verifyOtpBtn').addEventListener('click', function() {
+    const otp = document.getElementById('otpInput').value.trim();
+    const error = document.getElementById('otpError');
+    const success = document.getElementById('otpSuccess');
+
+    error.classList.remove('show');
+    success.classList.remove('show');
+
+    if (otp.length < 6) {
+        document.getElementById('otpErrorText').textContent = 'Masukkan kode OTP 6 digit.';
+        error.classList.add('show');
+        return;
+    }
+
+    // Demo: OTP = 123456
+    if (otp !== '123456') {
+        document.getElementById('otpErrorText').textContent = 'Kode OTP salah. Coba lagi.';
+        error.classList.add('show');
+        return;
+    }
+
+    // OTP valid → buat akun
+    const refCode = registeredEmail.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
+    usersDB.push({
+        email: registeredEmail,
+        password: registeredPassword,
+        refCode: refCode,
+        referredBy: null,
+        verified: true,
+        createdAt: Date.now()
+    });
+    saveUsers();
+
+    document.getElementById('otpSuccessText').textContent = '✅ Akun berhasil dibuat! Mengalihkan ke Login...';
+    success.classList.add('show');
+
+    setTimeout(() => {
+        // Reset form dan pindah ke login
+        document.getElementById('otpForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regPassword').value = '';
+        document.getElementById('regPasswordConfirm').value = '';
+        document.getElementById('otpInput').value = '';
+        stopOtpTimer();
+        switchTab('panelLogin');
+        document.getElementById('loginEmail').value = registeredEmail;
+        document.getElementById('loginPassword').value = registeredPassword;
+        showToast('✅ Akun berhasil dibuat! Silakan login.');
+    }, 1500);
+});
+
+// ============================================================
+// RESEND OTP
+// ============================================================
+document.getElementById('resendOtpBtn').addEventListener('click', function() {
+    if (!registeredEmail) {
+        showToast('❌ Silakan daftar terlebih dahulu.');
+        return;
+    }
+    startOtpTimer();
+    showToast('📧 Kode OTP baru telah dikirim (demo: 123456)');
+    document.getElementById('otpError').classList.remove('show');
+    document.getElementById('otpSuccess').classList.remove('show');
+});
+
+// ============================================================
+// BACK TO REGISTER
+// ============================================================
+document.getElementById('backToRegisterBtn').addEventListener('click', function() {
+    document.getElementById('otpForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+    document.getElementById('otpInput').value = '';
+    stopOtpTimer();
+    document.getElementById('otpError').classList.remove('show');
+    document.getElementById('otpSuccess').classList.remove('show');
+});
+
+// ============================================================
+// FORGOT PASSWORD
+// ============================================================
+document.getElementById('forgotBtn').addEventListener('click', function() {
+    const email = document.getElementById('forgotEmail').value.trim();
+    const error = document.getElementById('forgotError');
+    const success = document.getElementById('forgotSuccess');
+
+    error.classList.remove('show');
+    success.classList.remove('show');
+
+    if (!email || !email.includes('@')) {
+        document.getElementById('forgotErrorText').textContent = 'Masukkan email yang valid.';
+        error.classList.add('show');
+        return;
+    }
+
+    const user = findUser(email);
+    if (!user) {
+        document.getElementById('forgotErrorText').textContent = 'Email tidak ditemukan.';
+        error.classList.add('show');
+        return;
+    }
+
+    // Simulasi kirim email reset password
+    document.getElementById('forgotSuccessText').textContent =
+        '✅ Link reset password telah dikirim ke email Anda. (demo: buka console)';
+    success.classList.add('show');
+
+    // Demo: tampilkan link di console
+    console.log(`🔑 Link reset password untuk ${email}: /reset-password?token=demo_${Date.now()}`);
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadData();
+loadSettings();
+
+// Cek jika user sudah login, redirect ke dashboard
+const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+if (savedUser) {
+    try {
+        const data = JSON.parse(savedUser);
+        if (findUser(data.email)) {
+            window.location.href = '/dashboard';
+        }
+    } catch (e) {}
+}
+
+console.log('🟢 SilverChain Auth Page siap.');
+console.log('📌 Demo OTP: 123456');
+console.log('📌 Demo Login: demo@silverchain.io / 123456');
+console.log('📌 Admin Login: admin@silverchain.io / admin123');
+</script>
+</body>
+</html>
