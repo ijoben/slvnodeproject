@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>SilverChain · Beli Token</title>
+    <title>SilverChain · Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -47,108 +47,227 @@
             font-weight: 600;
             color: #8ab8ff;
         }
-        .dash-stats {
+        .badge-success {
+            background: rgba(60, 220, 80, 0.1);
+            border: 1px solid rgba(60, 220, 80, 0.15);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: #6aff8a;
+        }
+        .badge-warning {
+            background: rgba(250, 200, 60, 0.1);
+            border: 1px solid rgba(250, 200, 60, 0.15);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: #fbbf24;
+        }
+        .badge-danger {
+            background: rgba(255, 60, 60, 0.1);
+            border: 1px solid rgba(255, 60, 60, 0.15);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: #ff6a6a;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin: 1rem 0 1.2rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            padding-bottom: 0.3rem;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            color: #5a8ac0;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .tab-btn:hover {
+            color: #8ab8ff;
+            background: rgba(60, 120, 255, 0.05);
+        }
+        .tab-btn.active {
+            color: #7aaeff;
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* SALDO CARDS */
+        .saldo-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            margin: 1rem 0;
+            margin: 0.5rem 0;
         }
-        .dash-stat {
+        .saldo-card {
             background: rgba(8, 20, 48, 0.3);
-            border-radius: 1.5rem;
+            border-radius: 1.2rem;
             padding: 1.2rem;
-            text-align: center;
             border: 1px solid rgba(80, 140, 255, 0.06);
+            text-align: center;
         }
-        .dash-stat .num {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #b0ccff;
-        }
-        .dash-stat .label {
-            font-size: 0.65rem;
+        .saldo-card .label {
+            font-size: 0.7rem;
             color: #5a8ac0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .buy-card {
-            background: rgba(12, 28, 60, 0.3);
-            border-radius: 1.8rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            margin: 1rem 0;
+        .saldo-card .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #b0ccff;
+            margin: 0.2rem 0;
         }
-        .buy-card .row {
+        .saldo-card .amount.referral {
+            color: #7aaeff;
+        }
+        .saldo-card .sub {
+            font-size: 0.65rem;
+            color: #5a8ac0;
+        }
+
+        /* WD FORM */
+        .wd-box {
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            margin: 0.5rem 0;
+        }
+        .wd-box .row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 1rem;
-            margin: 0.5rem 0;
+            gap: 0.8rem;
+            margin: 0.4rem 0;
         }
-        .buy-card .row .label {
+        .wd-box .row .label {
             color: #8ab0e6;
-            font-size: 0.85rem;
-            min-width: 120px;
+            font-size: 0.8rem;
+            min-width: 100px;
         }
-        .buy-card .input-group {
+        .wd-box .input-group {
             display: flex;
             align-items: center;
             background: rgba(8, 20, 48, 0.5);
             border-radius: 60px;
-            padding: 0.1rem 0.1rem 0.1rem 1.5rem;
+            padding: 0.1rem 0.1rem 0.1rem 1.2rem;
             border: 1px solid rgba(80, 140, 255, 0.06);
             flex: 1;
-            min-width: 160px;
-            max-width: 300px;
+            min-width: 140px;
+            max-width: 250px;
         }
-        .buy-card .input-group input {
+        .wd-box .input-group input {
             background: transparent;
             border: none;
-            padding: 0.7rem 0;
-            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
             color: #e6edf5;
             width: 100%;
             outline: none;
             font-weight: 500;
         }
-        .buy-card .input-group input::placeholder {
+        .wd-box .input-group input::placeholder {
             color: #3a5a8a;
         }
-        .buy-card .input-group .unit {
+        .wd-box .input-group .unit {
             background: linear-gradient(145deg, #4a8aff, #2a5ac0);
             color: #fff;
             font-weight: 700;
-            padding: 0.3rem 1.2rem;
+            padding: 0.2rem 0.8rem;
             border-radius: 60px;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             white-space: nowrap;
         }
-        .buy-card .btn-buy {
+        .wd-box .btn-wd {
             background: linear-gradient(145deg, #4a8aff, #1a4ab0);
             border: none;
             border-radius: 60px;
-            padding: 0.8rem 2rem;
+            padding: 0.5rem 1.5rem;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.25);
-            width: 100%;
+            box-shadow: 0 8px 30px -6px rgba(60, 120, 255, 0.2);
         }
-        .buy-card .btn-buy:hover {
-            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.35);
+        .wd-box .btn-wd:hover {
+            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.3);
             transform: translateY(-2px);
         }
-        .buy-card .btn-buy:active {
+        .wd-box .btn-wd:active {
             transform: scale(0.97);
         }
-        .buy-card .btn-buy:disabled {
+        .wd-box .btn-wd:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none !important;
         }
+
+        /* TABLE */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 0.5rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+        }
+        .table-wrapper table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .table-wrapper table th {
+            text-align: left;
+            color: #5a8ac0;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            white-space: nowrap;
+        }
+        .table-wrapper table td {
+            padding: 0.4rem 0.8rem;
+            color: #8ab0e6;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+            white-space: nowrap;
+        }
+        .table-wrapper table .empty {
+            color: #5a8ac0;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+        .status-pending {
+            color: #fbbf24;
+        }
+        .status-approved {
+            color: #6aff8a;
+        }
+        .status-rejected {
+            color: #ff6a6a;
+        }
+
         .ref-link-box {
             background: rgba(8, 20, 48, 0.3);
             border-radius: 60px;
@@ -176,48 +295,7 @@
             cursor: pointer;
             font-size: 0.7rem;
         }
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-top: 0.5rem;
-            border-radius: 1.2rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-        }
-        .table-wrapper table {
-            width: 100%;
-            min-width: 700px;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-        .table-wrapper table th {
-            text-align: left;
-            color: #5a8ac0;
-            font-weight: 600;
-            padding: 0.5rem 0.8rem;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
-            white-space: nowrap;
-        }
-        .table-wrapper table td {
-            padding: 0.5rem 0.8rem;
-            color: #8ab0e6;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
-            white-space: nowrap;
-        }
-        .table-wrapper table .empty {
-            color: #5a8ac0;
-            text-align: center;
-            padding: 1.5rem 0;
-        }
-        .status-pending {
-            color: #fbbf24;
-        }
-        .status-approved {
-            color: #6aff8a;
-        }
-        .status-rejected {
-            color: #ff6a6a;
-        }
+
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -234,6 +312,8 @@
         .toast-message.show {
             display: flex;
         }
+
+        /* MODAL PAYMENT */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -405,6 +485,7 @@
         .modal-box .btn-submit-payment:active {
             transform: scale(0.97);
         }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -466,15 +547,24 @@
         }
 
         @media (max-width: 700px) {
-            .dash-stats {
+            .saldo-grid {
                 grid-template-columns: 1fr 1fr;
             }
-            .buy-card .row {
+            .wd-box .row {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .buy-card .input-group {
+            .wd-box .input-group {
                 max-width: 100%;
+            }
+            .tabs {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.2rem;
+            }
+            .tab-btn {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
             }
             .modal-box {
                 padding: 1.5rem 1.2rem;
@@ -484,8 +574,8 @@
             .section-card {
                 padding: 1.5rem 1rem;
             }
-            .dash-stats {
-                grid-template-columns: 1fr 1fr;
+            .saldo-grid {
+                grid-template-columns: 1fr;
             }
             .bottom-nav a {
                 font-size: 0.5rem;
@@ -503,6 +593,13 @@
                 align-items: center;
                 text-align: center;
             }
+            .tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .tab-btn {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -515,7 +612,7 @@
         <div class="section-card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
                 <div>
-                    <h2 style="color:#b0ccff; font-size:1.5rem;"><i class="fas fa-shopping-cart" style="color:#4a8aff; margin-right:10px;"></i>Beli Token</h2>
+                    <h2 style="color:#b0ccff; font-size:1.5rem;"><i class="fas fa-chart-pie" style="color:#4a8aff; margin-right:10px;"></i>Dashboard</h2>
                     <p style="color:#8ab0e6; font-size:0.85rem;">Selamat datang, <strong id="dashUserEmail" style="color:#b0ccff;">-</strong></p>
                 </div>
                 <div>
@@ -523,76 +620,153 @@
                 </div>
             </div>
 
-            <!-- Stats -->
-            <div class="dash-stats">
-                <div class="dash-stat"><div class="num" id="dashTotalSCT">0</div><div class="label">Total SCT</div></div>
-                <div class="dash-stat"><div class="num" id="dashTotalPurchases">0</div><div class="label">Total Pembelian</div></div>
-                <div class="dash-stat"><div class="num" id="dashReferrals">0</div><div class="label">Referral</div></div>
-                <div class="dash-stat"><div class="num" id="dashRefEarnings">0</div><div class="label">Pendapatan Referral (SCT)</div></div>
+            <!-- SALDO CARDS -->
+            <div class="saldo-grid">
+                <div class="saldo-card">
+                    <div class="label">💰 Saldo Pribadi</div>
+                    <div class="amount" id="saldoPersonal">0</div>
+                    <div class="sub">SCT</div>
+                </div>
+                <div class="saldo-card">
+                    <div class="label">💎 Saldo Referral</div>
+                    <div class="amount referral" id="saldoReferral">0</div>
+                    <div class="sub">SCT — <span style="color:#7aaeff;">Bisa di-withdraw</span></div>
+                </div>
             </div>
 
-            <!-- Referral Link -->
-            <div style="margin:0.5rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
-                <i class="fas fa-link"></i> Link Referral Anda
-            </div>
-            <div class="ref-link-box">
-                <input type="text" id="dashRefLink" readonly value="https://silverchain.io/ref/-" />
-                <button id="copyDashRef"><i class="fas fa-copy"></i> Salin</button>
+            <!-- TABS -->
+            <div class="tabs" id="tabContainer">
+                <button class="tab-btn active" data-tab="tabBuy"><i class="fas fa-shopping-cart"></i> Beli Token</button>
+                <button class="tab-btn" data-tab="tabWithdraw"><i class="fas fa-arrow-up"></i> Withdraw</button>
+                <button class="tab-btn" data-tab="tabHistory"><i class="fas fa-history"></i> Riwayat</button>
             </div>
 
-            <!-- BUY CARD -->
-            <div class="buy-card">
-                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#4a8aff;"></i> Beli Token</h4>
-                <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
-                    1 USDT = 1 SCT.
-                    <span id="bonusInfo" style="color:#7aaeff; font-weight:600;">✨ Bonus 10% untuk pembelian pertama!</span>
-                </p>
+            <!-- TAB 1: BELI TOKEN -->
+            <div class="tab-content active" id="tabBuy">
+                <!-- Referral Link -->
+                <div style="margin:0.5rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                    <i class="fas fa-link"></i> Link Referral Anda
+                </div>
+                <div class="ref-link-box">
+                    <input type="text" id="dashRefLink" readonly value="https://silverchain.io/ref/-" />
+                    <button id="copyDashRef"><i class="fas fa-copy"></i> Salin</button>
+                </div>
 
-                <div class="row">
-                    <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
-                    <div class="input-group">
-                        <input type="number" id="depositAmount" placeholder="0" min="1" step="1" value="100" />
-                        <span class="unit">USDT</span>
+                <div class="buy-card" style="background:rgba(12,28,60,0.3); border-radius:1.8rem; padding:1.5rem; border:1px solid rgba(80,140,255,0.06); margin:1rem 0;">
+                    <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#4a8aff;"></i> Beli Token</h4>
+                    <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
+                        1 USDT = 1 SCT.
+                        <span id="bonusInfo" style="color:#7aaeff; font-weight:600;">✨ Bonus 10% untuk pembelian pertama!</span>
+                    </p>
+
+                    <div class="row" style="display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin:0.5rem 0;">
+                        <span class="label" style="color:#8ab0e6; font-size:0.85rem; min-width:120px;"><i class="fas fa-coins"></i> Jumlah USDT</span>
+                        <div class="input-group" style="display:flex; align-items:center; background:rgba(8,20,48,0.5); border-radius:60px; padding:0.1rem 0.1rem 0.1rem 1.5rem; border:1px solid rgba(80,140,255,0.06); flex:1; min-width:160px; max-width:300px;">
+                            <input type="number" id="depositAmount" placeholder="0" min="1" step="1" value="100" />
+                            <span class="unit" style="background:linear-gradient(145deg, #4a8aff, #2a5ac0); color:#fff; font-weight:700; padding:0.3rem 1.2rem; border-radius:60px; font-size:0.75rem; white-space:nowrap;">USDT</span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-wrap:wrap; gap:1rem; margin:0.5rem 0; align-items:center;">
+                        <span style="color:#8ab0e6; font-size:0.8rem;">
+                            <i class="fas fa-gift" style="color:#4a8aff;"></i> Bonus: <strong id="depositBonus" style="color:#b0ccff;">0 SCT</strong>
+                        </span>
+                        <span style="color:#8ab0e6; font-size:0.8rem;">
+                            <i class="fas fa-user-friends" style="color:#4a8aff;"></i> Referral: <strong id="depositRef" style="color:#b0ccff;">0 SCT</strong>
+                        </span>
+                        <span style="color:#8ab0e6; font-size:0.8rem;">
+                            <i class="fas fa-arrow-right" style="color:#4a8aff;"></i> Total: <strong id="depositTotal" style="color:#b0ccff;">0 SCT</strong>
+                        </span>
+                    </div>
+
+                    <button class="btn-buy" id="buyBtn" style="background:linear-gradient(145deg, #4a8aff, #1a4ab0); border:none; border-radius:60px; padding:0.8rem 2rem; font-weight:700; font-size:1rem; color:#fff; cursor:pointer; transition:0.15s; box-shadow:0 8px 30px -6px rgba(60,120,255,0.25); width:100%;">
+                        <i class="fas fa-shopping-cart"></i> Beli Token
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 2: WITHDRAW -->
+            <div class="tab-content" id="tabWithdraw">
+                <div class="wd-box">
+                    <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-arrow-up" style="color:#4a8aff;"></i> Withdraw Saldo Referral</h4>
+                    <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
+                        Saldo referral bisa di-withdraw ke wallet Anda. Minimal WD: <strong style="color:#7aaeff;">10 SCT</strong>
+                    </p>
+
+                    <div class="row">
+                        <span class="label"><i class="fas fa-coins"></i> Jumlah SCT</span>
+                        <div class="input-group">
+                            <input type="number" id="wdAmount" placeholder="0" min="10" step="1" />
+                            <span class="unit">SCT</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <span class="label"><i class="fas fa-wallet"></i> Address Tujuan</span>
+                        <div class="input-group" style="max-width:100%;">
+                            <input type="text" id="wdAddress" placeholder="0x... atau wallet address" style="font-family:monospace; font-size:0.75rem;" />
+                            <span class="unit" style="font-size:0.5rem;">ADDR</span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-wrap:wrap; gap:0.8rem; margin:0.5rem 0; align-items:center;">
+                        <span style="color:#8ab0e6; font-size:0.75rem;">
+                            Saldo Referral: <strong id="wdSaldoTersedia" style="color:#7aaeff;">0 SCT</strong>
+                        </span>
+                        <span style="color:#5a8ac0; font-size:0.7rem;">
+                            <i class="fas fa-info-circle"></i> WD akan diproses oleh admin
+                        </span>
+                    </div>
+
+                    <button class="btn-wd" id="wdSubmitBtn"><i class="fas fa-paper-plane"></i> Ajukan Withdraw</button>
+                </div>
+
+                <!-- Riwayat WD -->
+                <div style="margin-top:1.5rem;">
+                    <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-clock" style="color:#4a8aff;"></i> Riwayat Withdraw</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Jumlah</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wdHistoryBody">
+                                <tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-                <div style="display:flex; flex-wrap:wrap; gap:1rem; margin:0.5rem 0; align-items:center;">
-                    <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-gift" style="color:#4a8aff;"></i> Bonus: <strong id="depositBonus" style="color:#b0ccff;">0 SCT</strong>
-                    </span>
-                    <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-user-friends" style="color:#4a8aff;"></i> Referral: <strong id="depositRef" style="color:#b0ccff;">0 SCT</strong>
-                    </span>
-                    <span style="color:#8ab0e6; font-size:0.8rem;">
-                        <i class="fas fa-arrow-right" style="color:#4a8aff;"></i> Total: <strong id="depositTotal" style="color:#b0ccff;">0 SCT</strong>
-                    </span>
-                </div>
-
-                <button class="btn-buy" id="buyBtn"><i class="fas fa-shopping-cart"></i> Beli Token</button>
             </div>
 
-            <!-- History -->
-            <div style="margin-top:1.5rem;">
-                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#4a8aff;"></i> Riwayat Transaksi</h4>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>USDT</th>
-                                <th>Bonus</th>
-                                <th>Ref</th>
-                                <th>Total SCT</th>
-                                <th>Hash TX</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyBody">
-                            <tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>
-                        </tbody>
-                    </table>
+            <!-- TAB 3: RIWAYAT TRANSAKSI -->
+            <div class="tab-content" id="tabHistory">
+                <div style="margin-top:0.5rem;">
+                    <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#4a8aff;"></i> Riwayat Transaksi</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>USDT</th>
+                                    <th>Bonus</th>
+                                    <th>Ref</th>
+                                    <th>Total SCT</th>
+                                    <th>Hash TX</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody">
+                                <tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -614,39 +788,28 @@
         </a>
     </nav>
 
-    <!-- MODAL PAYMENT -->
+    <!-- MODAL PAYMENT (sama seperti sebelumnya) -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-box">
             <button class="close-btn" id="closePaymentModal"><i class="fas fa-times"></i></button>
             <h2><i class="fas fa-credit-card" style="color:#4a8aff;"></i> Konfirmasi Pembayaran</h2>
             <p>Kirim USDT ke address di bawah, lalu isi hash transaksi.</p>
-
             <div id="paymentDetails" style="margin:0.5rem 0;">
                 <div class="detail-row"><span class="label">Jumlah USDT</span><span class="value" id="modalUsdt">0</span></div>
                 <div class="detail-row"><span class="label">Bonus 10% (Pertama)</span><span class="value" id="modalBonus">0</span></div>
                 <div class="detail-row"><span class="label">Referral 3%</span><span class="value" id="modalRef">0</span></div>
                 <div class="detail-row"><span class="label">Total SCT</span><span class="value" id="modalTotal">0</span></div>
             </div>
-
             <div class="address-box">
                 <input type="text" id="modalAdminAddress" readonly style="font-family:monospace;" />
                 <button id="modalCopyAddress"><i class="fas fa-copy"></i> Salin</button>
             </div>
-
             <div class="qr-section">
-                <div class="qr-placeholder" id="modalQrPlaceholder">
-                    <i class="fas fa-qrcode"></i>
-                </div>
-                <div class="qr-text">
-                    <strong>QRIS</strong><br />
-                    Scan QRIS untuk pembayaran<br />
-                    <span style="font-size:0.65rem; color:#5a8ac0;" id="modalQrText">ID: 1234567890 | Nama: SilverChain DAO</span>
-                </div>
+                <div class="qr-placeholder" id="modalQrPlaceholder"><i class="fas fa-qrcode"></i></div>
+                <div class="qr-text"><strong>QRIS</strong><br />Scan QRIS untuk pembayaran<br /><span style="font-size:0.65rem; color:#5a8ac0;" id="modalQrText">ID: 1234567890 | Nama: SilverChain DAO</span></div>
                 <button id="modalCopyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.2rem 0.8rem; color:#8ab8ff; cursor:pointer; font-size:0.65rem;"><i class="fas fa-copy"></i> Salin ID</button>
             </div>
-
             <input type="text" class="input-field" id="modalTxHash" placeholder="Masukkan hash transaksi (0x...)" style="font-family:monospace;" />
-
             <button class="btn-submit-payment" id="modalSubmitBtn"><i class="fas fa-paper-plane"></i> Kirim Bukti Deposit</button>
             <p style="color:#5a8ac0; font-size:0.6rem; text-align:center; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
         </div>
@@ -659,6 +822,7 @@
         const STORAGE_KEYS = {
             USERS: 'silverchain_users',
             DEPOSITS: 'silverchain_deposits',
+            WITHDRAWALS: 'silverchain_withdrawals',
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
             CURRENT_USER: 'silverchain_current_user',
@@ -667,9 +831,11 @@
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
         const DEFAULT_USDT = '0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ';
+        const MIN_WITHDRAW = 10;
 
         let usersDB = [];
         let depositsDB = [];
+        let withdrawalsDB = [];
         let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
@@ -684,6 +850,8 @@
                 if (users) usersDB = JSON.parse(users);
                 const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
                 if (deposits) depositsDB = JSON.parse(deposits);
+                const wd = localStorage.getItem(STORAGE_KEYS.WITHDRAWALS);
+                if (wd) withdrawalsDB = JSON.parse(wd);
                 const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
                 if (bonus) bonusPercent = parseInt(bonus) || 10;
                 const ref = localStorage.getItem(STORAGE_KEYS.REF);
@@ -697,13 +865,15 @@
             } catch (e) { console.warn('Load error:', e); }
         }
 
+        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
+
+        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
+
+        function saveWithdrawals() { localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB)); }
+
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
         function getUserDeposits(email) { return depositsDB.filter(d => d.email === email); }
-
-        function getUserApprovedDeposits(email) {
-            return depositsDB.filter(d => d.email === email && d.status === 'approved');
-        }
 
         function getUserTotalSCT(email) {
             return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
@@ -731,12 +901,43 @@
             return Math.round(total * 10) / 10;
         }
 
+        // ===== SALDO PERSONAL & REFERRAL =====
+        function getSaldoPersonal(email) {
+            const deposits = getUserDeposits(email);
+            const approved = deposits.filter(d => d.status === 'approved');
+            // Saldo pribadi = total SCT dari pembelian sendiri (tanpa referral)
+            return approved.reduce((sum, d) => sum + (d.usdt + (d.bonus || 0)), 0);
+        }
+
+        function getSaldoReferral(email) {
+            // Saldo referral = total referral yang didapat dari downline (ref)
+            const user = findUser(email);
+            if (!user) return 0;
+            const referrals = usersDB.filter(u => u.referredBy === user.refCode);
+            let total = 0;
+            referrals.forEach(ref => {
+                const firstDeposit = depositsDB
+                    .filter(d => d.email === ref.email && d.status === 'approved')
+                    .sort((a, b) => a.timestamp - b.timestamp)[0];
+                if (firstDeposit) {
+                    total += firstDeposit.ref || 0;
+                }
+            });
+            // Kurangi yang sudah di-withdraw
+            const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
+            const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
+            return Math.round((total - totalWd) * 10) / 10;
+        }
+
         function getNextId() {
             if (depositsDB.length === 0) return 1;
             return Math.max(...depositsDB.map(d => d.id)) + 1;
         }
 
-        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
+        function getNextWdId() {
+            if (withdrawalsDB.length === 0) return 1;
+            return Math.max(...withdrawalsDB.map(w => w.id)) + 1;
+        }
 
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
@@ -771,11 +972,35 @@
         }
 
         // ============================================================
-        // CEK APAKAH USER PERNAH BELI (untuk bonus pertama)
+        // CEK APAKAH USER PERNAH BELI
         // ============================================================
         function hasUserPurchasedBefore(email) {
             const approved = depositsDB.filter(d => d.email === email && d.status === 'approved');
             return approved.length > 0;
+        }
+
+        // ============================================================
+        // TABS
+        // ============================================================
+        function initTabs() {
+            const btns = document.querySelectorAll('.tab-btn');
+            const contents = {
+                tabBuy: document.getElementById('tabBuy'),
+                tabWithdraw: document.getElementById('tabWithdraw'),
+                tabHistory: document.getElementById('tabHistory')
+            };
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    btns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    Object.keys(contents).forEach(key => {
+                        contents[key].classList.remove('active');
+                    });
+                    const target = contents[this.dataset.tab];
+                    if (target) target.classList.add('active');
+                });
+            });
         }
 
         // ============================================================
@@ -795,37 +1020,36 @@
             if (!isLoggedIn) {
                 document.getElementById('dashUserEmail').textContent = 'Silakan login terlebih dahulu';
                 document.getElementById('dashRefCode').textContent = '-';
-                document.getElementById('dashTotalSCT').textContent = '0';
-                document.getElementById('dashTotalPurchases').textContent = '0';
-                document.getElementById('dashReferrals').textContent = '0';
-                document.getElementById('dashRefEarnings').textContent = '0';
                 document.getElementById('dashRefLink').value = 'https://silverchain.io/ref/-';
+                document.getElementById('saldoPersonal').textContent = '0';
+                document.getElementById('saldoReferral').textContent = '0';
+                document.getElementById('wdSaldoTersedia').textContent = '0 SCT';
                 document.getElementById('historyBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Silakan login terlebih dahulu</td></tr>`;
+                document.getElementById('wdHistoryBody').innerHTML =
+                    `<tr><td colspan="4" class="empty">Silakan login terlebih dahulu</td></tr>`;
                 document.getElementById('buyBtn').disabled = true;
+                document.getElementById('wdSubmitBtn').disabled = true;
                 return;
             }
 
             document.getElementById('buyBtn').disabled = false;
+            document.getElementById('wdSubmitBtn').disabled = false;
 
             const user = findUser(currentUser.email);
             if (!user) return;
 
             document.getElementById('dashUserEmail').textContent = currentUser.email;
             document.getElementById('dashRefCode').textContent = user.refCode || '-';
-
-            // ===== LINK REFERRAL DINAMIS =====
             const domain = window.location.host;
-            const refLink = `https://${domain}/?ref=${user.refCode}`;
-            document.getElementById('dashRefLink').value = refLink;
+            document.getElementById('dashRefLink').value = `https://${domain}/?ref=${user.refCode}`;
 
-            const deposits = getUserDeposits(currentUser.email);
-            const approved = deposits.filter(d => d.status === 'approved');
-            document.getElementById('dashTotalSCT').textContent = approved.reduce((sum, d) => sum + d.total, 0).toFixed(1);
-            document.getElementById('dashTotalPurchases').textContent = approved.length;
-            const referrals = getUserReferrals(currentUser.email);
-            document.getElementById('dashReferrals').textContent = referrals.length;
-            document.getElementById('dashRefEarnings').textContent = getRefEarnings(currentUser.email).toFixed(1);
+            // Saldo
+            const saldoPersonal = getSaldoPersonal(currentUser.email);
+            const saldoReferral = getSaldoReferral(currentUser.email);
+            document.getElementById('saldoPersonal').textContent = saldoPersonal.toFixed(1);
+            document.getElementById('saldoReferral').textContent = saldoReferral.toFixed(1);
+            document.getElementById('wdSaldoTersedia').textContent = saldoReferral.toFixed(1) + ' SCT';
 
             // Info bonus pertama
             const hasPurchased = hasUserPurchasedBefore(currentUser.email);
@@ -838,7 +1062,8 @@
                 bonusInfo.style.color = '#7aaeff';
             }
 
-            // History
+            // History deposit
+            const deposits = getUserDeposits(currentUser.email);
             if (deposits.length === 0) {
                 document.getElementById('historyBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>`;
@@ -864,6 +1089,31 @@
                 document.getElementById('historyBody').innerHTML = html;
             }
 
+            // History withdraw
+            const wdHistory = withdrawalsDB.filter(w => w.email === currentUser.email);
+            if (wdHistory.length === 0) {
+                document.getElementById('wdHistoryBody').innerHTML =
+                    `<tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>`;
+            } else {
+                let html = '';
+                wdHistory.slice().reverse().forEach(w => {
+                    const date = new Date(w.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(w.timestamp)
+                        .toLocaleTimeString('id-ID');
+                    const cls = w.status === 'approved' ? 'status-approved' : w.status === 'rejected' ?
+                        'status-rejected' : 'status-pending';
+                    const txt = w.status === 'approved' ? '✅ Disetujui' : w.status === 'rejected' ?
+                        '❌ Ditolak' : '⏳ Pending';
+                    const addrShort = w.address ? w.address.substring(0, 8) + '...' : '-';
+                    html += `<tr>
+                        <td>${date}</td>
+                        <td>${w.amount} SCT</td>
+                        <td style="font-family:monospace; font-size:0.65rem;">${addrShort}</td>
+                        <td class="${cls}">${txt}</td>
+                    </tr>`;
+                });
+                document.getElementById('wdHistoryBody').innerHTML = html;
+            }
+
             updateBonusPreview();
             updatePaymentModal();
         }
@@ -882,17 +1132,13 @@
 
             const user = findUser(currentUser ? currentUser.email : '');
             if (user && user.referredBy) {
-                const referrer = findUser(user.referredBy);
-                if (referrer) {
-                    const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
-                    if (downlineDeposits.length === 0) {
-                        ref = Math.floor(usdt * refPercent / 100);
-                    }
+                const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
+                if (downlineDeposits.length === 0) {
+                    ref = Math.floor(usdt * refPercent / 100);
                 }
             }
 
             const total = sct + bonus + ref;
-
             document.getElementById('depositBonus').textContent = `+${bonus} SCT`;
             document.getElementById('depositRef').textContent = `+${ref} SCT`;
             document.getElementById('depositTotal').textContent = `${total} SCT`;
@@ -902,7 +1148,7 @@
         document.getElementById('depositAmount').addEventListener('change', updateBonusPreview);
 
         // ============================================================
-        // BUY BUTTON → OPEN MODAL
+        // BUY BUTTON
         // ============================================================
         document.getElementById('buyBtn').addEventListener('click', function() {
             if (!currentUser) {
@@ -926,12 +1172,9 @@
 
             const user = findUser(currentUser.email);
             if (user && user.referredBy) {
-                const referrer = findUser(user.referredBy);
-                if (referrer) {
-                    const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
-                    if (downlineDeposits.length === 0) {
-                        ref = Math.floor(usdt * refPercent / 100);
-                    }
+                const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
+                if (downlineDeposits.length === 0) {
+                    ref = Math.floor(usdt * refPercent / 100);
                 }
             }
 
@@ -949,7 +1192,7 @@
         });
 
         // ============================================================
-        // MODAL ACTIONS
+        // MODAL PAYMENT ACTIONS
         // ============================================================
         document.getElementById('closePaymentModal').addEventListener('click', function() {
             document.getElementById('paymentModal').classList.remove('active');
@@ -989,9 +1232,6 @@
             document.body.removeChild(ta);
         }
 
-        // ============================================================
-        // SUBMIT PAYMENT
-        // ============================================================
         document.getElementById('modalSubmitBtn').addEventListener('click', function() {
             if (!pendingDepositData) {
                 showToast('❌ Data transaksi tidak valid.');
@@ -1037,9 +1277,55 @@
         });
 
         // ============================================================
+        // WITHDRAW
+        // ============================================================
+        document.getElementById('wdSubmitBtn').addEventListener('click', function() {
+            if (!currentUser) {
+                showToast('❌ Silakan login terlebih dahulu.');
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById('wdAmount').value.trim());
+            const address = document.getElementById('wdAddress').value.trim();
+
+            if (isNaN(amount) || amount < MIN_WITHDRAW) {
+                showToast(`❌ Minimal WD adalah ${MIN_WITHDRAW} SCT.`);
+                return;
+            }
+
+            if (!address || address.length < 10) {
+                showToast('❌ Masukkan address tujuan yang valid.');
+                return;
+            }
+
+            const saldoReferral = getSaldoReferral(currentUser.email);
+            if (amount > saldoReferral) {
+                showToast(`❌ Saldo referral tidak cukup. Saldo: ${saldoReferral.toFixed(1)} SCT`);
+                return;
+            }
+
+            // Simpan permintaan WD
+            withdrawalsDB.push({
+                id: getNextWdId(),
+                email: currentUser.email,
+                amount: amount,
+                address: address,
+                status: 'pending',
+                timestamp: Date.now()
+            });
+            saveWithdrawals();
+
+            showToast(`✅ Permintaan withdraw ${amount} SCT berhasil diajukan! Menunggu approval admin.`);
+            document.getElementById('wdAmount').value = '';
+            document.getElementById('wdAddress').value = '';
+            updateUI();
+        });
+
+        // ============================================================
         // INIT
         // ============================================================
         loadData();
+        initTabs();
         updateUI();
 
         setInterval(() => {
@@ -1047,10 +1333,11 @@
             updateUI();
         }, 3000);
 
-        console.log('🟢 SilverChain Dashboard (Beli Token) siap.');
+        console.log('🟢 SilverChain Dashboard siap.');
         console.log('📌 1 USDT = 1 SCT');
         console.log('📌 Bonus 10% hanya untuk pembelian pertama');
         console.log('📌 Referral 3% hanya 1x per downline');
+        console.log('📌 WD hanya untuk saldo referral');
     </script>
 </body>
 </html>
