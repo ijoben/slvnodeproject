@@ -63,41 +63,114 @@
             color: #c0c0c0;
         }
 
-        /* ADMIN STATS GRID */
+        /* HEADER WITH LOGOUT */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .admin-header h2 {
+            color: #e0e0e0;
+            font-size: 1.5rem;
+        }
+        .admin-header h2 i {
+            color: #c0c0c0;
+            margin-right: 10px;
+        }
+        .btn-logout {
+            background: rgba(255, 60, 60, 0.1);
+            border: 1px solid rgba(255, 60, 60, 0.15);
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            color: #ff6a6a;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-logout:hover {
+            background: rgba(255, 60, 60, 0.2);
+        }
+        .btn-logout i {
+            font-size: 0.9rem;
+        }
+
+        /* ADMIN STATS GRID - KEREN */
         .admin-stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.8rem;
-            margin: 1rem 0;
+            gap: 1rem;
+            margin: 1rem 0 1.5rem;
         }
         .admin-stat {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 1.2rem;
-            padding: 0.8rem;
+            background: rgba(8, 20, 48, 0.4);
+            border-radius: 1.5rem;
+            padding: 1.2rem 1rem;
             text-align: center;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            cursor: pointer;
-            transition: 0.2s;
+            border: 1px solid rgba(80, 140, 255, 0.08);
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192,192,192,0.03), rgba(192,192,192,0.01));
+            border-radius: 1.5rem;
         }
         .admin-stat:hover {
-            background: rgba(8, 20, 48, 0.5);
-            border-color: rgba(80, 140, 255, 0.15);
-        }
-        .admin-stat .num {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #e0e0e0;
-        }
-        .admin-stat .label {
-            font-size: 0.55rem;
-            color: #a0a0a0;
-            text-transform: uppercase;
+            transform: translateY(-3px);
+            border-color: rgba(80, 140, 255, 0.2);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
         .admin-stat .icon {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #c0c0c0;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.3rem;
+            position: relative;
+            z-index: 1;
         }
+        .admin-stat .num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #e0e0e0;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .label {
+            font-size: 0.6rem;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .sub {
+            font-size: 0.55rem;
+            color: #666;
+            margin-top: 0.1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat.primary .icon { color: #c0c0c0; }
+        .admin-stat.primary .num { color: #e0e0e0; }
+        .admin-stat.success .icon { color: #6aff8a; }
+        .admin-stat.success .num { color: #6aff8a; }
+        .admin-stat.warning .icon { color: #fbbf24; }
+        .admin-stat.warning .num { color: #fbbf24; }
+        .admin-stat.info .icon { color: #60a5fa; }
+        .admin-stat.info .num { color: #60a5fa; }
 
         /* TABLE WRAPPER */
         .table-wrapper {
@@ -255,14 +328,14 @@
             transition: 0.2s;
             padding: 0.2rem 0.8rem;
             border-radius: 60px;
-            min-width: 60px;
+            min-width: 55px;
             position: relative;
         }
         .bottom-nav a i {
             font-size: 1.3rem;
         }
         .bottom-nav a span {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             font-weight: 500;
             letter-spacing: 0.3px;
         }
@@ -278,7 +351,7 @@
         }
         .bottom-nav .nav-divider {
             width: 1px;
-            height: 30px;
+            height: 25px;
             background: rgba(80, 140, 255, 0.06);
         }
 
@@ -338,9 +411,39 @@
             background: #fff;
         }
 
+        /* Section title */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin: 1rem 0 0.5rem;
+        }
+        .section-title i {
+            color: #c0c0c0;
+            margin-right: 8px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
         @media (max-width: 700px) {
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
+                gap: 0.6rem;
+            }
+            .admin-stat {
+                padding: 0.8rem 0.6rem;
+            }
+            .admin-stat .num {
+                font-size: 1.3rem;
+            }
+            .admin-stat .icon {
+                font-size: 1.3rem;
             }
             .settings-group .row {
                 flex-direction: column;
@@ -353,18 +456,25 @@
                 min-width: auto;
             }
             .bottom-nav a {
-                font-size: 0.5rem;
+                font-size: 0.45rem;
                 padding: 0.1rem 0.3rem;
-                min-width: 45px;
+                min-width: 40px;
             }
             .bottom-nav a i {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
             .bottom-nav a span {
-                font-size: 0.5rem;
+                font-size: 0.4rem;
             }
             .bottom-nav .nav-divider {
-                height: 20px;
+                height: 15px;
+            }
+            .admin-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-logout {
+                justify-content: center;
             }
         }
         @media (max-width: 480px) {
@@ -372,18 +482,18 @@
                 padding: 1.5rem 1rem;
             }
             .admin-stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
             }
             .bottom-nav a {
-                font-size: 0.45rem;
-                min-width: 40px;
-                padding: 0.1rem 0.2rem;
+                font-size: 0.4rem;
+                min-width: 35px;
+                padding: 0.1rem 0.15rem;
             }
             .bottom-nav a i {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
             .bottom-nav a span {
-                font-size: 0.45rem;
+                font-size: 0.35rem;
             }
         }
     </style>
@@ -394,43 +504,53 @@
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
         <div class="section-card">
-            <h2 style="color:#e0e0e0; font-size:1.5rem;">
-                <i class="fas fa-user-shield" style="color:#c0c0c0; margin-right:10px;"></i>Panel Admin
-                <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
-            </h2>
+
+            <!-- HEADER WITH LOGOUT -->
+            <div class="admin-header">
+                <h2>
+                    <i class="fas fa-user-shield"></i>Panel Admin
+                    <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
+                </h2>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, withdraw & pengaturan</p>
 
-            <!-- STATS GRID (Card Statistik) -->
-            <div class="admin-stats-grid" id="statsGrid">
-                <div class="admin-stat" data-tab="tabUsers">
-                    <div class="icon"><i class="fas fa-users"></i></div>
-                    <div class="num" id="adminTotalUsers">0</div>
-                    <div class="label">Total Pengguna</div>
+            <!-- ========================================================== -->
+            <!-- TAB STATISTIK (DEFAULT) -->
+            <!-- ========================================================== -->
+            <div class="tab-content active" id="tabStats">
+                <!-- STATS GRID - KEREN -->
+                <div class="admin-stats-grid">
+                    <div class="admin-stat primary">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <div class="num" id="adminTotalUsers">0</div>
+                        <div class="label">Total Pengguna</div>
+                        <div class="sub">Terdaftar</div>
+                    </div>
+                    <div class="admin-stat warning">
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <div class="num" id="adminPendingDeposits">0</div>
+                        <div class="label">Pending Deposit</div>
+                        <div class="sub">Menunggu Approve</div>
+                    </div>
+                    <div class="admin-stat info">
+                        <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                        <div class="num" id="adminPendingWithdraw">0</div>
+                        <div class="label">Pending Withdraw</div>
+                        <div class="sub">Menunggu Approve</div>
+                    </div>
+                    <div class="admin-stat success">
+                        <div class="icon"><i class="fas fa-coins"></i></div>
+                        <div class="num" id="adminTotalUSDTMinted">0</div>
+                        <div class="label">Total USDT Dicetak</div>
+                        <div class="sub">Seluruh User</div>
+                    </div>
                 </div>
-                <div class="admin-stat" data-tab="tabPending">
-                    <div class="icon"><i class="fas fa-clock"></i></div>
-                    <div class="num" id="adminPendingDeposits">0</div>
-                    <div class="label">Pending Deposit</div>
-                </div>
-                <div class="admin-stat" data-tab="tabWithdraw">
-                    <div class="icon"><i class="fas fa-arrow-up"></i></div>
-                    <div class="num" id="adminPendingWithdraw">0</div>
-                    <div class="label">Pending Withdraw</div>
-                </div>
-                <div class="admin-stat" data-tab="tabStats">
-                    <div class="icon"><i class="fas fa-chart-bar"></i></div>
-                    <div class="num" id="adminTotalUSDTMinted">0</div>
-                    <div class="label">Total USDT Dicetak</div>
-                </div>
-            </div>
 
-            <!-- ========================================================== -->
-            <!-- USER MANAGEMENT -->
-            <!-- ========================================================== -->
-            <div id="tabUsers" style="display:none;">
-                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
-                    <i class="fas fa-users"></i> Semua Pengguna
-                </div>
+                <!-- TABLE USER -->
+                <div class="section-title"><i class="fas fa-users"></i> Daftar Pengguna</div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -450,12 +570,10 @@
             </div>
 
             <!-- ========================================================== -->
-            <!-- DEPOSIT PENDING -->
+            <!-- TAB DEPOSIT -->
             <!-- ========================================================== -->
-            <div id="tabPending" style="display:none;">
-                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
-                    <i class="fas fa-clock"></i> Deposit Pending
-                </div>
+            <div class="tab-content" id="tabDeposit">
+                <div class="section-title"><i class="fas fa-clock"></i> Deposit Pending</div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -477,12 +595,10 @@
             </div>
 
             <!-- ========================================================== -->
-            <!-- WITHDRAW -->
+            <!-- TAB WITHDRAW -->
             <!-- ========================================================== -->
-            <div id="tabWithdraw" style="display:none;">
-                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#c0c0c0; font-size:0.85rem;">
-                    <i class="fas fa-arrow-up"></i> Permintaan Withdraw
-                </div>
+            <div class="tab-content" id="tabWithdraw">
+                <div class="section-title"><i class="fas fa-arrow-up"></i> Permintaan Withdraw</div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -502,9 +618,9 @@
             </div>
 
             <!-- ========================================================== -->
-            <!-- SETTINGS -->
+            <!-- TAB SETTINGS -->
             <!-- ========================================================== -->
-            <div id="tabSettings" style="display:none;">
+            <div class="tab-content" id="tabSettings">
                 <!-- Bonus & Referral -->
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
@@ -563,9 +679,9 @@
             </div>
 
             <!-- ========================================================== -->
-            <!-- PAYMENT -->
+            <!-- TAB PAYMENT -->
             <!-- ========================================================== -->
-            <div id="tabPayment" style="display:none;">
+            <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
                     <div class="row">
@@ -603,11 +719,7 @@
             <span>Statistik</span>
         </a>
         <div class="nav-divider"></div>
-        <a href="#" data-tab="tabUsers" id="navUsers">
-            <i class="fas fa-users"></i>
-            <span>User</span>
-        </a>
-        <a href="#" data-tab="tabPending" id="navDeposit">
+        <a href="#" data-tab="tabDeposit" id="navDeposit">
             <i class="fas fa-clock"></i>
             <span>Deposit</span>
         </a>
@@ -651,29 +763,95 @@
         let settings = {};
 
         // ============================================================
-        // LOAD
+        // CHECK AUTH - Redirect ke /auth jika belum login sebagai admin
+        // ============================================================
+        function checkAuth() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                const data = JSON.parse(saved);
+                const found = usersDB.find(u => u.email === data.email);
+                if (found && found.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                    currentUser = found;
+                    return true;
+                }
+            }
+            // Jika bukan admin, redirect ke /auth
+            window.location.href = '/auth';
+            return false;
+        }
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function logout() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            showToast('👋 Berhasil keluar.');
+            setTimeout(() => {
+                window.location.href = '/auth';
+            }, 500);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        // ============================================================
+        // LOAD DATA
         // ============================================================
         function loadData() {
             try {
                 const users = localStorage.getItem(STORAGE_KEYS.USERS);
                 if (users) usersDB = JSON.parse(users);
+                else {
+                    usersDB = [
+                        { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null, verified: true },
+                        { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null, verified: true },
+                        { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026', verified: true },
+                        { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026', verified: true },
+                        { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123', verified: true },
+                        { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null, verified: true }
+                    ];
+                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
+                }
+                // Fix: pastikan admin verified
+                const admin = usersDB.find(u => u.email.toLowerCase() === OWNER_EMAIL.toLowerCase());
+                if (admin && !admin.verified) {
+                    admin.verified = true;
+                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
+                }
+
                 const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
                 if (deposits) depositsDB = JSON.parse(deposits);
+                else {
+                    depositsDB = [
+                        { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130,
+                            txHash: '0xabc123...', status: 'approved', timestamp: Date.now() - 86400000 },
+                        { id: 2, email: 'demo@silverchain.io', usdt: 500, bonus: 50, ref: 15, total: 565,
+                            txHash: '0xdef456...', status: 'approved', timestamp: Date.now() - 3600000 },
+                        { id: 3, email: 'alice@test.com', usdt: 200, bonus: 20, ref: 6, total: 226,
+                            txHash: '0xghi789...', status: 'approved', timestamp: Date.now() - 7200000 },
+                        { id: 4, email: 'bob@test.com', usdt: 300, bonus: 30, ref: 9, total: 339,
+                            txHash: '0xjkl012...', status: 'pending', timestamp: Date.now() - 1800000 },
+                        { id: 5, email: 'carol@test.com', usdt: 150, bonus: 15, ref: 4.5, total: 169.5,
+                            txHash: '0xmno345...', status: 'pending', timestamp: Date.now() - 900000 }
+                    ];
+                    localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
+                }
+
                 const wd = localStorage.getItem(STORAGE_KEYS.WITHDRAWALS);
                 if (wd) withdrawalsDB = JSON.parse(wd);
+                else {
+                    withdrawalsDB = [];
+                    localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB));
+                }
+
                 const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
                 if (bonus) bonusPercent = parseInt(bonus) || 10;
                 const ref = localStorage.getItem(STORAGE_KEYS.REF);
                 if (ref) refPercent = parseInt(ref) || 3;
-                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    const found = usersDB.find(u => u.email === data.email);
-                    if (found) currentUser = found;
-                }
+
                 const settingsData = localStorage.getItem(STORAGE_KEYS.SETTINGS);
                 if (settingsData) settings = JSON.parse(settingsData);
                 else settings = {};
+
             } catch (e) { console.warn('Load error:', e); }
         }
 
@@ -704,31 +882,26 @@
         // BOTTOM NAV - TAB SWITCHING
         // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
-        const statCards = document.querySelectorAll('.admin-stat[data-tab]');
-
-        // Semua tab content
         const tabContents = {
-            tabStats: document.getElementById('statsGrid'),
-            tabUsers: document.getElementById('tabUsers'),
-            tabPending: document.getElementById('tabPending'),
+            tabStats: document.getElementById('tabStats'),
+            tabDeposit: document.getElementById('tabDeposit'),
             tabWithdraw: document.getElementById('tabWithdraw'),
             tabSettings: document.getElementById('tabSettings'),
             tabPayment: document.getElementById('tabPayment')
         };
 
-        // Sembunyikan semua tab kecuali stats
         function showTab(tabId) {
-            // Hide semua tab content
+            // Sembunyikan semua tab
             Object.keys(tabContents).forEach(key => {
                 if (tabContents[key]) {
-                    tabContents[key].style.display = 'none';
+                    tabContents[key].classList.remove('active');
                 }
             });
 
             // Tampilkan tab yang dipilih
             const target = tabContents[tabId];
             if (target) {
-                target.style.display = 'block';
+                target.classList.add('active');
             }
 
             // Update active class di bottom nav
@@ -739,38 +912,15 @@
                 }
             });
 
-            // Update active class di stat cards
-            statCards.forEach(card => {
-                card.style.borderColor = 'rgba(80,140,255,0.06)';
-                card.style.background = 'rgba(8,20,48,0.3)';
-                if (card.dataset.tab === tabId) {
-                    card.style.borderColor = 'rgba(80,140,255,0.2)';
-                    card.style.background = 'rgba(8,20,48,0.5)';
-                }
-            });
+            // Scroll ke atas
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Event listener untuk bottom nav
         navItems.forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
                 const tabId = this.dataset.tab;
                 showTab(tabId);
-                // Jika tab yang dipilih adalah stats, scroll ke atas
-                if (tabId === 'tabStats') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Event listener untuk stat cards (klik card langsung ke tab terkait)
-        statCards.forEach(card => {
-            card.addEventListener('click', function() {
-                const tabId = this.dataset.tab;
-                showTab(tabId);
-                if (tabId === 'tabStats') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
             });
         });
 
@@ -1093,14 +1243,9 @@
         // ============================================================
         loadData();
 
-        // Cek login
-        if (!currentUser || currentUser.email.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
-            // Jika bukan owner, tampilkan pesan
-            document.querySelector('.section-card h2').innerHTML = `
-                <i class="fas fa-user-shield" style="color:#c0c0c0; margin-right:10px;"></i>Panel Admin
-                <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
-            `;
-            document.querySelector('.section-card p').textContent = 'Silakan login sebagai admin untuk mengakses panel ini.';
+        // Cek auth - redirect ke /auth jika belum login sebagai admin
+        if (!checkAuth()) {
+            // checkAuth akan redirect, kode di bawah tidak akan dijalankan
         }
 
         // Tampilkan tab Stats secara default
@@ -1114,7 +1259,7 @@
 
         console.log('🟢 SilverChain Admin Panel siap.');
         console.log('👑 Owner:', OWNER_EMAIL);
-        console.log('📌 Bottom Nav: Statistik | User | Deposit | Withdraw | Setting | Payment');
+        console.log('📌 Bottom Nav: Statistik | Deposit | Withdraw | Setting | Payment');
     </script>
 </body>
 </html>
