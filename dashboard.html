@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -36,7 +37,6 @@
             margin-bottom: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
             border: 1px solid rgba(80, 140, 255, 0.08);
-            transition: all 0.25s;
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -71,7 +71,6 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .buy-card {
             background: rgba(12, 28, 60, 0.3);
             border-radius: 1.8rem;
@@ -150,7 +149,6 @@
             transform: none !important;
             box-shadow: none !important;
         }
-
         .ref-link-box {
             background: rgba(8, 20, 48, 0.3);
             border-radius: 60px;
@@ -178,7 +176,6 @@
             cursor: pointer;
             font-size: 0.7rem;
         }
-
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -221,7 +218,6 @@
         .status-rejected {
             color: #ff6a6a;
         }
-
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -238,8 +234,6 @@
         .toast-message.show {
             display: flex;
         }
-
-        /* MODAL PAYMENT */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -411,7 +405,6 @@
         .modal-box .btn-submit-payment:active {
             transform: scale(0.97);
         }
-
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -551,7 +544,7 @@
             <div class="buy-card">
                 <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#4a8aff;"></i> Beli Token</h4>
                 <p style="color:#8ab0e6; font-size:0.8rem; margin-bottom:0.8rem;">
-                    1 USDT = 1 SCT. 
+                    1 USDT = 1 SCT.
                     <span id="bonusInfo" style="color:#7aaeff; font-weight:600;">✨ Bonus 10% untuk pembelian pertama!</span>
                 </p>
 
@@ -728,7 +721,6 @@
             const referrals = usersDB.filter(u => u.referredBy === user.refCode);
             let total = 0;
             referrals.forEach(ref => {
-                // Cari deposit pertama dari referral yang approved (bonus referral hanya 1x)
                 const firstDeposit = depositsDB
                     .filter(d => d.email === ref.email && d.status === 'approved')
                     .sort((a, b) => a.timestamp - b.timestamp)[0];
@@ -787,14 +779,6 @@
         }
 
         // ============================================================
-        // CEK APAKAH REFERRAL SUDAH PERNAH BELI (untuk bonus referral)
-        // ============================================================
-        function hasReferralPurchasedBefore(email) {
-            const approved = depositsDB.filter(d => d.email === email && d.status === 'approved');
-            return approved.length > 0;
-        }
-
-        // ============================================================
         // UI
         // ============================================================
         function updateUI() {
@@ -829,7 +813,11 @@
 
             document.getElementById('dashUserEmail').textContent = currentUser.email;
             document.getElementById('dashRefCode').textContent = user.refCode || '-';
-            document.getElementById('dashRefLink').value = `https://silverchain.io/ref/${user.refCode || ''}`;
+
+            // ===== LINK REFERRAL DINAMIS =====
+            const domain = window.location.host;
+            const refLink = `https://${domain}/?ref=${user.refCode}`;
+            document.getElementById('dashRefLink').value = refLink;
 
             const deposits = getUserDeposits(currentUser.email);
             const approved = deposits.filter(d => d.status === 'approved');
@@ -884,26 +872,19 @@
             const raw = document.getElementById('depositAmount').value.trim();
             const usdt = parseFloat(raw) || 0;
 
-            // 1 USDT = 1 SCT
             let sct = usdt;
             let bonus = 0;
             let ref = 0;
 
-            // Bonus 10% hanya jika user belum pernah beli (approved)
             if (currentUser && !hasUserPurchasedBefore(currentUser.email)) {
                 bonus = Math.floor(usdt * bonusPercent / 100);
             }
 
-            // Referral 3% — cek apakah user punya referrer (referredBy)
             const user = findUser(currentUser ? currentUser.email : '');
             if (user && user.referredBy) {
-                // Cek apakah referrer sudah pernah dapat bonus dari user ini?
-                // Bonus referral hanya 1x per downline
                 const referrer = findUser(user.referredBy);
                 if (referrer) {
-                    // Cek apakah downline ini sudah pernah beli sebelumnya
                     const downlineDeposits = depositsDB.filter(d => d.email === currentUser.email && d.status === 'approved');
-                    // Jika belum pernah beli, beri referral
                     if (downlineDeposits.length === 0) {
                         ref = Math.floor(usdt * refPercent / 100);
                     }
@@ -935,7 +916,6 @@
                 return;
             }
 
-            // Hitung ulang bonus & referral
             let sct = usdt;
             let bonus = 0;
             let ref = 0;
