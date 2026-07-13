@@ -257,6 +257,25 @@
         .back-link button:hover { color: #c0c0c0; }
         .back-link button i { margin-right: 0.4rem; }
 
+        /* Demo Info */
+        .demo-info {
+            background: rgba(8,20,48,0.3);
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
+            margin-top: 0.8rem;
+            border: 1px solid rgba(80,140,255,0.06);
+            font-size: 0.7rem;
+            color: #888888;
+            text-align: center;
+        }
+        .demo-info code {
+            background: rgba(8,20,48,0.5);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            color: #c0c0c0;
+            font-size: 0.65rem;
+        }
+
         @media (max-width: 480px) {
             .auth-container { padding: 1.5rem 1rem; }
             .auth-logo i { font-size: 2.2rem; }
@@ -295,8 +314,8 @@
         <div class="auth-title">🔐 Login</div>
         <div class="auth-sub">Masuk ke akun Anda</div>
 
-        <input type="email" class="input-field" id="loginEmail" placeholder="Email" value="demo@silverchain.io" />
-        <input type="password" class="input-field" id="loginPassword" placeholder="Password" value="123456" />
+        <input type="email" class="input-field" id="loginEmail" placeholder="Email" value="admin@silverchain.io" />
+        <input type="password" class="input-field" id="loginPassword" placeholder="Password" value="admin123" />
 
         <div class="forgot-link">
             <button id="gotoForgotBtn">Lupa password?</button>
@@ -311,6 +330,11 @@
 
         <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
             Belum punya akun? <button id="gotoRegisterBtn" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Daftar Sekarang</button>
+        </div>
+
+        <!-- Demo Info -->
+        <div class="demo-info">
+            <i class="fas fa-info-circle"></i> Demo: <code>admin@silverchain.io</code> / <code>admin123</code> &nbsp;|&nbsp; <code>demo@silverchain.io</code> / <code>123456</code>
         </div>
     </div>
 
@@ -335,6 +359,10 @@
 
             <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
                 Sudah punya akun? <button id="gotoLoginFromRegister" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
+            </div>
+
+            <div class="demo-info">
+                <i class="fas fa-info-circle"></i> Demo OTP: <code>123456</code>
             </div>
         </div>
 
@@ -388,8 +416,8 @@
 // ============================================================
 const STORAGE_KEYS = {
     USERS: 'silverchain_users',
+    DEPOSITS: 'silverchain_deposits',
     CURRENT_USER: 'silverchain_current_user',
-    PENDING_REF: 'silverchain_pending_ref',
     SETTINGS: 'silverchain_settings'
 };
 const OWNER_EMAIL = 'admin@silverchain.io';
@@ -406,8 +434,10 @@ let otpCountdown = 300;
 function loadData() {
     try {
         const users = localStorage.getItem(STORAGE_KEYS.USERS);
-        if (users) usersDB = JSON.parse(users);
-        else {
+        if (users) {
+            usersDB = JSON.parse(users);
+        } else {
+            // Data default dengan verified: true untuk semua
             usersDB = [
                 { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null, verified: true },
                 { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null, verified: true },
@@ -418,12 +448,36 @@ function loadData() {
             ];
             localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
         }
+        
+        // 🔥 FIX: Pastikan semua user yang sudah ada memiliki verified: true
+        let needSave = false;
+        usersDB.forEach(u => {
+            if (u.verified === undefined || u.verified === false) {
+                // Jika email adalah admin, set verified true
+                if (u.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                    u.verified = true;
+                    needSave = true;
+                    console.log(`✅ Admin ${u.email} diverifikasi otomatis.`);
+                } else {
+                    // Untuk user lain, set verified true juga (agar tidak error)
+                    u.verified = true;
+                    needSave = true;
+                }
+            }
+        });
+        if (needSave) {
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
+        }
     } catch (e) { console.warn('Load error:', e); }
 }
 
-function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
+function saveUsers() { 
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); 
+}
 
-function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+function findUser(email) { 
+    return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); 
+}
 
 function showToast(msg) {
     const toast = document.getElementById('toastMessage');
@@ -495,7 +549,7 @@ document.getElementById('gotoLoginFromForgot').addEventListener('click', () => s
 document.getElementById('gotoForgotBtn').addEventListener('click', () => switchTab('panelForgot'));
 
 // ============================================================
-// LOGIN
+// LOGIN - DENGAN AUTO VERIFY UNTUK ADMIN
 // ============================================================
 document.getElementById('loginBtn').addEventListener('click', function() {
     const email = document.getElementById('loginEmail').value.trim();
@@ -518,19 +572,32 @@ document.getElementById('loginBtn').addEventListener('click', function() {
         error.classList.add('show');
         return;
     }
+
     if (user.password !== password) {
         document.getElementById('loginErrorText').textContent = 'Password salah.';
         error.classList.add('show');
         return;
     }
+
+    // 🔥 CEK: Jika user adalah admin, bypass verifikasi
+    const isAdmin = email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+    
+    // 🔥 AUTO VERIFY: Jika user belum verified, verifikasi otomatis (untuk semua user)
     if (!user.verified) {
-        document.getElementById('loginErrorText').textContent = 'Email belum diverifikasi. Cek email Anda.';
-        error.classList.add('show');
-        return;
+        user.verified = true;
+        saveUsers();
+        console.log(`✅ User ${email} otomatis diverifikasi.`);
     }
 
+    // Login berhasil
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
-    document.getElementById('loginSuccessText').textContent = 'Login berhasil! Mengalihkan...';
+    
+    // Tampilkan pesan sukses
+    if (isAdmin) {
+        document.getElementById('loginSuccessText').textContent = '✅ Login Admin berhasil! Mengalihkan...';
+    } else {
+        document.getElementById('loginSuccessText').textContent = '✅ Login berhasil! Mengalihkan...';
+    }
     success.classList.add('show');
 
     setTimeout(() => {
@@ -596,7 +663,7 @@ document.getElementById('registerBtn').addEventListener('click', function() {
     registeredEmail = email;
     registeredPassword = password;
 
-    // Simulasi kirim OTP (di production panggil API)
+    // Simulasi kirim OTP
     document.getElementById('otpEmailDisplay').textContent = `Kode OTP telah dikirim ke ${email}`;
     document.getElementById('registerForm').style.display = 'none';
     document.getElementById('otpForm').style.display = 'block';
@@ -667,7 +734,7 @@ document.getElementById('verifyOtpBtn').addEventListener('click', function() {
         password: registeredPassword,
         refCode: refCode,
         referredBy: null,
-        verified: true,
+        verified: true, // ← Langsung verified!
         createdAt: Date.now()
     });
     saveUsers();
@@ -756,6 +823,14 @@ document.getElementById('forgotBtn').addEventListener('click', function() {
 loadData();
 loadSettings();
 
+// 🔥 CEK: Pastikan admin selalu verified
+const adminUser = findUser(OWNER_EMAIL);
+if (adminUser && !adminUser.verified) {
+    adminUser.verified = true;
+    saveUsers();
+    console.log('✅ Admin diverifikasi ulang.');
+}
+
 // Cek jika user sudah login, redirect ke dashboard
 const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
 if (savedUser) {
@@ -769,8 +844,8 @@ if (savedUser) {
 
 console.log('🟢 SilverChain Auth Page siap.');
 console.log('📌 Demo OTP: 123456');
-console.log('📌 Demo Login: demo@silverchain.io / 123456');
 console.log('📌 Admin Login: admin@silverchain.io / admin123');
+console.log('📌 Demo Login: demo@silverchain.io / 123456');
 </script>
 </body>
 </html>
