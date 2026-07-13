@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -47,6 +46,33 @@
             font-weight: 600;
             color: #8ab8ff;
         }
+        .badge-success {
+            background: rgba(60, 220, 80, 0.1);
+            border: 1px solid rgba(60, 220, 80, 0.15);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: #6aff8a;
+        }
+        .badge-warning {
+            background: rgba(250, 200, 60, 0.1);
+            border: 1px solid rgba(250, 200, 60, 0.15);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: #fbbf24;
+        }
+        .badge-danger {
+            background: rgba(255, 60, 60, 0.1);
+            border: 1px solid rgba(255, 60, 60, 0.15);
+            border-radius: 60px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: #ff6a6a;
+        }
         .owner-badge {
             background: rgba(255, 200, 60, 0.1);
             border: 1px solid rgba(255, 200, 60, 0.15);
@@ -80,30 +106,41 @@
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
         }
-        .profile-stats {
+
+        /* SALDO GRID */
+        .saldo-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 0.8rem;
             margin: 1rem 0;
         }
-        .profile-stat {
+        .saldo-card {
             background: rgba(8, 20, 48, 0.3);
             border-radius: 1.2rem;
-            padding: 0.8rem;
+            padding: 1rem;
             text-align: center;
             border: 1px solid rgba(80, 140, 255, 0.06);
         }
-        .profile-stat .num {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #b0ccff;
-        }
-        .profile-stat .label {
-            font-size: 0.6rem;
+        .saldo-card .label {
+            font-size: 0.65rem;
             color: #5a8ac0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+        .saldo-card .amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #b0ccff;
+            margin: 0.2rem 0;
+        }
+        .saldo-card .amount.referral {
+            color: #7aaeff;
+        }
+        .saldo-card .sub {
+            font-size: 0.6rem;
+            color: #5a8ac0;
+        }
+
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -126,6 +163,7 @@
             font-size: 0.75rem;
             color: #8ab8ff;
         }
+
         .btn-danger {
             background: rgba(255, 60, 60, 0.1);
             border: 1px solid rgba(255, 60, 60, 0.2);
@@ -166,6 +204,51 @@
             margin-right: 8px;
             color: #4a8aff;
         }
+
+        /* TABLE WD HISTORY */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 0.5rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+        }
+        .table-wrapper table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+        .table-wrapper table th {
+            text-align: left;
+            color: #5a8ac0;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            white-space: nowrap;
+        }
+        .table-wrapper table td {
+            padding: 0.4rem 0.8rem;
+            color: #8ab0e6;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+            white-space: nowrap;
+        }
+        .table-wrapper table .empty {
+            color: #5a8ac0;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+        .status-pending {
+            color: #fbbf24;
+        }
+        .status-approved {
+            color: #6aff8a;
+        }
+        .status-rejected {
+            color: #ff6a6a;
+        }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -214,6 +297,7 @@
         .bottom-nav a:hover {
             color: #b0ccff;
         }
+
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -232,15 +316,15 @@
         }
 
         @media (max-width: 700px) {
-            .profile-stats {
-                grid-template-columns: 1fr 1fr 1fr;
+            .saldo-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
         @media (max-width: 480px) {
             .section-card {
                 padding: 1.5rem 1rem;
             }
-            .profile-stats {
+            .saldo-grid {
                 grid-template-columns: 1fr;
             }
             .bottom-nav a {
@@ -274,22 +358,22 @@
             <div class="profile-name" id="profileName">-</div>
             <div class="profile-email" id="profileEmail">-</div>
 
-            <div class="profile-stats">
-                <div class="profile-stat">
-                    <div class="num" id="statTotalSCT">0</div>
-                    <div class="label">Total SCT</div>
+            <!-- SALDO -->
+            <div class="saldo-grid">
+                <div class="saldo-card">
+                    <div class="label">💰 Saldo Pribadi</div>
+                    <div class="amount" id="saldoPersonal">0</div>
+                    <div class="sub">SCT</div>
                 </div>
-                <div class="profile-stat">
-                    <div class="num" id="statPurchases">0</div>
-                    <div class="label">Pembelian</div>
-                </div>
-                <div class="profile-stat">
-                    <div class="num" id="statPending">0</div>
-                    <div class="label">Pending</div>
+                <div class="saldo-card">
+                    <div class="label">💎 Saldo Referral</div>
+                    <div class="amount referral" id="saldoReferral">0</div>
+                    <div class="sub">SCT — <span style="color:#7aaeff;">Bisa di-withdraw</span></div>
                 </div>
             </div>
 
-            <div style="margin:1rem 0;">
+            <!-- INFO AKUN -->
+            <div style="margin:0.5rem 0;">
                 <div class="info-row">
                     <span class="label"><i class="fas fa-envelope"></i> Email</span>
                     <span class="value" id="infoEmail">-</span>
@@ -308,9 +392,30 @@
                 </div>
             </div>
 
-            <!-- Tombol Admin Panel (hanya untuk owner) -->
+            <!-- RIWAYAT WITHDRAW -->
+            <div style="margin-top:1.5rem;">
+                <h4 style="color:#b0ccff; margin-bottom:0.5rem;"><i class="fas fa-clock" style="color:#4a8aff;"></i> Riwayat Withdraw</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Jumlah</th>
+                                <th>Address</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wdHistoryBody">
+                            <tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TOMBOL ADMIN -->
             <button class="btn-admin" id="adminPanelBtn"><i class="fas fa-user-shield"></i> Panel Admin</button>
 
+            <!-- LOGOUT -->
             <button class="btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
 
@@ -339,6 +444,7 @@
         const STORAGE_KEYS = {
             USERS: 'silverchain_users',
             DEPOSITS: 'silverchain_deposits',
+            WITHDRAWALS: 'silverchain_withdrawals',
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
             CURRENT_USER: 'silverchain_current_user'
@@ -347,6 +453,7 @@
 
         let usersDB = [];
         let depositsDB = [];
+        let withdrawalsDB = [];
         let currentUser = null;
 
         // ============================================================
@@ -358,6 +465,8 @@
                 if (users) usersDB = JSON.parse(users);
                 const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
                 if (deposits) depositsDB = JSON.parse(deposits);
+                const wd = localStorage.getItem(STORAGE_KEYS.WITHDRAWALS);
+                if (wd) withdrawalsDB = JSON.parse(wd);
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
@@ -369,8 +478,28 @@
 
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
 
-        function getUserTotalSCT(email) {
-            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+        // ===== SALDO FUNCTIONS =====
+        function getSaldoPersonal(email) {
+            const deposits = depositsDB.filter(d => d.email === email && d.status === 'approved');
+            return deposits.reduce((sum, d) => sum + (d.usdt + (d.bonus || 0)), 0);
+        }
+
+        function getSaldoReferral(email) {
+            const user = findUser(email);
+            if (!user) return 0;
+            const referrals = usersDB.filter(u => u.referredBy === user.refCode);
+            let total = 0;
+            referrals.forEach(ref => {
+                const firstDeposit = depositsDB
+                    .filter(d => d.email === ref.email && d.status === 'approved')
+                    .sort((a, b) => a.timestamp - b.timestamp)[0];
+                if (firstDeposit) {
+                    total += firstDeposit.ref || 0;
+                }
+            });
+            const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
+            const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
+            return Math.round((total - totalWd) * 10) / 10;
         }
 
         function showToast(msg) {
@@ -390,14 +519,15 @@
             if (!isLoggedIn) {
                 document.getElementById('profileName').textContent = '-';
                 document.getElementById('profileEmail').textContent = 'Silakan login terlebih dahulu';
-                document.getElementById('statTotalSCT').textContent = '0';
-                document.getElementById('statPurchases').textContent = '0';
-                document.getElementById('statPending').textContent = '0';
+                document.getElementById('saldoPersonal').textContent = '0';
+                document.getElementById('saldoReferral').textContent = '0';
                 document.getElementById('infoEmail').textContent = '-';
                 document.getElementById('infoRefCode').textContent = '-';
                 document.getElementById('infoRefLink').textContent = '-';
                 document.getElementById('infoRole').textContent = '-';
                 document.getElementById('adminPanelBtn').style.display = 'none';
+                document.getElementById('wdHistoryBody').innerHTML =
+                    `<tr><td colspan="4" class="empty">Silakan login terlebih dahulu</td></tr>`;
                 return;
             }
 
@@ -409,21 +539,42 @@
             document.getElementById('infoEmail').textContent = currentUser.email;
             document.getElementById('infoRefCode').textContent = user.refCode || '-';
 
-            // ===== LINK REFERRAL DINAMIS =====
             const domain = window.location.host;
-            const refLink = `https://${domain}/?ref=${user.refCode}`;
-            document.getElementById('infoRefLink').textContent = refLink;
-
+            document.getElementById('infoRefLink').textContent = `https://${domain}/?ref=${user.refCode}`;
             document.getElementById('infoRole').textContent = isOwner ? '👑 Owner / Admin' : 'Member';
 
             document.getElementById('adminPanelBtn').style.display = isOwner ? 'block' : 'none';
 
-            const deposits = depositsDB.filter(d => d.email === currentUser.email);
-            const approved = deposits.filter(d => d.status === 'approved');
-            const pending = deposits.filter(d => d.status === 'pending');
-            document.getElementById('statTotalSCT').textContent = approved.reduce((sum, d) => sum + d.total, 0).toFixed(1);
-            document.getElementById('statPurchases').textContent = approved.length;
-            document.getElementById('statPending').textContent = pending.length;
+            // Saldo
+            const saldoPersonal = getSaldoPersonal(currentUser.email);
+            const saldoReferral = getSaldoReferral(currentUser.email);
+            document.getElementById('saldoPersonal').textContent = saldoPersonal.toFixed(1);
+            document.getElementById('saldoReferral').textContent = saldoReferral.toFixed(1);
+
+            // Riwayat WD
+            const wdHistory = withdrawalsDB.filter(w => w.email === currentUser.email);
+            if (wdHistory.length === 0) {
+                document.getElementById('wdHistoryBody').innerHTML =
+                    `<tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>`;
+            } else {
+                let html = '';
+                wdHistory.slice().reverse().forEach(w => {
+                    const date = new Date(w.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(w.timestamp)
+                        .toLocaleTimeString('id-ID');
+                    const cls = w.status === 'approved' ? 'status-approved' : w.status === 'rejected' ?
+                        'status-rejected' : 'status-pending';
+                    const txt = w.status === 'approved' ? '✅ Disetujui' : w.status === 'rejected' ?
+                        '❌ Ditolak' : '⏳ Pending';
+                    const addrShort = w.address ? w.address.substring(0, 8) + '...' : '-';
+                    html += `<tr>
+                        <td>${date}</td>
+                        <td>${w.amount} SCT</td>
+                        <td style="font-family:monospace; font-size:0.65rem;">${addrShort}</td>
+                        <td class="${cls}">${txt}</td>
+                    </tr>`;
+                });
+                document.getElementById('wdHistoryBody').innerHTML = html;
+            }
         }
 
         // ============================================================
