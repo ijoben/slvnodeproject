@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -460,136 +461,6 @@
             cursor: default;
         }
 
-        .toast-message {
-            background: rgba(12, 28, 60, 0.8);
-            backdrop-filter: blur(8px);
-            border-left: 4px solid #c0c0c0;
-            border-radius: 40px;
-            padding: 0.5rem 1.2rem;
-            font-size: 0.85rem;
-            color: #e0e0e0;
-            margin-bottom: 0.8rem;
-            display: none;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .toast-message.show {
-            display: flex;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-box {
-            background: #0e1e40;
-            background: linear-gradient(145deg, #122a5a, #081a38);
-            border-radius: 2.5rem;
-            padding: 2.5rem 2.5rem;
-            max-width: 440px;
-            width: 90%;
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .modal-box .close-btn {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: #a0a0a0;
-            font-size: 1.4rem;
-            cursor: pointer;
-        }
-        .modal-box h2 {
-            color: #e0e0e0;
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
-        .modal-box p {
-            color: #c0c0c0;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-        }
-        .modal-box .input-field {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            background: rgba(8, 20, 48, 0.5);
-            color: #d4d4d4;
-            font-size: 1rem;
-            outline: none;
-            margin-bottom: 0.8rem;
-        }
-        .modal-box .input-field:focus {
-            border-color: rgba(80, 140, 255, 0.3);
-        }
-        .modal-box .btn-modal {
-            width: 100%;
-            padding: 0.9rem;
-            border-radius: 60px;
-            border: none;
-            background: linear-gradient(145deg, #c0c0c0, #888888);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .modal-box .btn-modal:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.2);
-        }
-        .modal-box .btn-modal.secondary {
-            background: rgba(60, 120, 255, 0.1);
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            color: #c0c0c0;
-            box-shadow: none;
-            margin-top: 0.5rem;
-        }
-        .modal-box .btn-modal.secondary:hover {
-            background: rgba(60, 120, 255, 0.15);
-        }
-        .modal-box .error-msg {
-            color: #ff6a6a;
-            font-size: 0.8rem;
-            margin-top: 0.4rem;
-            display: none;
-        }
-        .modal-box .error-msg.show {
-            display: block;
-        }
-        .modal-box .success-msg {
-            color: #6aff8a;
-            font-size: 0.8rem;
-            margin-top: 0.4rem;
-            display: none;
-        }
-        .modal-box .success-msg.show {
-            display: block;
-        }
-        .modal-box .divider {
-            text-align: center;
-            color: #a0a0a0;
-            font-size: 0.8rem;
-            margin: 0.8rem 0;
-        }
-
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -651,6 +522,23 @@
             padding: 1rem 0 0.5rem;
             border-top: 1px solid rgba(80, 140, 255, 0.05);
             margin-top: 1rem;
+        }
+
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #c0c0c0;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            color: #e0e0e0;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
         }
 
         @media (min-width: 768px) {
@@ -845,9 +733,6 @@
             .bottom-nav a i {
                 font-size: 1rem;
             }
-            .modal-box {
-                padding: 1.5rem 1.2rem;
-            }
             .progress-wrap {
                 padding: 0.5rem 0.8rem;
             }
@@ -954,7 +839,7 @@
             <div style="text-align:center; padding:0.5rem 0;">
                 <p style="color:#c0c0c0; font-size:0.9rem;">🚀 <strong style="color:#e0e0e0;">Mulai perjalanan Anda</strong></p>
                 <div id="heroButtonContainer" style="margin-top:0.5rem;">
-                    <a href="/login" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Daftar</a>
+                    <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Daftar</a>
                 </div>
             </div>
 
@@ -971,7 +856,7 @@
             </div>
         </div>
 
-        <!-- ABOUT, FEATURES, WHY, ROADMAP, WHITEPAPER, FAQ, CONTACT (sama seperti sebelumnya) -->
+        <!-- ABOUT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang</div>
             <p style="color:#c0c0c0; line-height:1.6; font-size:0.9rem;">
@@ -986,6 +871,7 @@
             </div>
         </div>
 
+        <!-- FITUR -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-star"></i> Fitur</div>
             <div class="grid-3">
@@ -998,6 +884,7 @@
             </div>
         </div>
 
+        <!-- MENGAPA -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question-circle"></i> Mengapa?</div>
             <div class="grid-2">
@@ -1008,6 +895,7 @@
             </div>
         </div>
 
+        <!-- ROADMAP -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
@@ -1019,6 +907,7 @@
             </div>
         </div>
 
+        <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Whitepaper lengkap SilverChain.</p>
@@ -1029,6 +918,7 @@
             </div>
         </div>
 
+        <!-- FAQ -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
@@ -1049,6 +939,7 @@
             </div>
         </div>
 
+        <!-- KONTAK -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
             <div class="contact-grid" id="contactGrid">
@@ -1068,32 +959,16 @@
             <i class="fas fa-home"></i>
             <span>Beranda</span>
         </a>
-        <a href="dashboard" id="navBuy">
+        <a href="/dashboard" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
             <span>Beli</span>
             <span class="badge-dot" id="navBadge"></span>
         </a>
-        <a href="account" id="navAccount">
+        <a href="/account" id="navAccount">
             <i class="fas fa-user"></i>
             <span>Akun</span>
         </a>
     </nav>
-
-    <!-- LOGIN MODAL -->
-    <div class="modal-overlay" id="loginModal">
-        <div class="modal-box">
-            <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
-            <h2 id="modalTitle"><i class="fas fa-sign-in-alt" style="color:#c0c0c0; margin-right:10px;"></i>Login</h2>
-            <p id="modalSub">Masukkan email untuk login atau daftar.</p>
-            <input type="email" class="input-field" id="emailInput" placeholder="email@anda.com" value="demo@silverchain.io" />
-            <input type="password" class="input-field" id="passwordInput" placeholder="Password (min 4)" value="123456" />
-            <button class="btn-modal" id="actionBtn"><i class="fas fa-check"></i> Login</button>
-            <div class="error-msg" id="loginError"><i class="fas fa-exclamation-circle"></i> Harap isi semua bidang.</div>
-            <div class="success-msg" id="loginSuccess"><i class="fas fa-check-circle"></i> Berhasil!</div>
-            <div class="divider">atau</div>
-            <button class="btn-modal secondary" id="switchBtn"><i class="fas fa-user-plus"></i> <span id="switchLabel">Daftar akun baru</span></button>
-        </div>
-    </div>
 
     <script>
         // ============================================================
@@ -1105,7 +980,6 @@
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
             CURRENT_USER: 'silverchain_current_user',
-            PENDING_REF: 'silverchain_pending_ref',
             SETTINGS: 'silverchain_settings'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
@@ -1127,12 +1001,12 @@
                 if (users) usersDB = JSON.parse(users);
                 else {
                     usersDB = [
-                        { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null },
-                        { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null },
-                        { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026' },
-                        { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026' },
-                        { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123' },
-                        { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null }
+                        { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null, verified: true },
+                        { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null, verified: true },
+                        { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026', verified: true },
+                        { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026', verified: true },
+                        { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123', verified: true },
+                        { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null, verified: true }
                     ];
                     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
                 }
@@ -1170,27 +1044,7 @@
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
                 }
-
-                // Cek pending referral dari URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const refCode = urlParams.get('ref');
-                if (refCode) {
-                    localStorage.setItem(STORAGE_KEYS.PENDING_REF, refCode);
-                    if (window.history && window.history.replaceState) {
-                        const newUrl = window.location.pathname;
-                        window.history.replaceState({}, '', newUrl);
-                    }
-                }
             } catch (e) { console.error('Load error:', e); }
-        }
-
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
-
-        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
-
-        function saveCurrentUser(user) {
-            if (user) localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
-            else localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
         }
 
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
@@ -1298,17 +1152,12 @@
             const heroContainer = document.getElementById('heroButtonContainer');
             if (isLoggedIn) {
                 heroContainer.innerHTML = `
-                    <a href="dashboard.html" class="btn-hero"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                    <a href="/dashboard" class="btn-hero"><i class="fas fa-chart-pie"></i> Dashboard</a>
                 `;
             } else {
                 heroContainer.innerHTML = `
-                    <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
+                    <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Daftar</a>
                 `;
-                document.getElementById('loginBtn').addEventListener('click', function() {
-                    document.getElementById('loginModal').classList.add('active');
-                    document.getElementById('emailInput').value = 'demo@silverchain.io';
-                    document.getElementById('passwordInput').value = '123456';
-                });
             }
 
             // Progress
@@ -1363,153 +1212,6 @@
         }
 
         // ============================================================
-        // AUTH — DENGAN REFERRAL HANDLER
-        // ============================================================
-        function registerUser(email, password) {
-            if (findUser(email)) return { success: false, msg: 'Email sudah terdaftar.' };
-            if (!email || !email.includes('@') || password.length < 4) {
-                return { success: false, msg: 'Email atau password tidak valid.' };
-            }
-
-            const pendingRef = localStorage.getItem(STORAGE_KEYS.PENDING_REF);
-            let referredBy = null;
-            if (pendingRef) {
-                const referrer = usersDB.find(u => u.refCode === pendingRef);
-                if (referrer && referrer.email !== email) {
-                    referredBy = pendingRef;
-                }
-                localStorage.removeItem(STORAGE_KEYS.PENDING_REF);
-            }
-
-            const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
-            usersDB.push({ email, password, refCode, referredBy });
-            saveUsers();
-
-            let msg = 'Pendaftaran berhasil! Silakan login.';
-            if (referredBy) {
-                const referrer = usersDB.find(u => u.refCode === referredBy);
-                if (referrer) {
-                    msg += ` Anda direferral oleh ${referrer.email}`;
-                }
-            }
-            return { success: true, msg };
-        }
-
-        function loginUser(email, password) {
-            const user = findUser(email);
-            if (!user) return { success: false, msg: 'Email tidak ditemukan.' };
-            if (user.password !== password) return { success: false, msg: 'Password salah.' };
-
-            const pendingRef = localStorage.getItem(STORAGE_KEYS.PENDING_REF);
-            if (pendingRef && !user.referredBy) {
-                const referrer = usersDB.find(u => u.refCode === pendingRef);
-                if (referrer && referrer.email !== user.email) {
-                    user.referredBy = pendingRef;
-                    saveUsers();
-                }
-                localStorage.removeItem(STORAGE_KEYS.PENDING_REF);
-            }
-
-            return { success: true, msg: 'Login berhasil!', user };
-        }
-
-        function handleAuth() {
-            const email = document.getElementById('emailInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
-            const error = document.getElementById('loginError');
-            const success = document.getElementById('loginSuccess');
-            error.classList.remove('show');
-            success.classList.remove('show');
-
-            if (!email || !email.includes('@') || password.length < 4) {
-                error.textContent = 'Harap isi email & password.';
-                error.classList.add('show');
-                return;
-            }
-
-            const isLogin = document.getElementById('switchLabel').textContent === 'Daftar akun baru';
-            const result = isLogin ? loginUser(email, password) : registerUser(email, password);
-            if (!result.success) {
-                error.textContent = result.msg;
-                error.classList.add('show');
-                return;
-            }
-            if (isLogin) {
-                currentUser = result.user;
-                saveCurrentUser(currentUser);
-                success.textContent = '✅ ' + result.msg;
-                success.classList.add('show');
-                setTimeout(() => {
-                    document.getElementById('loginModal').classList.remove('active');
-                    success.classList.remove('show');
-                    updateUI();
-                    window.location.href = 'dashboard.html';
-                }, 1000);
-            } else {
-                success.textContent = '✅ ' + result.msg;
-                success.classList.add('show');
-                document.getElementById('switchLabel').textContent = 'Daftar akun baru';
-                document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#c0c0c0; margin-right:10px;"></i>Login';
-                document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
-                document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
-                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
-                setTimeout(() => { success.classList.remove('show'); }, 2000);
-            }
-        }
-
-        // ============================================================
-        // EVENT
-        // ============================================================
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('loginModal').classList.remove('active');
-        });
-
-        document.getElementById('switchBtn').addEventListener('click', function() {
-            const isLogin = document.getElementById('switchLabel').textContent === 'Daftar akun baru';
-            if (isLogin) {
-                document.getElementById('switchLabel').textContent = 'Kembali ke Login';
-                document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-user-plus" style="color:#c0c0c0; margin-right:10px;"></i>Daftar';
-                document.getElementById('modalSub').textContent = 'Buat akun baru.';
-                document.getElementById('actionBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
-                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali';
-            } else {
-                document.getElementById('switchLabel').textContent = 'Daftar akun baru';
-                document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#c0c0c0; margin-right:10px;"></i>Login';
-                document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
-                document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
-                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
-            }
-            document.getElementById('loginError').classList.remove('show');
-            document.getElementById('loginSuccess').classList.remove('show');
-        });
-
-        document.getElementById('actionBtn').addEventListener('click', handleAuth);
-
-        document.getElementById('emailInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('passwordInput').focus();
-        });
-        document.getElementById('passwordInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') handleAuth();
-        });
-
-        document.getElementById('loginModal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('active');
-        });
-
-        // ============================================================
-        // STORAGE & INTERVAL
-        // ============================================================
-        window.addEventListener('storage', function(e) {
-            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS || e.key === STORAGE_KEYS.SETTINGS) {
-                loadData();
-                updateUI();
-            }
-        });
-
-        // ============================================================
         // FAQ
         // ============================================================
         document.querySelectorAll('.faq-question').forEach(q => {
@@ -1532,9 +1234,19 @@
                 depositsDB.forEach((d, index) => {
                     if (index < 2) d.status = 'approved';
                 });
-                saveDeposits();
+                localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
             }
         }
+
+        // ============================================================
+        // STORAGE & INTERVAL
+        // ============================================================
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS || e.key === STORAGE_KEYS.SETTINGS) {
+                loadData();
+                updateUI();
+            }
+        });
 
         // ============================================================
         // INIT
@@ -1550,6 +1262,7 @@
 
         console.log('🟢 SilverChain Landing Page siap.');
         console.log('💰 Total USDT:', getTotalUSDT());
+        console.log('🔐 Login di: /auth');
     </script>
 </body>
 </html>
