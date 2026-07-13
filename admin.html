@@ -423,10 +423,60 @@
             font-weight: 700;
             color: #e0e0e0;
             margin: 1rem 0 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
         .section-title i {
             color: #c0c0c0;
             margin-right: 8px;
+        }
+        .section-title .badge-silver {
+            font-size: 0.75rem;
+            padding: 0.2rem 1rem;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            background: rgba(8, 20, 48, 0.4);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 60px;
+            padding: 0.3rem 0.8rem;
+            color: #c0c0c0;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.15s;
+            font-weight: 600;
+            min-width: 36px;
+            text-align: center;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: rgba(60, 120, 255, 0.15);
+            border-color: rgba(80, 140, 255, 0.15);
+        }
+        .pagination button.active {
+            background: rgba(192, 192, 192, 0.15);
+            border-color: rgba(192, 192, 192, 0.2);
+            color: #e0e0e0;
+        }
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .pagination .page-info {
+            color: #888888;
+            font-size: 0.7rem;
+            padding: 0 0.5rem;
         }
 
         /* Tab Content */
@@ -438,10 +488,9 @@
         }
 
         /* ========================================================== */
-        /* RESPONSIVE - TULISAN LEBIH BESAR DI HP */
+        /* RESPONSIVE */
         /* ========================================================== */
 
-        /* PC - LAYAR LEBAR */
         @media (min-width: 769px) {
             .bottom-nav {
                 padding: 0.5rem 2rem 0.7rem;
@@ -462,9 +511,7 @@
             }
         }
 
-        /* TABLET & HP - SEMUA TULISAN LEBIH BESAR */
         @media (max-width: 768px) {
-            /* Header */
             .admin-header h2 {
                 font-size: 1.3rem;
             }
@@ -475,8 +522,6 @@
             .admin-header p {
                 font-size: 0.95rem !important;
             }
-            
-            /* Logout Button */
             .btn-logout {
                 padding: 0.5rem 1rem;
                 font-size: 0.85rem;
@@ -484,8 +529,6 @@
             .btn-logout i {
                 font-size: 1.1rem;
             }
-
-            /* Stats Grid */
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 0.8rem;
@@ -506,13 +549,13 @@
             .admin-stat .sub {
                 font-size: 0.6rem;
             }
-
-            /* Section Title */
             .section-title {
                 font-size: 1.2rem;
             }
-
-            /* Table */
+            .section-title .badge-silver {
+                font-size: 0.7rem;
+                padding: 0.15rem 0.8rem;
+            }
             .table-wrapper table {
                 font-size: 0.8rem;
                 min-width: 600px;
@@ -525,14 +568,10 @@
                 font-size: 0.85rem;
                 padding: 1.2rem 0;
             }
-
-            /* Buttons Approve/Reject */
             .btn-approve, .btn-reject {
                 font-size: 0.7rem;
                 padding: 0.15rem 0.8rem;
             }
-
-            /* Settings Group */
             .settings-group {
                 padding: 1.2rem;
             }
@@ -556,8 +595,6 @@
                 font-size: 0.8rem;
                 padding: 0.3rem 1.2rem;
             }
-
-            /* QRIS */
             .qr-preview .placeholder {
                 width: 90px;
                 height: 90px;
@@ -570,13 +607,9 @@
             .qr-preview span {
                 font-size: 0.85rem !important;
             }
-
-            /* Footer */
             .footer-copyright {
                 font-size: 0.8rem;
             }
-
-            /* BOTTOM NAV HP - LEBIH BESAR */
             .bottom-nav {
                 padding: 0.5rem 0.5rem 0.7rem;
                 gap: 0;
@@ -603,16 +636,18 @@
                 flex-shrink: 0;
                 margin: 0 0.2rem;
             }
+            .pagination button {
+                padding: 0.3rem 0.7rem;
+                font-size: 0.7rem;
+                min-width: 32px;
+            }
         }
 
-        /* HP KECIL */
         @media (max-width: 480px) {
             .section-card {
                 padding: 1.2rem 0.8rem;
                 border-radius: 2rem;
             }
-
-            /* Header */
             .admin-header h2 {
                 font-size: 1.1rem;
             }
@@ -623,8 +658,6 @@
             .admin-header p {
                 font-size: 0.85rem !important;
             }
-
-            /* Logout Button */
             .btn-logout {
                 padding: 0.4rem 0.8rem;
                 font-size: 0.75rem;
@@ -635,8 +668,6 @@
             .btn-logout i {
                 font-size: 1rem;
             }
-
-            /* Stats Grid */
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 0.6rem;
@@ -658,13 +689,13 @@
             .admin-stat .sub {
                 font-size: 0.5rem;
             }
-
-            /* Section Title */
             .section-title {
                 font-size: 1rem;
             }
-
-            /* Table */
+            .section-title .badge-silver {
+                font-size: 0.6rem;
+                padding: 0.12rem 0.6rem;
+            }
             .table-wrapper table {
                 font-size: 0.7rem;
                 min-width: 500px;
@@ -677,14 +708,10 @@
                 font-size: 0.75rem;
                 padding: 1rem 0;
             }
-
-            /* Buttons Approve/Reject */
             .btn-approve, .btn-reject {
                 font-size: 0.6rem;
                 padding: 0.12rem 0.6rem;
             }
-
-            /* Settings Group */
             .settings-group {
                 padding: 0.8rem;
             }
@@ -711,8 +738,6 @@
                 font-size: 0.7rem;
                 padding: 0.25rem 1rem;
             }
-
-            /* QRIS */
             .qr-preview .placeholder {
                 width: 70px;
                 height: 70px;
@@ -725,13 +750,9 @@
             .qr-preview span {
                 font-size: 0.75rem !important;
             }
-
-            /* Footer */
             .footer-copyright {
                 font-size: 0.7rem;
             }
-
-            /* BOTTOM NAV HP - TETAP BESAR */
             .bottom-nav {
                 padding: 0.4rem 0.3rem 0.6rem;
                 gap: 0;
@@ -756,9 +777,16 @@
                 height: 26px;
                 margin: 0 0.1rem;
             }
+            .pagination button {
+                padding: 0.2rem 0.5rem;
+                font-size: 0.6rem;
+                min-width: 28px;
+            }
+            .pagination .page-info {
+                font-size: 0.6rem;
+            }
         }
 
-        /* HP SANGAT KECIL */
         @media (max-width: 360px) {
             .admin-header h2 {
                 font-size: 0.95rem;
@@ -807,6 +835,11 @@
             }
             .btn-logout i {
                 font-size: 0.8rem;
+            }
+            .pagination button {
+                padding: 0.15rem 0.4rem;
+                font-size: 0.55rem;
+                min-width: 24px;
             }
         }
     </style>
@@ -863,12 +896,18 @@
                     </div>
                 </div>
 
-                <!-- TABLE USER -->
-                <div class="section-title"><i class="fas fa-users"></i> Daftar Pengguna</div>
+                <!-- TABLE USER dengan TOTAL & PAGINATION -->
+                <div class="section-title">
+                    <span><i class="fas fa-users"></i> Daftar Pengguna</span>
+                    <span class="badge-silver">
+                        <i class="fas fa-user"></i> Total: <strong id="totalUserCount">0</strong> Pengguna
+                    </span>
+                </div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Email</th>
                                 <th>Kode Ref</th>
                                 <th>Direferral</th>
@@ -877,9 +916,17 @@
                             </tr>
                         </thead>
                         <tbody id="adminUserBody">
-                            <tr><td colspan="5" class="empty">Memuat...</td></tr>
+                            <tr><td colspan="6" class="empty">Memuat...</td></tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="pagination" id="userPagination">
+                    <button id="prevPage" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+                    <div id="pageNumbers"></div>
+                    <button id="nextPage">Next <i class="fas fa-chevron-right"></i></button>
+                    <span class="page-info" id="pageInfo">Halaman 1 dari 1</span>
                 </div>
             </div>
 
@@ -935,7 +982,6 @@
             <!-- TAB SETTINGS -->
             <!-- ========================================================== -->
             <div class="tab-content" id="tabSettings">
-                <!-- Bonus & Referral -->
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
                     <div class="row">
@@ -947,7 +993,6 @@
                     </div>
                 </div>
 
-                <!-- Brand Settings -->
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-paint-brush"></i> Brand / Tampilan</h5>
                     <div class="row">
@@ -966,7 +1011,6 @@
                     </div>
                 </div>
 
-                <!-- Kontak & Sosial Media -->
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-address-card"></i> Kontak & Sosial Media</h5>
                     <div class="row">
@@ -1076,6 +1120,10 @@
         let refPercent = 3;
         let settings = {};
 
+        // ===== PAGINATION VARIABLES =====
+        let currentPage = 1;
+        const rowsPerPage = 5;
+
         // ============================================================
         // CHECK AUTH
         // ============================================================
@@ -1124,6 +1172,12 @@
                         { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026', verified: true },
                         { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026', verified: true },
                         { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123', verified: true },
+                        { email: 'eve@test.com', password: '123456', refCode: 'EVE002', referredBy: 'SILVER2026', verified: true },
+                        { email: 'frank@test.com', password: '123456', refCode: 'FRANK003', referredBy: 'ALICE123', verified: true },
+                        { email: 'grace@test.com', password: '123456', refCode: 'GRACE004', referredBy: null, verified: true },
+                        { email: 'heidi@test.com', password: '123456', refCode: 'HEIDI005', referredBy: 'BOB456', verified: true },
+                        { email: 'ivan@test.com', password: '123456', refCode: 'IVAN006', referredBy: 'CAROL789', verified: true },
+                        { email: 'judy@test.com', password: '123456', refCode: 'JUDY007', referredBy: null, verified: true },
                         { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null, verified: true }
                     ];
                     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
@@ -1195,6 +1249,101 @@
         }
 
         // ============================================================
+        // PAGINATION FUNCTIONS
+        // ============================================================
+        function renderUserTable() {
+            const tbody = document.getElementById('adminUserBody');
+            const totalUsers = usersDB.length;
+            
+            // Update total counter
+            document.getElementById('totalUserCount').textContent = totalUsers;
+
+            if (totalUsers === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty">Belum ada pengguna terdaftar</td></tr>`;
+                document.getElementById('userPagination').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('userPagination').style.display = 'flex';
+
+            const totalPages = Math.ceil(totalUsers / rowsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, totalUsers);
+            const pageUsers = usersDB.slice(start, end);
+
+            let html = '';
+            pageUsers.forEach((u, index) => {
+                const isOwner = u.email === OWNER_EMAIL;
+                const total = getUserTotalUSDT(u.email);
+                const status = u.verified ? '✅ Verified' : '⏳ Pending';
+                const num = start + index + 1;
+                html += `<tr>
+                    <td style="color:#888888;">${num}</td>
+                    <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
+                    <td><span class="badge-admin">${u.refCode || '-'}</span></td>
+                    <td>${u.referredBy || '-'}</td>
+                    <td>${total.toFixed(1)}</td>
+                    <td>${status}</td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+
+            // Update pagination buttons
+            updatePaginationControls(totalPages);
+        }
+
+        function updatePaginationControls(totalPages) {
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageNumbers = document.getElementById('pageNumbers');
+            const pageInfo = document.getElementById('pageInfo');
+
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+
+            pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages}`;
+
+            // Generate page number buttons
+            let html = '';
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            if (endPage - startPage < maxVisible - 1) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            if (startPage > 1) {
+                html += `<button data-page="1">1</button>`;
+                if (startPage > 2) html += `<button disabled>…</button>`;
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button data-page="${i}" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) html += `<button disabled>…</button>`;
+                html += `<button data-page="${totalPages}">${totalPages}</button>`;
+            }
+
+            pageNumbers.innerHTML = html;
+
+            // Add event listeners to page buttons
+            document.querySelectorAll('#pageNumbers button[data-page]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.dataset.page);
+                    if (page !== currentPage) {
+                        currentPage = page;
+                        renderUserTable();
+                    }
+                });
+            });
+        }
+
+        // ============================================================
         // BOTTOM NAV - TAB SWITCHING
         // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
@@ -1245,14 +1394,16 @@
                 document.getElementById('adminPendingWithdraw').textContent = '🔒';
                 document.getElementById('adminTotalUSDTMinted').textContent = '🔒';
                 document.getElementById('adminUserBody').innerHTML =
-                    `<tr><td colspan="5" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
+                    `<tr><td colspan="6" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
                 document.getElementById('adminPendingBody').innerHTML =
                     `<tr><td colspan="7" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
                 document.getElementById('adminWdBody').innerHTML =
                     `<tr><td colspan="5" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
+                document.getElementById('userPagination').style.display = 'none';
                 return;
             }
 
+            // Stats
             document.getElementById('adminTotalUsers').textContent = usersDB.length;
             const pending = depositsDB.filter(d => d.status === 'pending');
             document.getElementById('adminPendingDeposits').textContent = pending.length;
@@ -1261,29 +1412,14 @@
             const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
             document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
 
+            // Settings values
             document.getElementById('adminBonusPercent').value = bonusPercent;
             document.getElementById('adminRefPercent').value = refPercent;
 
-            if (usersDB.length === 0) {
-                document.getElementById('adminUserBody').innerHTML =
-                    `<tr><td colspan="5" class="empty">Belum ada pengguna</td></tr>`;
-            } else {
-                let html = '';
-                usersDB.forEach(u => {
-                    const isOwnerUser = u.email === OWNER_EMAIL;
-                    const total = getUserTotalUSDT(u.email);
-                    const status = u.verified ? '✅ Verified' : '⏳ Pending';
-                    html += `<tr>
-                        <td>${u.email} ${isOwnerUser ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
-                        <td><span class="badge-admin">${u.refCode || '-'}</span></td>
-                        <td>${u.referredBy || '-'}</td>
-                        <td>${total.toFixed(1)}</td>
-                        <td>${status}</td>
-                    </tr>`;
-                });
-                document.getElementById('adminUserBody').innerHTML = html;
-            }
+            // Render user table with pagination
+            renderUserTable();
 
+            // Pending Deposit
             if (pending.length === 0) {
                 document.getElementById('adminPendingBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Tidak ada pending</td></tr>`;
@@ -1331,6 +1467,7 @@
                 });
             }
 
+            // Withdraw Pending
             if (wdPending.length === 0) {
                 document.getElementById('adminWdBody').innerHTML =
                     `<tr><td colspan="5" class="empty">Tidak ada permintaan withdraw</td></tr>`;
@@ -1382,6 +1519,24 @@
             loadQrisPreview();
             loadSettingsUI();
         }
+
+        // ============================================================
+        // PAGINATION EVENT LISTENERS
+        // ============================================================
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderUserTable();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', function() {
+            const totalPages = Math.ceil(usersDB.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderUserTable();
+            }
+        });
 
         // ============================================================
         // QRIS FUNCTIONS
@@ -1556,6 +1711,7 @@
 
         console.log('🟢 SilverChain Admin Panel siap.');
         console.log('👑 Owner:', OWNER_EMAIL);
+        console.log('📌 Total Pengguna:', usersDB.length);
     </script>
 </body>
 </html>
