@@ -437,7 +437,6 @@ function loadData() {
         if (users) {
             usersDB = JSON.parse(users);
         } else {
-            // Data default dengan verified: true untuk semua
             usersDB = [
                 { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null, verified: true },
                 { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null, verified: true },
@@ -449,20 +448,11 @@ function loadData() {
             localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
         }
         
-        // 🔥 FIX: Pastikan semua user yang sudah ada memiliki verified: true
         let needSave = false;
         usersDB.forEach(u => {
             if (u.verified === undefined || u.verified === false) {
-                // Jika email adalah admin, set verified true
-                if (u.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
-                    u.verified = true;
-                    needSave = true;
-                    console.log(`✅ Admin ${u.email} diverifikasi otomatis.`);
-                } else {
-                    // Untuk user lain, set verified true juga (agar tidak error)
-                    u.verified = true;
-                    needSave = true;
-                }
+                u.verified = true;
+                needSave = true;
             }
         });
         if (needSave) {
@@ -520,20 +510,15 @@ tabs.forEach(tab => {
         });
         const target = panels[this.dataset.panel];
         if (target) target.classList.add('active');
-        // Reset OTP form jika pindah tab
         if (this.dataset.panel !== 'panelRegister') {
             document.getElementById('otpForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
             stopOtpTimer();
         }
-        // Hide error/success
         document.querySelectorAll('.error-msg, .success-msg').forEach(el => el.classList.remove('show'));
     });
 });
 
-// ============================================================
-// NAVIGATION HELPER
-// ============================================================
 function switchTab(tabId) {
     tabs.forEach(t => t.classList.remove('active'));
     document.querySelector(`[data-panel="${tabId}"]`).classList.add('active');
@@ -549,7 +534,7 @@ document.getElementById('gotoLoginFromForgot').addEventListener('click', () => s
 document.getElementById('gotoForgotBtn').addEventListener('click', () => switchTab('panelForgot'));
 
 // ============================================================
-// LOGIN - DENGAN AUTO VERIFY UNTUK ADMIN
+// LOGIN - DENGAN REDIRECT SESUAI ROLE
 // ============================================================
 document.getElementById('loginBtn').addEventListener('click', function() {
     const email = document.getElementById('loginEmail').value.trim();
@@ -579,10 +564,7 @@ document.getElementById('loginBtn').addEventListener('click', function() {
         return;
     }
 
-    // 🔥 CEK: Jika user adalah admin, bypass verifikasi
-    const isAdmin = email.toLowerCase() === OWNER_EMAIL.toLowerCase();
-    
-    // 🔥 AUTO VERIFY: Jika user belum verified, verifikasi otomatis (untuk semua user)
+    // 🔥 AUTO VERIFY: Jika user belum verified, verifikasi otomatis
     if (!user.verified) {
         user.verified = true;
         saveUsers();
@@ -592,16 +574,23 @@ document.getElementById('loginBtn').addEventListener('click', function() {
     // Login berhasil
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
     
+    const isAdmin = email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+    
     // Tampilkan pesan sukses
     if (isAdmin) {
-        document.getElementById('loginSuccessText').textContent = '✅ Login Admin berhasil! Mengalihkan...';
+        document.getElementById('loginSuccessText').textContent = '✅ Login Admin berhasil! Mengalihkan ke Panel Admin...';
     } else {
         document.getElementById('loginSuccessText').textContent = '✅ Login berhasil! Mengalihkan...';
     }
     success.classList.add('show');
 
     setTimeout(() => {
-        window.location.href = '/dashboard';
+        // 🔥 REDIRECT SESUAI ROLE
+        if (isAdmin) {
+            window.location.href = '/admin';
+        } else {
+            window.location.href = '/dashboard';
+        }
     }, 800);
 });
 
@@ -663,15 +652,12 @@ document.getElementById('registerBtn').addEventListener('click', function() {
     registeredEmail = email;
     registeredPassword = password;
 
-    // Simulasi kirim OTP
     document.getElementById('otpEmailDisplay').textContent = `Kode OTP telah dikirim ke ${email}`;
     document.getElementById('registerForm').style.display = 'none';
     document.getElementById('otpForm').style.display = 'block';
     startOtpTimer();
 
     showToast('📧 Kode OTP telah dikirim ke email Anda (demo: 123456)');
-
-    // Untuk demo, set OTP ke 123456
     window._demoOtp = '123456';
 });
 
@@ -720,21 +706,19 @@ document.getElementById('verifyOtpBtn').addEventListener('click', function() {
         return;
     }
 
-    // Demo: OTP = 123456
     if (otp !== '123456') {
         document.getElementById('otpErrorText').textContent = 'Kode OTP salah. Coba lagi.';
         error.classList.add('show');
         return;
     }
 
-    // OTP valid → buat akun
     const refCode = registeredEmail.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
     usersDB.push({
         email: registeredEmail,
         password: registeredPassword,
         refCode: refCode,
         referredBy: null,
-        verified: true, // ← Langsung verified!
+        verified: true,
         createdAt: Date.now()
     });
     saveUsers();
@@ -743,7 +727,6 @@ document.getElementById('verifyOtpBtn').addEventListener('click', function() {
     success.classList.add('show');
 
     setTimeout(() => {
-        // Reset form dan pindah ke login
         document.getElementById('otpForm').style.display = 'none';
         document.getElementById('registerForm').style.display = 'block';
         document.getElementById('regEmail').value = '';
@@ -808,12 +791,10 @@ document.getElementById('forgotBtn').addEventListener('click', function() {
         return;
     }
 
-    // Simulasi kirim email reset password
     document.getElementById('forgotSuccessText').textContent =
         '✅ Link reset password telah dikirim ke email Anda. (demo: buka console)';
     success.classList.add('show');
 
-    // Demo: tampilkan link di console
     console.log(`🔑 Link reset password untuk ${email}: /reset-password?token=demo_${Date.now()}`);
 });
 
@@ -823,29 +804,27 @@ document.getElementById('forgotBtn').addEventListener('click', function() {
 loadData();
 loadSettings();
 
-// 🔥 CEK: Pastikan admin selalu verified
-const adminUser = findUser(OWNER_EMAIL);
-if (adminUser && !adminUser.verified) {
-    adminUser.verified = true;
-    saveUsers();
-    console.log('✅ Admin diverifikasi ulang.');
-}
-
-// Cek jika user sudah login, redirect ke dashboard
+// Cek jika user sudah login, redirect sesuai role
 const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
 if (savedUser) {
     try {
         const data = JSON.parse(savedUser);
-        if (findUser(data.email)) {
-            window.location.href = '/dashboard';
+        const user = findUser(data.email);
+        if (user) {
+            // Jika admin, redirect ke /admin
+            if (user.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                window.location.href = '/admin';
+            } else {
+                window.location.href = '/dashboard';
+            }
         }
     } catch (e) {}
 }
 
 console.log('🟢 SilverChain Auth Page siap.');
 console.log('📌 Demo OTP: 123456');
-console.log('📌 Admin Login: admin@silverchain.io / admin123');
-console.log('📌 Demo Login: demo@silverchain.io / 123456');
+console.log('📌 Admin Login: admin@silverchain.io / admin123 → langsung ke /admin');
+console.log('📌 Demo Login: demo@silverchain.io / 123456 → langsung ke /dashboard');
 </script>
 </body>
 </html>
