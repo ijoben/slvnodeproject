@@ -34,8 +34,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -81,7 +81,7 @@
             color: #a0a0a0;
         }
 
-        /* TABS — HORIZONTAL (scroll di HP) */
+        /* TABS */
         .tabs-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -194,11 +194,11 @@
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
             width: 100%;
         }
         .buy-card .btn-buy:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
             transform: translateY(-2px);
         }
         .buy-card .btn-buy:active {
@@ -277,10 +277,10 @@
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
         }
         .wd-box .btn-wd:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
             transform: translateY(-2px);
         }
         .wd-box .btn-wd:active {
@@ -379,7 +379,7 @@
             max-width: 480px;
             width: 90%;
             border: 1px solid rgba(80, 140, 255, 0.1);
-            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.9);
             position: relative;
             max-height: 90vh;
             overflow-y: auto;
@@ -450,14 +450,14 @@
         .modal-box .qr-section .qr-placeholder {
             width: 60px;
             height: 60px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
             color: #c0c0c0;
-            border: 2px dashed rgba(80, 140, 255, 0.15);
+            border: 2px dashed rgba(80,140,255,0.15);
             overflow: hidden;
         }
         .modal-box .qr-section .qr-placeholder img {
@@ -517,10 +517,10 @@
             transition: 0.15s;
             width: 100%;
             margin-top: 0.8rem;
-            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
         }
         .modal-box .btn-submit-payment:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
             transform: translateY(-2px);
         }
         .modal-box .btn-submit-payment:active {
@@ -541,7 +541,7 @@
             align-items: center;
             padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -570,7 +570,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -697,7 +697,7 @@
                 </div>
             </div>
 
-            <!-- TABS — HORIZONTAL SCROLL -->
+            <!-- TABS -->
             <div class="tabs-wrapper">
                 <div class="tabs" id="tabContainer">
                     <button class="tab-btn active" data-tab="tabBuy"><i class="fas fa-shopping-cart"></i> Beli Token</button>
@@ -804,14 +804,13 @@
                                     <th>Tanggal</th>
                                     <th>USDT</th>
                                     <th>Bonus</th>
-                                    <th>Ref</th>
                                     <th>Total</th>
                                     <th>Hash TX</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="historyBody">
-                                <tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>
+                                <tr><td colspan="6" class="empty">Belum ada transaksi</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -829,12 +828,12 @@
             <i class="fas fa-home"></i>
             <span>Beranda</span>
         </a>
-        <a href="dashboard" class="active" id="navBuy">
+        <a href="/dashboard" class="active" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
             <span>Beli Token</span>
             <span class="badge-dot" id="navBadge"></span>
         </a>
-        <a href="account" id="navAccount">
+        <a href="/account" id="navAccount">
             <i class="fas fa-user"></i>
             <span>Akun</span>
         </a>
@@ -922,13 +921,10 @@
         }
 
         function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
-
         function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
-
         function saveWithdrawals() { localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB)); }
 
         function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
-
         function getUserDeposits(email) { return depositsDB.filter(d => d.email === email); }
 
         // ===== SALDO FUNGSI =====
@@ -1051,7 +1047,7 @@
                 document.getElementById('saldoReferral').textContent = '0';
                 document.getElementById('wdSaldoTersedia').textContent = '0 USDT';
                 document.getElementById('historyBody').innerHTML =
-                    `<tr><td colspan="7" class="empty">Silakan login terlebih dahulu</td></tr>`;
+                    `<tr><td colspan="6" class="empty">Silakan login terlebih dahulu</td></tr>`;
                 document.getElementById('wdHistoryBody').innerHTML =
                     `<tr><td colspan="4" class="empty">Silakan login terlebih dahulu</td></tr>`;
                 document.getElementById('buyBtn').disabled = true;
@@ -1086,11 +1082,11 @@
                 bonusInfo.style.color = '#c0c0c0';
             }
 
-            // History deposit
+            // === HISTORY DEPOSIT ===
             const deposits = getUserDeposits(currentUser.email);
             if (deposits.length === 0) {
                 document.getElementById('historyBody').innerHTML =
-                    `<tr><td colspan="7" class="empty">Belum ada transaksi</td></tr>`;
+                    `<tr><td colspan="6" class="empty">Belum ada transaksi</td></tr>`;
             } else {
                 let html = '';
                 deposits.slice().reverse().forEach(d => {
@@ -1104,7 +1100,7 @@
                         <td>${date}</td>
                         <td>${d.usdt}</td>
                         <td>${d.bonus || 0}</td>
-                        <td>${d.total}</td>
+                        <td>${(d.usdt + (d.bonus || 0)).toFixed(1)}</td>
                         <td style="font-family:monospace; font-size:0.65rem;">${d.txHash || '-'}</td>
                         <td class="${cls}">${txt}</td>
                     </tr>`;
@@ -1112,7 +1108,7 @@
                 document.getElementById('historyBody').innerHTML = html;
             }
 
-            // History withdraw
+            // === HISTORY WITHDRAW ===
             const wdHistory = withdrawalsDB.filter(w => w.email === currentUser.email);
             if (wdHistory.length === 0) {
                 document.getElementById('wdHistoryBody').innerHTML =
