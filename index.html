@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -142,7 +143,7 @@
             box-shadow: 0 0 30px rgba(60, 120, 255, 0.2);
         }
 
-        /* MEMBER — 1 KOLOM KE BAWAH */
+        /* MEMBER */
         .member-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -241,7 +242,6 @@
             padding-left: 1rem;
         }
 
-        /* FEATURES — 2 kolom di mobile, 3 di desktop */
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -272,7 +272,6 @@
             line-height: 1.3;
         }
 
-        /* WHY */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -303,7 +302,6 @@
             line-height: 1.3;
         }
 
-        /* ROADMAP */
         .roadmap-list {
             display: flex;
             flex-direction: column;
@@ -339,7 +337,6 @@
             font-size: 0.85rem;
         }
 
-        /* FAQ */
         .faq-item {
             background: rgba(12, 28, 60, 0.35);
             backdrop-filter: blur(4px);
@@ -380,7 +377,6 @@
             transform: rotate(180deg);
         }
 
-        /* CONTACT */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -476,7 +472,6 @@
             display: flex;
         }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -590,7 +585,6 @@
             margin: 0.8rem 0;
         }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -645,7 +639,6 @@
             display: none;
         }
 
-        /* DESKTOP */
         @media (min-width: 768px) {
             .grid-3 {
                 grid-template-columns: repeat(3, 1fr);
@@ -827,7 +820,7 @@
                 font-size: 0.8rem;
             }
             .bottom-nav a {
-                font-size: 0.55rem;
+                font-size: 0.45rem;
                 min-width: 40px;
                 padding: 0.1rem 0.3rem;
             }
@@ -952,7 +945,7 @@
             </div>
         </div>
 
-        <!-- MEMBER AKTIF — 1 KOLOM -->
+        <!-- MEMBER AKTIF -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
             <div class="member-grid" id="memberGrid">
@@ -960,7 +953,7 @@
             </div>
         </div>
 
-        <!-- ABOUT -->
+        <!-- ABOUT, FEATURES, WHY, ROADMAP, WHITEPAPER, FAQ, CONTACT (sama seperti sebelumnya) -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang</div>
             <p style="color:#8ab0e6; line-height:1.6; font-size:0.9rem;">
@@ -975,7 +968,6 @@
             </div>
         </div>
 
-        <!-- FEATURES -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-star"></i> Fitur</div>
             <div class="grid-3">
@@ -988,7 +980,6 @@
             </div>
         </div>
 
-        <!-- WHY -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question-circle"></i> Mengapa?</div>
             <div class="grid-2">
@@ -999,7 +990,6 @@
             </div>
         </div>
 
-        <!-- ROADMAP -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
@@ -1011,7 +1001,6 @@
             </div>
         </div>
 
-        <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Whitepaper lengkap SilverChain.</p>
@@ -1022,7 +1011,6 @@
             </div>
         </div>
 
-        <!-- FAQ -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
@@ -1043,7 +1031,6 @@
             </div>
         </div>
 
-        <!-- CONTACT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
             <div class="contact-grid">
@@ -1101,7 +1088,8 @@
             DEPOSITS: 'silverchain_deposits',
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
-            CURRENT_USER: 'silverchain_current_user'
+            CURRENT_USER: 'silverchain_current_user',
+            PENDING_REF: 'silverchain_pending_ref'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
         const TARGET_USDT = 1000000;
@@ -1159,6 +1147,18 @@
                     const data = JSON.parse(saved);
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
+                }
+
+                // Cek pending referral dari URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const refCode = urlParams.get('ref');
+                if (refCode) {
+                    localStorage.setItem(STORAGE_KEYS.PENDING_REF, refCode);
+                    // Hapus parameter dari URL tanpa reload
+                    if (window.history && window.history.replaceState) {
+                        const newUrl = window.location.pathname;
+                        window.history.replaceState({}, '', newUrl);
+                    }
                 }
             } catch (e) { console.error('Load error:', e); }
         }
@@ -1289,23 +1289,55 @@
         }
 
         // ============================================================
-        // AUTH
+        // AUTH — DENGAN REFERRAL HANDLER
         // ============================================================
         function registerUser(email, password) {
             if (findUser(email)) return { success: false, msg: 'Email sudah terdaftar.' };
             if (!email || !email.includes('@') || password.length < 4) {
                 return { success: false, msg: 'Email atau password tidak valid.' };
             }
+
+            // Cek pending referral
+            const pendingRef = localStorage.getItem(STORAGE_KEYS.PENDING_REF);
+            let referredBy = null;
+            if (pendingRef) {
+                const referrer = usersDB.find(u => u.refCode === pendingRef);
+                if (referrer && referrer.email !== email) {
+                    referredBy = pendingRef;
+                }
+                localStorage.removeItem(STORAGE_KEYS.PENDING_REF);
+            }
+
             const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
-            usersDB.push({ email, password, refCode, referredBy: null });
+            usersDB.push({ email, password, refCode, referredBy });
             saveUsers();
-            return { success: true, msg: 'Pendaftaran berhasil! Silakan login.' };
+
+            let msg = 'Pendaftaran berhasil! Silakan login.';
+            if (referredBy) {
+                const referrer = usersDB.find(u => u.refCode === referredBy);
+                if (referrer) {
+                    msg += ` Anda direferral oleh ${referrer.email}`;
+                }
+            }
+            return { success: true, msg };
         }
 
         function loginUser(email, password) {
             const user = findUser(email);
             if (!user) return { success: false, msg: 'Email tidak ditemukan.' };
             if (user.password !== password) return { success: false, msg: 'Password salah.' };
+
+            // Cek pending referral untuk user yang sudah ada (jika login lewat link referral)
+            const pendingRef = localStorage.getItem(STORAGE_KEYS.PENDING_REF);
+            if (pendingRef && !user.referredBy) {
+                const referrer = usersDB.find(u => u.refCode === pendingRef);
+                if (referrer && referrer.email !== user.email) {
+                    user.referredBy = pendingRef;
+                    saveUsers();
+                }
+                localStorage.removeItem(STORAGE_KEYS.PENDING_REF);
+            }
+
             return { success: true, msg: 'Login berhasil!', user };
         }
 
@@ -1342,7 +1374,7 @@
                     window.location.href = 'dashboard.html';
                 }, 1000);
             } else {
-                success.textContent = '✅ ' + result.msg + ' Silakan login.';
+                success.textContent = '✅ ' + result.msg;
                 success.classList.add('show');
                 document.getElementById('switchLabel').textContent = 'Daftar akun baru';
                 document.getElementById('modalTitle').innerHTML =
