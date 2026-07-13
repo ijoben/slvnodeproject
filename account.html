@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -36,7 +37,6 @@
             margin-bottom: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
             border: 1px solid rgba(80, 140, 255, 0.08);
-            transition: all 0.25s;
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -55,7 +55,6 @@
             font-size: 0.6rem;
             color: #fcd34d;
         }
-
         .profile-avatar {
             width: 80px;
             height: 80px;
@@ -105,7 +104,6 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -128,7 +126,6 @@
             font-size: 0.75rem;
             color: #8ab8ff;
         }
-
         .btn-danger {
             background: rgba(255, 60, 60, 0.1);
             border: 1px solid rgba(255, 60, 60, 0.2);
@@ -148,7 +145,6 @@
         .btn-danger i {
             margin-right: 8px;
         }
-
         .btn-admin {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -170,8 +166,6 @@
             margin-right: 8px;
             color: #4a8aff;
         }
-
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -220,7 +214,6 @@
         .bottom-nav a:hover {
             color: #b0ccff;
         }
-
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -273,7 +266,7 @@
 
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
-        <!-- ===== PROFIL ===== -->
+        <!-- PROFIL -->
         <div class="section-card">
             <div class="profile-avatar" id="profileAvatar">
                 <i class="fas fa-user"></i>
@@ -307,7 +300,7 @@
                 </div>
                 <div class="info-row">
                     <span class="label"><i class="fas fa-link"></i> Link Referral</span>
-                    <span class="value" style="font-size:0.7rem; font-family:monospace;" id="infoRefLink">-</span>
+                    <span class="value" style="font-size:0.7rem; font-family:monospace; word-break:break-all;" id="infoRefLink">-</span>
                 </div>
                 <div class="info-row">
                     <span class="label"><i class="fas fa-user-tag"></i> Role</span>
@@ -323,7 +316,7 @@
 
     </div>
 
-    <!-- ===== BOTTOM NAV ===== -->
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <a href="index.html" id="navHome">
             <i class="fas fa-home"></i>
@@ -415,13 +408,16 @@
             document.getElementById('profileEmail').textContent = currentUser.email;
             document.getElementById('infoEmail').textContent = currentUser.email;
             document.getElementById('infoRefCode').textContent = user.refCode || '-';
-            document.getElementById('infoRefLink').textContent = `https://silverchain.io/ref/${user.refCode || ''}`;
+
+            // ===== LINK REFERRAL DINAMIS =====
+            const domain = window.location.host;
+            const refLink = `https://${domain}/?ref=${user.refCode}`;
+            document.getElementById('infoRefLink').textContent = refLink;
+
             document.getElementById('infoRole').textContent = isOwner ? '👑 Owner / Admin' : 'Member';
 
-            // Tampilkan tombol Admin Panel jika owner
             document.getElementById('adminPanelBtn').style.display = isOwner ? 'block' : 'none';
 
-            // Stats
             const deposits = depositsDB.filter(d => d.email === currentUser.email);
             const approved = deposits.filter(d => d.status === 'approved');
             const pending = deposits.filter(d => d.status === 'pending');
