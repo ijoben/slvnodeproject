@@ -36,7 +36,6 @@
             margin-bottom: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
             border: 1px solid rgba(80, 140, 255, 0.08);
-            transition: all 0.25s;
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -87,7 +86,7 @@
             text-transform: uppercase;
         }
 
-        /* TABLE WRAPPER SCROLL */
+        /* TABLE WRAPPER */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -121,7 +120,6 @@
             text-align: center;
             padding: 0.8rem 0;
         }
-
         .btn-approve {
             background: rgba(60, 220, 80, 0.15);
             border: 1px solid rgba(60, 220, 80, 0.2);
@@ -150,23 +148,23 @@
             background: rgba(255, 60, 60, 0.25);
         }
 
-        /* ===== TABS ===== */
+        /* TABS */
         .tabs {
             display: flex;
             flex-wrap: wrap;
             gap: 0.3rem;
-            margin: 1rem 0 1.5rem;
+            margin: 1rem 0 1.2rem;
             border-bottom: 1px solid rgba(80, 140, 255, 0.06);
             padding-bottom: 0.3rem;
         }
         .tab-btn {
             background: transparent;
             border: none;
-            padding: 0.5rem 1.2rem;
+            padding: 0.4rem 1.2rem;
             border-radius: 60px;
             color: #5a8ac0;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: 0.15s;
         }
@@ -186,7 +184,6 @@
             display: block;
         }
 
-        /* ===== PAYMENT SETTINGS ===== */
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
             border-radius: 1.2rem;
@@ -199,94 +196,39 @@
             flex-wrap: wrap;
             align-items: center;
             gap: 0.8rem;
-            margin: 0.5rem 0;
+            margin: 0.3rem 0;
         }
         .settings-group label {
             color: #8ab0e6;
             font-size: 0.8rem;
             min-width: 120px;
         }
-        .settings-group input[type="text"],
-        .settings-group input[type="number"] {
+        .settings-group input {
             background: rgba(8, 20, 48, 0.5);
             border: 1px solid rgba(80, 140, 255, 0.06);
             border-radius: 60px;
-            padding: 0.4rem 1rem;
+            padding: 0.3rem 1rem;
             color: #e6edf5;
             font-size: 0.85rem;
+            width: 80px;
             outline: none;
-            flex: 1;
-            min-width: 150px;
         }
-        .settings-group input[type="text"]:focus,
-        .settings-group input[type="number"]:focus {
+        .settings-group input:focus {
             border-color: rgba(80, 140, 255, 0.2);
         }
-        .settings-group input[type="file"] {
-            color: #8ab0e6;
-            font-size: 0.8rem;
-        }
-        .settings-group .btn-save {
+        .btn-save {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
-            padding: 0.3rem 1.2rem;
+            padding: 0.2rem 1rem;
             color: #8ab8ff;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
-            transition: 0.1s;
         }
-        .settings-group .btn-save:hover {
+        .btn-save:hover {
             background: rgba(60, 120, 255, 0.2);
         }
-        .settings-group .qr-preview {
-            margin: 0.5rem 0;
-            padding: 0.5rem;
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .settings-group .qr-preview img {
-            max-width: 120px;
-            max-height: 120px;
-            border-radius: 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            background: #fff;
-        }
-        .settings-group .qr-preview .placeholder {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #4a8aff;
-            border: 2px dashed rgba(80, 140, 255, 0.15);
-        }
 
-        .toast-message {
-            background: rgba(12, 28, 60, 0.8);
-            backdrop-filter: blur(8px);
-            border-left: 4px solid #4a8aff;
-            border-radius: 40px;
-            padding: 0.6rem 1.4rem;
-            font-size: 0.85rem;
-            color: #b0ccff;
-            margin-bottom: 0.8rem;
-            display: none;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .toast-message.show {
-            display: flex;
-        }
-
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -336,6 +278,23 @@
             color: #b0ccff;
         }
 
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #4a8aff;
+            border-radius: 40px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            color: #b0ccff;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
+        }
+
         @media (max-width: 700px) {
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
@@ -346,14 +305,6 @@
             }
             .tab-btn {
                 text-align: center;
-            }
-            .settings-group .row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .settings-group input[type="text"],
-            .settings-group input[type="number"] {
-                min-width: unset;
             }
         }
         @media (max-width: 480px) {
@@ -374,11 +325,6 @@
             .bottom-nav a span {
                 font-size: 0.5rem;
             }
-            .settings-group .qr-preview {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
         }
     </style>
 </head>
@@ -387,24 +333,24 @@
 
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
 
-        <!-- ===== ADMIN PANEL ===== -->
         <div class="section-card">
             <h2 style="color:#b0ccff; font-size:1.5rem;">
                 <i class="fas fa-user-shield" style="color:#4a8aff; margin-right:10px;"></i>Panel Admin
                 <span class="owner-badge" style="margin-left:8px;">🔒 Owner Only</span>
             </h2>
-            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, pengaturan bonus & payment</p>
+            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, withdraw & pengaturan</p>
 
-            <!-- ===== TABS ===== -->
+            <!-- TABS -->
             <div class="tabs" id="tabContainer">
                 <button class="tab-btn active" data-tab="tabStats"><i class="fas fa-chart-bar"></i> Statistik</button>
-                <button class="tab-btn" data-tab="tabPending"><i class="fas fa-clock"></i> Pending</button>
+                <button class="tab-btn" data-tab="tabPending"><i class="fas fa-clock"></i> Deposit Pending</button>
+                <button class="tab-btn" data-tab="tabWithdraw"><i class="fas fa-arrow-up"></i> Withdraw</button>
                 <button class="tab-btn" data-tab="tabUsers"><i class="fas fa-users"></i> Pengguna</button>
                 <button class="tab-btn" data-tab="tabSettings"><i class="fas fa-sliders-h"></i> Pengaturan</button>
                 <button class="tab-btn" data-tab="tabPayment"><i class="fas fa-credit-card"></i> Payment</button>
             </div>
 
-            <!-- ===== TAB 1: STATISTIK ===== -->
+            <!-- TAB 1: STATISTIK -->
             <div class="tab-content active" id="tabStats">
                 <div class="admin-stats-grid">
                     <div class="admin-stat"><div class="num" id="adminTotalUsers">0</div><div class="label">Total Pengguna</div></div>
@@ -414,7 +360,7 @@
                 </div>
             </div>
 
-            <!-- ===== TAB 2: DEPOSIT PENDING ===== -->
+            <!-- TAB 2: DEPOSIT PENDING -->
             <div class="tab-content" id="tabPending">
                 <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
                     <i class="fas fa-clock"></i> Deposit Pending
@@ -439,7 +385,30 @@
                 </div>
             </div>
 
-            <!-- ===== TAB 3: SEMUA PENGGUNA ===== -->
+            <!-- TAB 3: WITHDRAW -->
+            <div class="tab-content" id="tabWithdraw">
+                <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
+                    <i class="fas fa-arrow-up"></i> Permintaan Withdraw
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Jumlah SCT</th>
+                                <th>Address</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminWdBody">
+                            <tr><td colspan="5" class="empty">Tidak ada permintaan withdraw</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 4: PENGGUNA -->
             <div class="tab-content" id="tabUsers">
                 <div style="margin:0.8rem 0 0.2rem; font-weight:600; color:#8ab8ff; font-size:0.85rem;">
                     <i class="fas fa-users"></i> Semua Pengguna
@@ -461,7 +430,7 @@
                 </div>
             </div>
 
-            <!-- ===== TAB 4: PENGATURAN BONUS & REFERRAL ===== -->
+            <!-- TAB 5: PENGATURAN -->
             <div class="tab-content" id="tabSettings">
                 <div class="settings-group">
                     <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
@@ -475,34 +444,27 @@
                 </div>
             </div>
 
-            <!-- ===== TAB 5: PAYMENT (USDT Address & QRIS) ===== -->
+            <!-- TAB 6: PAYMENT -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
                     <h5 style="color:#8ab8ff; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
-
-                    <!-- USDT Address -->
                     <div class="row">
                         <label><i class="fab fa-ethereum"></i> USDT Address</label>
                         <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" />
                         <button class="btn-save" id="saveUsdtBtn"><i class="fas fa-save"></i> Simpan</button>
                     </div>
-
-                    <!-- QRIS Upload -->
                     <div class="row" style="margin-top:0.8rem;">
                         <label><i class="fas fa-qrcode"></i> QRIS Image</label>
                         <input type="file" id="qrisUpload" accept="image/*" />
                         <button class="btn-save" id="uploadQrisBtn"><i class="fas fa-upload"></i> Upload</button>
                     </div>
-
-                    <!-- QRIS Preview -->
-                    <div class="qr-preview" id="qrisPreviewContainer">
-                        <div class="placeholder" id="qrisPlaceholder">
+                    <div class="qr-preview" id="qrisPreviewContainer" style="margin:0.5rem 0; padding:0.5rem; background:rgba(8,20,48,0.3); border-radius:1rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                        <div class="placeholder" id="qrisPlaceholder" style="width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:0.8rem;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#4a8aff;border:2px dashed rgba(80,140,255,0.15);">
                             <i class="fas fa-qrcode"></i>
                         </div>
-                        <img id="qrisPreviewImg" style="display:none;" alt="QRIS" />
+                        <img id="qrisPreviewImg" style="display:none; max-width:120px; max-height:120px; border-radius:0.8rem; border:1px solid rgba(80,140,255,0.06); background:#fff;" alt="QRIS" />
                         <span style="color:#5a8ac0; font-size:0.75rem;" id="qrisStatus">Belum ada QRIS</span>
                     </div>
-
                     <p style="color:#5a8ac0; font-size:0.7rem; margin-top:0.3rem;">
                         <i class="fas fa-info-circle"></i> Address USDT & QRIS akan digunakan di halaman pembelian token.
                     </p>
@@ -516,7 +478,7 @@
 
     </div>
 
-    <!-- ===== BOTTOM NAV ===== -->
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <a href="index.html" id="navHome">
             <i class="fas fa-home"></i>
@@ -539,6 +501,7 @@
         const STORAGE_KEYS = {
             USERS: 'silverchain_users',
             DEPOSITS: 'silverchain_deposits',
+            WITHDRAWALS: 'silverchain_withdrawals',
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
             CURRENT_USER: 'silverchain_current_user',
@@ -549,6 +512,7 @@
 
         let usersDB = [];
         let depositsDB = [];
+        let withdrawalsDB = [];
         let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
@@ -562,6 +526,8 @@
                 if (users) usersDB = JSON.parse(users);
                 const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
                 if (deposits) depositsDB = JSON.parse(deposits);
+                const wd = localStorage.getItem(STORAGE_KEYS.WITHDRAWALS);
+                if (wd) withdrawalsDB = JSON.parse(wd);
                 const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
                 if (bonus) bonusPercent = parseInt(bonus) || 10;
                 const ref = localStorage.getItem(STORAGE_KEYS.REF);
@@ -572,15 +538,14 @@
                     const found = usersDB.find(u => u.email === data.email);
                     if (found) currentUser = found;
                 }
-                // Load USDT address
-                const usdt = localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS);
-                if (usdt) document.getElementById('adminUsdtAddress').value = usdt;
             } catch (e) { console.warn('Load error:', e); }
         }
 
         function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
 
         function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
+
+        function saveWithdrawals() { localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB)); }
 
         function saveSettings() {
             localStorage.setItem(STORAGE_KEYS.BONUS, String(bonusPercent));
@@ -608,6 +573,7 @@
             const contents = {
                 tabStats: document.getElementById('tabStats'),
                 tabPending: document.getElementById('tabPending'),
+                tabWithdraw: document.getElementById('tabWithdraw'),
                 tabUsers: document.getElementById('tabUsers'),
                 tabSettings: document.getElementById('tabSettings'),
                 tabPayment: document.getElementById('tabPayment')
@@ -639,6 +605,8 @@
                 document.getElementById('adminTotalSCTMinted').textContent = '🔒';
                 document.getElementById('adminPendingBody').innerHTML =
                     `<tr><td colspan="7" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
+                document.getElementById('adminWdBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
                 document.getElementById('adminUserBody').innerHTML =
                     `<tr><td colspan="4" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
                 document.getElementById('adminBonusPercent').disabled = true;
@@ -669,7 +637,7 @@
             const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
             document.getElementById('adminTotalSCTMinted').textContent = totalMinted.toFixed(1);
 
-            // Pending
+            // Pending Deposit
             if (pending.length === 0) {
                 document.getElementById('adminPendingBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Tidak ada pending</td></tr>`;
@@ -684,14 +652,14 @@
                         <td>${d.total}</td>
                         <td style="font-family:monospace; font-size:0.6rem;">${d.txHash || '-'}</td>
                         <td>
-                            <button class="btn-approve" data-id="${d.id}">✅ Approve</button>
-                            <button class="btn-reject" data-id="${d.id}">✖ Reject</button>
+                            <button class="btn-approve" data-id="${d.id}" data-type="deposit">✅ Approve</button>
+                            <button class="btn-reject" data-id="${d.id}" data-type="deposit">✖ Reject</button>
                         </td>
                     </tr>`;
                 });
                 document.getElementById('adminPendingBody').innerHTML = html;
 
-                document.querySelectorAll('.btn-approve').forEach(btn => {
+                document.querySelectorAll('#adminPendingBody .btn-approve').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const id = parseInt(this.dataset.id);
                         const deposit = depositsDB.find(d => d.id === id);
@@ -704,7 +672,7 @@
                     });
                 });
 
-                document.querySelectorAll('.btn-reject').forEach(btn => {
+                document.querySelectorAll('#adminPendingBody .btn-reject').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const id = parseInt(this.dataset.id);
                         const deposit = depositsDB.find(d => d.id === id);
@@ -712,6 +680,57 @@
                             deposit.status = 'rejected';
                             saveDeposits();
                             showToast(`❌ Deposit ${deposit.usdt} USDT dari ${deposit.email} ditolak.`);
+                            updateUI();
+                        }
+                    });
+                });
+            }
+
+            // Withdraw Pending
+            const wdPending = withdrawalsDB.filter(w => w.status === 'pending');
+            if (wdPending.length === 0) {
+                document.getElementById('adminWdBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">Tidak ada permintaan withdraw</td></tr>`;
+            } else {
+                let html = '';
+                wdPending.forEach(w => {
+                    const date = new Date(w.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(w.timestamp)
+                        .toLocaleTimeString('id-ID');
+                    const addrShort = w.address ? w.address.substring(0, 10) + '...' : '-';
+                    html += `<tr>
+                        <td>${w.email}</td>
+                        <td>${w.amount} SCT</td>
+                        <td style="font-family:monospace; font-size:0.6rem;">${addrShort}</td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="btn-approve" data-id="${w.id}" data-type="wd">✅ Approve</button>
+                            <button class="btn-reject" data-id="${w.id}" data-type="wd">✖ Reject</button>
+                        </td>
+                    </tr>`;
+                });
+                document.getElementById('adminWdBody').innerHTML = html;
+
+                document.querySelectorAll('#adminWdBody .btn-approve').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        const wd = withdrawalsDB.find(w => w.id === id);
+                        if (wd) {
+                            wd.status = 'approved';
+                            saveWithdrawals();
+                            showToast(`✅ Withdraw ${wd.amount} SCT dari ${wd.email} disetujui!`);
+                            updateUI();
+                        }
+                    });
+                });
+
+                document.querySelectorAll('#adminWdBody .btn-reject').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        const wd = withdrawalsDB.find(w => w.id === id);
+                        if (wd) {
+                            wd.status = 'rejected';
+                            saveWithdrawals();
+                            showToast(`❌ Withdraw ${wd.amount} SCT dari ${wd.email} ditolak.`);
                             updateUI();
                         }
                     });
