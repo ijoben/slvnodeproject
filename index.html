@@ -17,7 +17,7 @@
             font-family: 'Inter', sans-serif;
             background: #0a1228;
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
-            color: #e6edf5;
+            color: #d4d4d4;
             min-height: 100vh;
             padding: 1.5rem 1rem 6rem;
             display: flex;
@@ -45,10 +45,10 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            color: #b0ccff;
+            color: #e0e0e0;
         }
         .section-title i {
-            color: #6a9eff;
+            color: #c0c0c0;
             font-size: 1.8rem;
         }
 
@@ -65,17 +65,23 @@
             gap: 0.8rem;
             text-decoration: none;
         }
-        .header .brand-center i {
+        .header .brand-center .logo-icon {
             font-size: 2.6rem;
-            background: linear-gradient(145deg, #c8ddff, #6a9eff);
+            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .header .brand-center .logo-icon img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: contain;
+        }
         .header .brand-center h1 {
             font-size: 2.2rem;
             font-weight: 800;
-            background: linear-gradient(145deg, #c8ddff, #6a9eff);
+            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -83,7 +89,7 @@
         .header .brand-center .ticker {
             font-size: 1rem;
             font-weight: 600;
-            color: #5a8ac0;
+            color: #a0a0a0;
             background: rgba(60, 120, 255, 0.06);
             padding: 0.2rem 1rem;
             border-radius: 60px;
@@ -108,24 +114,24 @@
         }
         .progress-label {
             font-size: 0.85rem;
-            color: #8ab0e6;
+            color: #c0c0c0;
             display: flex;
             align-items: center;
             gap: 6px;
             font-weight: 500;
         }
         .progress-label i {
-            color: #4a8aff;
+            color: #c0c0c0;
         }
         .counter-num {
             font-weight: 700;
             font-size: 1.1rem;
-            color: #b0ccff;
+            color: #e0e0e0;
         }
         .counter-num small {
             font-weight: 400;
             font-size: 0.7rem;
-            color: #5a8ac0;
+            color: #a0a0a0;
         }
         .progress-bar-bg {
             width: 100%;
@@ -137,10 +143,10 @@
         .progress-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #3a7aff, #7aaeff);
+            background: linear-gradient(90deg, #c0c0c0, #e8e8e8);
             border-radius: 20px;
             transition: width 0.8s ease;
-            box-shadow: 0 0 30px rgba(60, 120, 255, 0.2);
+            box-shadow: 0 0 30px rgba(192, 192, 192, 0.1);
         }
 
         /* MEMBER */
@@ -162,7 +168,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
+            background: linear-gradient(145deg, #c0c0c0, #888888);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -180,7 +186,7 @@
         }
         .member-card-item .info .name {
             font-size: 0.85rem;
-            color: #b0ccff;
+            color: #e0e0e0;
             font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
@@ -189,14 +195,14 @@
         }
         .member-card-item .info .sct {
             font-size: 0.75rem;
-            color: #7aaeff;
+            color: #c0c0c0;
             font-weight: 500;
             background: rgba(60, 120, 255, 0.08);
             padding: 0.1rem 0.6rem;
             border-radius: 60px;
         }
         .member-card-item .rank {
-            color: #5a8ac0;
+            color: #a0a0a0;
             font-size: 0.75rem;
             font-weight: 600;
             flex-shrink: 0;
@@ -220,25 +226,25 @@
         .stat-item .num {
             font-weight: 700;
             font-size: 1.3rem;
-            color: #b0ccff;
+            color: #e0e0e0;
         }
         .stat-item .label {
             font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #5a8ac0;
+            color: #a0a0a0;
         }
         .stat-item.highlight .num {
-            color: #7aaeff;
-            text-shadow: 0 0 20px rgba(60, 120, 255, 0.15);
+            color: #c0c0c0;
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.1);
         }
 
         .subhead {
             font-size: 0.95rem;
-            color: #8ab0e6;
+            color: #c0c0c0;
             margin: 0.5rem 0 1.2rem;
             line-height: 1.5;
-            border-left: 3px solid #4a8aff;
+            border-left: 3px solid #c0c0c0;
             padding-left: 1rem;
         }
 
@@ -256,7 +262,7 @@
             text-align: center;
         }
         .feature-item i {
-            color: #6a9eff;
+            color: #c0c0c0;
             font-size: 1.6rem;
             margin-bottom: 0.3rem;
             display: block;
@@ -264,11 +270,11 @@
         .feature-item h4 {
             font-weight: 600;
             font-size: 0.95rem;
-            color: #b0ccff;
+            color: #e0e0e0;
         }
         .feature-item p {
             font-size: 0.8rem;
-            color: #8ab0e6;
+            color: #c0c0c0;
             line-height: 1.3;
         }
 
@@ -286,7 +292,7 @@
             text-align: center;
         }
         .why-item i {
-            color: #6a9eff;
+            color: #c0c0c0;
             font-size: 1.6rem;
             margin-bottom: 0.3rem;
             display: block;
@@ -294,11 +300,11 @@
         .why-item h4 {
             font-weight: 600;
             font-size: 0.95rem;
-            color: #b0ccff;
+            color: #e0e0e0;
         }
         .why-item p {
             font-size: 0.8rem;
-            color: #8ab0e6;
+            color: #c0c0c0;
             line-height: 1.3;
         }
 
@@ -315,25 +321,25 @@
             backdrop-filter: blur(4px);
             padding: 0.8rem 1.2rem;
             border-radius: 60px;
-            border-left: 4px solid #4a8aff;
+            border-left: 4px solid #c0c0c0;
             position: relative;
         }
         .roadmap-item::after {
             content: "→";
             position: absolute;
             right: 16px;
-            color: #4a8aff;
+            color: #c0c0c0;
             font-size: 1rem;
             opacity: 0.4;
         }
         .roadmap-item .phase {
             font-weight: 700;
-            color: #8ab8ff;
+            color: #c0c0c0;
             min-width: 70px;
             font-size: 0.85rem;
         }
         .roadmap-item .desc {
-            color: #90b8ee;
+            color: #c0c0c0;
             font-size: 0.85rem;
         }
 
@@ -348,7 +354,7 @@
         .faq-question {
             padding: 0.8rem 1.2rem;
             font-weight: 600;
-            color: #b0ccff;
+            color: #e0e0e0;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -356,7 +362,7 @@
             font-size: 0.9rem;
         }
         .faq-question i {
-            color: #4a8aff;
+            color: #c0c0c0;
             transition: 0.25s;
             font-size: 0.9rem;
         }
@@ -365,7 +371,7 @@
             overflow: hidden;
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
             padding: 0 1.2rem;
-            color: #8ab0e6;
+            color: #c0c0c0;
             font-size: 0.85rem;
             line-height: 1.5;
         }
@@ -391,11 +397,11 @@
             gap: 10px;
             border: 1px solid rgba(80, 140, 255, 0.04);
             text-decoration: none;
-            color: #8ab8ff;
+            color: #c0c0c0;
             font-size: 0.8rem;
         }
         .contact-item i {
-            color: #4a8aff;
+            color: #c0c0c0;
             font-size: 1.1rem;
             width: 20px;
             text-align: center;
@@ -406,7 +412,7 @@
             word-break: break-word;
         }
         .contact-item a {
-            color: #8ab8ff;
+            color: #c0c0c0;
             text-decoration: none;
             font-size: 0.75rem;
         }
@@ -418,7 +424,7 @@
             padding: 0.2rem 0.8rem;
             font-size: 0.65rem;
             font-weight: 600;
-            color: #8ab8ff;
+            color: #c0c0c0;
         }
 
         .btn-hero {
@@ -426,7 +432,7 @@
             border: 1px solid rgba(80, 140, 255, 0.15);
             border-radius: 60px;
             padding: 0.5rem 1.8rem;
-            color: #8ab8ff;
+            color: #c0c0c0;
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
@@ -441,13 +447,13 @@
             border-color: rgba(80, 140, 255, 0.3);
         }
         .btn-hero i {
-            color: #4a8aff;
+            color: #c0c0c0;
         }
 
         .btn-outline {
             background: transparent;
             border: 1px solid rgba(80, 140, 255, 0.1);
-            color: #8ab8ff;
+            color: #c0c0c0;
             padding: 0.3rem 1rem;
             border-radius: 60px;
             font-weight: 600;
@@ -458,11 +464,11 @@
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
-            border-left: 4px solid #4a8aff;
+            border-left: 4px solid #c0c0c0;
             border-radius: 40px;
             padding: 0.5rem 1.2rem;
             font-size: 0.85rem;
-            color: #b0ccff;
+            color: #e0e0e0;
             margin-bottom: 0.8rem;
             display: none;
             align-items: center;
@@ -507,17 +513,17 @@
             right: 20px;
             background: none;
             border: none;
-            color: #5a8ac0;
+            color: #a0a0a0;
             font-size: 1.4rem;
             cursor: pointer;
         }
         .modal-box h2 {
-            color: #b0ccff;
+            color: #e0e0e0;
             margin-bottom: 0.5rem;
             font-size: 1.4rem;
         }
         .modal-box p {
-            color: #8ab0e6;
+            color: #c0c0c0;
             font-size: 0.85rem;
             margin-bottom: 1.5rem;
         }
@@ -527,7 +533,7 @@
             border-radius: 60px;
             border: 1px solid rgba(80, 140, 255, 0.1);
             background: rgba(8, 20, 48, 0.5);
-            color: #e6edf5;
+            color: #d4d4d4;
             font-size: 1rem;
             outline: none;
             margin-bottom: 0.8rem;
@@ -540,7 +546,7 @@
             padding: 0.9rem;
             border-radius: 60px;
             border: none;
-            background: linear-gradient(145deg, #4a8aff, #1a4ab0);
+            background: linear-gradient(145deg, #c0c0c0, #888888);
             color: #fff;
             font-weight: 700;
             font-size: 1rem;
@@ -548,12 +554,12 @@
             transition: 0.15s;
         }
         .modal-box .btn-modal:hover {
-            box-shadow: 0 12px 40px -6px rgba(60, 120, 255, 0.3);
+            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.2);
         }
         .modal-box .btn-modal.secondary {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
-            color: #8ab8ff;
+            color: #c0c0c0;
             box-shadow: none;
             margin-top: 0.5rem;
         }
@@ -580,7 +586,7 @@
         }
         .modal-box .divider {
             text-align: center;
-            color: #5a8ac0;
+            color: #a0a0a0;
             font-size: 0.8rem;
             margin: 0.8rem 0;
         }
@@ -602,7 +608,7 @@
             box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
-            color: #5a8ac0;
+            color: #a0a0a0;
             text-decoration: none;
             font-size: 0.55rem;
             display: flex;
@@ -618,14 +624,14 @@
             font-size: 1.3rem;
         }
         .bottom-nav a.active {
-            color: #7aaeff;
+            color: #e0e0e0;
         }
         .bottom-nav a.active i {
-            color: #4a8aff;
-            text-shadow: 0 0 25px rgba(60, 120, 255, 0.3);
+            color: #c0c0c0;
+            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
         }
         .bottom-nav a:hover {
-            color: #b0ccff;
+            color: #e8e8e8;
         }
         .bottom-nav a .badge-dot {
             position: absolute;
@@ -637,6 +643,15 @@
             border-radius: 50%;
             border: 2px solid rgba(12, 28, 60, 0.9);
             display: none;
+        }
+
+        .footer-copyright {
+            text-align: center;
+            color: #888888;
+            font-size: 0.7rem;
+            padding: 1rem 0 0.5rem;
+            border-top: 1px solid rgba(80, 140, 255, 0.05);
+            margin-top: 1rem;
         }
 
         @media (min-width: 768px) {
@@ -809,8 +824,12 @@
             .header .brand-center h1 {
                 font-size: 1.5rem;
             }
-            .header .brand-center i {
+            .header .brand-center .logo-icon {
                 font-size: 1.6rem;
+            }
+            .header .brand-center .logo-icon img {
+                width: 35px;
+                height: 35px;
             }
             .header .brand-center .ticker {
                 font-size: 0.7rem;
@@ -891,9 +910,9 @@
         <!-- HEADER -->
         <div class="header">
             <div class="brand-center">
-                <i class="fas fa-coins"></i>
-                <h1>SilverChain</h1>
-                <span class="ticker">SCT</span>
+                <span class="logo-icon" id="logoDisplay"><i class="fas fa-coins"></i></span>
+                <h1 id="brandName">SilverChain</h1>
+                <span class="ticker">USDT</span>
             </div>
         </div>
 
@@ -914,8 +933,8 @@
             </div>
 
             <div class="subhead">
-                <i class="fas fa-bolt" style="color:#4a8aff; margin-right:6px;"></i>
-                Beli token SilverChain, dapatkan <strong style="color:#7aaeff;">bonus</strong> & <strong style="color:#7aaeff;">referral</strong>!
+                <i class="fas fa-bolt" style="color:#c0c0c0; margin-right:6px;"></i>
+                Beli token SilverChain, dapatkan <strong style="color:#e0e0e0;">bonus</strong> & <strong style="color:#e0e0e0;">referral</strong>!
             </div>
 
             <div class="stats-grid">
@@ -934,13 +953,13 @@
             </div>
 
             <div style="text-align:center; padding:0.5rem 0;">
-                <p style="color:#8ab0e6; font-size:0.9rem;">🚀 <strong style="color:#b0ccff;">Mulai perjalanan Anda</strong></p>
+                <p style="color:#c0c0c0; font-size:0.9rem;">🚀 <strong style="color:#e0e0e0;">Mulai perjalanan Anda</strong></p>
                 <div id="heroButtonContainer" style="margin-top:0.5rem;">
                     <button class="btn-hero" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
                 </div>
             </div>
 
-            <div style="text-align:center; font-size:0.6rem; color:#4a7ab0; margin-top:0.6rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.6rem;">
+            <div style="text-align:center; font-size:0.6rem; color:#888888; margin-top:0.6rem; border-top:1px solid rgba(80,140,255,0.05); padding-top:0.6rem;">
                 <i class="fas fa-shield-alt"></i> Prelaunch DAO · SilverChain Token
             </div>
         </div>
@@ -949,15 +968,15 @@
         <div class="section-card">
             <div class="section-title"><i class="fas fa-users"></i> Member Aktif</div>
             <div class="member-grid" id="memberGrid">
-                <div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Memuat...</div>
+                <div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Memuat...</div>
             </div>
         </div>
 
         <!-- ABOUT, FEATURES, WHY, ROADMAP, WHITEPAPER, FAQ, CONTACT (sama seperti sebelumnya) -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> Tentang</div>
-            <p style="color:#8ab0e6; line-height:1.6; font-size:0.9rem;">
-                SilverChain adalah token <strong style="color:#b0ccff;">DAO</strong> dengan <strong style="color:#b0ccff;">supply tak terbatas</strong> —
+            <p style="color:#c0c0c0; line-height:1.6; font-size:0.9rem;">
+                SilverChain adalah token <strong style="color:#e0e0e0;">DAO</strong> dengan <strong style="color:#e0e0e0;">supply tak terbatas</strong> —
                 terinspirasi dari dogecoin. Layer-2 untuk kecepatan & biaya rendah.
             </p>
             <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.6rem;">
@@ -1003,7 +1022,7 @@
 
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
-            <p style="color:#8ab0e6; font-size:0.85rem; margin-bottom:0.5rem;">Whitepaper lengkap SilverChain.</p>
+            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Whitepaper lengkap SilverChain.</p>
             <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
                 <span class="btn-outline"><i class="fas fa-file-pdf"></i> PDF</span>
                 <span class="btn-outline"><i class="fas fa-book-open"></i> Ringkasan</span>
@@ -1033,15 +1052,13 @@
 
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Kontak</div>
-            <div class="contact-grid">
-                <a href="#" class="contact-item"><i class="fab fa-twitter"></i> <span>@SilverChain</span></a>
-                <a href="#" class="contact-item"><i class="fab fa-telegram"></i> <span>t.me/SilverChain</span></a>
-                <a href="#" class="contact-item"><i class="fab fa-discord"></i> <span>discord.gg/silver</span></a>
-                <a href="#" class="contact-item"><i class="fas fa-envelope"></i> <span>dao@silverchain.io</span></a>
+            <div class="contact-grid" id="contactGrid">
+                <a href="#" class="contact-item" id="contactTwitter"><i class="fab fa-twitter"></i> <span>@SilverChain</span></a>
+                <a href="#" class="contact-item" id="contactTelegram"><i class="fab fa-telegram"></i> <span>t.me/SilverChain</span></a>
+                <a href="#" class="contact-item" id="contactDiscord"><i class="fab fa-discord"></i> <span>discord.gg/silver</span></a>
+                <a href="#" class="contact-item" id="contactEmail"><i class="fas fa-envelope"></i> <span>dao@silverchain.io</span></a>
             </div>
-            <div style="text-align:center; margin-top:0.5rem; font-size:0.75rem; color:#4a7ab0;">
-                <i class="fas fa-map-pin"></i> Singapore & Jakarta
-            </div>
+            <div class="footer-copyright">Copyright 2026</div>
         </div>
 
     </div>
@@ -1067,7 +1084,7 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
-            <h2 id="modalTitle"><i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login</h2>
+            <h2 id="modalTitle"><i class="fas fa-sign-in-alt" style="color:#c0c0c0; margin-right:10px;"></i>Login</h2>
             <p id="modalSub">Masukkan email untuk login atau daftar.</p>
             <input type="email" class="input-field" id="emailInput" placeholder="email@anda.com" value="demo@silverchain.io" />
             <input type="password" class="input-field" id="passwordInput" placeholder="Password (min 4)" value="123456" />
@@ -1089,7 +1106,8 @@
             BONUS: 'silverchain_bonus',
             REF: 'silverchain_ref',
             CURRENT_USER: 'silverchain_current_user',
-            PENDING_REF: 'silverchain_pending_ref'
+            PENDING_REF: 'silverchain_pending_ref',
+            SETTINGS: 'silverchain_settings'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
         const TARGET_USDT = 1000000;
@@ -1099,6 +1117,7 @@
         let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
+        let settings = {};
 
         // ============================================================
         // LOAD
@@ -1142,6 +1161,10 @@
                 const ref = localStorage.getItem(STORAGE_KEYS.REF);
                 if (ref) refPercent = parseInt(ref) || 3;
 
+                const settingsData = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+                if (settingsData) settings = JSON.parse(settingsData);
+                else settings = {};
+
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
@@ -1154,7 +1177,6 @@
                 const refCode = urlParams.get('ref');
                 if (refCode) {
                     localStorage.setItem(STORAGE_KEYS.PENDING_REF, refCode);
-                    // Hapus parameter dari URL tanpa reload
                     if (window.history && window.history.replaceState) {
                         const newUrl = window.location.pathname;
                         window.history.replaceState({}, '', newUrl);
@@ -1209,6 +1231,56 @@
         }
 
         // ============================================================
+        // LOAD SETTINGS UI
+        // ============================================================
+        function loadSettingsUI() {
+            // Logo
+            const logoDisplay = document.getElementById('logoDisplay');
+            if (settings.logoType === 'image' && settings.logoImage) {
+                logoDisplay.innerHTML = `<img src="${settings.logoImage}" alt="Logo" style="width:50px;height:50px;border-radius:50%;object-fit:contain;" />`;
+            } else if (settings.logoType === 'icon' && settings.logoIcon) {
+                logoDisplay.innerHTML = `<i class="${settings.logoIcon}"></i>`;
+            } else {
+                logoDisplay.innerHTML = `<i class="fas fa-coins"></i>`;
+            }
+
+            // Brand Name
+            if (settings.brandName) {
+                document.getElementById('brandName').textContent = settings.brandName;
+            }
+
+            // Kontak
+            if (settings.contactTwitter) {
+                const el = document.getElementById('contactTwitter');
+                if (el) {
+                    el.href = settings.contactTwitter;
+                    el.querySelector('span').textContent = settings.contactTwitter.replace('https://', '').replace('http://', '');
+                }
+            }
+            if (settings.contactTelegram) {
+                const el = document.getElementById('contactTelegram');
+                if (el) {
+                    el.href = settings.contactTelegram;
+                    el.querySelector('span').textContent = settings.contactTelegram.replace('https://', '').replace('http://', '');
+                }
+            }
+            if (settings.contactDiscord) {
+                const el = document.getElementById('contactDiscord');
+                if (el) {
+                    el.href = settings.contactDiscord;
+                    el.querySelector('span').textContent = settings.contactDiscord.replace('https://', '').replace('http://', '');
+                }
+            }
+            if (settings.contactEmail) {
+                const el = document.getElementById('contactEmail');
+                if (el) {
+                    el.href = 'mailto:' + settings.contactEmail;
+                    el.querySelector('span').textContent = settings.contactEmail;
+                }
+            }
+        }
+
+        // ============================================================
         // UPDATE UI
         // ============================================================
         function updateUI() {
@@ -1260,7 +1332,7 @@
             const grid = document.getElementById('memberGrid');
             if (sorted.length === 0) {
                 grid.innerHTML =
-                    `<div style="color:#5a8ac0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Belum ada member</div>`;
+                    `<div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Belum ada member</div>`;
             } else {
                 let html = '';
                 sorted.slice(0, 10).forEach(([email, total], index) => {
@@ -1271,7 +1343,7 @@
                             <div class="avatar">${initial}</div>
                             <div class="info">
                                 <span class="name">${masked}</span>
-                                <span class="sct">${total.toFixed(1)} SCT</span>
+                                <span class="sct">${total.toFixed(1)} USDT</span>
                             </div>
                             <div class="rank">#${index + 1}</div>
                         </div>
@@ -1280,12 +1352,15 @@
                 if (sorted.length > 10) {
                     html += `
                         <div class="member-card-item" style="border-style:dashed; justify-content:center;">
-                            <div style="color:#5a8ac0; font-size:0.7rem;">+${sorted.length - 10} lainnya</div>
+                            <div style="color:#a0a0a0; font-size:0.7rem;">+${sorted.length - 10} lainnya</div>
                         </div>
                     `;
                 }
                 grid.innerHTML = html;
             }
+
+            // Load settings UI
+            loadSettingsUI();
         }
 
         // ============================================================
@@ -1297,7 +1372,6 @@
                 return { success: false, msg: 'Email atau password tidak valid.' };
             }
 
-            // Cek pending referral
             const pendingRef = localStorage.getItem(STORAGE_KEYS.PENDING_REF);
             let referredBy = null;
             if (pendingRef) {
@@ -1327,7 +1401,6 @@
             if (!user) return { success: false, msg: 'Email tidak ditemukan.' };
             if (user.password !== password) return { success: false, msg: 'Password salah.' };
 
-            // Cek pending referral untuk user yang sudah ada (jika login lewat link referral)
             const pendingRef = localStorage.getItem(STORAGE_KEYS.PENDING_REF);
             if (pendingRef && !user.referredBy) {
                 const referrer = usersDB.find(u => u.refCode === pendingRef);
@@ -1378,7 +1451,7 @@
                 success.classList.add('show');
                 document.getElementById('switchLabel').textContent = 'Daftar akun baru';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
+                    '<i class="fas fa-sign-in-alt" style="color:#c0c0c0; margin-right:10px;"></i>Login';
                 document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
@@ -1398,14 +1471,14 @@
             if (isLogin) {
                 document.getElementById('switchLabel').textContent = 'Kembali ke Login';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-user-plus" style="color:#4a8aff; margin-right:10px;"></i>Daftar';
+                    '<i class="fas fa-user-plus" style="color:#c0c0c0; margin-right:10px;"></i>Daftar';
                 document.getElementById('modalSub').textContent = 'Buat akun baru.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali';
             } else {
                 document.getElementById('switchLabel').textContent = 'Daftar akun baru';
                 document.getElementById('modalTitle').innerHTML =
-                    '<i class="fas fa-sign-in-alt" style="color:#4a8aff; margin-right:10px;"></i>Login';
+                    '<i class="fas fa-sign-in-alt" style="color:#c0c0c0; margin-right:10px;"></i>Login';
                 document.getElementById('modalSub').textContent = 'Masukkan email untuk login.';
                 document.getElementById('actionBtn').innerHTML = '<i class="fas fa-check"></i> Login';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-plus"></i> Daftar';
@@ -1431,7 +1504,7 @@
         // STORAGE & INTERVAL
         // ============================================================
         window.addEventListener('storage', function(e) {
-            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS) {
+            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS || e.key === STORAGE_KEYS.SETTINGS) {
                 loadData();
                 updateUI();
             }
