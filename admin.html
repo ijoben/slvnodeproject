@@ -438,7 +438,7 @@
         }
 
         /* ========================================================== */
-        /* RESPONSIVE */
+        /* RESPONSIVE - TULISAN LEBIH BESAR DI HP */
         /* ========================================================== */
 
         /* PC - LAYAR LEBAR */
@@ -462,33 +462,121 @@
             }
         }
 
-        /* TABLET & HP - BOTTOM NAV LEBIH BESAR */
+        /* TABLET & HP - SEMUA TULISAN LEBIH BESAR */
         @media (max-width: 768px) {
+            /* Header */
+            .admin-header h2 {
+                font-size: 1.3rem;
+            }
+            .admin-header h2 .owner-badge {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.7rem;
+            }
+            .admin-header p {
+                font-size: 0.95rem !important;
+            }
+            
+            /* Logout Button */
+            .btn-logout {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            .btn-logout i {
+                font-size: 1.1rem;
+            }
+
+            /* Stats Grid */
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 0.6rem;
+                gap: 0.8rem;
             }
             .admin-stat {
-                padding: 0.8rem 0.6rem;
+                padding: 1rem 0.6rem;
+                border-radius: 1.2rem;
             }
             .admin-stat .num {
-                font-size: 1.3rem;
+                font-size: 1.6rem;
             }
             .admin-stat .icon {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
-            .settings-group .row {
-                flex-direction: column;
-                align-items: stretch;
+            .admin-stat .label {
+                font-size: 0.7rem;
+            }
+            .admin-stat .sub {
+                font-size: 0.6rem;
+            }
+
+            /* Section Title */
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            /* Table */
+            .table-wrapper table {
+                font-size: 0.8rem;
+                min-width: 600px;
+            }
+            .table-wrapper table th,
+            .table-wrapper table td {
+                padding: 0.4rem 0.8rem;
+            }
+            .table-wrapper table .empty {
+                font-size: 0.85rem;
+                padding: 1.2rem 0;
+            }
+
+            /* Buttons Approve/Reject */
+            .btn-approve, .btn-reject {
+                font-size: 0.7rem;
+                padding: 0.15rem 0.8rem;
+            }
+
+            /* Settings Group */
+            .settings-group {
+                padding: 1.2rem;
+            }
+            .settings-group h5 {
+                font-size: 1rem !important;
+            }
+            .settings-group label {
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+            .settings-group input {
+                font-size: 0.9rem;
+                padding: 0.4rem 1rem;
+                width: 90px;
             }
             .settings-group input[type="text"] {
                 width: 100%;
+                font-size: 0.9rem;
             }
-            .settings-group label {
-                min-width: auto;
+            .btn-save {
+                font-size: 0.8rem;
+                padding: 0.3rem 1.2rem;
             }
 
-            /* BOTTOM NAV HP - LEBIH BESAR & MUDAH DIPENCET */
+            /* QRIS */
+            .qr-preview .placeholder {
+                width: 90px;
+                height: 90px;
+                font-size: 2.2rem;
+            }
+            .qr-preview img {
+                max-width: 130px;
+                max-height: 130px;
+            }
+            .qr-preview span {
+                font-size: 0.85rem !important;
+            }
+
+            /* Footer */
+            .footer-copyright {
+                font-size: 0.8rem;
+            }
+
+            /* BOTTOM NAV HP - LEBIH BESAR */
             .bottom-nav {
                 padding: 0.5rem 0.5rem 0.7rem;
                 gap: 0;
@@ -499,47 +587,21 @@
                 min-width: 0;
                 flex: 1;
                 text-align: center;
-                min-height: 50px;
+                min-height: 54px;
                 justify-content: center;
             }
             .bottom-nav a i {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
             .bottom-nav a span {
-                font-size: 0.55rem;
+                font-size: 0.6rem;
                 line-height: 1.2;
                 margin-top: 2px;
             }
             .bottom-nav .nav-divider {
-                height: 30px;
+                height: 32px;
                 flex-shrink: 0;
                 margin: 0 0.2rem;
-            }
-
-            /* HEADER - LOGOUT DI HP */
-            .admin-header {
-                flex-direction: row;
-                align-items: center;
-                gap: 0.3rem;
-            }
-            .admin-header h2 {
-                font-size: 1.1rem;
-                flex: 1;
-            }
-            .admin-header h2 .owner-badge {
-                font-size: 0.5rem;
-            }
-            .btn-logout {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.7rem;
-                gap: 0.3rem;
-                flex-shrink: 0;
-            }
-            .btn-logout .logout-text {
-                display: none;
-            }
-            .btn-logout i {
-                font-size: 1.1rem;
             }
         }
 
@@ -549,26 +611,124 @@
                 padding: 1.2rem 0.8rem;
                 border-radius: 2rem;
             }
+
+            /* Header */
+            .admin-header h2 {
+                font-size: 1.1rem;
+            }
+            .admin-header h2 .owner-badge {
+                font-size: 0.5rem;
+                padding: 0.15rem 0.5rem;
+            }
+            .admin-header p {
+                font-size: 0.85rem !important;
+            }
+
+            /* Logout Button */
+            .btn-logout {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            .btn-logout .logout-text {
+                display: none;
+            }
+            .btn-logout i {
+                font-size: 1rem;
+            }
+
+            /* Stats Grid */
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 0.4rem;
+                gap: 0.6rem;
             }
             .admin-stat {
-                padding: 0.6rem 0.3rem;
+                padding: 0.8rem 0.4rem;
                 border-radius: 1rem;
             }
             .admin-stat .num {
-                font-size: 1.1rem;
+                font-size: 1.4rem;
             }
             .admin-stat .icon {
-                font-size: 1.1rem;
-                margin-bottom: 0.1rem;
+                font-size: 1.3rem;
+                margin-bottom: 0.2rem;
             }
             .admin-stat .label {
-                font-size: 0.5rem;
+                font-size: 0.6rem;
             }
             .admin-stat .sub {
-                font-size: 0.45rem;
+                font-size: 0.5rem;
+            }
+
+            /* Section Title */
+            .section-title {
+                font-size: 1rem;
+            }
+
+            /* Table */
+            .table-wrapper table {
+                font-size: 0.7rem;
+                min-width: 500px;
+            }
+            .table-wrapper table th,
+            .table-wrapper table td {
+                padding: 0.3rem 0.5rem;
+            }
+            .table-wrapper table .empty {
+                font-size: 0.75rem;
+                padding: 1rem 0;
+            }
+
+            /* Buttons Approve/Reject */
+            .btn-approve, .btn-reject {
+                font-size: 0.6rem;
+                padding: 0.12rem 0.6rem;
+            }
+
+            /* Settings Group */
+            .settings-group {
+                padding: 0.8rem;
+            }
+            .settings-group h5 {
+                font-size: 0.9rem !important;
+            }
+            .settings-group .row {
+                gap: 0.5rem;
+            }
+            .settings-group label {
+                font-size: 0.8rem;
+                min-width: 80px;
+            }
+            .settings-group input {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.8rem;
+                width: 70px;
+            }
+            .settings-group input[type="text"] {
+                width: 100%;
+                font-size: 0.8rem;
+            }
+            .btn-save {
+                font-size: 0.7rem;
+                padding: 0.25rem 1rem;
+            }
+
+            /* QRIS */
+            .qr-preview .placeholder {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+            .qr-preview img {
+                max-width: 100px;
+                max-height: 100px;
+            }
+            .qr-preview span {
+                font-size: 0.75rem !important;
+            }
+
+            /* Footer */
+            .footer-copyright {
+                font-size: 0.7rem;
             }
 
             /* BOTTOM NAV HP - TETAP BESAR */
@@ -581,97 +741,72 @@
                 padding: 0.3rem 0;
                 flex: 1;
                 text-align: center;
-                min-height: 44px;
+                min-height: 48px;
                 justify-content: center;
             }
             .bottom-nav a i {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
             }
             .bottom-nav a span {
-                font-size: 0.48rem;
+                font-size: 0.52rem;
                 line-height: 1.1;
                 margin-top: 1px;
             }
             .bottom-nav .nav-divider {
-                height: 24px;
+                height: 26px;
                 margin: 0 0.1rem;
             }
+        }
 
+        /* HP SANGAT KECIL */
+        @media (max-width: 360px) {
             .admin-header h2 {
-                font-size: 0.85rem;
+                font-size: 0.95rem;
             }
-            .admin-header h2 i {
-                font-size: 0.8rem;
+            .admin-stat .num {
+                font-size: 1.2rem;
             }
-            .btn-logout {
-                padding: 0.25rem 0.6rem;
-                border-radius: 60px;
+            .admin-stat .icon {
+                font-size: 1.1rem;
             }
-            .btn-logout i {
-                font-size: 0.9rem;
+            .admin-stat .label {
+                font-size: 0.5rem;
             }
-
             .table-wrapper table {
                 font-size: 0.6rem;
-                min-width: 450px;
+                min-width: 400px;
             }
-            .table-wrapper table th,
-            .table-wrapper table td {
-                padding: 0.2rem 0.3rem;
+            .bottom-nav a {
+                min-height: 42px;
+                padding: 0.25rem 0;
             }
-            .section-title {
-                font-size: 0.85rem;
+            .bottom-nav a i {
+                font-size: 1.1rem;
             }
-            .settings-group {
-                padding: 0.6rem;
+            .bottom-nav a span {
+                font-size: 0.45rem;
             }
-            .settings-group .row {
-                gap: 0.4rem;
+            .bottom-nav .nav-divider {
+                height: 22px;
             }
             .settings-group label {
                 font-size: 0.7rem;
-                min-width: 80px;
+                min-width: 70px;
             }
             .settings-group input {
                 font-size: 0.7rem;
                 padding: 0.2rem 0.6rem;
                 width: 60px;
             }
-            .settings-group input[type="text"] {
-                width: 100%;
-            }
             .btn-save {
-                font-size: 0.55rem;
-                padding: 0.15rem 0.6rem;
+                font-size: 0.6rem;
+                padding: 0.2rem 0.8rem;
             }
-        }
-
-        /* HP SANGAT KECIL */
-        @media (max-width: 360px) {
-            .bottom-nav {
-                padding: 0.3rem 0.2rem 0.5rem;
-            }
-            .bottom-nav a {
-                min-height: 38px;
-                padding: 0.25rem 0;
-            }
-            .bottom-nav a i {
-                font-size: 1rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.4rem;
-            }
-            .bottom-nav .nav-divider {
-                height: 20px;
-            }
-            .admin-header h2 {
-                font-size: 0.75rem;
+            .btn-logout {
+                padding: 0.3rem 0.6rem;
             }
             .btn-logout i {
                 font-size: 0.8rem;
-            }
-            .admin-stat .num {
-                font-size: 0.9rem;
             }
         }
     </style>
@@ -942,7 +1077,7 @@
         let settings = {};
 
         // ============================================================
-        // CHECK AUTH - Redirect ke /admin jika admin, /dashboard jika user
+        // CHECK AUTH
         // ============================================================
         function checkAuth() {
             const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
@@ -951,16 +1086,13 @@
                 const found = usersDB.find(u => u.email === data.email);
                 if (found) {
                     currentUser = found;
-                    // Jika admin, tetap di /admin
                     if (found.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
                         return true;
                     }
-                    // Jika user biasa, redirect ke /dashboard
                     window.location.href = '/dashboard';
                     return false;
                 }
             }
-            // Jika belum login, redirect ke /auth
             window.location.href = '/auth';
             return false;
         }
@@ -996,7 +1128,6 @@
                     ];
                     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
                 }
-                // Fix: pastikan admin verified
                 const admin = usersDB.find(u => u.email.toLowerCase() === OWNER_EMAIL.toLowerCase());
                 if (admin && !admin.verified) {
                     admin.verified = true;
@@ -1076,28 +1207,21 @@
         };
 
         function showTab(tabId) {
-            // Sembunyikan semua tab
             Object.keys(tabContents).forEach(key => {
                 if (tabContents[key]) {
                     tabContents[key].classList.remove('active');
                 }
             });
-
-            // Tampilkan tab yang dipilih
             const target = tabContents[tabId];
             if (target) {
                 target.classList.add('active');
             }
-
-            // Update active class di bottom nav
             navItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.dataset.tab === tabId) {
                     item.classList.add('active');
                 }
             });
-
-            // Scroll ke atas
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1129,7 +1253,6 @@
                 return;
             }
 
-            // Stats
             document.getElementById('adminTotalUsers').textContent = usersDB.length;
             const pending = depositsDB.filter(d => d.status === 'pending');
             document.getElementById('adminPendingDeposits').textContent = pending.length;
@@ -1138,11 +1261,9 @@
             const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
             document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
 
-            // Settings values
             document.getElementById('adminBonusPercent').value = bonusPercent;
             document.getElementById('adminRefPercent').value = refPercent;
 
-            // User Table
             if (usersDB.length === 0) {
                 document.getElementById('adminUserBody').innerHTML =
                     `<tr><td colspan="5" class="empty">Belum ada pengguna</td></tr>`;
@@ -1163,7 +1284,6 @@
                 document.getElementById('adminUserBody').innerHTML = html;
             }
 
-            // Pending Deposit
             if (pending.length === 0) {
                 document.getElementById('adminPendingBody').innerHTML =
                     `<tr><td colspan="7" class="empty">Tidak ada pending</td></tr>`;
@@ -1211,7 +1331,6 @@
                 });
             }
 
-            // Withdraw Pending
             if (wdPending.length === 0) {
                 document.getElementById('adminWdBody').innerHTML =
                     `<tr><td colspan="5" class="empty">Tidak ada permintaan withdraw</td></tr>`;
@@ -1260,7 +1379,6 @@
                 });
             }
 
-            // QRIS Preview
             loadQrisPreview();
             loadSettingsUI();
         }
@@ -1357,7 +1475,6 @@
             showToast('✅ Address USDT berhasil disimpan!');
         });
 
-        // Brand Settings
         document.getElementById('saveBrandBtn').addEventListener('click', function() {
             const name = document.getElementById('adminBrandName').value.trim();
             if (name) {
@@ -1392,7 +1509,6 @@
             }
         });
 
-        // Kontak Settings
         function saveContact(key, value) {
             if (value) {
                 settings[key] = value;
@@ -1428,12 +1544,8 @@
         // ============================================================
         loadData();
 
-        // Cek auth - redirect sesuai role
-        if (!checkAuth()) {
-            // checkAuth akan redirect, kode di bawah tidak akan dijalankan
-        }
+        if (!checkAuth()) {}
 
-        // Tampilkan tab Stats secara default
         showTab('tabStats');
         updateUI();
 
@@ -1444,7 +1556,6 @@
 
         console.log('🟢 SilverChain Admin Panel siap.');
         console.log('👑 Owner:', OWNER_EMAIL);
-        console.log('📌 Bottom Nav: Statistik | Deposit | Withdraw | Setting | Payment');
     </script>
 </body>
 </html>
