@@ -113,6 +113,7 @@
             display: inline;
         }
 
+        /* STATS GRID - KEREN */
         .admin-stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -130,6 +131,16 @@
             overflow: hidden;
             cursor: pointer;
         }
+        .admin-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.03), rgba(192, 192, 192, 0.01));
+            border-radius: 1.5rem;
+        }
         .admin-stat:hover {
             transform: translateY(-3px);
             border-color: rgba(80, 140, 255, 0.2);
@@ -137,7 +148,6 @@
         }
         .admin-stat .icon {
             font-size: 1.8rem;
-            color: #c0c0c0;
             margin-bottom: 0.3rem;
             position: relative;
             z-index: 1;
@@ -145,13 +155,11 @@
         .admin-stat .num {
             font-size: 1.8rem;
             font-weight: 800;
-            color: #e0e0e0;
             position: relative;
             z-index: 1;
         }
         .admin-stat .label {
             font-size: 0.6rem;
-            color: #a0a0a0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 0.2rem;
@@ -165,24 +173,28 @@
             position: relative;
             z-index: 1;
         }
+
         .admin-stat.primary .icon {
             color: #c0c0c0;
         }
         .admin-stat.primary .num {
             color: #e0e0e0;
         }
+
         .admin-stat.success .icon {
             color: #6aff8a;
         }
         .admin-stat.success .num {
             color: #6aff8a;
         }
+
         .admin-stat.warning .icon {
             color: #fbbf24;
         }
         .admin-stat.warning .num {
             color: #fbbf24;
         }
+
         .admin-stat.info .icon {
             color: #60a5fa;
         }
@@ -239,6 +251,7 @@
             text-align: center;
             padding: 0.8rem 0;
         }
+
         .btn-approve {
             background: rgba(60, 220, 80, 0.15);
             border: 1px solid rgba(60, 220, 80, 0.2);
@@ -253,6 +266,7 @@
         .btn-approve:hover {
             background: rgba(60, 220, 80, 0.25);
         }
+
         .btn-reject {
             background: rgba(255, 60, 60, 0.15);
             border: 1px solid rgba(255, 60, 60, 0.2);
@@ -312,6 +326,7 @@
             border: none;
             color: #c0c0c0;
         }
+
         .btn-save {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -326,6 +341,7 @@
         .btn-save:hover {
             background: rgba(60, 120, 255, 0.2);
         }
+
         .btn-save.danger {
             background: rgba(255, 60, 60, 0.1);
             border-color: rgba(255, 60, 60, 0.15);
@@ -456,6 +472,7 @@
             margin-top: 1rem;
         }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .admin-stats-grid {
                 grid-template-columns: 1fr 1fr;
@@ -1011,19 +1028,45 @@
             }
         }
 
+        // ============================================================
+        // SAVE SETTING - FIXED (tidak error duplicate key)
+        // ============================================================
         async function saveSetting(key, value) {
             try {
-                const { error } = await supabaseClient
+                // Cek apakah key sudah ada
+                const { data: existing } = await supabaseClient
                     .from('settings')
-                    .upsert({
-                        key: key,
-                        value: value,
-                        updated_at: new Date().toISOString()
-                    });
-                if (error) throw error;
+                    .select('key')
+                    .eq('key', key)
+                    .single();
+
+                if (existing) {
+                    // UPDATE jika sudah ada
+                    const { error } = await supabaseClient
+                        .from('settings')
+                        .update({
+                            value: value,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('key', key);
+                    if (error) throw error;
+                    console.log('✅ Setting updated:', key, '=', value);
+                } else {
+                    // INSERT jika belum ada
+                    const { error } = await supabaseClient
+                        .from('settings')
+                        .insert({
+                            key: key,
+                            value: value,
+                            updated_at: new Date().toISOString()
+                        });
+                    if (error) throw error;
+                    console.log('✅ Setting inserted:', key, '=', value);
+                }
+
                 return true;
             } catch (error) {
-                console.error('Save setting error:', error);
+                console.error('❌ Save setting error:', error);
                 throw error;
             }
         }
@@ -1127,7 +1170,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Event listeners for bottom nav
         navItems.forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1136,7 +1178,6 @@
             });
         });
 
-        // Event listeners for stat cards
         document.querySelectorAll('.admin-stat[data-tab]').forEach(card => {
             card.addEventListener('click', function() {
                 const tabId = this.dataset.tab;
@@ -1196,7 +1237,6 @@
             });
             tbody.innerHTML = html;
 
-            // Event listeners for deposit buttons
             document.querySelectorAll('.deposit-approve').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
@@ -1251,7 +1291,6 @@
             });
             tbody.innerHTML = html;
 
-            // Event listeners for withdrawal buttons
             document.querySelectorAll('.wd-approve').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
