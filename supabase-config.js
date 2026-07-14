@@ -1,5 +1,5 @@
 // ============================================================
-// SUPABASE CONFIGURATION
+// SUPABASE + EMAILJS CONFIGURATION
 // ============================================================
 
 // ============================================================
@@ -24,7 +24,15 @@ const EMAILJS_CONFIG = {
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ============================================================
-// 4. HELPER FUNCTIONS
+// 4. INISIALISASI EMAILJS
+// ============================================================
+if (typeof emailjs !== 'undefined') {
+    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+    console.log('✅ EmailJS initialized');
+}
+
+// ============================================================
+// 5. HELPER FUNCTIONS
 // ============================================================
 
 // Hash password (simple - untuk demo)
@@ -36,43 +44,37 @@ async function verifyPassword(password, hashed) {
     return hashed === btoa(password + 'silverchain_salt_2026');
 }
 
-// Generate random OTP
 function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 // ============================================================
-// 5. EMAIL FUNCTIONS (Via EmailJS)
+// 6. EMAIL FUNCTIONS (Via EmailJS)
 // ============================================================
 
 // Send OTP email
 async function sendOTPEmail(email, otp) {
     try {
-        // Inisialisasi EmailJS
-        if (typeof emailjs !== 'undefined') {
-            emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-            
-            const templateParams = {
-                to_email: email,
-                otp_code: otp
-            };
-
-            const result = await emailjs.send(
-                EMAILJS_CONFIG.SERVICE_ID,
-                EMAILJS_CONFIG.OTP_TEMPLATE_ID,
-                templateParams
-            );
-            
-            console.log('✅ OTP email sent to:', email);
-            return { success: true };
-        } else {
-            // EmailJS tidak terload, pakai fallback
+        if (typeof emailjs === 'undefined') {
             console.log('📧 [FALLBACK] OTP for', email, ':', otp);
             return { success: true, fallback: true };
         }
+
+        const templateParams = {
+            to_email: email,
+            otp_code: otp
+        };
+
+        const result = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID,
+            EMAILJS_CONFIG.OTP_TEMPLATE_ID,
+            templateParams
+        );
+
+        console.log('✅ OTP email sent to:', email);
+        return { success: true };
     } catch (error) {
         console.error('❌ EmailJS error:', error);
-        // Fallback ke console
         console.log('📧 [FALLBACK] OTP for', email, ':', otp);
         return { success: true, fallback: true };
     }
@@ -81,26 +83,24 @@ async function sendOTPEmail(email, otp) {
 // Send Reset Password email
 async function sendResetEmail(email, resetLink) {
     try {
-        if (typeof emailjs !== 'undefined') {
-            emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-            
-            const templateParams = {
-                to_email: email,
-                reset_link: resetLink
-            };
-
-            const result = await emailjs.send(
-                EMAILJS_CONFIG.SERVICE_ID,
-                EMAILJS_CONFIG.RESET_TEMPLATE_ID,
-                templateParams
-            );
-            
-            console.log('✅ Reset email sent to:', email);
-            return { success: true };
-        } else {
+        if (typeof emailjs === 'undefined') {
             console.log('🔑 [FALLBACK] Reset link for', email, ':', resetLink);
             return { success: true, fallback: true };
         }
+
+        const templateParams = {
+            to_email: email,
+            reset_link: resetLink
+        };
+
+        const result = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID,
+            EMAILJS_CONFIG.RESET_TEMPLATE_ID,
+            templateParams
+        );
+
+        console.log('✅ Reset email sent to:', email);
+        return { success: true };
     } catch (error) {
         console.error('❌ EmailJS error:', error);
         console.log('🔑 [FALLBACK] Reset link for', email, ':', resetLink);
@@ -109,21 +109,18 @@ async function sendResetEmail(email, resetLink) {
 }
 
 // ============================================================
-// 6. USER FUNCTIONS
+// 7. USER FUNCTIONS
 // ============================================================
 
-// Register user
+// Register user (pending verification)
 async function registerUser(email, password, referredBy = null) {
     try {
-        // Cek apakah user sudah ada
         const existing = await getUserByEmail(email);
-        if (existing) {
-            throw new Error('Email already registered');
-        }
+        if (existing) throw new Error('Email already registered');
 
         const hashedPassword = await hashPassword(password);
         const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
-        
+
         const { data, error } = await supabase
             .from('users')
             .insert({
@@ -136,9 +133,9 @@ async function registerUser(email, password, referredBy = null) {
             })
             .select()
             .single();
-        
+
         if (error) throw error;
-        console.log('✅ User registered:', email);
+        console.log('✅ User registered (pending verification):', email);
         return data;
     } catch (error) {
         console.error('❌ Register error:', error);
@@ -154,16 +151,15 @@ async function loginUser(email, password) {
             .select('*')
             .eq('email', email)
             .single();
-        
+
         if (error) throw new Error('Email not found');
         if (!data) throw new Error('User not found');
-        
+
         const isValid = await verifyPassword(password, data.password);
         if (!isValid) throw new Error('Invalid password');
-        
+
         if (!data.verified) throw new Error('Email not verified. Please verify your email first.');
-        
-        console.log('✅ User logged in:', email);
+
         return data;
     } catch (error) {
         console.error('❌ Login error:', error);
@@ -179,10 +175,8 @@ async function getUserByEmail(email) {
             .select('*')
             .eq('email', email)
             .single();
-        
-        if (error && error.code === 'PGRST116') {
-            return null; // User not found
-        }
+
+        if (error && error.code === 'PGRST116') return null;
         if (error) throw error;
         return data;
     } catch (error) {
@@ -198,12 +192,12 @@ async function getAllUsers() {
             .from('users')
             .select('*')
             .order('created_at', { ascending: false });
-        
+
         if (error) throw error;
-        return data;
+        return data || [];
     } catch (error) {
         console.error('❌ Get all users error:', error);
-        throw error;
+        return [];
     }
 }
 
@@ -211,15 +205,12 @@ async function getAllUsers() {
 async function updatePassword(email, newPassword) {
     try {
         const hashedPassword = await hashPassword(newPassword);
-        
+
         const { error } = await supabase
             .from('users')
-            .update({ 
-                password: hashedPassword, 
-                updated_at: new Date().toISOString() 
-            })
+            .update({ password: hashedPassword, updated_at: new Date().toISOString() })
             .eq('email', email);
-        
+
         if (error) throw error;
         console.log('✅ Password updated for:', email);
         return true;
@@ -234,12 +225,9 @@ async function verifyUser(email) {
     try {
         const { error } = await supabase
             .from('users')
-            .update({ 
-                verified: true, 
-                updated_at: new Date().toISOString() 
-            })
+            .update({ verified: true, updated_at: new Date().toISOString() })
             .eq('email', email);
-        
+
         if (error) throw error;
         console.log('✅ User verified:', email);
         return true;
@@ -249,52 +237,15 @@ async function verifyUser(email) {
     }
 }
 
-// Get user by ID
-async function getUserById(id) {
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', id)
-            .single();
-        
-        if (error) throw error;
-        return data;
-    } catch (error) {
-        console.error('❌ Get user by ID error:', error);
-        return null;
-    }
-}
-
-// Get user by ref code
-async function getUserByRefCode(refCode) {
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('ref_code', refCode)
-            .single();
-        
-        if (error && error.code === 'PGRST116') {
-            return null;
-        }
-        if (error) throw error;
-        return data;
-    } catch (error) {
-        console.error('❌ Get user by ref code error:', error);
-        return null;
-    }
-}
-
 // ============================================================
-// 7. OTP FUNCTIONS
+// 8. OTP FUNCTIONS
 // ============================================================
 
 // Save OTP to database
 async function saveOTP(email, otp, type = 'register') {
     try {
-        const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 menit
-        
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
         const { error } = await supabase
             .from('otp_codes')
             .insert({
@@ -304,7 +255,7 @@ async function saveOTP(email, otp, type = 'register') {
                 expires_at: expiresAt.toISOString(),
                 used: false
             });
-        
+
         if (error) throw error;
         console.log('✅ OTP saved for:', email);
         return true;
@@ -328,18 +279,18 @@ async function verifyOTP(email, otp, type = 'register') {
             .order('created_at', { ascending: false })
             .limit(1)
             .single();
-        
+
         if (error) throw new Error('Invalid or expired OTP');
         if (!data) throw new Error('Invalid or expired OTP');
-        
+
         // Mark OTP as used
         const { error: updateError } = await supabase
             .from('otp_codes')
             .update({ used: true })
             .eq('id', data.id);
-        
+
         if (updateError) throw updateError;
-        
+
         console.log('✅ OTP verified for:', email);
         return true;
     } catch (error) {
@@ -358,10 +309,10 @@ async function resendOTP(email, type = 'register') {
             .eq('email', email)
             .eq('type', type)
             .eq('used', false);
-        
+
         const newOtp = generateOTP();
         await saveOTP(email, newOtp, type);
-        
+
         console.log('✅ OTP resent for:', email);
         return newOtp;
     } catch (error) {
@@ -371,7 +322,7 @@ async function resendOTP(email, type = 'register') {
 }
 
 // ============================================================
-// 8. DEPOSIT FUNCTIONS
+// 9. DEPOSIT FUNCTIONS
 // ============================================================
 
 // Add deposit
@@ -379,7 +330,7 @@ async function addDeposit(email, usdt, bonus, total, txHash) {
     try {
         const user = await getUserByEmail(email);
         if (!user) throw new Error('User not found');
-        
+
         const { data, error } = await supabase
             .from('deposits')
             .insert({
@@ -394,7 +345,7 @@ async function addDeposit(email, usdt, bonus, total, txHash) {
             })
             .select()
             .single();
-        
+
         if (error) throw error;
         console.log('✅ Deposit added for:', email);
         return data;
@@ -412,7 +363,7 @@ async function getUserDeposits(email) {
             .select('*')
             .eq('email', email)
             .order('timestamp', { ascending: false });
-        
+
         if (error) throw error;
         return data || [];
     } catch (error) {
@@ -428,7 +379,7 @@ async function getAllDeposits() {
             .from('deposits')
             .select('*')
             .order('timestamp', { ascending: false });
-        
+
         if (error) throw error;
         return data || [];
     } catch (error) {
@@ -444,7 +395,7 @@ async function updateDepositStatus(id, status) {
             .from('deposits')
             .update({ status: status })
             .eq('id', id);
-        
+
         if (error) throw error;
         console.log('✅ Deposit status updated:', id, '->', status);
         return true;
@@ -454,25 +405,8 @@ async function updateDepositStatus(id, status) {
     }
 }
 
-// Get deposit by ID
-async function getDepositById(id) {
-    try {
-        const { data, error } = await supabase
-            .from('deposits')
-            .select('*')
-            .eq('id', id)
-            .single();
-        
-        if (error) throw error;
-        return data;
-    } catch (error) {
-        console.error('❌ Get deposit by ID error:', error);
-        return null;
-    }
-}
-
 // ============================================================
-// 9. WITHDRAWAL FUNCTIONS
+// 10. WITHDRAWAL FUNCTIONS
 // ============================================================
 
 // Add withdrawal
@@ -480,7 +414,7 @@ async function addWithdrawal(email, amount, address) {
     try {
         const user = await getUserByEmail(email);
         if (!user) throw new Error('User not found');
-        
+
         const { data, error } = await supabase
             .from('withdrawals')
             .insert({
@@ -493,7 +427,7 @@ async function addWithdrawal(email, amount, address) {
             })
             .select()
             .single();
-        
+
         if (error) throw error;
         console.log('✅ Withdrawal added for:', email);
         return data;
@@ -511,7 +445,7 @@ async function getUserWithdrawals(email) {
             .select('*')
             .eq('email', email)
             .order('timestamp', { ascending: false });
-        
+
         if (error) throw error;
         return data || [];
     } catch (error) {
@@ -527,7 +461,7 @@ async function getAllWithdrawals() {
             .from('withdrawals')
             .select('*')
             .order('timestamp', { ascending: false });
-        
+
         if (error) throw error;
         return data || [];
     } catch (error) {
@@ -543,7 +477,7 @@ async function updateWithdrawalStatus(id, status) {
             .from('withdrawals')
             .update({ status: status })
             .eq('id', id);
-        
+
         if (error) throw error;
         console.log('✅ Withdrawal status updated:', id, '->', status);
         return true;
@@ -553,25 +487,8 @@ async function updateWithdrawalStatus(id, status) {
     }
 }
 
-// Get withdrawal by ID
-async function getWithdrawalById(id) {
-    try {
-        const { data, error } = await supabase
-            .from('withdrawals')
-            .select('*')
-            .eq('id', id)
-            .single();
-        
-        if (error) throw error;
-        return data;
-    } catch (error) {
-        console.error('❌ Get withdrawal by ID error:', error);
-        return null;
-    }
-}
-
 // ============================================================
-// 10. SETTINGS FUNCTIONS
+// 11. SETTINGS FUNCTIONS
 // ============================================================
 
 // Get setting
@@ -582,10 +499,8 @@ async function getSetting(key) {
             .select('value')
             .eq('key', key)
             .single();
-        
-        if (error && error.code === 'PGRST116') {
-            return null;
-        }
+
+        if (error && error.code === 'PGRST116') return null;
         if (error) throw error;
         return data ? data.value : null;
     } catch (error) {
@@ -604,7 +519,7 @@ async function saveSetting(key, value) {
                 value: value,
                 updated_at: new Date().toISOString()
             });
-        
+
         if (error) throw error;
         console.log('✅ Setting saved:', key, '=', value);
         return true;
@@ -614,31 +529,11 @@ async function saveSetting(key, value) {
     }
 }
 
-// Get multiple settings
-async function getSettings(keys) {
-    try {
-        const { data, error } = await supabase
-            .from('settings')
-            .select('*')
-            .in('key', keys);
-        
-        if (error) throw error;
-        const result = {};
-        data.forEach(item => {
-            result[item.key] = item.value;
-        });
-        return result;
-    } catch (error) {
-        console.error('❌ Get settings error:', error);
-        return {};
-    }
-}
-
 // ============================================================
-// 11. BALANCE CALCULATION FUNCTIONS
+// 12. BALANCE FUNCTIONS
 // ============================================================
 
-// Get personal balance (USDT)
+// Get personal balance
 async function getPersonalBalance(email) {
     try {
         const deposits = await getUserDeposits(email);
@@ -651,39 +546,36 @@ async function getPersonalBalance(email) {
     }
 }
 
-// Get referral balance (USDT)
+// Get referral balance
 async function getReferralBalance(email) {
     try {
         const user = await getUserByEmail(email);
         if (!user) return 0;
-        
-        // Get all users referred by this user
+
         const { data: referrals } = await supabase
             .from('users')
             .select('email')
             .eq('referred_by', user.ref_code);
-        
-        // Get referral percentage from settings
+
         const refPercent = parseInt(await getSetting('ref_percent')) || 3;
         let total = 0;
-        
+
         for (const ref of referrals) {
             const deposits = await getUserDeposits(ref.email);
             const firstDeposit = deposits
                 .filter(d => d.status === 'approved')
                 .sort((a, b) => a.timestamp - b.timestamp)[0];
-            
+
             if (firstDeposit) {
                 total += firstDeposit.usdt * refPercent / 100;
             }
         }
-        
-        // Subtract approved withdrawals
+
         const withdrawals = await getUserWithdrawals(email);
         const totalWd = withdrawals
             .filter(w => w.status === 'approved')
             .reduce((sum, w) => sum + w.amount, 0);
-        
+
         return Math.round((total - totalWd) * 100) / 100;
     } catch (error) {
         console.error('❌ Get referral balance error:', error);
@@ -691,37 +583,10 @@ async function getReferralBalance(email) {
     }
 }
 
-// Get total minted USDT (all users)
-async function getTotalMinted() {
-    try {
-        const deposits = await getAllDeposits();
-        const approved = deposits.filter(d => d.status === 'approved');
-        const total = approved.reduce((sum, d) => sum + d.total, 0);
-        return Math.round(total * 100) / 100;
-    } catch (error) {
-        console.error('❌ Get total minted error:', error);
-        return 0;
-    }
-}
-
-// Get total USDT raised
-async function getTotalRaised() {
-    try {
-        const deposits = await getAllDeposits();
-        const approved = deposits.filter(d => d.status === 'approved');
-        const total = approved.reduce((sum, d) => sum + d.usdt, 0);
-        return Math.round(total * 100) / 100;
-    } catch (error) {
-        console.error('❌ Get total raised error:', error);
-        return 0;
-    }
-}
-
 // ============================================================
-// 12. ADMIN CHECK FUNCTIONS
+// 13. ADMIN CHECK
 // ============================================================
 
-// Check if user is admin
 async function isAdmin(email) {
     try {
         const user = await getUserByEmail(email);
@@ -732,120 +597,53 @@ async function isAdmin(email) {
     }
 }
 
-// Get all admin users
-async function getAdmins() {
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('role', 'admin');
-        
-        if (error) throw error;
-        return data || [];
-    } catch (error) {
-        console.error('❌ Get admins error:', error);
-        return [];
-    }
-}
-
-// ============================================================
-// 13. REFERRAL FUNCTIONS
-// ============================================================
-
-// Get referred users
-async function getReferredUsers(refCode) {
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('referred_by', refCode);
-        
-        if (error) throw error;
-        return data || [];
-    } catch (error) {
-        console.error('❌ Get referred users error:', error);
-        return [];
-    }
-}
-
-// Get referral stats
-async function getReferralStats(email) {
-    try {
-        const user = await getUserByEmail(email);
-        if (!user) return { total: 0, active: 0, earnings: 0 };
-        
-        const referrals = await getReferredUsers(user.ref_code);
-        const total = referrals.length;
-        const active = referrals.filter(r => r.verified).length;
-        const earnings = await getReferralBalance(email);
-        
-        return { total, active, earnings };
-    } catch (error) {
-        console.error('❌ Get referral stats error:', error);
-        return { total: 0, active: 0, earnings: 0 };
-    }
-}
-
 // ============================================================
 // 14. EXPORT
 // ============================================================
 
-// Buat global object
 window.Supabase = {
     // Config
     supabase,
     EMAILJS_CONFIG,
-    generateOTP,
-    
+
     // Email
     sendOTPEmail,
     sendResetEmail,
-    
+
     // User
     registerUser,
     loginUser,
     getUserByEmail,
-    getUserById,
-    getUserByRefCode,
     getAllUsers,
     updatePassword,
     verifyUser,
     isAdmin,
-    getAdmins,
-    
+
     // OTP
     saveOTP,
     verifyOTP,
     resendOTP,
-    
+    generateOTP,
+
     // Deposit
     addDeposit,
     getUserDeposits,
     getAllDeposits,
     updateDepositStatus,
-    getDepositById,
-    
+
     // Withdrawal
     addWithdrawal,
     getUserWithdrawals,
     getAllWithdrawals,
     updateWithdrawalStatus,
-    getWithdrawalById,
-    
+
     // Settings
     getSetting,
     saveSetting,
-    getSettings,
-    
+
     // Balance
     getPersonalBalance,
-    getReferralBalance,
-    getTotalMinted,
-    getTotalRaised,
-    
-    // Referral
-    getReferredUsers,
-    getReferralStats
+    getReferralBalance
 };
 
 console.log('🟢 Supabase Config loaded successfully!');
