@@ -113,13 +113,13 @@
         }
 
         /* ========================================================== */
-        /* STATS GRID - 2 KOLOM */
+        /* STATS GRID - 2 KOLOM (PASTI) */
         /* ========================================================== */
         .admin-stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin: 1rem 0 1.5rem;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 1rem !important;
+            margin: 1rem 0 1.5rem !important;
         }
         .admin-stat {
             background: rgba(8, 20, 48, 0.4);
@@ -181,21 +181,18 @@
         .admin-stat.primary .num {
             color: #e0e0e0;
         }
-
         .admin-stat.success .icon {
             color: #6aff8a;
         }
         .admin-stat.success .num {
             color: #6aff8a;
         }
-
         .admin-stat.warning .icon {
             color: #fbbf24;
         }
         .admin-stat.warning .num {
             color: #fbbf24;
         }
-
         .admin-stat.info .icon {
             color: #60a5fa;
         }
@@ -520,8 +517,8 @@
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .admin-stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.6rem;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 0.6rem !important;
             }
             .admin-stat {
                 padding: 0.8rem 0.6rem;
@@ -595,9 +592,10 @@
                 padding: 1.2rem 0.8rem;
                 border-radius: 2rem;
             }
+            /* TETAP 2 KOLOM DI HP */
             .admin-stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.4rem;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 0.4rem !important;
             }
             .admin-stat {
                 padding: 0.6rem 0.3rem;
@@ -954,7 +952,6 @@
         // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
-
         // ============================================================
         // 2. VARIABLES
         // ============================================================
