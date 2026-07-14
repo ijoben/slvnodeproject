@@ -6,12 +6,18 @@
     <title>SilverChain · Authentication</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
+    
+    <!-- ========================================================== -->
+    <!-- 1. SUPABASE SDK -->
+    <!-- ========================================================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
-    <!-- Supabase Config -->
-    <script src="supabase-config.js">
-    </script>
+    
+    <!-- ========================================================== -->
+    <!-- 2. SUPABASE CONFIG (WAJIB! PASTIKAN FILE INI ADA) -->
+    <!-- ========================================================== -->
+    <script src="supabase-config.js"></script>
+    
     <style>
         /* ========================================================== */
         /* STYLE */
@@ -511,8 +517,11 @@
         function checkSupabase() {
             if (typeof Supabase === 'undefined') {
                 console.error('❌ Supabase not loaded!');
+                console.error('💡 Pastikan supabase-config.js ada di folder yang sama');
+                showToast('❌ System error. Please refresh.');
                 return false;
             }
+            console.log('✅ Supabase loaded!');
             return true;
         }
 
@@ -875,13 +884,14 @@
                 try {
                     const data = JSON.parse(savedUser);
                     if (data.email) {
-                        // Cek admin dari Supabase
                         Supabase.isAdmin(data.email).then(isAdmin => {
                             if (isAdmin) {
                                 window.location.href = '/admin';
                             } else {
                                 window.location.href = '/dashboard';
                             }
+                        }).catch(() => {
+                            window.location.href = '/dashboard';
                         });
                     }
                 } catch (e) {}
@@ -889,16 +899,30 @@
         }
 
         // ============================================================
-        // 15. INIT
+        // 15. CHECK SUPABASE CONFIG ON LOAD
+        // ============================================================
+        function checkConfigOnLoad() {
+            setTimeout(() => {
+                if (typeof Supabase === 'undefined') {
+                    console.error('❌ Supabase config not loaded!');
+                    showToast('⚠️ Config not loaded. Please refresh.');
+                } else {
+                    console.log('✅ Supabase config loaded!');
+                }
+            }, 1000);
+        }
+
+        // ============================================================
+        // 16. INIT
         // ============================================================
         loadSettings();
         loadResetTokens();
         checkLoggedIn();
         checkResetToken();
+        checkConfigOnLoad();
 
         console.log('🟢 SilverChain Auth Page ready!');
-        console.log('📌 Supabase connected via supabase-config.js');
-        console.log('📌 Admin email hidden (not in HTML)');
+        console.log('📌 Pastikan supabase-config.js ada di folder yang sama');
     </script>
 
 </body>
