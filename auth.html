@@ -6,13 +6,12 @@
     <title>SilverChain · Authentication</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
+    <!-- Supabase SDK & Config -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
+    <script src="supabase-config.js">
+    </script>
     <style>
-        /* ========================================================== */
-        /* STYLE */
-        /* ========================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -331,9 +330,7 @@
             <button class="auth-tab" data-panel="panelForgot"><i class="fas fa-key"></i> Forgot</button>
         </div>
 
-        <!-- ========================================================== -->
         <!-- PANEL 1: LOGIN -->
-        <!-- ========================================================== -->
         <div class="auth-panel active" id="panelLogin">
             <div class="auth-title">🔐 Login</div>
             <div class="auth-sub">Sign in to your account</div>
@@ -357,9 +354,7 @@
             </div>
         </div>
 
-        <!-- ========================================================== -->
         <!-- PANEL 2: REGISTER -->
-        <!-- ========================================================== -->
         <div class="auth-panel" id="panelRegister">
             <div id="registerForm">
                 <div class="auth-title">📝 Create Account</div>
@@ -382,9 +377,7 @@
             </div>
         </div>
 
-        <!-- ========================================================== -->
         <!-- PANEL 3: FORGOT PASSWORD -->
-        <!-- ========================================================== -->
         <div class="auth-panel" id="panelForgot">
             <div class="auth-title">🔑 Forgot Password</div>
             <div class="auth-sub">Enter your email to reset password</div>
@@ -403,9 +396,7 @@
             </div>
         </div>
 
-        <!-- ========================================================== -->
         <!-- PANEL 4: RESET PASSWORD -->
-        <!-- ========================================================== -->
         <div class="reset-panel" id="panelReset">
             <div class="auth-title">🔑 Reset Password</div>
             <div class="auth-sub">Enter your new password</div>
@@ -428,169 +419,17 @@
 
     <script>
         // ============================================================
-        // 1. SUPABASE CONFIG (ALL-IN-ONE)
-        // ============================================================
-
-        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
-        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
-        
-        // ADMIN EMAIL (TIDAK MUNCUL DI HTML)
-        const ADMIN_EMAIL = 'admin@silverchain.io';
-
-        // ============================================================
-        // 2. INISIALISASI SUPABASE
-        // ============================================================
-        console.log('🔄 Initializing Supabase...');
-        let supabaseClient = null;
-        try {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log('✅ Supabase client created!');
-        } catch (err) {
-            console.error('❌ Supabase error:', err);
-        }
-
-        // ============================================================
-        // 3. HELPER FUNCTIONS
-        // ============================================================
-        async function hashPassword(password) {
-            return btoa(password + 'silverchain_salt_2026');
-        }
-
-        async function verifyPassword(password, hashed) {
-            return hashed === btoa(password + 'silverchain_salt_2026');
-        }
-
-        // ============================================================
-        // 4. USER FUNCTIONS
-        // ============================================================
-        async function registerUser(email, password, referredBy = null) {
-            try {
-                const existing = await getUserByEmail(email);
-                if (existing) throw new Error('Email already registered');
-
-                const hashedPassword = await hashPassword(password);
-                const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
-
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .insert({
-                        email: email,
-                        password: hashedPassword,
-                        ref_code: refCode,
-                        referred_by: referredBy,
-                        verified: true,
-                        role: 'user'
-                    })
-                    .select()
-                    .single();
-
-                if (error) throw error;
-                console.log('✅ User registered:', email);
-                return data;
-            } catch (error) {
-                console.error('❌ Register error:', error);
-                throw error;
-            }
-        }
-
-        async function loginUser(email, password) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-
-                if (error) throw new Error('Email not found');
-                if (!data) throw new Error('User not found');
-
-                const isValid = await verifyPassword(password, data.password);
-                if (!isValid) throw new Error('Invalid password');
-
-                return data;
-            } catch (error) {
-                console.error('❌ Login error:', error);
-                throw error;
-            }
-        }
-
-        async function getUserByEmail(email) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-
-                if (error && error.code === 'PGRST116') return null;
-                if (error) throw error;
-                return data;
-            } catch (error) {
-                console.error('❌ Get user error:', error);
-                return null;
-            }
-        }
-
-        async function updatePassword(email, newPassword) {
-            try {
-                const hashedPassword = await hashPassword(newPassword);
-
-                const { error } = await supabaseClient
-                    .from('users')
-                    .update({ password: hashedPassword, updated_at: new Date().toISOString() })
-                    .eq('email', email);
-
-                if (error) throw error;
-                console.log('✅ Password updated for:', email);
-                return true;
-            } catch (error) {
-                console.error('❌ Update password error:', error);
-                throw error;
-            }
-        }
-
-        async function isAdmin(email) {
-            try {
-                const user = await getUserByEmail(email);
-                return user && user.role === 'admin';
-            } catch (error) {
-                console.error('❌ Check admin error:', error);
-                return false;
-            }
-        }
-
-        // ============================================================
-        // 5. STORAGE KEYS
+        // STORAGE KEYS
         // ============================================================
         const STORAGE_KEYS = {
             CURRENT_USER: 'silverchain_current_user',
             RESET_TOKENS: 'silverchain_reset_tokens'
         };
 
-        // ============================================================
-        // 6. STATE VARIABLES
-        // ============================================================
         let resetTokens = {};
 
         // ============================================================
-        // 7. LOAD RESET TOKENS
-        // ============================================================
-        function loadResetTokens() {
-            try {
-                const tokens = localStorage.getItem(STORAGE_KEYS.RESET_TOKENS);
-                if (tokens) {
-                    resetTokens = JSON.parse(tokens);
-                }
-            } catch (e) {}
-        }
-
-        function saveResetTokens() {
-            localStorage.setItem(STORAGE_KEYS.RESET_TOKENS, JSON.stringify(resetTokens));
-        }
-
-        // ============================================================
-        // 8. DOM ELEMENTS
+        // DOM ELEMENTS
         // ============================================================
         const loginEmail = document.getElementById('loginEmail');
         const loginPassword = document.getElementById('loginPassword');
@@ -626,7 +465,7 @@
         const resetSuccessText = document.getElementById('resetSuccessText');
 
         // ============================================================
-        // 9. TOAST FUNCTION
+        // TOAST FUNCTION
         // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
@@ -636,20 +475,35 @@
         }
 
         // ============================================================
-        // 10. CHECK SUPABASE LOADED
+        // LOAD RESET TOKENS
+        // ============================================================
+        function loadResetTokens() {
+            try {
+                const tokens = localStorage.getItem(STORAGE_KEYS.RESET_TOKENS);
+                if (tokens) {
+                    resetTokens = JSON.parse(tokens);
+                }
+            } catch (e) {}
+        }
+
+        function saveResetTokens() {
+            localStorage.setItem(STORAGE_KEYS.RESET_TOKENS, JSON.stringify(resetTokens));
+        }
+
+        // ============================================================
+        // CHECK SUPABASE LOADED
         // ============================================================
         function checkSupabase() {
-            if (!supabaseClient) {
-                console.error('❌ Supabase not initialized!');
+            if (typeof Supabase === 'undefined') {
+                console.error('❌ Supabase not loaded!');
                 showToast('❌ System error. Please refresh.');
                 return false;
             }
-            console.log('✅ Supabase ready!');
             return true;
         }
 
         // ============================================================
-        // 11. TABS NAVIGATION
+        // TABS NAVIGATION
         // ============================================================
         const tabs = document.querySelectorAll('.auth-tab');
         const panels = {
@@ -693,7 +547,7 @@
         });
 
         // ============================================================
-        // 12. LOGIN
+        // LOGIN
         // ============================================================
         loginBtn.addEventListener('click', async function() {
             const email = loginEmail.value.trim();
@@ -718,20 +572,20 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
             try {
-                const user = await loginUser(email, password);
+                const user = await Supabase.loginUser(email, password);
                 console.log('✅ Login result:', user);
 
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
 
-                const adminCheck = await isAdmin(email);
+                const isAdmin = await Supabase.isAdmin(email);
 
-                loginSuccessText.textContent = adminCheck ?
+                loginSuccessText.textContent = isAdmin ?
                     '✅ Admin login successful! Redirecting to Admin Panel...' :
                     '✅ Login successful! Redirecting...';
                 loginSuccess.classList.add('show');
 
                 setTimeout(() => {
-                    if (adminCheck) {
+                    if (isAdmin) {
                         window.location.href = '/admin';
                     } else {
                         window.location.href = '/dashboard';
@@ -757,7 +611,7 @@
         });
 
         // ============================================================
-        // 13. REGISTER
+        // REGISTER
         // ============================================================
         registerBtn.addEventListener('click', async function() {
             const email = regEmail.value.trim();
@@ -793,7 +647,7 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
 
             try {
-                const result = await registerUser(email, password, null);
+                const result = await Supabase.registerUser(email, password, null);
                 console.log('✅ Registration result:', result);
 
                 regSuccessText.textContent = '✅ Account created successfully! Please login.';
@@ -834,7 +688,7 @@
         });
 
         // ============================================================
-        // 14. FORGOT PASSWORD
+        // FORGOT PASSWORD
         // ============================================================
         forgotBtn.addEventListener('click', async function() {
             const email = forgotEmail.value.trim();
@@ -855,7 +709,7 @@
             }
 
             try {
-                const user = await getUserByEmail(email);
+                const user = await Supabase.getUserByEmail(email);
                 if (!user) {
                     forgotErrorText.textContent = 'Email not found.';
                     forgotError.classList.add('show');
@@ -889,7 +743,7 @@
         });
 
         // ============================================================
-        // 15. CHECK RESET TOKEN FROM URL
+        // CHECK RESET TOKEN FROM URL
         // ============================================================
         function checkResetToken() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -915,7 +769,7 @@
         }
 
         // ============================================================
-        // 16. RESET PASSWORD
+        // RESET PASSWORD
         // ============================================================
         resetPasswordBtn.addEventListener('click', async function() {
             const email = resetEmail.value;
@@ -947,7 +801,7 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
 
             try {
-                await updatePassword(email, newPass);
+                await Supabase.updatePassword(email, newPass);
 
                 delete resetTokens[email];
                 saveResetTokens();
@@ -984,7 +838,7 @@
         });
 
         // ============================================================
-        // 17. LOAD SETTINGS
+        // LOAD SETTINGS
         // ============================================================
         function loadSettings() {
             try {
@@ -999,7 +853,7 @@
         }
 
         // ============================================================
-        // 18. CHECK IF USER ALREADY LOGGED IN
+        // CHECK IF USER ALREADY LOGGED IN
         // ============================================================
         function checkLoggedIn() {
             const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
@@ -1007,8 +861,8 @@
                 try {
                     const data = JSON.parse(savedUser);
                     if (data.email) {
-                        isAdmin(data.email).then(adminCheck => {
-                            if (adminCheck) {
+                        Supabase.isAdmin(data.email).then(isAdmin => {
+                            if (isAdmin) {
                                 window.location.href = '/admin';
                             } else {
                                 window.location.href = '/dashboard';
@@ -1022,15 +876,30 @@
         }
 
         // ============================================================
-        // 19. INIT
+        // CHECK SUPABASE CONFIG ON LOAD
+        // ============================================================
+        function checkConfigOnLoad() {
+            setTimeout(() => {
+                if (typeof Supabase === 'undefined') {
+                    console.error('❌ Supabase config not loaded!');
+                    showToast('⚠️ Config not loaded. Please refresh.');
+                } else {
+                    console.log('✅ Supabase config loaded!');
+                }
+            }, 1000);
+        }
+
+        // ============================================================
+        // INIT
         // ============================================================
         loadSettings();
         loadResetTokens();
         checkLoggedIn();
         checkResetToken();
+        checkConfigOnLoad();
 
-        console.log('🟢 SilverChain Auth Page ready! (All-in-One)');
-        console.log('📌 Supabase URL:', SUPABASE_URL);
+        console.log('🟢 SilverChain Auth Page ready!');
+        console.log('📌 Supabase connected via supabase-config.js');
         console.log('📌 Admin email hidden (not in HTML)');
     </script>
 
