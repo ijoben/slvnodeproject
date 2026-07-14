@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
-<!-- Supabase Config -->
-<script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     <style>
         * {
             margin: 0;
@@ -39,8 +37,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
-            border: 1px solid rgba(80,140,255,0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -52,7 +50,6 @@
             color: #c0c0c0;
         }
 
-        /* SALDO CARDS */
         .saldo-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -86,7 +83,6 @@
             color: #a0a0a0;
         }
 
-        /* TABS */
         .tabs-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -133,7 +129,6 @@
             display: block;
         }
 
-        /* BUY CARD */
         .buy-card {
             background: rgba(12, 28, 60, 0.3);
             border-radius: 1.8rem;
@@ -199,11 +194,11 @@
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
+            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
             width: 100%;
         }
         .buy-card .btn-buy:hover {
-            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
+            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
             transform: translateY(-2px);
         }
         .buy-card .btn-buy:active {
@@ -216,7 +211,6 @@
             box-shadow: none !important;
         }
 
-        /* WD BOX */
         .wd-box {
             background: rgba(12, 28, 60, 0.3);
             border-radius: 1.5rem;
@@ -282,10 +276,10 @@
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
+            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
         }
         .wd-box .btn-wd:hover {
-            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
+            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
             transform: translateY(-2px);
         }
         .wd-box .btn-wd:active {
@@ -298,7 +292,6 @@
             box-shadow: none !important;
         }
 
-        /* TABLE WRAPPER */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -359,7 +352,6 @@
             display: flex;
         }
 
-        /* MODAL PAYMENT */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -384,7 +376,7 @@
             max-width: 480px;
             width: 90%;
             border: 1px solid rgba(80, 140, 255, 0.1);
-            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.9);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
             position: relative;
             max-height: 90vh;
             overflow-y: auto;
@@ -455,14 +447,14 @@
         .modal-box .qr-section .qr-placeholder {
             width: 60px;
             height: 60px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
             color: #c0c0c0;
-            border: 2px dashed rgba(80,140,255,0.15);
+            border: 2px dashed rgba(80, 140, 255, 0.15);
             overflow: hidden;
         }
         .modal-box .qr-section .qr-placeholder img {
@@ -522,10 +514,10 @@
             transition: 0.15s;
             width: 100%;
             margin-top: 0.8rem;
-            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
+            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
         }
         .modal-box .btn-submit-payment:hover {
-            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
+            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
             transform: translateY(-2px);
         }
         .modal-box .btn-submit-payment:active {
@@ -546,7 +538,7 @@
             align-items: center;
             padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -575,7 +567,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192,192,192,0.15);
+            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -674,54 +666,51 @@
 <body>
     <div class="container">
 
-        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Success</span></div>
 
-        <!-- DASHBOARD -->
         <div class="section-card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
                 <div>
                     <h2 style="color:#e0e0e0; font-size:1.5rem;"><i class="fas fa-chart-pie" style="color:#c0c0c0; margin-right:10px;"></i>Dashboard</h2>
-                    <p style="color:#c0c0c0; font-size:0.85rem;">Selamat datang, <strong id="dashUserEmail" style="color:#e0e0e0;">-</strong></p>
+                    <p style="color:#c0c0c0; font-size:0.85rem;">Welcome, <strong id="dashUserEmail" style="color:#e0e0e0;">-</strong></p>
                 </div>
                 <div>
-                    <span class="badge-silver"><i class="fas fa-code"></i> Kode Ref: <strong id="dashRefCode">-</strong></span>
+                    <span class="badge-silver"><i class="fas fa-code"></i> Ref Code: <strong id="dashRefCode">-</strong></span>
                 </div>
             </div>
 
-            <!-- SALDO CARDS -->
             <div class="saldo-grid">
                 <div class="saldo-card">
-                    <div class="label">💰 Saldo Pribadi</div>
+                    <div class="label">💰 Personal Balance</div>
                     <div class="amount" id="saldoPersonal">0</div>
                     <div class="sub">USDT</div>
                 </div>
                 <div class="saldo-card">
-                    <div class="label">💎 Saldo Referral</div>
+                    <div class="label">💎 Referral Balance</div>
                     <div class="amount referral" id="saldoReferral">0</div>
-                    <div class="sub">USDT — <span style="color:#c0c0c0;">Bisa di-withdraw</span></div>
+                    <div class="sub">USDT — <span style="color:#c0c0c0;">Withdrawable</span></div>
                 </div>
             </div>
 
-            <!-- TABS -->
             <div class="tabs-wrapper">
                 <div class="tabs" id="tabContainer">
-                    <button class="tab-btn active" data-tab="tabBuy"><i class="fas fa-shopping-cart"></i> Beli Token</button>
+                    <button class="tab-btn active" data-tab="tabBuy"><i class="fas fa-shopping-cart"></i> Buy Token</button>
                     <button class="tab-btn" data-tab="tabWithdraw"><i class="fas fa-arrow-up"></i> Withdraw</button>
-                    <button class="tab-btn" data-tab="tabHistory"><i class="fas fa-history"></i> Riwayat</button>
+                    <button class="tab-btn" data-tab="tabHistory"><i class="fas fa-history"></i> History</button>
                 </div>
             </div>
 
-            <!-- TAB 1: BELI TOKEN -->
+            <!-- TAB 1: BUY TOKEN -->
             <div class="tab-content active" id="tabBuy">
                 <div class="buy-card">
-                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#c0c0c0;"></i> Beli Token</h4>
+                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-coins" style="color:#c0c0c0;"></i> Buy Token</h4>
                     <p style="color:#c0c0c0; font-size:0.8rem; margin-bottom:0.8rem;">
                         1 USDT = 1 USDT.
-                        <span id="bonusInfo" style="color:#c0c0c0; font-weight:600;">✨ Bonus 10% untuk pembelian pertama!</span>
+                        <span id="bonusInfo" style="color:#c0c0c0; font-weight:600;">✨ 10% Bonus for first purchase!</span>
                     </p>
 
                     <div class="row">
-                        <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
+                        <span class="label"><i class="fas fa-coins"></i> Amount USDT</span>
                         <div class="input-group">
                             <input type="number" id="depositAmount" placeholder="0" min="1" step="1" value="100" />
                             <span class="unit">USDT</span>
@@ -737,20 +726,20 @@
                         </span>
                     </div>
 
-                    <button class="btn-buy" id="buyBtn"><i class="fas fa-shopping-cart"></i> Beli Token</button>
+                    <button class="btn-buy" id="buyBtn"><i class="fas fa-shopping-cart"></i> Buy Token</button>
                 </div>
             </div>
 
             <!-- TAB 2: WITHDRAW -->
             <div class="tab-content" id="tabWithdraw">
                 <div class="wd-box">
-                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-arrow-up" style="color:#c0c0c0;"></i> Withdraw Saldo Referral (USDT)</h4>
+                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-arrow-up" style="color:#c0c0c0;"></i> Withdraw Referral Balance</h4>
                     <p style="color:#c0c0c0; font-size:0.8rem; margin-bottom:0.8rem;">
-                        Saldo referral dalam USDT bisa di-withdraw ke wallet Anda. Minimal WD: <strong style="color:#c0c0c0;">10 USDT</strong>
+                        Referral balance in USDT can be withdrawn. Min WD: <strong style="color:#c0c0c0;">10 USDT</strong>
                     </p>
 
                     <div class="row">
-                        <span class="label"><i class="fas fa-coins"></i> Jumlah USDT</span>
+                        <span class="label"><i class="fas fa-coins"></i> Amount USDT</span>
                         <div class="input-group">
                             <input type="number" id="wdAmount" placeholder="0" min="10" step="1" />
                             <span class="unit">USDT</span>
@@ -758,64 +747,63 @@
                     </div>
 
                     <div class="row">
-                        <span class="label"><i class="fas fa-wallet"></i> Address Tujuan</span>
+                        <span class="label"><i class="fas fa-wallet"></i> Destination Address</span>
                         <div class="input-group" style="max-width:100%;">
-                            <input type="text" id="wdAddress" placeholder="0x... atau wallet address" style="font-family:monospace; font-size:0.75rem;" />
+                            <input type="text" id="wdAddress" placeholder="0x... or wallet address" style="font-family:monospace; font-size:0.75rem;" />
                             <span class="unit" style="font-size:0.5rem;">ADDR</span>
                         </div>
                     </div>
 
                     <div style="display:flex; flex-wrap:wrap; gap:0.8rem; margin:0.5rem 0; align-items:center;">
                         <span style="color:#c0c0c0; font-size:0.75rem;">
-                            Saldo Referral: <strong id="wdSaldoTersedia" style="color:#c0c0c0;">0 USDT</strong>
+                            Referral Balance: <strong id="wdSaldoTersedia" style="color:#c0c0c0;">0 USDT</strong>
                         </span>
                         <span style="color:#a0a0a0; font-size:0.7rem;">
-                            <i class="fas fa-info-circle"></i> WD akan diproses oleh admin
+                            <i class="fas fa-info-circle"></i> WD will be processed by admin
                         </span>
                     </div>
 
-                    <button class="btn-wd" id="wdSubmitBtn"><i class="fas fa-paper-plane"></i> Ajukan Withdraw</button>
+                    <button class="btn-wd" id="wdSubmitBtn"><i class="fas fa-paper-plane"></i> Request Withdraw</button>
                 </div>
 
-                <!-- Riwayat WD -->
                 <div style="margin-top:1.5rem;">
-                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-clock" style="color:#c0c0c0;"></i> Riwayat Withdraw</h4>
+                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-clock" style="color:#c0c0c0;"></i> Withdraw History</h4>
                     <div class="table-wrapper">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Tanggal</th>
-                                    <th>Jumlah</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
                                     <th>Address</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="wdHistoryBody">
-                                <tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>
+                                <tr><td colspan="4" class="empty">No withdraw requests yet</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 3: RIWAYAT TRANSAKSI -->
+            <!-- TAB 3: HISTORY -->
             <div class="tab-content" id="tabHistory">
                 <div style="margin-top:0.5rem;">
-                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#c0c0c0;"></i> Riwayat Transaksi</h4>
+                    <h4 style="color:#e0e0e0; margin-bottom:0.5rem;"><i class="fas fa-history" style="color:#c0c0c0;"></i> Transaction History</h4>
                     <div class="table-wrapper">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Tanggal</th>
+                                    <th>Date</th>
                                     <th>USDT</th>
                                     <th>Bonus</th>
                                     <th>Total</th>
-                                    <th>Hash TX</th>
+                                    <th>TX Hash</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="historyBody">
-                                <tr><td colspan="6" class="empty">Belum ada transaksi</td></tr>
+                                <tr><td colspan="6" class="empty">No transactions yet</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -827,144 +815,250 @@
 
     </div>
 
-    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <a href="/" id="navHome">
             <i class="fas fa-home"></i>
-            <span>Beranda</span>
+            <span>Home</span>
         </a>
         <a href="/dashboard" class="active" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
-            <span>Beli Token</span>
+            <span>Buy</span>
             <span class="badge-dot" id="navBadge"></span>
         </a>
         <a href="/account" id="navAccount">
             <i class="fas fa-user"></i>
-            <span>Akun</span>
+            <span>Account</span>
         </a>
     </nav>
 
-    <!-- MODAL PAYMENT -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-box">
             <button class="close-btn" id="closePaymentModal"><i class="fas fa-times"></i></button>
-            <h2><i class="fas fa-credit-card" style="color:#c0c0c0;"></i> Konfirmasi Pembayaran</h2>
-            <p>Kirim USDT ke address di bawah, lalu isi hash transaksi.</p>
+            <h2><i class="fas fa-credit-card" style="color:#c0c0c0;"></i> Payment Confirmation</h2>
+            <p>Send USDT to the address below, then enter the transaction hash.</p>
             <div id="paymentDetails" style="margin:0.5rem 0;">
-                <div class="detail-row"><span class="label">Jumlah USDT</span><span class="value" id="modalUsdt">0</span></div>
-                <div class="detail-row"><span class="label">Bonus 10% (Pertama)</span><span class="value" id="modalBonus">0</span></div>
+                <div class="detail-row"><span class="label">Amount USDT</span><span class="value" id="modalUsdt">0</span></div>
+                <div class="detail-row"><span class="label">Bonus (First Purchase)</span><span class="value" id="modalBonus">0</span></div>
                 <div class="detail-row"><span class="label">Total USDT</span><span class="value" id="modalTotal">0</span></div>
             </div>
             <div class="address-box">
                 <input type="text" id="modalAdminAddress" readonly style="font-family:monospace;" />
-                <button id="modalCopyAddress"><i class="fas fa-copy"></i> Salin</button>
+                <button id="modalCopyAddress"><i class="fas fa-copy"></i> Copy</button>
             </div>
             <div class="qr-section">
                 <div class="qr-placeholder" id="modalQrPlaceholder"><i class="fas fa-qrcode"></i></div>
-                <div class="qr-text"><strong>QRIS</strong><br />Scan QRIS untuk pembayaran<br /><span style="font-size:0.65rem; color:#a0a0a0;" id="modalQrText">ID: 1234567890 | Nama: SilverChain DAO</span></div>
-                <button id="modalCopyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.2rem 0.8rem; color:#c0c0c0; cursor:pointer; font-size:0.65rem;"><i class="fas fa-copy"></i> Salin ID</button>
+                <div class="qr-text"><strong>QRIS</strong><br />Scan QRIS for payment<br /><span style="font-size:0.65rem; color:#a0a0a0;" id="modalQrText">ID: 1234567890 | SilverChain DAO</span></div>
+                <button id="modalCopyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.2rem 0.8rem; color:#c0c0c0; cursor:pointer; font-size:0.65rem;"><i class="fas fa-copy"></i> Copy ID</button>
             </div>
-            <input type="text" class="input-field" id="modalTxHash" placeholder="Masukkan hash transaksi (0x...)" style="font-family:monospace;" />
-            <button class="btn-submit-payment" id="modalSubmitBtn"><i class="fas fa-paper-plane"></i> Kirim Bukti Deposit</button>
-            <p style="color:#a0a0a0; font-size:0.6rem; text-align:center; margin-top:0.3rem;">* Setelah kirim, admin akan verifikasi dan approve secara manual</p>
+            <input type="text" class="input-field" id="modalTxHash" placeholder="Enter transaction hash (0x...)" style="font-family:monospace;" />
+            <button class="btn-submit-payment" id="modalSubmitBtn"><i class="fas fa-paper-plane"></i> Submit Deposit Proof</button>
+            <p style="color:#a0a0a0; font-size:0.6rem; text-align:center; margin-top:0.3rem;">* Admin will verify and approve manually</p>
         </div>
     </div>
 
     <script>
         // ============================================================
-        // STORAGE KEYS
+        // 1. SUPABASE CONFIG - ALL IN ONE
+        // ============================================================
+
+        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
+        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+        // ============================================================
+        // 2. VARIABLES
         // ============================================================
         const STORAGE_KEYS = {
-            USERS: 'silverchain_users',
-            DEPOSITS: 'silverchain_deposits',
-            WITHDRAWALS: 'silverchain_withdrawals',
-            BONUS: 'silverchain_bonus',
-            REF: 'silverchain_ref',
-            CURRENT_USER: 'silverchain_current_user',
-            USDT_ADDRESS: 'silverchain_usdt_address',
-            QRIS_DATA: 'silverchain_qris_data',
-            SETTINGS: 'silverchain_settings'
+            CURRENT_USER: 'silverchain_current_user'
         };
-        const OWNER_EMAIL = 'admin@silverchain.io';
-        const DEFAULT_USDT = '0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ';
         const MIN_WITHDRAW = 10;
 
-        let usersDB = [];
-        let depositsDB = [];
-        let withdrawalsDB = [];
         let currentUser = null;
-        let bonusPercent = 10;
-        let refPercent = 3;
         let pendingDepositData = null;
-        let settings = {};
+        let supabaseClient = null;
 
         // ============================================================
-        // LOAD
+        // 3. INIT SUPABASE
         // ============================================================
-        function loadData() {
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client created!');
+        } catch (err) {
+            console.error('❌ Supabase error:', err);
+        }
+
+        // ============================================================
+        // 4. SUPABASE FUNCTIONS
+        // ============================================================
+        async function getUserByEmail(email) {
             try {
-                const users = localStorage.getItem(STORAGE_KEYS.USERS);
-                if (users) usersDB = JSON.parse(users);
-                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
-                if (deposits) depositsDB = JSON.parse(deposits);
-                const wd = localStorage.getItem(STORAGE_KEYS.WITHDRAWALS);
-                if (wd) withdrawalsDB = JSON.parse(wd);
-                const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
-                if (bonus) bonusPercent = parseInt(bonus) || 10;
-                const ref = localStorage.getItem(STORAGE_KEYS.REF);
-                if (ref) refPercent = parseInt(ref) || 3;
-                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    const found = usersDB.find(u => u.email === data.email);
-                    if (found) currentUser = found;
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Get user error:', error);
+                return null;
+            }
+        }
+
+        async function getUserDeposits(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('deposits')
+                    .select('*')
+                    .eq('email', email)
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get user deposits error:', error);
+                return [];
+            }
+        }
+
+        async function getUserWithdrawals(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('withdrawals')
+                    .select('*')
+                    .eq('email', email)
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get user withdrawals error:', error);
+                return [];
+            }
+        }
+
+        async function addDeposit(email, usdt, bonus, total, txHash) {
+            try {
+                const user = await getUserByEmail(email);
+                if (!user) throw new Error('User not found');
+
+                const { data, error } = await supabaseClient
+                    .from('deposits')
+                    .insert({
+                        user_id: user.id,
+                        email: email,
+                        usdt: usdt,
+                        bonus: bonus || 0,
+                        total: total || usdt,
+                        tx_hash: txHash,
+                        status: 'pending',
+                        timestamp: Date.now()
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                console.log('✅ Deposit added for:', email);
+                return data;
+            } catch (error) {
+                console.error('❌ Add deposit error:', error);
+                throw error;
+            }
+        }
+
+        async function addWithdrawal(email, amount, address) {
+            try {
+                const user = await getUserByEmail(email);
+                if (!user) throw new Error('User not found');
+
+                const { data, error } = await supabaseClient
+                    .from('withdrawals')
+                    .insert({
+                        user_id: user.id,
+                        email: email,
+                        amount: amount,
+                        address: address,
+                        status: 'pending',
+                        timestamp: Date.now()
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                console.log('✅ Withdrawal added for:', email);
+                return data;
+            } catch (error) {
+                console.error('❌ Add withdrawal error:', error);
+                throw error;
+            }
+        }
+
+        async function getPersonalBalance(email) {
+            try {
+                const deposits = await getUserDeposits(email);
+                const approved = deposits.filter(d => d.status === 'approved');
+                const total = approved.reduce((sum, d) => sum + d.usdt + (d.bonus || 0), 0);
+                return Math.round(total * 100) / 100;
+            } catch (error) {
+                console.error('Get personal balance error:', error);
+                return 0;
+            }
+        }
+
+        async function getReferralBalance(email) {
+            try {
+                const user = await getUserByEmail(email);
+                if (!user) return 0;
+
+                const { data: referrals } = await supabaseClient
+                    .from('users')
+                    .select('email')
+                    .eq('referred_by', user.ref_code);
+
+                const { data: settings } = await supabaseClient
+                    .from('settings')
+                    .select('value')
+                    .eq('key', 'ref_percent')
+                    .single();
+
+                const refPercent = parseInt(settings ? settings.value : 3) || 3;
+                let total = 0;
+
+                for (const ref of referrals) {
+                    const deposits = await getUserDeposits(ref.email);
+                    const firstDeposit = deposits
+                        .filter(d => d.status === 'approved')
+                        .sort((a, b) => a.timestamp - b.timestamp)[0];
+
+                    if (firstDeposit) {
+                        total += firstDeposit.usdt * refPercent / 100;
+                    }
                 }
-                const settingsData = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-                if (settingsData) settings = JSON.parse(settingsData);
-                else settings = {};
-            } catch (e) { console.warn('Load error:', e); }
+
+                const withdrawals = await getUserWithdrawals(email);
+                const totalWd = withdrawals
+                    .filter(w => w.status === 'approved')
+                    .reduce((sum, w) => sum + w.amount, 0);
+
+                return Math.round((total - totalWd) * 100) / 100;
+            } catch (error) {
+                console.error('Get referral balance error:', error);
+                return 0;
+            }
         }
 
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
-        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
-        function saveWithdrawals() { localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB)); }
-
-        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
-        function getUserDeposits(email) { return depositsDB.filter(d => d.email === email); }
-
-        // ===== SALDO FUNGSI =====
-        function getSaldoPersonal(email) {
-            const deposits = getUserDeposits(email);
-            const approved = deposits.filter(d => d.status === 'approved');
-            return approved.reduce((sum, d) => sum + (d.usdt + (d.bonus || 0)), 0);
-        }
-
-        function getSaldoReferral(email) {
-            const user = findUser(email);
-            if (!user) return 0;
-            const referrals = usersDB.filter(u => u.referredBy === user.refCode);
-            let total = 0;
-            referrals.forEach(ref => {
-                const firstDeposit = depositsDB
-                    .filter(d => d.email === ref.email && d.status === 'approved')
-                    .sort((a, b) => a.timestamp - b.timestamp)[0];
-                if (firstDeposit) {
-                    total += firstDeposit.usdt * refPercent / 100;
-                }
-            });
-            const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
-            const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
-            return Math.round((total - totalWd) * 100) / 100;
-        }
-
-        function getNextId() {
-            if (depositsDB.length === 0) return 1;
-            return Math.max(...depositsDB.map(d => d.id)) + 1;
-        }
-
-        function getNextWdId() {
-            if (withdrawalsDB.length === 0) return 1;
-            return Math.max(...withdrawalsDB.map(w => w.id)) + 1;
+        async function getSetting(key) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('settings')
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data ? data.value : null;
+            } catch (error) {
+                console.error('Get setting error:', error);
+                return null;
+            }
         }
 
         function showToast(msg) {
@@ -975,86 +1069,86 @@
         }
 
         // ============================================================
-        // GET PAYMENT DATA
+        // 5. LOAD & CHECK AUTH
         // ============================================================
-        function getUsdtAddress() {
-            return localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS) || DEFAULT_USDT;
-        }
-
-        function getQrisData() {
-            return localStorage.getItem(STORAGE_KEYS.QRIS_DATA) || null;
-        }
-
-        function updatePaymentModal() {
-            document.getElementById('modalAdminAddress').value = getUsdtAddress();
-            const qrisData = getQrisData();
-            const placeholder = document.getElementById('modalQrPlaceholder');
-            const qrText = document.getElementById('modalQrText');
-            if (qrisData) {
-                placeholder.innerHTML = `<img src="${qrisData}" alt="QRIS" style="width:100%;height:100%;object-fit:contain;" />`;
-                qrText.textContent = 'QRIS tersedia — scan untuk pembayaran';
-            } else {
-                placeholder.innerHTML = `<i class="fas fa-qrcode"></i>`;
-                qrText.textContent = 'ID: 1234567890 | Nama: SilverChain DAO';
+        async function loadCurrentUser() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const user = await getUserByEmail(data.email);
+                    if (user) {
+                        currentUser = user;
+                        return true;
+                    }
+                }
+                return false;
+            } catch (e) {
+                console.error('Load user error:', e);
+                return false;
             }
         }
 
-        // ============================================================
-        // CEK APAKAH USER PERNAH BELI
-        // ============================================================
-        function hasUserPurchasedBefore(email) {
-            const approved = depositsDB.filter(d => d.email === email && d.status === 'approved');
-            return approved.length > 0;
+        async function checkAuth() {
+            if (!supabaseClient) {
+                console.error('❌ Supabase not initialized!');
+                showToast('⚠️ System not ready. Please refresh.');
+                return false;
+            }
+
+            const isLoggedIn = await loadCurrentUser();
+
+            if (!isLoggedIn || !currentUser) {
+                console.log('🔒 Not logged in, redirecting to /auth');
+                window.location.href = '/auth';
+                return false;
+            }
+
+            return true;
         }
 
         // ============================================================
-        // TABS
+        // 6. TABS
         // ============================================================
-        function initTabs() {
-            const btns = document.querySelectorAll('.tab-btn');
-            const contents = {
-                tabBuy: document.getElementById('tabBuy'),
-                tabWithdraw: document.getElementById('tabWithdraw'),
-                tabHistory: document.getElementById('tabHistory')
-            };
+        const btns = document.querySelectorAll('.tab-btn');
+        const contents = {
+            tabBuy: document.getElementById('tabBuy'),
+            tabWithdraw: document.getElementById('tabWithdraw'),
+            tabHistory: document.getElementById('tabHistory')
+        };
 
-            btns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    btns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    Object.keys(contents).forEach(key => {
-                        contents[key].classList.remove('active');
-                    });
-                    const target = contents[this.dataset.tab];
-                    if (target) target.classList.add('active');
+        btns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                btns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                Object.keys(contents).forEach(key => {
+                    contents[key].classList.remove('active');
                 });
+                const target = contents[this.dataset.tab];
+                if (target) target.classList.add('active');
             });
-        }
+        });
 
         // ============================================================
-        // UI
+        // 7. UI UPDATE
         // ============================================================
-        function updateUI() {
-            const isLoggedIn = !!currentUser;
-
-            const badge = document.getElementById('navBadge');
-            if (isLoggedIn) {
-                const pending = depositsDB.filter(d => d.email === currentUser.email && d.status === 'pending');
-                badge.style.display = pending.length > 0 ? 'block' : 'none';
-            } else {
-                badge.style.display = 'none';
+        async function updateUI() {
+            if (!supabaseClient) {
+                console.warn('⏳ Waiting for Supabase...');
+                setTimeout(updateUI, 1000);
+                return;
             }
 
-            if (!isLoggedIn) {
-                document.getElementById('dashUserEmail').textContent = 'Silakan login terlebih dahulu';
+            if (!currentUser) {
+                document.getElementById('dashUserEmail').textContent = 'Please login first';
                 document.getElementById('dashRefCode').textContent = '-';
                 document.getElementById('saldoPersonal').textContent = '0';
                 document.getElementById('saldoReferral').textContent = '0';
                 document.getElementById('wdSaldoTersedia').textContent = '0 USDT';
                 document.getElementById('historyBody').innerHTML =
-                    `<tr><td colspan="6" class="empty">Silakan login terlebih dahulu</td></tr>`;
+                    `<tr><td colspan="6" class="empty">Please login first</td></tr>`;
                 document.getElementById('wdHistoryBody').innerHTML =
-                    `<tr><td colspan="4" class="empty">Silakan login terlebih dahulu</td></tr>`;
+                    `<tr><td colspan="4" class="empty">Please login first</td></tr>`;
                 document.getElementById('buyBtn').disabled = true;
                 document.getElementById('wdSubmitBtn').disabled = true;
                 return;
@@ -1063,70 +1157,57 @@
             document.getElementById('buyBtn').disabled = false;
             document.getElementById('wdSubmitBtn').disabled = false;
 
-            const user = findUser(currentUser.email);
-            if (!user) return;
-
             document.getElementById('dashUserEmail').textContent = currentUser.email;
-            document.getElementById('dashRefCode').textContent = user.refCode || '-';
+            document.getElementById('dashRefCode').textContent = currentUser.ref_code || '-';
 
-            // Saldo
-            const saldoPersonal = getSaldoPersonal(currentUser.email);
-            const saldoReferral = getSaldoReferral(currentUser.email);
-            document.getElementById('saldoPersonal').textContent = saldoPersonal.toFixed(1);
-            document.getElementById('saldoReferral').textContent = saldoReferral.toFixed(1);
-            document.getElementById('wdSaldoTersedia').textContent = saldoReferral.toFixed(1) + ' USDT';
+            // Get balances
+            const personalBalance = await getPersonalBalance(currentUser.email);
+            const referralBalance = await getReferralBalance(currentUser.email);
 
-            // Info bonus pertama
-            const hasPurchased = hasUserPurchasedBefore(currentUser.email);
-            const bonusInfo = document.getElementById('bonusInfo');
-            if (hasPurchased) {
-                bonusInfo.textContent = '✨ Bonus 10% hanya untuk pembelian pertama!';
-                bonusInfo.style.color = '#fbbf24';
-            } else {
-                bonusInfo.textContent = '✨ Bonus 10% untuk pembelian pertama!';
-                bonusInfo.style.color = '#c0c0c0';
-            }
+            document.getElementById('saldoPersonal').textContent = personalBalance.toFixed(1);
+            document.getElementById('saldoReferral').textContent = referralBalance.toFixed(1);
+            document.getElementById('wdSaldoTersedia').textContent = referralBalance.toFixed(1) + ' USDT';
 
-            // === HISTORY DEPOSIT ===
-            const deposits = getUserDeposits(currentUser.email);
+            // History Deposit
+            const deposits = await getUserDeposits(currentUser.email);
             if (deposits.length === 0) {
                 document.getElementById('historyBody').innerHTML =
-                    `<tr><td colspan="6" class="empty">Belum ada transaksi</td></tr>`;
+                    `<tr><td colspan="6" class="empty">No transactions yet</td></tr>`;
             } else {
                 let html = '';
                 deposits.slice().reverse().forEach(d => {
-                    const date = new Date(d.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(d.timestamp)
-                        .toLocaleTimeString('id-ID');
+                    const date = new Date(d.timestamp).toLocaleDateString('en-US') + ' ' + new Date(d
+                        .timestamp).toLocaleTimeString('en-US');
                     const cls = d.status === 'approved' ? 'status-approved' : d.status === 'rejected' ?
                         'status-rejected' : 'status-pending';
-                    const txt = d.status === 'approved' ? '✅ Disetujui' : d.status === 'rejected' ?
-                        '❌ Ditolak' : '⏳ Pending';
+                    const txt = d.status === 'approved' ? '✅ Approved' : d.status === 'rejected' ?
+                        '❌ Rejected' : '⏳ Pending';
                     html += `<tr>
                         <td>${date}</td>
                         <td>${d.usdt}</td>
                         <td>${d.bonus || 0}</td>
                         <td>${(d.usdt + (d.bonus || 0)).toFixed(1)}</td>
-                        <td style="font-family:monospace; font-size:0.65rem;">${d.txHash || '-'}</td>
+                        <td style="font-family:monospace; font-size:0.65rem;">${d.tx_hash || '-'}</td>
                         <td class="${cls}">${txt}</td>
                     </tr>`;
                 });
                 document.getElementById('historyBody').innerHTML = html;
             }
 
-            // === HISTORY WITHDRAW ===
-            const wdHistory = withdrawalsDB.filter(w => w.email === currentUser.email);
+            // History Withdraw
+            const wdHistory = await getUserWithdrawals(currentUser.email);
             if (wdHistory.length === 0) {
                 document.getElementById('wdHistoryBody').innerHTML =
-                    `<tr><td colspan="4" class="empty">Belum ada permintaan withdraw</td></tr>`;
+                    `<tr><td colspan="4" class="empty">No withdraw requests yet</td></tr>`;
             } else {
                 let html = '';
                 wdHistory.slice().reverse().forEach(w => {
-                    const date = new Date(w.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(w.timestamp)
-                        .toLocaleTimeString('id-ID');
+                    const date = new Date(w.timestamp).toLocaleDateString('en-US') + ' ' + new Date(w
+                        .timestamp).toLocaleTimeString('en-US');
                     const cls = w.status === 'approved' ? 'status-approved' : w.status === 'rejected' ?
                         'status-rejected' : 'status-pending';
-                    const txt = w.status === 'approved' ? '✅ Disetujui' : w.status === 'rejected' ?
-                        '❌ Ditolak' : '⏳ Pending';
+                    const txt = w.status === 'approved' ? '✅ Approved' : w.status === 'rejected' ?
+                        '❌ Rejected' : '⏳ Pending';
                     const addrShort = w.address ? w.address.substring(0, 8) + '...' : '-';
                     html += `<tr>
                         <td>${date}</td>
@@ -1140,17 +1221,31 @@
 
             updateBonusPreview();
             updatePaymentModal();
+
+            // Badge
+            const badge = document.getElementById('navBadge');
+            const pending = deposits.filter(d => d.status === 'pending');
+            badge.style.display = pending.length > 0 ? 'block' : 'none';
         }
 
-        function updateBonusPreview() {
+        // ============================================================
+        // 8. BONUS PREVIEW
+        // ============================================================
+        async function updateBonusPreview() {
             const raw = document.getElementById('depositAmount').value.trim();
             const usdt = parseFloat(raw) || 0;
 
             let total = usdt;
             let bonus = 0;
 
-            if (currentUser && !hasUserPurchasedBefore(currentUser.email)) {
-                bonus = Math.floor(usdt * bonusPercent / 100);
+            if (currentUser) {
+                const deposits = await getUserDeposits(currentUser.email);
+                const hasPurchased = deposits.some(d => d.status === 'approved');
+                if (!hasPurchased) {
+                    const bonusSetting = await getSetting('bonus_percent');
+                    const bonusPercent = parseInt(bonusSetting) || 10;
+                    bonus = Math.floor(usdt * bonusPercent / 100);
+                }
             }
 
             const finalTotal = total + bonus;
@@ -1162,24 +1257,52 @@
         document.getElementById('depositAmount').addEventListener('change', updateBonusPreview);
 
         // ============================================================
-        // BUY BUTTON
+        // 9. PAYMENT MODAL
         // ============================================================
-        document.getElementById('buyBtn').addEventListener('click', function() {
+        async function getUsdtAddress() {
+            const addr = await getSetting('usdt_address');
+            return addr || '0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ';
+        }
+
+        async function updatePaymentModal() {
+            document.getElementById('modalAdminAddress').value = await getUsdtAddress();
+            const qrisData = localStorage.getItem('silverchain_qris_data');
+            const placeholder = document.getElementById('modalQrPlaceholder');
+            const qrText = document.getElementById('modalQrText');
+            if (qrisData) {
+                placeholder.innerHTML =
+                    `<img src="${qrisData}" alt="QRIS" style="width:100%;height:100%;object-fit:contain;" />`;
+                qrText.textContent = 'QRIS available — scan to pay';
+            } else {
+                placeholder.innerHTML = `<i class="fas fa-qrcode"></i>`;
+                qrText.textContent = 'ID: 1234567890 | SilverChain DAO';
+            }
+        }
+
+        // ============================================================
+        // 10. BUY BUTTON
+        // ============================================================
+        document.getElementById('buyBtn').addEventListener('click', async function() {
             if (!currentUser) {
-                showToast('❌ Silakan login terlebih dahulu.');
+                showToast('❌ Please login first.');
                 return;
             }
+
             const raw = document.getElementById('depositAmount').value.trim();
             const usdt = parseFloat(raw);
             if (isNaN(usdt) || usdt <= 0) {
-                showToast('❌ Masukkan jumlah USDT yang valid.');
+                showToast('❌ Please enter a valid amount.');
                 return;
             }
 
             let total = usdt;
             let bonus = 0;
 
-            if (!hasUserPurchasedBefore(currentUser.email)) {
+            const deposits = await getUserDeposits(currentUser.email);
+            const hasPurchased = deposits.some(d => d.status === 'approved');
+            if (!hasPurchased) {
+                const bonusSetting = await getSetting('bonus_percent');
+                const bonusPercent = parseInt(bonusSetting) || 10;
                 bonus = Math.floor(usdt * bonusPercent / 100);
             }
 
@@ -1196,7 +1319,7 @@
         });
 
         // ============================================================
-        // MODAL PAYMENT ACTIONS
+        // 11. MODAL PAYMENT ACTIONS
         // ============================================================
         document.getElementById('closePaymentModal').addEventListener('click', function() {
             document.getElementById('paymentModal').classList.remove('active');
@@ -1213,68 +1336,68 @@
         document.getElementById('modalCopyAddress').addEventListener('click', function() {
             const addr = document.getElementById('modalAdminAddress').value;
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(addr).then(() => showToast('📋 Address USDT disalin!'));
-            } else { fallbackCopy(addr); }
+                navigator.clipboard.writeText(addr).then(() => showToast('📋 Address copied!'));
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = addr;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy');
+                    showToast('📋 Address copied!'); } catch (e) { showToast('❌ Failed to copy.'); }
+                document.body.removeChild(ta);
+            }
         });
 
         document.getElementById('modalCopyQRIS').addEventListener('click', function() {
             const id = '1234567890';
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(id).then(() => showToast('📋 ID QRIS disalin!'));
-            } else { fallbackCopy(id); }
+                navigator.clipboard.writeText(id).then(() => showToast('📋 QRIS ID copied!'));
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = id;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy');
+                    showToast('📋 QRIS ID copied!'); } catch (e) { showToast('❌ Failed to copy.'); }
+                document.body.removeChild(ta);
+            }
         });
 
-        function fallbackCopy(text) {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try { document.execCommand('copy');
-                showToast('📋 Disalin!'); } catch (e) { showToast('❌ Gagal menyalin.'); }
-            document.body.removeChild(ta);
-        }
-
-        document.getElementById('modalSubmitBtn').addEventListener('click', function() {
-            if (!pendingDepositData) {
-                showToast('❌ Data transaksi tidak valid.');
+        document.getElementById('modalSubmitBtn').addEventListener('click', async function() {
+            if (!pendingDepositData || !currentUser) {
+                showToast('❌ Invalid transaction data.');
                 return;
             }
 
             const hash = document.getElementById('modalTxHash').value.trim();
             if (!hash || hash.length < 5) {
-                showToast('❌ Masukkan hash transaksi (min 5 karakter).');
+                showToast('❌ Please enter a valid transaction hash.');
                 return;
             }
 
             const { usdt, bonus, total } = pendingDepositData;
 
-            depositsDB.push({
-                id: getNextId(),
-                email: currentUser.email,
-                usdt: usdt,
-                bonus: bonus,
-                total: total,
-                txHash: hash,
-                status: 'pending',
-                timestamp: Date.now()
-            });
-            saveDeposits();
-
-            document.getElementById('paymentModal').classList.remove('active');
-            pendingDepositData = null;
-
-            showToast(`✅ Deposit ${usdt} USDT berhasil dikirim! Menunggu approval admin.`);
-            updateUI();
+            try {
+                await addDeposit(currentUser.email, usdt, bonus, total, hash);
+                document.getElementById('paymentModal').classList.remove('active');
+                pendingDepositData = null;
+                showToast(`✅ Deposit ${usdt} USDT submitted! Waiting for admin approval.`);
+                updateUI();
+            } catch (err) {
+                showToast('❌ Failed to submit deposit: ' + err.message);
+            }
         });
 
         // ============================================================
-        // WITHDRAW (USDT)
+        // 12. WITHDRAW
         // ============================================================
-        document.getElementById('wdSubmitBtn').addEventListener('click', function() {
+        document.getElementById('wdSubmitBtn').addEventListener('click', async function() {
             if (!currentUser) {
-                showToast('❌ Silakan login terlebih dahulu.');
+                showToast('❌ Please login first.');
                 return;
             }
 
@@ -1282,53 +1405,76 @@
             const address = document.getElementById('wdAddress').value.trim();
 
             if (isNaN(amount) || amount < MIN_WITHDRAW) {
-                showToast(`❌ Minimal WD adalah ${MIN_WITHDRAW} USDT.`);
+                showToast(`❌ Minimum WD is ${MIN_WITHDRAW} USDT.`);
                 return;
             }
 
             if (!address || address.length < 10) {
-                showToast('❌ Masukkan address tujuan yang valid.');
+                showToast('❌ Please enter a valid destination address.');
                 return;
             }
 
-            const saldoReferral = getSaldoReferral(currentUser.email);
-            if (amount > saldoReferral) {
-                showToast(`❌ Saldo referral tidak cukup. Saldo: ${saldoReferral.toFixed(1)} USDT`);
+            const referralBalance = await getReferralBalance(currentUser.email);
+            if (amount > referralBalance) {
+                showToast(`❌ Insufficient referral balance. Balance: ${referralBalance.toFixed(1)} USDT`);
                 return;
             }
 
-            withdrawalsDB.push({
-                id: getNextWdId(),
-                email: currentUser.email,
-                amount: amount,
-                address: address,
-                status: 'pending',
-                timestamp: Date.now()
-            });
-            saveWithdrawals();
-
-            showToast(`✅ Permintaan withdraw ${amount} USDT berhasil diajukan! Menunggu approval admin.`);
-            document.getElementById('wdAmount').value = '';
-            document.getElementById('wdAddress').value = '';
-            updateUI();
+            try {
+                await addWithdrawal(currentUser.email, amount, address);
+                showToast(`✅ Withdraw ${amount} USDT requested! Waiting for admin approval.`);
+                document.getElementById('wdAmount').value = '';
+                document.getElementById('wdAddress').value = '';
+                updateUI();
+            } catch (err) {
+                showToast('❌ Failed to request withdraw: ' + err.message);
+            }
         });
 
         // ============================================================
-        // INIT
+        // 13. LOGOUT
         // ============================================================
-        loadData();
-        initTabs();
-        updateUI();
+        document.getElementById('logoutBtn')?.addEventListener('click', function() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            showToast('👋 Logged out.');
+            setTimeout(() => { window.location.href = '/'; }, 500);
+        });
 
-        setInterval(() => {
-            loadData();
-            updateUI();
-        }, 3000);
+        // ============================================================
+        // 14. INIT
+        // ============================================================
+        async function init() {
+            console.log('🔄 Dashboard initializing...');
 
-        console.log('🟢 SilverChain Dashboard siap.');
-        console.log('📌 1 USDT = 1 USDT');
-        console.log('📌 Bonus 10% hanya untuk pembelian pertama');
-        console.log('📌 Referral 3% dalam USDT — bisa di-WD');
+            if (!supabaseClient) {
+                console.error('❌ Supabase not ready!');
+                showToast('❌ System not ready. Please refresh.');
+                setTimeout(init, 2000);
+                return;
+            }
+
+            const authPassed = await checkAuth();
+            if (!authPassed) return;
+
+            await updateUI();
+
+            console.log('🟢 Dashboard ready!');
+            console.log('👤 User:', currentUser.email);
+        }
+
+        // Start
+        init();
+
+        // Auto refresh every 10 seconds
+        setInterval(async () => {
+            if (currentUser) {
+                await updateUI();
+            }
+        }, 10000);
+
+        console.log('🟢 SilverChain Dashboard loaded.');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
     </script>
 </body>
 </html>
