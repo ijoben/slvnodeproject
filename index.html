@@ -6,11 +6,11 @@
     <title>SilverChain · DAO Prelaunch</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
-<!-- Supabase Config -->
-<script src="supabase-config.js"></script>
+    <!-- Supabase SDK & Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+    <script src="supabase-config.js">
+    </script>
     <style>
         /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
@@ -865,8 +865,9 @@
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> About</div>
             <p style="color:#c0c0c0; line-height:1.6; font-size:0.9rem;">
-Real World Assets (RWA) is the process of bringing physical assets from the real world (such as gold or silver) onto a secure blockchain network.
-With Silverion, you digitize your silver assets into SCT tokens, combining the stability of precious metals with the limitless potential of Web3 marketing networks.            </p>
+                SilverChain is a <strong style="color:#e0e0e0;">DAO</strong> token with <strong style="color:#e0e0e0;">unlimited supply</strong> —
+                inspired by dogecoin. Layer-2 for speed & low fees.
+            </p>
             <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.6rem;">
                 <span class="badge-silver"><i class="fas fa-code"></i> Audited</span>
                 <span class="badge-silver"><i class="fas fa-infinity"></i> Unlimited</span>
@@ -979,18 +980,10 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
         // STORAGE KEYS
         // ============================================================
         const STORAGE_KEYS = {
-            USERS: 'silverchain_users',
-            DEPOSITS: 'silverchain_deposits',
-            BONUS: 'silverchain_bonus',
-            REF: 'silverchain_ref',
-            CURRENT_USER: 'silverchain_current_user',
-            SETTINGS: 'silverchain_settings'
+            CURRENT_USER: 'silverchain_current_user'
         };
-        const OWNER_EMAIL = 'admin@silverchain.io';
         const TARGET_USDT = 1000000;
 
-        let usersDB = [];
-        let depositsDB = [];
         let currentUser = null;
         let bonusPercent = 10;
         let refPercent = 3;
@@ -1001,69 +994,46 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
         // ============================================================
         function loadData() {
             try {
-                const users = localStorage.getItem(STORAGE_KEYS.USERS);
-                if (users) usersDB = JSON.parse(users);
-                else {
-                    usersDB = [
-                        { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null, verified: true },
-                        { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null, verified: true },
-                        { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026', verified: true },
-                        { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026', verified: true },
-                        { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123', verified: true },
-                        { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null, verified: true }
-                    ];
-                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
-                }
-
-                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
-                if (deposits) depositsDB = JSON.parse(deposits);
-                else {
-                    depositsDB = [
-                        { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130,
-                            txHash: '0xabc123...', status: 'approved', timestamp: Date.now() - 86400000 },
-                        { id: 2, email: 'demo@silverchain.io', usdt: 500, bonus: 50, ref: 15, total: 565,
-                            txHash: '0xdef456...', status: 'approved', timestamp: Date.now() - 3600000 },
-                        { id: 3, email: 'alice@test.com', usdt: 200, bonus: 20, ref: 6, total: 226,
-                            txHash: '0xghi789...', status: 'approved', timestamp: Date.now() - 7200000 },
-                        { id: 4, email: 'bob@test.com', usdt: 300, bonus: 30, ref: 9, total: 339,
-                            txHash: '0xjkl012...', status: 'pending', timestamp: Date.now() - 1800000 },
-                        { id: 5, email: 'carol@test.com', usdt: 150, bonus: 15, ref: 4.5, total: 169.5,
-                            txHash: '0xmno345...', status: 'pending', timestamp: Date.now() - 900000 }
-                    ];
-                    localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
-                }
-
-                const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
-                if (bonus) bonusPercent = parseInt(bonus) || 10;
-                const ref = localStorage.getItem(STORAGE_KEYS.REF);
-                if (ref) refPercent = parseInt(ref) || 3;
-
-                const settingsData = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-                if (settingsData) settings = JSON.parse(settingsData);
-                else settings = {};
-
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
-                    const found = usersDB.find(u => u.email === data.email);
-                    if (found) currentUser = found;
+                    // Cek user di Supabase
+                    if (typeof Supabase !== 'undefined') {
+                        Supabase.getUserByEmail(data.email).then(user => {
+                            if (user) currentUser = user;
+                        });
+                    }
                 }
+
+                // Load settings dari Supabase
+                if (typeof Supabase !== 'undefined') {
+                    Supabase.getSetting('bonus_percent').then(val => {
+                        if (val) bonusPercent = parseInt(val);
+                    });
+                    Supabase.getSetting('ref_percent').then(val => {
+                        if (val) refPercent = parseInt(val);
+                    });
+                }
+
+                const settingsData = localStorage.getItem('silverchain_settings');
+                if (settingsData) settings = JSON.parse(settingsData);
+                else settings = {};
             } catch (e) { console.error('Load error:', e); }
         }
 
-        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
-
         // ============================================================
-        // FUNCTIONS
+        // FUNGSI
         // ============================================================
-        function getTotalUSDT() {
-            const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
-            return approved.reduce((sum, d) => sum + d.usdt, 0);
+        async function getTotalUSDT() {
+            if (typeof Supabase === 'undefined') return 0;
+            const total = await Supabase.getTotalRaised();
+            return total || 0;
         }
 
-        function getTotalMinted() {
-            const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
-            return approved.reduce((sum, d) => sum + d.total, 0);
+        async function getTotalMinted() {
+            if (typeof Supabase === 'undefined') return 0;
+            const total = await Supabase.getTotalMinted();
+            return total || 0;
         }
 
         function formatNumber(num) {
@@ -1091,7 +1061,6 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
         // LOAD SETTINGS UI
         // ============================================================
         function loadSettingsUI() {
-            // Logo
             const logoDisplay = document.getElementById('logoDisplay');
             if (settings.logoType === 'image' && settings.logoImage) {
                 logoDisplay.innerHTML = `<img src="${settings.logoImage}" alt="Logo" style="width:50px;height:50px;border-radius:50%;object-fit:contain;" />`;
@@ -1101,12 +1070,10 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
                 logoDisplay.innerHTML = `<i class="fas fa-coins"></i>`;
             }
 
-            // Brand Name
             if (settings.brandName) {
                 document.getElementById('brandName').textContent = settings.brandName;
             }
 
-            // Contacts
             if (settings.contactTwitter) {
                 const el = document.getElementById('contactTwitter');
                 if (el) {
@@ -1140,19 +1107,18 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
         // ============================================================
         // UPDATE UI
         // ============================================================
-        function updateUI() {
+        async function updateUI() {
             const isLoggedIn = !!currentUser;
 
-            // Badge
             const badge = document.getElementById('navBadge');
             if (isLoggedIn) {
-                const pending = depositsDB.filter(d => d.email === currentUser.email && d.status === 'pending');
+                const deposits = await Supabase.getUserDeposits(currentUser.email);
+                const pending = deposits.filter(d => d.status === 'pending');
                 badge.style.display = pending.length > 0 ? 'block' : 'none';
             } else {
                 badge.style.display = 'none';
             }
 
-            // Hero button
             const heroContainer = document.getElementById('heroButtonContainer');
             if (isLoggedIn) {
                 heroContainer.innerHTML = `
@@ -1164,54 +1130,49 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
                 `;
             }
 
-            // Progress
-            const totalUSDT = getTotalUSDT();
+            const totalUSDT = await getTotalUSDT();
             const pct = Math.min((totalUSDT / TARGET_USDT) * 100, 100);
             document.getElementById('progressFill').style.width = pct + '%';
             document.getElementById('counterDisplay').innerHTML = formatCurrency(totalUSDT) + ' <small>USDT</small>';
 
-            // Stats
-            const totalMinted = getTotalMinted();
+            const totalMinted = await getTotalMinted();
             document.getElementById('statSold').textContent = formatNumber(totalMinted);
 
-            // Member
-            const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
-            const map = {};
-            approved.forEach(d => { if (!map[d.email]) map[d.email] = 0;
-                map[d.email] += d.total; });
-            const sorted = Object.entries(map).sort((a, b) => b[1] - a[1]);
-
-            const grid = document.getElementById('memberGrid');
-            if (sorted.length === 0) {
-                grid.innerHTML =
-                    `<div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">No members yet</div>`;
-            } else {
-                let html = '';
-                sorted.slice(0, 10).forEach(([email, total], index) => {
-                    const initial = email.charAt(0).toUpperCase();
-                    const masked = maskEmail(email);
-                    html += `
-                        <div class="member-card-item">
-                            <div class="avatar">${initial}</div>
-                            <div class="info">
-                                <span class="name">${masked}</span>
-                                <span class="sct">${total.toFixed(1)} USDT</span>
+            // Member list
+            try {
+                const users = await Supabase.getAllUsers();
+                const grid = document.getElementById('memberGrid');
+                if (!users || users.length === 0) {
+                    grid.innerHTML = `<div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">No members yet</div>`;
+                } else {
+                    let html = '';
+                    users.slice(0, 10).forEach((user, index) => {
+                        const initial = user.email.charAt(0).toUpperCase();
+                        const masked = maskEmail(user.email);
+                        html += `
+                            <div class="member-card-item">
+                                <div class="avatar">${initial}</div>
+                                <div class="info">
+                                    <span class="name">${masked}</span>
+                                    <span class="sct">${user.role === 'admin' ? '👑 Admin' : 'Member'}</span>
+                                </div>
+                                <div class="rank">#${index + 1}</div>
                             </div>
-                            <div class="rank">#${index + 1}</div>
-                        </div>
-                    `;
-                });
-                if (sorted.length > 10) {
-                    html += `
-                        <div class="member-card-item" style="border-style:dashed; justify-content:center;">
-                            <div style="color:#a0a0a0; font-size:0.7rem;">+${sorted.length - 10} more</div>
-                        </div>
-                    `;
+                        `;
+                    });
+                    if (users.length > 10) {
+                        html += `
+                            <div class="member-card-item" style="border-style:dashed; justify-content:center;">
+                                <div style="color:#a0a0a0; font-size:0.7rem;">+${users.length - 10} more</div>
+                            </div>
+                        `;
+                    }
+                    grid.innerHTML = html;
                 }
-                grid.innerHTML = html;
+            } catch (e) {
+                console.error('Load members error:', e);
             }
 
-            // Load settings UI
             loadSettingsUI();
         }
 
@@ -1230,23 +1191,10 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
         document.querySelector('.faq-item')?.classList.add('active');
 
         // ============================================================
-        // FORCE FIX
-        // ============================================================
-        function forceFixData() {
-            const approved = depositsDB.filter(d => d.status && d.status.toLowerCase() === 'approved');
-            if (approved.length === 0 && depositsDB.length > 0) {
-                depositsDB.forEach((d, index) => {
-                    if (index < 2) d.status = 'approved';
-                });
-                localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
-            }
-        }
-
-        // ============================================================
         // STORAGE & INTERVAL
         // ============================================================
         window.addEventListener('storage', function(e) {
-            if (e.key === STORAGE_KEYS.DEPOSITS || e.key === STORAGE_KEYS.USERS || e.key === STORAGE_KEYS.SETTINGS) {
+            if (e.key === STORAGE_KEYS.CURRENT_USER) {
                 loadData();
                 updateUI();
             }
@@ -1256,16 +1204,14 @@ With Silverion, you digitize your silver assets into SCT tokens, combining the s
         // INIT
         // ============================================================
         loadData();
-        forceFixData();
-        updateUI();
+        setTimeout(updateUI, 500);
 
         setInterval(() => {
             loadData();
             updateUI();
-        }, 3000);
+        }, 5000);
 
         console.log('🟢 SilverChain Landing Page ready.');
-        console.log('💰 Total USDT raised:', getTotalUSDT());
         console.log('🔐 Login at: /auth');
     </script>
 </body>
