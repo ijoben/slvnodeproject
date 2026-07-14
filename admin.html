@@ -9,9 +9,8 @@
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
-    <script src="supabase-config.js">
-    </script>
     <style>
+        /* ===== STYLE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -102,6 +101,7 @@
             align-items: center;
             gap: 0.5rem;
             flex-shrink: 0;
+            border: none;
         }
         .btn-logout:hover {
             background: rgba(255, 60, 60, 0.2);
@@ -865,7 +865,14 @@
 
     <script>
         // ============================================================
-        // 1. STORAGE KEYS & VARIABLES
+        // 1. SUPABASE CONFIG - ALL IN ONE
+        // ============================================================
+
+        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
+        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+        // ============================================================
+        // 2. VARIABLES
         // ============================================================
         const STORAGE_KEYS = {
             CURRENT_USER: 'silverchain_current_user'
@@ -876,20 +883,163 @@
         let usersData = [];
         let depositsData = [];
         let withdrawalsData = [];
+        let supabaseClient = null;
 
         // ============================================================
-        // 2. CHECK SUPABASE
+        // 3. INIT SUPABASE
         // ============================================================
-        function isSupabaseReady() {
-            if (typeof Supabase === 'undefined') {
-                console.error('❌ Supabase not loaded!');
-                return false;
-            }
-            return true;
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client created!');
+        } catch (err) {
+            console.error('❌ Supabase error:', err);
         }
 
         // ============================================================
-        // 3. TOAST
+        // 4. HELPER FUNCTIONS
+        // ============================================================
+        async function hashPassword(password) {
+            return btoa(password + 'silverchain_salt_2026');
+        }
+
+        async function verifyPassword(password, hashed) {
+            return hashed === btoa(password + 'silverchain_salt_2026');
+        }
+
+        // ============================================================
+        // 5. SUPABASE FUNCTIONS
+        // ============================================================
+        async function getUserByEmail(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Get user error:', error);
+                return null;
+            }
+        }
+
+        async function getAllUsers() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all users error:', error);
+                return [];
+            }
+        }
+
+        async function getAllDeposits() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('deposits')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all deposits error:', error);
+                return [];
+            }
+        }
+
+        async function getAllWithdrawals() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('withdrawals')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all withdrawals error:', error);
+                return [];
+            }
+        }
+
+        async function updateDepositStatus(id, status) {
+            try {
+                const { error } = await supabaseClient
+                    .from('deposits')
+                    .update({ status: status })
+                    .eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error('Update deposit error:', error);
+                throw error;
+            }
+        }
+
+        async function updateWithdrawalStatus(id, status) {
+            try {
+                const { error } = await supabaseClient
+                    .from('withdrawals')
+                    .update({ status: status })
+                    .eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error('Update withdrawal error:', error);
+                throw error;
+            }
+        }
+
+        async function getSetting(key) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('settings')
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data ? data.value : null;
+            } catch (error) {
+                console.error('Get setting error:', error);
+                return null;
+            }
+        }
+
+        async function saveSetting(key, value) {
+            try {
+                const { error } = await supabaseClient
+                    .from('settings')
+                    .upsert({
+                        key: key,
+                        value: value,
+                        updated_at: new Date().toISOString()
+                    });
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error('Save setting error:', error);
+                throw error;
+            }
+        }
+
+        async function isAdmin(email) {
+            try {
+                const user = await getUserByEmail(email);
+                return user && user.role === 'admin';
+            } catch (error) {
+                console.error('Check admin error:', error);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // 6. TOAST
         // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
@@ -899,19 +1049,17 @@
         }
 
         // ============================================================
-        // 4. LOAD & CHECK AUTH
+        // 7. LOAD & CHECK AUTH
         // ============================================================
         async function loadCurrentUser() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
-                    if (isSupabaseReady()) {
-                        const user = await Supabase.getUserByEmail(data.email);
-                        if (user) {
-                            currentUser = user;
-                            return true;
-                        }
+                    const user = await getUserByEmail(data.email);
+                    if (user) {
+                        currentUser = user;
+                        return true;
                     }
                 }
                 return false;
@@ -922,6 +1070,12 @@
         }
 
         async function checkAuth() {
+            if (!supabaseClient) {
+                console.error('❌ Supabase not initialized!');
+                showToast('⚠️ System not ready. Please refresh.');
+                return false;
+            }
+
             const isLoggedIn = await loadCurrentUser();
 
             if (!isLoggedIn || !currentUser) {
@@ -930,13 +1084,8 @@
                 return false;
             }
 
-            if (!isSupabaseReady()) {
-                showToast('⚠️ System not ready. Please refresh.');
-                return false;
-            }
-
-            const isAdmin = await Supabase.isAdmin(currentUser.email);
-            if (!isAdmin) {
+            const adminCheck = await isAdmin(currentUser.email);
+            if (!adminCheck) {
                 console.log('🔒 Not admin, redirecting to /dashboard');
                 window.location.href = '/dashboard';
                 return false;
@@ -947,7 +1096,7 @@
         }
 
         // ============================================================
-        // 5. TABS
+        // 8. TABS
         // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
         const tabContents = {
@@ -978,6 +1127,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Event listeners for bottom nav
         navItems.forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -986,6 +1136,7 @@
             });
         });
 
+        // Event listeners for stat cards
         document.querySelectorAll('.admin-stat[data-tab]').forEach(card => {
             card.addEventListener('click', function() {
                 const tabId = this.dataset.tab;
@@ -994,72 +1145,7 @@
         });
 
         // ============================================================
-        // 6. MAIN UPDATE UI
-        // ============================================================
-        async function updateUI() {
-            if (!isSupabaseReady()) {
-                console.warn('⏳ Waiting for Supabase...');
-                setTimeout(updateUI, 1000);
-                return;
-            }
-
-            if (!currentUser) {
-                console.log('⏳ No current user');
-                return;
-            }
-
-            const isAdmin = await Supabase.isAdmin(currentUser.email);
-            if (!isAdmin) {
-                return;
-            }
-
-            try {
-                // Load all data
-                usersData = await Supabase.getAllUsers();
-                depositsData = await Supabase.getAllDeposits();
-                withdrawalsData = await Supabase.getAllWithdrawals();
-
-                // Update Stats
-                document.getElementById('adminTotalUsers').textContent = usersData.length;
-                document.getElementById('totalUserCount').textContent = usersData.length;
-
-                const pendingDeposits = depositsData.filter(d => d.status === 'pending');
-                document.getElementById('adminPendingDeposits').textContent = pendingDeposits.length;
-
-                const pendingWithdrawals = withdrawalsData.filter(w => w.status === 'pending');
-                document.getElementById('adminPendingWithdraw').textContent = pendingWithdrawals.length;
-
-                const totalMinted = depositsData.filter(d => d.status === 'approved').reduce((sum, d) => sum + (d.total || d
-                    .usdt), 0);
-                document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
-
-                // Load settings
-                const bonus = await Supabase.getSetting('bonus_percent');
-                const ref = await Supabase.getSetting('ref_percent');
-                document.getElementById('adminBonusPercent').value = bonus || 10;
-                document.getElementById('adminRefPercent').value = ref || 3;
-
-                // Render Users Table
-                renderUsersTable();
-
-                // Render Pending Deposits
-                renderPendingDeposits();
-
-                // Render Pending Withdrawals
-                renderPendingWithdrawals();
-
-                // Load QRIS & Settings
-                loadQrisPreview();
-                loadSettingsUI();
-
-            } catch (error) {
-                console.error('❌ Update UI error:', error);
-                showToast('⚠️ Failed to load data: ' + error.message);
-            }
-        }
-
-        // ============================================================
-        // 7. RENDER FUNCTIONS
+        // 9. RENDER FUNCTIONS
         // ============================================================
         function renderUsersTable() {
             const tbody = document.getElementById('adminUserBody');
@@ -1114,10 +1200,12 @@
             document.querySelectorAll('.deposit-approve').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
-                    if (isSupabaseReady()) {
-                        await Supabase.updateDepositStatus(id, 'approved');
+                    try {
+                        await updateDepositStatus(id, 'approved');
                         showToast('✅ Deposit approved!');
                         await updateUI();
+                    } catch (err) {
+                        showToast('❌ Failed: ' + err.message);
                     }
                 });
             });
@@ -1125,10 +1213,12 @@
             document.querySelectorAll('.deposit-reject').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
-                    if (isSupabaseReady()) {
-                        await Supabase.updateDepositStatus(id, 'rejected');
+                    try {
+                        await updateDepositStatus(id, 'rejected');
                         showToast('❌ Deposit rejected.');
                         await updateUI();
+                    } catch (err) {
+                        showToast('❌ Failed: ' + err.message);
                     }
                 });
             });
@@ -1165,10 +1255,12 @@
             document.querySelectorAll('.wd-approve').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
-                    if (isSupabaseReady()) {
-                        await Supabase.updateWithdrawalStatus(id, 'approved');
+                    try {
+                        await updateWithdrawalStatus(id, 'approved');
                         showToast('✅ Withdrawal approved!');
                         await updateUI();
+                    } catch (err) {
+                        showToast('❌ Failed: ' + err.message);
                     }
                 });
             });
@@ -1176,17 +1268,19 @@
             document.querySelectorAll('.wd-reject').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
-                    if (isSupabaseReady()) {
-                        await Supabase.updateWithdrawalStatus(id, 'rejected');
+                    try {
+                        await updateWithdrawalStatus(id, 'rejected');
                         showToast('❌ Withdrawal rejected.');
                         await updateUI();
+                    } catch (err) {
+                        showToast('❌ Failed: ' + err.message);
                     }
                 });
             });
         }
 
         // ============================================================
-        // 8. QRIS FUNCTIONS
+        // 10. QRIS & SETTINGS UI
         // ============================================================
         function loadQrisPreview() {
             try {
@@ -1208,6 +1302,23 @@
                     status.style.color = '#a0a0a0';
                 }
             } catch (e) { console.warn('QRIS load error:', e); }
+        }
+
+        function loadSettingsUI() {
+            try {
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                document.getElementById('adminBrandName').value = settings.brandName || '';
+                document.getElementById('adminLogoUrl').value = settings.logoImage || '';
+                document.getElementById('adminTwitter').value = settings.contactTwitter || '';
+                document.getElementById('adminTelegram').value = settings.contactTelegram || '';
+                document.getElementById('adminDiscord').value = settings.contactDiscord || '';
+                document.getElementById('adminContactEmail').value = settings.contactEmail || '';
+
+                const usdtAddr = localStorage.getItem('silverchain_usdt_address');
+                if (usdtAddr) {
+                    document.getElementById('adminUsdtAddress').value = usdtAddr;
+                }
+            } catch (e) {}
         }
 
         document.getElementById('uploadQrisBtn').addEventListener('click', function() {
@@ -1235,39 +1346,20 @@
         });
 
         // ============================================================
-        // 9. SETTINGS UI
-        // ============================================================
-        function loadSettingsUI() {
-            try {
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                document.getElementById('adminBrandName').value = settings.brandName || '';
-                document.getElementById('adminLogoUrl').value = settings.logoImage || '';
-                document.getElementById('adminTwitter').value = settings.contactTwitter || '';
-                document.getElementById('adminTelegram').value = settings.contactTelegram || '';
-                document.getElementById('adminDiscord').value = settings.contactDiscord || '';
-                document.getElementById('adminContactEmail').value = settings.contactEmail || '';
-
-                const usdtAddr = localStorage.getItem('silverchain_usdt_address');
-                if (usdtAddr) {
-                    document.getElementById('adminUsdtAddress').value = usdtAddr;
-                }
-            } catch (e) {}
-        }
-
-        // ============================================================
-        // 10. SAVE SETTINGS
+        // 11. SAVE SETTINGS
         // ============================================================
         document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
-            if (!isSupabaseReady()) return;
-
             const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
             const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
 
-            await Supabase.saveSetting('bonus_percent', String(bonus));
-            await Supabase.saveSetting('ref_percent', String(ref));
-
-            showToast('✅ Settings saved!');
-            await updateUI();
+            try {
+                await saveSetting('bonus_percent', String(bonus));
+                await saveSetting('ref_percent', String(ref));
+                showToast('✅ Settings saved!');
+                await updateUI();
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
         });
 
         document.getElementById('saveUsdtBtn').addEventListener('click', async function() {
@@ -1276,10 +1368,12 @@
                 showToast('❌ Please enter a valid USDT address.');
                 return;
             }
-            if (isSupabaseReady()) {
-                await Supabase.saveSetting('usdt_address', address);
+            try {
+                await saveSetting('usdt_address', address);
                 localStorage.setItem('silverchain_usdt_address', address);
                 showToast('✅ USDT address saved!');
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
             }
         });
 
@@ -1350,7 +1444,7 @@
         });
 
         // ============================================================
-        // 11. LOGOUT
+        // 12. LOGOUT
         // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -1360,13 +1454,74 @@
         });
 
         // ============================================================
-        // 12. INIT
+        // 13. MAIN UPDATE UI
+        // ============================================================
+        async function updateUI() {
+            if (!supabaseClient) {
+                console.warn('⏳ Waiting for Supabase...');
+                setTimeout(updateUI, 1000);
+                return;
+            }
+
+            if (!currentUser) {
+                console.log('⏳ No current user');
+                return;
+            }
+
+            const adminCheck = await isAdmin(currentUser.email);
+            if (!adminCheck) {
+                return;
+            }
+
+            try {
+                // Load all data
+                usersData = await getAllUsers();
+                depositsData = await getAllDeposits();
+                withdrawalsData = await getAllWithdrawals();
+
+                // Update Stats
+                document.getElementById('adminTotalUsers').textContent = usersData.length;
+                document.getElementById('totalUserCount').textContent = usersData.length;
+
+                const pendingDeposits = depositsData.filter(d => d.status === 'pending');
+                document.getElementById('adminPendingDeposits').textContent = pendingDeposits.length;
+
+                const pendingWithdrawals = withdrawalsData.filter(w => w.status === 'pending');
+                document.getElementById('adminPendingWithdraw').textContent = pendingWithdrawals.length;
+
+                const totalMinted = depositsData.filter(d => d.status === 'approved').reduce((sum, d) => sum + (d.total || d
+                    .usdt), 0);
+                document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
+
+                // Load settings
+                const bonus = await getSetting('bonus_percent');
+                const ref = await getSetting('ref_percent');
+                document.getElementById('adminBonusPercent').value = bonus || 10;
+                document.getElementById('adminRefPercent').value = ref || 3;
+
+                // Render tables
+                renderUsersTable();
+                renderPendingDeposits();
+                renderPendingWithdrawals();
+
+                // Load QRIS & Settings
+                loadQrisPreview();
+                loadSettingsUI();
+
+            } catch (error) {
+                console.error('❌ Update UI error:', error);
+                showToast('⚠️ Failed to load data: ' + error.message);
+            }
+        }
+
+        // ============================================================
+        // 14. INIT
         // ============================================================
         async function init() {
             console.log('🔄 Admin panel initializing...');
 
             // Check Supabase
-            if (!isSupabaseReady()) {
+            if (!supabaseClient) {
                 console.error('❌ Supabase not ready!');
                 showToast('❌ System not ready. Please refresh.');
                 setTimeout(init, 2000);
@@ -1398,7 +1553,7 @@
         }, 10000);
 
         console.log('🟢 SilverChain Admin Panel loaded.');
-        console.log('📌 Supabase connected via supabase-config.js');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
     </script>
 </body>
 </html>
