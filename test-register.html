@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SilverChain · Test</title>
+    <title>Supabase Test</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
@@ -28,7 +28,6 @@
         }
         h1 {
             text-align: center;
-            font-size: 24px;
             color: #e0e0e0;
             margin-bottom: 20px;
         }
@@ -94,23 +93,29 @@
             color: #ff6a6a;
             border-color: rgba(255, 60, 60, 0.15);
         }
+        .status {
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 14px;
+            background: rgba(8, 20, 48, 0.3);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            color: #888888;
+        }
+        .status.success {
+            color: #6aff8a;
+            border-color: rgba(60, 220, 80, 0.15);
+        }
+        .status.error {
+            color: #ff6a6a;
+            border-color: rgba(255, 60, 60, 0.15);
+        }
         .small {
             font-size: 12px;
             color: #666666;
             text-align: center;
             margin-top: 12px;
-        }
-        .debug {
-            margin-top: 12px;
-            padding: 12px;
-            border-radius: 12px;
-            background: rgba(8, 20, 48, 0.3);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            font-size: 12px;
-            color: #888888;
-            word-break: break-all;
-            max-height: 100px;
-            overflow-y: auto;
         }
     </style>
 </head>
@@ -119,7 +124,7 @@
     <div class="box">
         <h1>🔗 Supabase Test</h1>
 
-        <div class="debug" id="debugLog">⏳ Initializing...</div>
+        <div class="status" id="status">⏳ Initializing...</div>
 
         <label>Email</label>
         <input type="email" id="email" placeholder="test@email.com" value="test123@email.com" />
@@ -146,16 +151,15 @@
         // ============================================================
         // ELEMENTS
         // ============================================================
-        const debugEl = document.getElementById('debugLog');
+        const statusEl = document.getElementById('status');
         const resultEl = document.getElementById('result');
         const emailEl = document.getElementById('email');
         const passwordEl = document.getElementById('password');
         const btn = document.getElementById('registerBtn');
 
-        function debug(msg) {
-            debugEl.innerHTML += '\n' + msg;
-            debugEl.scrollTop = debugEl.scrollHeight;
-            console.log(msg);
+        function setStatus(text, type = '') {
+            statusEl.textContent = text;
+            statusEl.className = 'status ' + type;
         }
 
         function showResult(text, type = '') {
@@ -164,62 +168,65 @@
         }
 
         // ============================================================
-        // 1. CEK SUPABASE SDK
+        // CEK SUPABASE SDK
         // ============================================================
-        debug('🔍 Checking Supabase SDK...');
+        console.log('1. Checking Supabase SDK...');
 
         if (typeof window.supabase === 'undefined') {
-            debug('❌ Supabase SDK NOT LOADED!');
-            showResult('❌ Supabase SDK not loaded. Check internet connection.', 'error');
+            setStatus('❌ Supabase SDK not loaded!', 'error');
+            showResult('Error: Supabase SDK not loaded. Check internet connection.', 'error');
         } else {
-            debug('✅ Supabase SDK loaded!');
+            console.log('2. Supabase SDK loaded!');
+            setStatus('✅ SDK loaded, creating client...', '');
         }
 
         // ============================================================
-        // 2. BUAT SUPABASE CLIENT
+        // BUAT SUPABASE CLIENT
         // ============================================================
+        console.log('3. Creating Supabase client...');
+        console.log('URL:', SUPABASE_URL);
+
         let supabase;
         try {
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            debug('✅ Supabase client created!');
-            debug('📌 URL: ' + SUPABASE_URL);
-            debug('📌 Key: ' + SUPABASE_ANON_KEY.substring(0, 20) + '...');
+            console.log('4. Supabase client created!');
+            setStatus('✅ Client created, testing...', '');
         } catch (err) {
-            debug('❌ Failed to create client: ' + err.message);
-            showResult('❌ Failed to create Supabase client: ' + err.message, 'error');
-            throw err;
+            console.error('Error creating client:', err);
+            setStatus('❌ Failed: ' + err.message, 'error');
+            showResult('Error: ' + err.message, 'error');
         }
 
         // ============================================================
-        // 3. TEST QUERY LANGSUNG (TANPA FUNGSI)
+        // TEST KONEKSI
         // ============================================================
-        debug('🔍 Testing connection to Supabase...');
+        console.log('5. Testing connection...');
 
         supabase.from('settings').select('*').limit(1)
             .then(({ data, error }) => {
+                console.log('6. Query result:', data, error);
+
                 if (error) {
-                    debug('❌ Query error: ' + error.message);
-                    debug('💡 Pastikan SQL sudah dijalankan di Supabase SQL Editor');
-                    showResult('⚠️ Query error: ' + error.message + '\n\n💡 Pastikan SQL sudah dijalankan di Supabase.', 'error');
+                    setStatus('⚠️ Error: ' + error.message, 'error');
+                    showResult('Error: ' + error.message + '\n\n💡 Pastikan SQL sudah dijalankan di Supabase.', 'error');
                     return;
                 }
-                debug('✅ Connection successful!');
-                debug('📊 Data: ' + JSON.stringify(data));
-                showResult('✅ Connected to Supabase!', 'success');
+
+                setStatus('✅ Connected to Supabase!', 'success');
+                showResult('✅ Connection successful! You can now register.', 'success');
             })
             .catch(err => {
-                debug('❌ Connection failed: ' + err.message);
-                showResult('❌ Connection failed: ' + err.message, 'error');
+                console.error('7. Connection error:', err);
+                setStatus('❌ Connection failed: ' + err.message, 'error');
+                showResult('Error: ' + err.message, 'error');
             });
 
         // ============================================================
-        // 4. REGISTER FUNCTION
+        // REGISTER
         // ============================================================
         async function registerUser(email, password) {
             const hashed = btoa(password + 'silverchain_salt_2026');
             const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
-
-            debug('📝 Registering: ' + email);
 
             const { data, error } = await supabase
                 .from('users')
@@ -234,12 +241,11 @@
                 .single();
 
             if (error) throw error;
-            debug('✅ User registered: ' + email);
             return data;
         }
 
         // ============================================================
-        // 5. REGISTER BUTTON
+        // BUTTON
         // ============================================================
         btn.addEventListener('click', async function() {
             const email = emailEl.value.trim();
@@ -263,26 +269,19 @@
             try {
                 const result = await registerUser(email, password);
                 showResult('✅ User registered successfully!\n\n📧 Email: ' + email + '\n🆔 ID: ' + result.id, 'success');
-                debug('✅ Registration result: ' + JSON.stringify(result));
+                setStatus('✅ User registered!', 'success');
                 emailEl.value = '';
                 passwordEl.value = '';
             } catch (err) {
-                debug('❌ Registration error: ' + err.message);
                 showResult('❌ ' + (err.message || 'Registration failed'), 'error');
+                setStatus('❌ Registration failed', 'error');
             }
 
             btn.disabled = false;
             btn.textContent = '📝 Test Register';
         });
 
-        // ============================================================
-        // 6. DEBUG INFO
-        // ============================================================
-        debug('🟢 Test page ready!');
-        debug('📌 Jika error, cek:');
-        debug('   1. Supabase URL dan Anon Key');
-        debug('   2. SQL sudah dijalankan di Supabase');
-        debug('   3. Internet connection');
+        console.log('🟢 Page ready!');
     </script>
 
 </body>
