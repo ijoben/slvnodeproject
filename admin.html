@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>SilverChain · Admin Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
-<!-- Supabase Config -->
-<script src="supabase-config.js"></script>
+    <!-- Supabase SDK & Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+    <script src="supabase-config.js">
+    </script>
     <style>
         * {
             margin: 0;
@@ -39,8 +39,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
-            border: 1px solid rgba(80,140,255,0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -68,7 +68,7 @@
             color: #c0c0c0;
         }
 
-        /* HEADER WITH LOGOUT */
+        /* ADMIN HEADER */
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -114,7 +114,7 @@
             display: inline;
         }
 
-        /* ADMIN STATS GRID - KEREN */
+        /* ADMIN STATS GRID */
         .admin-stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -130,21 +130,12 @@
             transition: 0.3s;
             position: relative;
             overflow: hidden;
-        }
-        .admin-stat::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(192,192,192,0.03), rgba(192,192,192,0.01));
-            border-radius: 1.5rem;
+            cursor: pointer;
         }
         .admin-stat:hover {
             transform: translateY(-3px);
             border-color: rgba(80, 140, 255, 0.2);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
         .admin-stat .icon {
             font-size: 1.8rem;
@@ -185,7 +176,22 @@
         .admin-stat.info .icon { color: #60a5fa; }
         .admin-stat.info .num { color: #60a5fa; }
 
-        /* TABLE WRAPPER */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin: 1rem 0 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .section-title i {
+            color: #c0c0c0;
+            margin-right: 8px;
+        }
+
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -247,7 +253,6 @@
             background: rgba(255, 60, 60, 0.25);
         }
 
-        /* SETTINGS GROUP */
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
             border-radius: 1.2rem;
@@ -313,9 +318,43 @@
             background: rgba(255, 60, 60, 0.2);
         }
 
-        /* ========================================================== */
-        /* BOTTOM NAV - KHUSUS ADMIN */
-        /* ========================================================== */
+        .qr-preview {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .qr-preview .placeholder {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #c0c0c0;
+            border: 2px dashed rgba(80, 140, 255, 0.15);
+        }
+        .qr-preview img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            background: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -328,8 +367,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 0.5rem 1rem 0.7rem;
             z-index: 100;
             box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            gap: 0.3rem;
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -339,14 +380,16 @@
             align-items: center;
             gap: 2px;
             transition: 0.2s;
+            padding: 0.2rem 0.8rem;
             border-radius: 60px;
+            min-width: 60px;
             position: relative;
         }
         .bottom-nav a i {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
         .bottom-nav a span {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             font-weight: 500;
             letter-spacing: 0.3px;
         }
@@ -362,12 +405,13 @@
         }
         .bottom-nav .nav-divider {
             width: 1px;
+            height: 25px;
             background: rgba(80, 140, 255, 0.06);
             flex-shrink: 0;
         }
 
         .toast-message {
-            background: rgba(12,28,60,0.9);
+            background: rgba(12, 28, 60, 0.9);
             backdrop-filter: blur(8px);
             border-left: 4px solid #c0c0c0;
             border-radius: 40px;
@@ -379,8 +423,12 @@
             align-items: center;
             gap: 0.6rem;
         }
-        .toast-message.show { display: flex; }
-        .toast-message i { color: #c0c0c0; }
+        .toast-message.show {
+            display: flex;
+        }
+        .toast-message i {
+            color: #c0c0c0;
+        }
 
         .footer-copyright {
             text-align: center;
@@ -391,115 +439,162 @@
             margin-top: 1rem;
         }
 
-        /* QRIS Preview */
-        .qr-preview {
-            margin: 0.5rem 0;
-            padding: 0.5rem;
-            background: rgba(8,20,48,0.3);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .qr-preview .placeholder {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #c0c0c0;
-            border: 2px dashed rgba(80,140,255,0.15);
-        }
-        .qr-preview img {
-            max-width: 120px;
-            max-height: 120px;
-            border-radius: 0.8rem;
-            border: 1px solid rgba(80,140,255,0.06);
-            background: #fff;
-        }
-
-        /* Section title */
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #e0e0e0;
-            margin: 1rem 0 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .section-title i {
-            color: #c0c0c0;
-            margin-right: 8px;
-        }
-        .section-title .badge-silver {
-            font-size: 0.75rem;
-            padding: 0.2rem 1rem;
-        }
-
-        /* ===== PAGINATION ===== */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.3rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-        .pagination button {
-            background: rgba(8, 20, 48, 0.4);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            border-radius: 60px;
-            padding: 0.3rem 0.8rem;
-            color: #c0c0c0;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.15s;
-            font-weight: 600;
-            min-width: 36px;
-            text-align: center;
-        }
-        .pagination button:hover:not(:disabled) {
-            background: rgba(60, 120, 255, 0.15);
-            border-color: rgba(80, 140, 255, 0.15);
-        }
-        .pagination button.active {
-            background: rgba(192, 192, 192, 0.15);
-            border-color: rgba(192, 192, 192, 0.2);
-            color: #e0e0e0;
-        }
-        .pagination button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        .pagination .page-info {
-            color: #888888;
-            font-size: 0.7rem;
-            padding: 0 0.5rem;
+        @media (max-width: 768px) {
+            .admin-stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.6rem;
+            }
+            .admin-stat {
+                padding: 0.8rem 0.6rem;
+            }
+            .admin-stat .num {
+                font-size: 1.3rem;
+            }
+            .admin-stat .icon {
+                font-size: 1.3rem;
+            }
+            .settings-group .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .settings-group input[type="text"] {
+                width: 100%;
+            }
+            .settings-group label {
+                min-width: auto;
+            }
+            .bottom-nav {
+                padding: 0.3rem 0.3rem 0.5rem;
+                gap: 0.1rem;
+            }
+            .bottom-nav a {
+                padding: 0.2rem 0.3rem;
+                min-width: 40px;
+            }
+            .bottom-nav a i {
+                font-size: 1rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.4rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 20px;
+            }
+            .admin-header {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.3rem;
+            }
+            .admin-header h2 {
+                font-size: 1.1rem;
+                flex: 1;
+            }
+            .admin-header h2 .owner-badge {
+                font-size: 0.5rem;
+            }
+            .btn-logout {
+                padding: 0.3rem 0.7rem;
+                font-size: 0.7rem;
+                gap: 0.3rem;
+                flex-shrink: 0;
+            }
+            .btn-logout .logout-text {
+                display: none;
+            }
+            .btn-logout i {
+                font-size: 1rem;
+            }
         }
 
-        /* Tab Content */
-        .tab-content {
-            display: none;
+        @media (max-width: 480px) {
+            .section-card {
+                padding: 1.2rem 0.8rem;
+                border-radius: 2rem;
+            }
+            .admin-stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.4rem;
+            }
+            .admin-stat {
+                padding: 0.6rem 0.3rem;
+                border-radius: 1rem;
+            }
+            .admin-stat .num {
+                font-size: 1.1rem;
+            }
+            .admin-stat .icon {
+                font-size: 1.1rem;
+            }
+            .admin-stat .label {
+                font-size: 0.5rem;
+            }
+            .admin-stat .sub {
+                font-size: 0.45rem;
+            }
+            .bottom-nav {
+                padding: 0.2rem 0.1rem 0.4rem;
+                gap: 0;
+            }
+            .bottom-nav a {
+                padding: 0.15rem 0.15rem;
+                min-width: 32px;
+            }
+            .bottom-nav a i {
+                font-size: 0.85rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.35rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 15px;
+            }
+            .admin-header h2 {
+                font-size: 0.9rem;
+            }
+            .admin-header h2 i {
+                font-size: 0.9rem;
+            }
+            .btn-logout {
+                padding: 0.2rem 0.5rem;
+                border-radius: 60px;
+            }
+            .btn-logout i {
+                font-size: 0.85rem;
+            }
+            .table-wrapper table {
+                font-size: 0.65rem;
+                min-width: 500px;
+            }
+            .table-wrapper table th,
+            .table-wrapper table td {
+                padding: 0.2rem 0.4rem;
+            }
+            .section-title {
+                font-size: 0.9rem;
+            }
+            .settings-group {
+                padding: 0.6rem;
+            }
+            .settings-group .row {
+                gap: 0.4rem;
+            }
+            .settings-group label {
+                font-size: 0.7rem;
+            }
+            .settings-group input {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .btn-save {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.6rem;
+            }
         }
-        .tab-content.active {
-            display: block;
-        }
-
-        /* ========================================================== */
-        /* RESPONSIVE */
-        /* ========================================================== */
 
         @media (min-width: 769px) {
             .bottom-nav {
-                padding: 0.5rem 2rem 0.7rem;
                 gap: 0.5rem;
+                padding: 0.5rem 2rem 0.7rem;
             }
             .bottom-nav a {
                 padding: 0.3rem 1.2rem;
@@ -515,351 +610,20 @@
                 height: 35px;
             }
         }
-
-        @media (max-width: 768px) {
-            .admin-header h2 {
-                font-size: 1.3rem;
-            }
-            .admin-header h2 .owner-badge {
-                font-size: 0.6rem;
-                padding: 0.2rem 0.7rem;
-            }
-            .admin-header p {
-                font-size: 0.95rem !important;
-            }
-            .btn-logout {
-                padding: 0.5rem 1rem;
-                font-size: 0.85rem;
-            }
-            .btn-logout i {
-                font-size: 1.1rem;
-            }
-            .admin-stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.8rem;
-            }
-            .admin-stat {
-                padding: 1rem 0.6rem;
-                border-radius: 1.2rem;
-            }
-            .admin-stat .num {
-                font-size: 1.6rem;
-            }
-            .admin-stat .icon {
-                font-size: 1.5rem;
-            }
-            .admin-stat .label {
-                font-size: 0.7rem;
-            }
-            .admin-stat .sub {
-                font-size: 0.6rem;
-            }
-            .section-title {
-                font-size: 1.2rem;
-            }
-            .section-title .badge-silver {
-                font-size: 0.7rem;
-                padding: 0.15rem 0.8rem;
-            }
-            .table-wrapper table {
-                font-size: 0.8rem;
-                min-width: 600px;
-            }
-            .table-wrapper table th,
-            .table-wrapper table td {
-                padding: 0.4rem 0.8rem;
-            }
-            .table-wrapper table .empty {
-                font-size: 0.85rem;
-                padding: 1.2rem 0;
-            }
-            .btn-approve, .btn-reject {
-                font-size: 0.7rem;
-                padding: 0.15rem 0.8rem;
-            }
-            .settings-group {
-                padding: 1.2rem;
-            }
-            .settings-group h5 {
-                font-size: 1rem !important;
-            }
-            .settings-group label {
-                font-size: 0.9rem;
-                min-width: 100px;
-            }
-            .settings-group input {
-                font-size: 0.9rem;
-                padding: 0.4rem 1rem;
-                width: 90px;
-            }
-            .settings-group input[type="text"] {
-                width: 100%;
-                font-size: 0.9rem;
-            }
-            .btn-save {
-                font-size: 0.8rem;
-                padding: 0.3rem 1.2rem;
-            }
-            .qr-preview .placeholder {
-                width: 90px;
-                height: 90px;
-                font-size: 2.2rem;
-            }
-            .qr-preview img {
-                max-width: 130px;
-                max-height: 130px;
-            }
-            .qr-preview span {
-                font-size: 0.85rem !important;
-            }
-            .footer-copyright {
-                font-size: 0.8rem;
-            }
-            .bottom-nav {
-                padding: 0.5rem 0.5rem 0.7rem;
-                gap: 0;
-                justify-content: space-between;
-            }
-            .bottom-nav a {
-                padding: 0.4rem 0;
-                min-width: 0;
-                flex: 1;
-                text-align: center;
-                min-height: 54px;
-                justify-content: center;
-            }
-            .bottom-nav a i {
-                font-size: 1.5rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.6rem;
-                line-height: 1.2;
-                margin-top: 2px;
-            }
-            .bottom-nav .nav-divider {
-                height: 32px;
-                flex-shrink: 0;
-                margin: 0 0.2rem;
-            }
-            .pagination button {
-                padding: 0.3rem 0.7rem;
-                font-size: 0.7rem;
-                min-width: 32px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .section-card {
-                padding: 1.2rem 0.8rem;
-                border-radius: 2rem;
-            }
-            .admin-header h2 {
-                font-size: 1.1rem;
-            }
-            .admin-header h2 .owner-badge {
-                font-size: 0.5rem;
-                padding: 0.15rem 0.5rem;
-            }
-            .admin-header p {
-                font-size: 0.85rem !important;
-            }
-            .btn-logout {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.75rem;
-            }
-            .btn-logout .logout-text {
-                display: none;
-            }
-            .btn-logout i {
-                font-size: 1rem;
-            }
-            .admin-stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.6rem;
-            }
-            .admin-stat {
-                padding: 0.8rem 0.4rem;
-                border-radius: 1rem;
-            }
-            .admin-stat .num {
-                font-size: 1.4rem;
-            }
-            .admin-stat .icon {
-                font-size: 1.3rem;
-                margin-bottom: 0.2rem;
-            }
-            .admin-stat .label {
-                font-size: 0.6rem;
-            }
-            .admin-stat .sub {
-                font-size: 0.5rem;
-            }
-            .section-title {
-                font-size: 1rem;
-            }
-            .section-title .badge-silver {
-                font-size: 0.6rem;
-                padding: 0.12rem 0.6rem;
-            }
-            .table-wrapper table {
-                font-size: 0.7rem;
-                min-width: 500px;
-            }
-            .table-wrapper table th,
-            .table-wrapper table td {
-                padding: 0.3rem 0.5rem;
-            }
-            .table-wrapper table .empty {
-                font-size: 0.75rem;
-                padding: 1rem 0;
-            }
-            .btn-approve, .btn-reject {
-                font-size: 0.6rem;
-                padding: 0.12rem 0.6rem;
-            }
-            .settings-group {
-                padding: 0.8rem;
-            }
-            .settings-group h5 {
-                font-size: 0.9rem !important;
-            }
-            .settings-group .row {
-                gap: 0.5rem;
-            }
-            .settings-group label {
-                font-size: 0.8rem;
-                min-width: 80px;
-            }
-            .settings-group input {
-                font-size: 0.8rem;
-                padding: 0.3rem 0.8rem;
-                width: 70px;
-            }
-            .settings-group input[type="text"] {
-                width: 100%;
-                font-size: 0.8rem;
-            }
-            .btn-save {
-                font-size: 0.7rem;
-                padding: 0.25rem 1rem;
-            }
-            .qr-preview .placeholder {
-                width: 70px;
-                height: 70px;
-                font-size: 1.8rem;
-            }
-            .qr-preview img {
-                max-width: 100px;
-                max-height: 100px;
-            }
-            .qr-preview span {
-                font-size: 0.75rem !important;
-            }
-            .footer-copyright {
-                font-size: 0.7rem;
-            }
-            .bottom-nav {
-                padding: 0.4rem 0.3rem 0.6rem;
-                gap: 0;
-                justify-content: space-between;
-            }
-            .bottom-nav a {
-                padding: 0.3rem 0;
-                flex: 1;
-                text-align: center;
-                min-height: 48px;
-                justify-content: center;
-            }
-            .bottom-nav a i {
-                font-size: 1.3rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.52rem;
-                line-height: 1.1;
-                margin-top: 1px;
-            }
-            .bottom-nav .nav-divider {
-                height: 26px;
-                margin: 0 0.1rem;
-            }
-            .pagination button {
-                padding: 0.2rem 0.5rem;
-                font-size: 0.6rem;
-                min-width: 28px;
-            }
-            .pagination .page-info {
-                font-size: 0.6rem;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .admin-header h2 {
-                font-size: 0.95rem;
-            }
-            .admin-stat .num {
-                font-size: 1.2rem;
-            }
-            .admin-stat .icon {
-                font-size: 1.1rem;
-            }
-            .admin-stat .label {
-                font-size: 0.5rem;
-            }
-            .table-wrapper table {
-                font-size: 0.6rem;
-                min-width: 400px;
-            }
-            .bottom-nav a {
-                min-height: 42px;
-                padding: 0.25rem 0;
-            }
-            .bottom-nav a i {
-                font-size: 1.1rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.45rem;
-            }
-            .bottom-nav .nav-divider {
-                height: 22px;
-            }
-            .settings-group label {
-                font-size: 0.7rem;
-                min-width: 70px;
-            }
-            .settings-group input {
-                font-size: 0.7rem;
-                padding: 0.2rem 0.6rem;
-                width: 60px;
-            }
-            .btn-save {
-                font-size: 0.6rem;
-                padding: 0.2rem 0.8rem;
-            }
-            .btn-logout {
-                padding: 0.3rem 0.6rem;
-            }
-            .btn-logout i {
-                font-size: 0.8rem;
-            }
-            .pagination button {
-                padding: 0.15rem 0.4rem;
-                font-size: 0.55rem;
-                min-width: 24px;
-            }
-        }
     </style>
 </head>
 <body>
+
     <div class="container">
 
-        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Success</span></div>
 
         <div class="section-card">
 
-            <!-- HEADER WITH LOGOUT -->
+            <!-- HEADER -->
             <div class="admin-header">
                 <h2>
-                    <i class="fas fa-user-shield"></i>Panel Admin
+                    <i class="fas fa-user-shield"></i>Admin Panel
                     <span class="owner-badge">🔒 Owner Only</span>
                 </h2>
                 <button class="btn-logout" id="logoutBtn">
@@ -867,45 +631,42 @@
                     <span class="logout-text">Logout</span>
                 </button>
             </div>
-            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Kelola pengguna, deposit, withdraw & pengaturan</p>
+            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Manage users, deposits, withdrawals & settings</p>
 
-            <!-- ========================================================== -->
-            <!-- TAB STATISTIK (DEFAULT) -->
-            <!-- ========================================================== -->
-            <div class="tab-content active" id="tabStats">
-                <!-- STATS GRID - KEREN -->
-                <div class="admin-stats-grid">
-                    <div class="admin-stat primary">
-                        <div class="icon"><i class="fas fa-users"></i></div>
-                        <div class="num" id="adminTotalUsers">0</div>
-                        <div class="label">Total Pengguna</div>
-                        <div class="sub">Terdaftar</div>
-                    </div>
-                    <div class="admin-stat warning">
-                        <div class="icon"><i class="fas fa-clock"></i></div>
-                        <div class="num" id="adminPendingDeposits">0</div>
-                        <div class="label">Pending Deposit</div>
-                        <div class="sub">Menunggu Approve</div>
-                    </div>
-                    <div class="admin-stat info">
-                        <div class="icon"><i class="fas fa-arrow-up"></i></div>
-                        <div class="num" id="adminPendingWithdraw">0</div>
-                        <div class="label">Pending Withdraw</div>
-                        <div class="sub">Menunggu Approve</div>
-                    </div>
-                    <div class="admin-stat success">
-                        <div class="icon"><i class="fas fa-coins"></i></div>
-                        <div class="num" id="adminTotalUSDTMinted">0</div>
-                        <div class="label">Total USDT Dicetak</div>
-                        <div class="sub">Seluruh User</div>
-                    </div>
+            <!-- STATS GRID -->
+            <div class="admin-stats-grid" id="statsGrid">
+                <div class="admin-stat primary" data-tab="tabUsers">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <div class="num" id="adminTotalUsers">0</div>
+                    <div class="label">Total Users</div>
+                    <div class="sub">Registered</div>
                 </div>
+                <div class="admin-stat warning" data-tab="tabDeposit">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <div class="num" id="adminPendingDeposits">0</div>
+                    <div class="label">Pending Deposits</div>
+                    <div class="sub">Awaiting Approval</div>
+                </div>
+                <div class="admin-stat info" data-tab="tabWithdraw">
+                    <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                    <div class="num" id="adminPendingWithdraw">0</div>
+                    <div class="label">Pending Withdrawals</div>
+                    <div class="sub">Awaiting Approval</div>
+                </div>
+                <div class="admin-stat success" data-tab="tabStats">
+                    <div class="icon"><i class="fas fa-coins"></i></div>
+                    <div class="num" id="adminTotalUSDTMinted">0</div>
+                    <div class="label">Total USDT Minted</div>
+                    <div class="sub">All Users</div>
+                </div>
+            </div>
 
-                <!-- TABLE USER dengan TOTAL & PAGINATION -->
+            <!-- TAB: USERS -->
+            <div class="tab-content" id="tabUsers">
                 <div class="section-title">
-                    <span><i class="fas fa-users"></i> Daftar Pengguna</span>
+                    <span><i class="fas fa-users"></i> All Users</span>
                     <span class="badge-silver">
-                        <i class="fas fa-user"></i> Total: <strong id="totalUserCount">0</strong> Pengguna
+                        <i class="fas fa-user"></i> Total: <strong id="totalUserCount">0</strong>
                     </span>
                 </div>
                 <div class="table-wrapper">
@@ -914,32 +675,22 @@
                             <tr>
                                 <th>#</th>
                                 <th>Email</th>
-                                <th>Kode Ref</th>
-                                <th>Direferral</th>
-                                <th>Total USDT</th>
+                                <th>Ref Code</th>
+                                <th>Referred By</th>
+                                <th>Role</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="adminUserBody">
-                            <tr><td colspan="6" class="empty">Memuat...</td></tr>
+                            <tr><td colspan="6" class="empty">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
-
-                <!-- PAGINATION -->
-                <div class="pagination" id="userPagination">
-                    <button id="prevPage" disabled><i class="fas fa-chevron-left"></i> Prev</button>
-                    <div id="pageNumbers"></div>
-                    <button id="nextPage">Next <i class="fas fa-chevron-right"></i></button>
-                    <span class="page-info" id="pageInfo">Halaman 1 dari 1</span>
-                </div>
             </div>
 
-            <!-- ========================================================== -->
-            <!-- TAB DEPOSIT -->
-            <!-- ========================================================== -->
+            <!-- TAB: DEPOSIT -->
             <div class="tab-content" id="tabDeposit">
-                <div class="section-title"><i class="fas fa-clock"></i> Deposit Pending</div>
+                <div class="section-title"><i class="fas fa-clock"></i> Pending Deposits</div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -947,110 +698,103 @@
                                 <th>User</th>
                                 <th>USDT</th>
                                 <th>Bonus</th>
-                                <th>Ref</th>
                                 <th>Total</th>
-                                <th>Hash TX</th>
-                                <th>Aksi</th>
+                                <th>TX Hash</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="adminPendingBody">
-                            <tr><td colspan="7" class="empty">Tidak ada pending</td></tr>
+                            <tr><td colspan="6" class="empty">No pending deposits</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- ========================================================== -->
-            <!-- TAB WITHDRAW -->
-            <!-- ========================================================== -->
+            <!-- TAB: WITHDRAW -->
             <div class="tab-content" id="tabWithdraw">
-                <div class="section-title"><i class="fas fa-arrow-up"></i> Permintaan Withdraw</div>
+                <div class="section-title"><i class="fas fa-arrow-up"></i> Pending Withdrawals</div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
                                 <th>User</th>
-                                <th>Jumlah USDT</th>
+                                <th>Amount</th>
                                 <th>Address</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
+                                <th>Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="adminWdBody">
-                            <tr><td colspan="5" class="empty">Tidak ada permintaan withdraw</td></tr>
+                            <tr><td colspan="5" class="empty">No pending withdrawals</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- ========================================================== -->
-            <!-- TAB SETTINGS -->
-            <!-- ========================================================== -->
+            <!-- TAB: SETTINGS -->
             <div class="tab-content" id="tabSettings">
                 <div class="settings-group">
-                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Pengaturan Bonus & Referral</h5>
+                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Bonus & Referral Settings</h5>
                     <div class="row">
                         <label>Bonus (%)</label>
                         <input type="number" id="adminBonusPercent" value="10" min="0" max="100" />
                         <label style="min-width:80px;">Referral (%)</label>
                         <input type="number" id="adminRefPercent" value="3" min="0" max="100" />
-                        <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </div>
 
                 <div class="settings-group">
-                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-paint-brush"></i> Brand / Tampilan</h5>
+                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-paint-brush"></i> Brand Settings</h5>
                     <div class="row">
-                        <label><i class="fas fa-tag"></i> Nama Brand</label>
+                        <label><i class="fas fa-tag"></i> Brand Name</label>
                         <input type="text" id="adminBrandName" placeholder="SilverChain" style="width:200px;" />
-                        <button class="btn-save" id="saveBrandBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <button class="btn-save" id="saveBrandBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
                         <label><i class="fas fa-image"></i> Logo (URL/Base64)</label>
-                        <input type="text" id="adminLogoUrl" placeholder="URL gambar atau base64" style="width:300px;" />
-                        <button class="btn-save" id="saveLogoBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <input type="text" id="adminLogoUrl" placeholder="Image URL or base64" style="width:300px;" />
+                        <button class="btn-save" id="saveLogoBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
-                        <label><i class="fas fa-undo"></i> Reset Logo ke Icon</label>
+                        <label><i class="fas fa-undo"></i> Reset Logo</label>
                         <button class="btn-save danger" id="resetLogoBtn"><i class="fas fa-undo"></i> Reset</button>
                     </div>
                 </div>
 
                 <div class="settings-group">
-                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-address-card"></i> Kontak & Sosial Media</h5>
+                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-address-card"></i> Contact & Social Media</h5>
                     <div class="row">
                         <label><i class="fab fa-twitter"></i> Twitter URL</label>
                         <input type="text" id="adminTwitter" placeholder="https://twitter.com/SilverChain" style="width:300px;" />
-                        <button class="btn-save" id="saveTwitterBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <button class="btn-save" id="saveTwitterBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
                         <label><i class="fab fa-telegram"></i> Telegram URL</label>
                         <input type="text" id="adminTelegram" placeholder="https://t.me/SilverChain" style="width:300px;" />
-                        <button class="btn-save" id="saveTelegramBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <button class="btn-save" id="saveTelegramBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
                         <label><i class="fab fa-discord"></i> Discord URL</label>
                         <input type="text" id="adminDiscord" placeholder="https://discord.gg/silver" style="width:300px;" />
-                        <button class="btn-save" id="saveDiscordBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <button class="btn-save" id="saveDiscordBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
-                        <label><i class="fas fa-envelope"></i> Email Kontak</label>
+                        <label><i class="fas fa-envelope"></i> Contact Email</label>
                         <input type="text" id="adminContactEmail" placeholder="dao@silverchain.io" style="width:300px;" />
-                        <button class="btn-save" id="saveContactEmailBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <button class="btn-save" id="saveContactEmailBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </div>
             </div>
 
-            <!-- ========================================================== -->
-            <!-- TAB PAYMENT -->
-            <!-- ========================================================== -->
+            <!-- TAB: PAYMENT -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
                     <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
                     <div class="row">
                         <label><i class="fab fa-ethereum"></i> USDT Address</label>
                         <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="width:350px;" />
-                        <button class="btn-save" id="saveUsdtBtn"><i class="fas fa-save"></i> Simpan</button>
+                        <button class="btn-save" id="saveUsdtBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row" style="margin-top:0.8rem;">
                         <label><i class="fas fa-qrcode"></i> QRIS Image</label>
@@ -1060,10 +804,10 @@
                     <div class="qr-preview" id="qrisPreviewContainer">
                         <div class="placeholder" id="qrisPlaceholder"><i class="fas fa-qrcode"></i></div>
                         <img id="qrisPreviewImg" style="display:none;" alt="QRIS" />
-                        <span style="color:#a0a0a0; font-size:0.75rem;" id="qrisStatus">Belum ada QRIS</span>
+                        <span style="color:#a0a0a0; font-size:0.75rem;" id="qrisStatus">No QRIS uploaded</span>
                     </div>
                     <p style="color:#a0a0a0; font-size:0.7rem; margin-top:0.3rem;">
-                        <i class="fas fa-info-circle"></i> Address USDT & QRIS akan digunakan di halaman pembelian token.
+                        <i class="fas fa-info-circle"></i> USDT Address & QRIS will be used on the purchase page.
                     </p>
                 </div>
             </div>
@@ -1073,15 +817,17 @@
 
     </div>
 
-    <!-- ========================================================== -->
-    <!-- BOTTOM NAV - KHUSUS ADMIN -->
-    <!-- ========================================================== -->
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <a href="#" class="active" data-tab="tabStats" id="navStats">
             <i class="fas fa-chart-bar"></i>
-            <span>Statistik</span>
+            <span>Stats</span>
         </a>
         <div class="nav-divider"></div>
+        <a href="#" data-tab="tabUsers" id="navUsers">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+        </a>
         <a href="#" data-tab="tabDeposit" id="navDeposit">
             <i class="fas fa-clock"></i>
             <span>Deposit</span>
@@ -1105,145 +851,28 @@
         // STORAGE KEYS
         // ============================================================
         const STORAGE_KEYS = {
-            USERS: 'silverchain_users',
-            DEPOSITS: 'silverchain_deposits',
-            WITHDRAWALS: 'silverchain_withdrawals',
-            BONUS: 'silverchain_bonus',
-            REF: 'silverchain_ref',
-            CURRENT_USER: 'silverchain_current_user',
-            USDT_ADDRESS: 'silverchain_usdt_address',
-            QRIS_DATA: 'silverchain_qris_data',
-            SETTINGS: 'silverchain_settings'
+            CURRENT_USER: 'silverchain_current_user'
         };
-        const OWNER_EMAIL = 'admin@silverchain.io';
+        const ADMIN_EMAIL = 'admin@silverchain.io';
 
-        let usersDB = [];
-        let depositsDB = [];
-        let withdrawalsDB = [];
         let currentUser = null;
-        let bonusPercent = 10;
-        let refPercent = 3;
-        let settings = {};
-
-        // ===== PAGINATION VARIABLES =====
-        let currentPage = 1;
-        const rowsPerPage = 5;
 
         // ============================================================
-        // CHECK AUTH
-        // ============================================================
-        function checkAuth() {
-            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-            if (saved) {
-                const data = JSON.parse(saved);
-                const found = usersDB.find(u => u.email === data.email);
-                if (found) {
-                    currentUser = found;
-                    if (found.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
-                        return true;
-                    }
-                    window.location.href = '/dashboard';
-                    return false;
-                }
-            }
-            window.location.href = '/auth';
-            return false;
-        }
-
-        // ============================================================
-        // LOGOUT
-        // ============================================================
-        function logout() {
-            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-            showToast('👋 Berhasil keluar.');
-            setTimeout(() => {
-                window.location.href = '/auth';
-            }, 500);
-        }
-
-        document.getElementById('logoutBtn').addEventListener('click', logout);
-
-        // ============================================================
-        // LOAD DATA
+        // LOAD
         // ============================================================
         function loadData() {
             try {
-                const users = localStorage.getItem(STORAGE_KEYS.USERS);
-                if (users) usersDB = JSON.parse(users);
-                else {
-                    usersDB = [
-                        { email: 'demo@silverchain.io', password: '123456', refCode: 'SILVER2026', referredBy: null, verified: true },
-                        { email: 'alice@test.com', password: '123456', refCode: 'ALICE123', referredBy: null, verified: true },
-                        { email: 'bob@test.com', password: '123456', refCode: 'BOB456', referredBy: 'SILVER2026', verified: true },
-                        { email: 'carol@test.com', password: '123456', refCode: 'CAROL789', referredBy: 'SILVER2026', verified: true },
-                        { email: 'dave@test.com', password: '123456', refCode: 'DAVE001', referredBy: 'ALICE123', verified: true },
-                        { email: 'eve@test.com', password: '123456', refCode: 'EVE002', referredBy: 'SILVER2026', verified: true },
-                        { email: 'frank@test.com', password: '123456', refCode: 'FRANK003', referredBy: 'ALICE123', verified: true },
-                        { email: 'grace@test.com', password: '123456', refCode: 'GRACE004', referredBy: null, verified: true },
-                        { email: 'heidi@test.com', password: '123456', refCode: 'HEIDI005', referredBy: 'BOB456', verified: true },
-                        { email: 'ivan@test.com', password: '123456', refCode: 'IVAN006', referredBy: 'CAROL789', verified: true },
-                        { email: 'judy@test.com', password: '123456', refCode: 'JUDY007', referredBy: null, verified: true },
-                        { email: OWNER_EMAIL, password: 'admin123', refCode: 'ADMIN999', referredBy: null, verified: true }
-                    ];
-                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (typeof Supabase !== 'undefined') {
+                        Supabase.getUserByEmail(data.email).then(user => {
+                            if (user) currentUser = user;
+                            updateUI();
+                        });
+                    }
                 }
-                const admin = usersDB.find(u => u.email.toLowerCase() === OWNER_EMAIL.toLowerCase());
-                if (admin && !admin.verified) {
-                    admin.verified = true;
-                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB));
-                }
-
-                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
-                if (deposits) depositsDB = JSON.parse(deposits);
-                else {
-                    depositsDB = [
-                        { id: 1, email: 'demo@silverchain.io', usdt: 1000, bonus: 100, ref: 30, total: 1130,
-                            txHash: '0xabc123...', status: 'approved', timestamp: Date.now() - 86400000 },
-                        { id: 2, email: 'demo@silverchain.io', usdt: 500, bonus: 50, ref: 15, total: 565,
-                            txHash: '0xdef456...', status: 'approved', timestamp: Date.now() - 3600000 },
-                        { id: 3, email: 'alice@test.com', usdt: 200, bonus: 20, ref: 6, total: 226,
-                            txHash: '0xghi789...', status: 'approved', timestamp: Date.now() - 7200000 },
-                        { id: 4, email: 'bob@test.com', usdt: 300, bonus: 30, ref: 9, total: 339,
-                            txHash: '0xjkl012...', status: 'pending', timestamp: Date.now() - 1800000 },
-                        { id: 5, email: 'carol@test.com', usdt: 150, bonus: 15, ref: 4.5, total: 169.5,
-                            txHash: '0xmno345...', status: 'pending', timestamp: Date.now() - 900000 }
-                    ];
-                    localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB));
-                }
-
-                const wd = localStorage.getItem(STORAGE_KEYS.WITHDRAWALS);
-                if (wd) withdrawalsDB = JSON.parse(wd);
-                else {
-                    withdrawalsDB = [];
-                    localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB));
-                }
-
-                const bonus = localStorage.getItem(STORAGE_KEYS.BONUS);
-                if (bonus) bonusPercent = parseInt(bonus) || 10;
-                const ref = localStorage.getItem(STORAGE_KEYS.REF);
-                if (ref) refPercent = parseInt(ref) || 3;
-
-                const settingsData = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-                if (settingsData) settings = JSON.parse(settingsData);
-                else settings = {};
-
             } catch (e) { console.warn('Load error:', e); }
-        }
-
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
-        function saveDeposits() { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(depositsDB)); }
-        function saveWithdrawals() { localStorage.setItem(STORAGE_KEYS.WITHDRAWALS, JSON.stringify(withdrawalsDB)); }
-        function saveSettings() {
-            localStorage.setItem(STORAGE_KEYS.BONUS, String(bonusPercent));
-            localStorage.setItem(STORAGE_KEYS.REF, String(refPercent));
-        }
-        function saveFullSettings() {
-            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
-        }
-
-        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
-        function getUserTotalUSDT(email) {
-            return depositsDB.filter(d => d.email === email && d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
         }
 
         function showToast(msg) {
@@ -1254,106 +883,43 @@
         }
 
         // ============================================================
-        // PAGINATION FUNCTIONS
+        // CHECK SUPABASE
         // ============================================================
-        function renderUserTable() {
-            const tbody = document.getElementById('adminUserBody');
-            const totalUsers = usersDB.length;
-            
-            // Update total counter
-            document.getElementById('totalUserCount').textContent = totalUsers;
-
-            if (totalUsers === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="empty">Belum ada pengguna terdaftar</td></tr>`;
-                document.getElementById('userPagination').style.display = 'none';
-                return;
+        function checkSupabase() {
+            if (typeof Supabase === 'undefined') {
+                showToast('❌ System error. Please refresh.');
+                return false;
             }
-
-            document.getElementById('userPagination').style.display = 'flex';
-
-            const totalPages = Math.ceil(totalUsers / rowsPerPage);
-            if (currentPage > totalPages) currentPage = totalPages;
-            if (currentPage < 1) currentPage = 1;
-
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = Math.min(start + rowsPerPage, totalUsers);
-            const pageUsers = usersDB.slice(start, end);
-
-            let html = '';
-            pageUsers.forEach((u, index) => {
-                const isOwner = u.email === OWNER_EMAIL;
-                const total = getUserTotalUSDT(u.email);
-                const status = u.verified ? '✅ Verified' : '⏳ Pending';
-                const num = start + index + 1;
-                html += `<tr>
-                    <td style="color:#888888;">${num}</td>
-                    <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
-                    <td><span class="badge-admin">${u.refCode || '-'}</span></td>
-                    <td>${u.referredBy || '-'}</td>
-                    <td>${total.toFixed(1)}</td>
-                    <td>${status}</td>
-                </tr>`;
-            });
-            tbody.innerHTML = html;
-
-            // Update pagination buttons
-            updatePaginationControls(totalPages);
-        }
-
-        function updatePaginationControls(totalPages) {
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageNumbers = document.getElementById('pageNumbers');
-            const pageInfo = document.getElementById('pageInfo');
-
-            prevBtn.disabled = currentPage <= 1;
-            nextBtn.disabled = currentPage >= totalPages;
-
-            pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages}`;
-
-            // Generate page number buttons
-            let html = '';
-            const maxVisible = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            if (endPage - startPage < maxVisible - 1) {
-                startPage = Math.max(1, endPage - maxVisible + 1);
-            }
-
-            if (startPage > 1) {
-                html += `<button data-page="1">1</button>`;
-                if (startPage > 2) html += `<button disabled>…</button>`;
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
-                html += `<button data-page="${i}" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
-            }
-
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) html += `<button disabled>…</button>`;
-                html += `<button data-page="${totalPages}">${totalPages}</button>`;
-            }
-
-            pageNumbers.innerHTML = html;
-
-            // Add event listeners to page buttons
-            document.querySelectorAll('#pageNumbers button[data-page]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const page = parseInt(this.dataset.page);
-                    if (page !== currentPage) {
-                        currentPage = page;
-                        renderUserTable();
-                    }
-                });
-            });
+            return true;
         }
 
         // ============================================================
-        // BOTTOM NAV - TAB SWITCHING
+        // CHECK AUTH - ADMIN ONLY
+        // ============================================================
+        async function checkAuth() {
+            if (!currentUser) {
+                window.location.href = '/auth';
+                return false;
+            }
+
+            if (checkSupabase()) {
+                const isAdmin = await Supabase.isAdmin(currentUser.email);
+                if (!isAdmin) {
+                    window.location.href = '/dashboard';
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        // ============================================================
+        // TABS
         // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
         const tabContents = {
-            tabStats: document.getElementById('tabStats'),
+            tabStats: document.getElementById('statsGrid'),
+            tabUsers: document.getElementById('tabUsers'),
             tabDeposit: document.getElementById('tabDeposit'),
             tabWithdraw: document.getElementById('tabWithdraw'),
             tabSettings: document.getElementById('tabSettings'),
@@ -1363,12 +929,12 @@
         function showTab(tabId) {
             Object.keys(tabContents).forEach(key => {
                 if (tabContents[key]) {
-                    tabContents[key].classList.remove('active');
+                    tabContents[key].style.display = 'none';
                 }
             });
             const target = tabContents[tabId];
             if (target) {
-                target.classList.add('active');
+                target.style.display = 'block';
             }
             navItems.forEach(item => {
                 item.classList.remove('active');
@@ -1387,57 +953,95 @@
             });
         });
 
-        // ============================================================
-        // UI UPDATE
-        // ============================================================
-        function updateUI() {
-            const isOwner = currentUser && currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+        document.querySelectorAll('.admin-stat[data-tab]').forEach(card => {
+            card.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                showTab(tabId);
+            });
+        });
 
-            if (!isOwner) {
+        // ============================================================
+        // UI
+        // ============================================================
+        async function updateUI() {
+            if (!currentUser) {
                 document.getElementById('adminTotalUsers').textContent = '🔒';
                 document.getElementById('adminPendingDeposits').textContent = '🔒';
                 document.getElementById('adminPendingWithdraw').textContent = '🔒';
                 document.getElementById('adminTotalUSDTMinted').textContent = '🔒';
                 document.getElementById('adminUserBody').innerHTML =
-                    `<tr><td colspan="6" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
+                    `<tr><td colspan="6" class="empty">🔒 Admin only</td></tr>`;
                 document.getElementById('adminPendingBody').innerHTML =
-                    `<tr><td colspan="7" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
+                    `<tr><td colspan="6" class="empty">🔒 Admin only</td></tr>`;
                 document.getElementById('adminWdBody').innerHTML =
-                    `<tr><td colspan="5" class="empty">🔒 Hanya owner yang dapat melihat</td></tr>`;
-                document.getElementById('userPagination').style.display = 'none';
+                    `<tr><td colspan="5" class="empty">🔒 Admin only</td></tr>`;
+                return;
+            }
+
+            if (!checkSupabase()) return;
+
+            const isAdmin = await Supabase.isAdmin(currentUser.email);
+            if (!isAdmin) {
+                window.location.href = '/dashboard';
                 return;
             }
 
             // Stats
-            document.getElementById('adminTotalUsers').textContent = usersDB.length;
-            const pending = depositsDB.filter(d => d.status === 'pending');
-            document.getElementById('adminPendingDeposits').textContent = pending.length;
-            const wdPending = withdrawalsDB.filter(w => w.status === 'pending');
-            document.getElementById('adminPendingWithdraw').textContent = wdPending.length;
-            const totalMinted = depositsDB.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
+            const users = await Supabase.getAllUsers();
+            const deposits = await Supabase.getAllDeposits();
+            const withdrawals = await Supabase.getAllWithdrawals();
+
+            document.getElementById('adminTotalUsers').textContent = users.length;
+            document.getElementById('totalUserCount').textContent = users.length;
+
+            const pendingDeposits = deposits.filter(d => d.status === 'pending');
+            document.getElementById('adminPendingDeposits').textContent = pendingDeposits.length;
+
+            const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending');
+            document.getElementById('adminPendingWithdraw').textContent = pendingWithdrawals.length;
+
+            const totalMinted = deposits.filter(d => d.status === 'approved').reduce((sum, d) => sum + d.total, 0);
             document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
 
-            // Settings values
-            document.getElementById('adminBonusPercent').value = bonusPercent;
-            document.getElementById('adminRefPercent').value = refPercent;
+            // Settings
+            const bonus = await Supabase.getSetting('bonus_percent');
+            const ref = await Supabase.getSetting('ref_percent');
+            document.getElementById('adminBonusPercent').value = bonus || 10;
+            document.getElementById('adminRefPercent').value = ref || 3;
 
-            // Render user table with pagination
-            renderUserTable();
-
-            // Pending Deposit
-            if (pending.length === 0) {
-                document.getElementById('adminPendingBody').innerHTML =
-                    `<tr><td colspan="7" class="empty">Tidak ada pending</td></tr>`;
+            // Users Table
+            if (users.length === 0) {
+                document.getElementById('adminUserBody').innerHTML =
+                    `<tr><td colspan="6" class="empty">No users registered</td></tr>`;
             } else {
                 let html = '';
-                pending.forEach(d => {
+                users.forEach((u, index) => {
+                    const isOwner = u.email === ADMIN_EMAIL;
+                    html += `<tr>
+                        <td>${index + 1}</td>
+                        <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
+                        <td><span class="badge-admin">${u.ref_code || '-'}</span></td>
+                        <td>${u.referred_by || '-'}</td>
+                        <td>${u.role || 'user'}</td>
+                        <td>${u.verified ? '✅ Verified' : '⏳ Pending'}</td>
+                    </tr>`;
+                });
+                document.getElementById('adminUserBody').innerHTML = html;
+            }
+
+            // Pending Deposits
+            if (pendingDeposits.length === 0) {
+                document.getElementById('adminPendingBody').innerHTML =
+                    `<tr><td colspan="6" class="empty">No pending deposits</td></tr>`;
+            } else {
+                let html = '';
+                pendingDeposits.forEach(d => {
                     html += `<tr>
                         <td>${d.email}</td>
                         <td>${d.usdt}</td>
                         <td>${d.bonus || 0}</td>
-                        <td>${d.ref || 0}</td>
                         <td>${d.total || d.usdt}</td>
-                        <td style="font-family:monospace; font-size:0.6rem;">${d.txHash || '-'}</td>
+                        <td style="font-family:monospace; font-size:0.6rem;">${d.tx_hash || '-'}</td>
                         <td>
                             <button class="btn-approve" data-id="${d.id}" data-type="deposit">✅ Approve</button>
                             <button class="btn-reject" data-id="${d.id}" data-type="deposit">✖ Reject</button>
@@ -1447,40 +1051,36 @@
                 document.getElementById('adminPendingBody').innerHTML = html;
 
                 document.querySelectorAll('#adminPendingBody .btn-approve').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', async function() {
                         const id = parseInt(this.dataset.id);
-                        const deposit = depositsDB.find(d => d.id === id);
-                        if (deposit) {
-                            deposit.status = 'approved';
-                            saveDeposits();
-                            showToast(`✅ Deposit ${deposit.usdt} USDT dari ${deposit.email} disetujui!`);
+                        if (checkSupabase()) {
+                            await Supabase.updateDepositStatus(id, 'approved');
+                            showToast('✅ Deposit approved!');
                             updateUI();
                         }
                     });
                 });
                 document.querySelectorAll('#adminPendingBody .btn-reject').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', async function() {
                         const id = parseInt(this.dataset.id);
-                        const deposit = depositsDB.find(d => d.id === id);
-                        if (deposit) {
-                            deposit.status = 'rejected';
-                            saveDeposits();
-                            showToast(`❌ Deposit ${deposit.usdt} USDT dari ${deposit.email} ditolak.`);
+                        if (checkSupabase()) {
+                            await Supabase.updateDepositStatus(id, 'rejected');
+                            showToast('❌ Deposit rejected.');
                             updateUI();
                         }
                     });
                 });
             }
 
-            // Withdraw Pending
-            if (wdPending.length === 0) {
+            // Pending Withdrawals
+            if (pendingWithdrawals.length === 0) {
                 document.getElementById('adminWdBody').innerHTML =
-                    `<tr><td colspan="5" class="empty">Tidak ada permintaan withdraw</td></tr>`;
+                    `<tr><td colspan="5" class="empty">No pending withdrawals</td></tr>`;
             } else {
                 let html = '';
-                wdPending.forEach(w => {
-                    const date = new Date(w.timestamp).toLocaleDateString('id-ID') + ' ' + new Date(w.timestamp)
-                        .toLocaleTimeString('id-ID');
+                pendingWithdrawals.forEach(w => {
+                    const date = new Date(w.timestamp).toLocaleDateString('en-US') + ' ' + new Date(w.timestamp)
+                        .toLocaleTimeString('en-US');
                     const addrShort = w.address ? w.address.substring(0, 10) + '...' : '-';
                     html += `<tr>
                         <td>${w.email}</td>
@@ -1496,25 +1096,21 @@
                 document.getElementById('adminWdBody').innerHTML = html;
 
                 document.querySelectorAll('#adminWdBody .btn-approve').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', async function() {
                         const id = parseInt(this.dataset.id);
-                        const wd = withdrawalsDB.find(w => w.id === id);
-                        if (wd) {
-                            wd.status = 'approved';
-                            saveWithdrawals();
-                            showToast(`✅ Withdraw ${wd.amount} USDT dari ${wd.email} disetujui!`);
+                        if (checkSupabase()) {
+                            await Supabase.updateWithdrawalStatus(id, 'approved');
+                            showToast('✅ Withdrawal approved!');
                             updateUI();
                         }
                     });
                 });
                 document.querySelectorAll('#adminWdBody .btn-reject').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', async function() {
                         const id = parseInt(this.dataset.id);
-                        const wd = withdrawalsDB.find(w => w.id === id);
-                        if (wd) {
-                            wd.status = 'rejected';
-                            saveWithdrawals();
-                            showToast(`❌ Withdraw ${wd.amount} USDT dari ${wd.email} ditolak.`);
+                        if (checkSupabase()) {
+                            await Supabase.updateWithdrawalStatus(id, 'rejected');
+                            showToast('❌ Withdrawal rejected.');
                             updateUI();
                         }
                     });
@@ -1526,29 +1122,11 @@
         }
 
         // ============================================================
-        // PAGINATION EVENT LISTENERS
-        // ============================================================
-        document.getElementById('prevPage').addEventListener('click', function() {
-            if (currentPage > 1) {
-                currentPage--;
-                renderUserTable();
-            }
-        });
-
-        document.getElementById('nextPage').addEventListener('click', function() {
-            const totalPages = Math.ceil(usersDB.length / rowsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderUserTable();
-            }
-        });
-
-        // ============================================================
         // QRIS FUNCTIONS
         // ============================================================
         function loadQrisPreview() {
             try {
-                const qrisData = localStorage.getItem(STORAGE_KEYS.QRIS_DATA);
+                const qrisData = localStorage.getItem('silverchain_qris_data');
                 const placeholder = document.getElementById('qrisPlaceholder');
                 const img = document.getElementById('qrisPreviewImg');
                 const status = document.getElementById('qrisStatus');
@@ -1557,12 +1135,12 @@
                     img.src = qrisData;
                     img.style.display = 'block';
                     placeholder.style.display = 'none';
-                    status.textContent = '✅ QRIS terupload';
+                    status.textContent = '✅ QRIS uploaded';
                     status.style.color = '#6aff8a';
                 } else {
                     img.style.display = 'none';
                     placeholder.style.display = 'flex';
-                    status.textContent = 'Belum ada QRIS';
+                    status.textContent = 'No QRIS uploaded';
                     status.style.color = '#a0a0a0';
                 }
             } catch (e) { console.warn('QRIS load error:', e); }
@@ -1572,21 +1150,21 @@
             const fileInput = document.getElementById('qrisUpload');
             const file = fileInput.files[0];
             if (!file) {
-                showToast('❌ Pilih file gambar terlebih dahulu.');
+                showToast('❌ Please select an image file.');
                 return;
             }
             if (!file.type.startsWith('image/')) {
-                showToast('❌ Harap upload file gambar.');
+                showToast('❌ Please upload an image file.');
                 return;
             }
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    localStorage.setItem(STORAGE_KEYS.QRIS_DATA, e.target.result);
-                    showToast('✅ QRIS berhasil diupload!');
+                    localStorage.setItem('silverchain_qris_data', e.target.result);
+                    showToast('✅ QRIS uploaded successfully!');
                     loadQrisPreview();
                 } catch (err) {
-                    showToast('❌ Gagal menyimpan QRIS. Ukuran terlalu besar?');
+                    showToast('❌ Failed to save QRIS.');
                 }
             };
             reader.readAsDataURL(file);
@@ -1596,88 +1174,94 @@
         // LOAD SETTINGS UI
         // ============================================================
         function loadSettingsUI() {
-            document.getElementById('adminBrandName').value = settings.brandName || '';
-            document.getElementById('adminLogoUrl').value = settings.logoImage || '';
-            document.getElementById('adminTwitter').value = settings.contactTwitter || '';
-            document.getElementById('adminTelegram').value = settings.contactTelegram || '';
-            document.getElementById('adminDiscord').value = settings.contactDiscord || '';
-            document.getElementById('adminContactEmail').value = settings.contactEmail || '';
-            
-            const usdtAddr = localStorage.getItem(STORAGE_KEYS.USDT_ADDRESS);
-            if (usdtAddr) {
-                document.getElementById('adminUsdtAddress').value = usdtAddr;
-            }
+            try {
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                document.getElementById('adminBrandName').value = settings.brandName || '';
+                document.getElementById('adminLogoUrl').value = settings.logoImage || '';
+                document.getElementById('adminTwitter').value = settings.contactTwitter || '';
+                document.getElementById('adminTelegram').value = settings.contactTelegram || '';
+                document.getElementById('adminDiscord').value = settings.contactDiscord || '';
+                document.getElementById('adminContactEmail').value = settings.contactEmail || '';
+            } catch (e) {}
         }
 
         // ============================================================
         // SAVE SETTINGS
         // ============================================================
-        document.getElementById('saveSettingsBtn').addEventListener('click', function() {
-            const newBonus = parseInt(document.getElementById('adminBonusPercent').value) || 0;
-            const newRef = parseInt(document.getElementById('adminRefPercent').value) || 0;
-            if (newBonus < 0 || newRef < 0) {
-                showToast('❌ Nilai tidak boleh negatif.');
-                return;
-            }
-            bonusPercent = newBonus;
-            refPercent = newRef;
-            saveSettings();
-            showToast(`✅ Pengaturan disimpan! Bonus: ${bonusPercent}%, Referral: ${refPercent}%`);
-        });
+        async function saveSettings() {
+            if (!checkSupabase()) return;
 
-        document.getElementById('saveUsdtBtn').addEventListener('click', function() {
+            const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
+            const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
+
+            await Supabase.saveSetting('bonus_percent', String(bonus));
+            await Supabase.saveSetting('ref_percent', String(ref));
+
+            showToast('✅ Settings saved!');
+            updateUI();
+        }
+
+        document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+
+        document.getElementById('saveUsdtBtn').addEventListener('click', async function() {
             const address = document.getElementById('adminUsdtAddress').value.trim();
             if (!address || address.length < 10) {
-                showToast('❌ Masukkan address USDT yang valid.');
+                showToast('❌ Please enter a valid USDT address.');
                 return;
             }
-            localStorage.setItem(STORAGE_KEYS.USDT_ADDRESS, address);
-            showToast('✅ Address USDT berhasil disimpan!');
+            if (checkSupabase()) {
+                await Supabase.saveSetting('usdt_address', address);
+                showToast('✅ USDT address saved!');
+            }
         });
+
+        function saveContact(key, value) {
+            if (value) {
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings[key] = value;
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                showToast(`✅ ${key} saved!`);
+            } else {
+                showToast('❌ Please enter a valid URL.');
+            }
+        }
 
         document.getElementById('saveBrandBtn').addEventListener('click', function() {
             const name = document.getElementById('adminBrandName').value.trim();
             if (name) {
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.brandName = name;
-                saveFullSettings();
-                showToast('✅ Nama brand berhasil disimpan!');
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                showToast('✅ Brand name saved!');
             } else {
-                showToast('❌ Masukkan nama brand.');
+                showToast('❌ Please enter a brand name.');
             }
         });
 
         document.getElementById('saveLogoBtn').addEventListener('click', function() {
             const url = document.getElementById('adminLogoUrl').value.trim();
             if (url) {
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.logoImage = url;
                 settings.logoType = 'image';
-                saveFullSettings();
-                showToast('✅ Logo berhasil disimpan!');
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                showToast('✅ Logo saved!');
             } else {
-                showToast('❌ Masukkan URL gambar logo.');
+                showToast('❌ Please enter a logo URL.');
             }
         });
 
         document.getElementById('resetLogoBtn').addEventListener('click', function() {
-            if (confirm('Reset logo ke icon default?')) {
+            if (confirm('Reset logo to default icon?')) {
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.logoImage = '';
                 settings.logoType = 'icon';
                 settings.logoIcon = 'fas fa-coins';
-                saveFullSettings();
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
                 document.getElementById('adminLogoUrl').value = '';
-                showToast('✅ Logo direset ke icon default.');
+                showToast('✅ Logo reset to default.');
             }
         });
-
-        function saveContact(key, value) {
-            if (value) {
-                settings[key] = value;
-                saveFullSettings();
-                showToast(`✅ ${key} berhasil disimpan!`);
-            } else {
-                showToast('❌ Masukkan URL yang valid.');
-            }
-        }
 
         document.getElementById('saveTwitterBtn').addEventListener('click', function() {
             saveContact('contactTwitter', document.getElementById('adminTwitter').value.trim());
@@ -1691,32 +1275,58 @@
         document.getElementById('saveContactEmailBtn').addEventListener('click', function() {
             const email = document.getElementById('adminContactEmail').value.trim();
             if (email && email.includes('@')) {
-                settings.contactEmail = email;
-                saveFullSettings();
-                showToast('✅ Email kontak berhasil disimpan!');
+                saveContact('contactEmail', email);
             } else {
-                showToast('❌ Masukkan email yang valid.');
+                showToast('❌ Please enter a valid email.');
             }
         });
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function logout() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            showToast('👋 Logged out.');
+            setTimeout(() => { window.location.href = '/'; }, 500);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        // ============================================================
+        // CHECK SUPABASE CONFIG ON LOAD
+        // ============================================================
+        function checkConfigOnLoad() {
+            setTimeout(() => {
+                if (typeof Supabase === 'undefined') {
+                    console.error('❌ Supabase config not loaded!');
+                    showToast('⚠️ Config not loaded. Please refresh.');
+                } else {
+                    console.log('✅ Supabase config loaded!');
+                }
+            }, 1000);
+        }
 
         // ============================================================
         // INIT
         // ============================================================
         loadData();
 
-        if (!checkAuth()) {}
+        setTimeout(async () => {
+            await checkAuth();
+            updateUI();
+        }, 500);
 
-        showTab('tabStats');
-        updateUI();
+        checkConfigOnLoad();
 
         setInterval(() => {
             loadData();
             updateUI();
-        }, 3000);
+        }, 5000);
 
-        console.log('🟢 SilverChain Admin Panel siap.');
-        console.log('👑 Owner:', OWNER_EMAIL);
-        console.log('📌 Total Pengguna:', usersDB.length);
+        console.log('🟢 SilverChain Admin Panel ready.');
+        console.log('📌 Supabase connected via supabase-config.js');
+        console.log('📌 Admin only access');
     </script>
 </body>
 </html>
