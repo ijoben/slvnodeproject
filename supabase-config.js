@@ -1,5 +1,5 @@
 // ============================================================
-// SUPABASE CONFIGURATION
+// SUPABASE CONFIGURATION - UNIVERSAL
 // ============================================================
 
 // ============================================================
@@ -16,19 +16,19 @@ const ADMIN_EMAIL = 'admin@silverchain.io';
 // ============================================================
 // 3. INISIALISASI SUPABASE
 // ============================================================
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabaseClient = null;
+try {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('✅ Supabase client created!');
+} catch (err) {
+    console.error('❌ Supabase error:', err);
+}
 
 // ============================================================
 // 4. HELPER FUNCTIONS
 // ============================================================
-
-// Hash password (simple - untuk demo)
-async function hashPassword(password) {
-    return btoa(password + 'silverchain_salt_2026');
-}
-
-async function verifyPassword(password, hashed) {
-    return hashed === btoa(password + 'silverchain_salt_2026');
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 function maskEmail(email) {
@@ -52,6 +52,14 @@ function formatNumber(num) {
     return num.toFixed(0);
 }
 
+async function hashPassword(password) {
+    return btoa(password + 'silverchain_salt_2026');
+}
+
+async function verifyPassword(password, hashed) {
+    return hashed === btoa(password + 'silverchain_salt_2026');
+}
+
 // ============================================================
 // 5. USER FUNCTIONS
 // ============================================================
@@ -65,7 +73,7 @@ async function registerUser(email, password, referredBy = null) {
         const hashedPassword = await hashPassword(password);
         const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .insert({
                 email: email,
@@ -90,7 +98,7 @@ async function registerUser(email, password, referredBy = null) {
 // Login user
 async function loginUser(email, password) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .select('*')
             .eq('email', email)
@@ -112,7 +120,7 @@ async function loginUser(email, password) {
 // Get user by email
 async function getUserByEmail(email) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .select('*')
             .eq('email', email)
@@ -130,7 +138,7 @@ async function getUserByEmail(email) {
 // Get user by ID
 async function getUserById(id) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .select('*')
             .eq('id', id)
@@ -144,28 +152,10 @@ async function getUserById(id) {
     }
 }
 
-// Get user by ref code
-async function getUserByRefCode(refCode) {
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('ref_code', refCode)
-            .single();
-
-        if (error && error.code === 'PGRST116') return null;
-        if (error) throw error;
-        return data;
-    } catch (error) {
-        console.error('❌ Get user by ref code error:', error);
-        return null;
-    }
-}
-
 // Get all users (admin only)
 async function getAllUsers() {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .select('*')
             .order('created_at', { ascending: false });
@@ -183,7 +173,7 @@ async function updatePassword(email, newPassword) {
     try {
         const hashedPassword = await hashPassword(newPassword);
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('users')
             .update({ 
                 password: hashedPassword, 
@@ -200,10 +190,10 @@ async function updatePassword(email, newPassword) {
     }
 }
 
-// Verify user (set verified = true) - untuk kompatibilitas
+// Verify user
 async function verifyUser(email) {
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('users')
             .update({ 
                 verified: true, 
@@ -231,22 +221,6 @@ async function isAdmin(email) {
     }
 }
 
-// Get all admin users
-async function getAdmins() {
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('role', 'admin');
-
-        if (error) throw error;
-        return data || [];
-    } catch (error) {
-        console.error('❌ Get admins error:', error);
-        return [];
-    }
-}
-
 // ============================================================
 // 6. DEPOSIT FUNCTIONS
 // ============================================================
@@ -257,7 +231,7 @@ async function addDeposit(email, usdt, bonus, total, txHash) {
         const user = await getUserByEmail(email);
         if (!user) throw new Error('User not found');
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('deposits')
             .insert({
                 user_id: user.id,
@@ -284,7 +258,7 @@ async function addDeposit(email, usdt, bonus, total, txHash) {
 // Get user deposits
 async function getUserDeposits(email) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('deposits')
             .select('*')
             .eq('email', email)
@@ -301,7 +275,7 @@ async function getUserDeposits(email) {
 // Get all deposits (admin)
 async function getAllDeposits() {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('deposits')
             .select('*')
             .order('timestamp', { ascending: false });
@@ -317,7 +291,7 @@ async function getAllDeposits() {
 // Update deposit status
 async function updateDepositStatus(id, status) {
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('deposits')
             .update({ status: status })
             .eq('id', id);
@@ -331,23 +305,6 @@ async function updateDepositStatus(id, status) {
     }
 }
 
-// Get deposit by ID
-async function getDepositById(id) {
-    try {
-        const { data, error } = await supabase
-            .from('deposits')
-            .select('*')
-            .eq('id', id)
-            .single();
-
-        if (error) throw error;
-        return data;
-    } catch (error) {
-        console.error('❌ Get deposit by ID error:', error);
-        return null;
-    }
-}
-
 // ============================================================
 // 7. WITHDRAWAL FUNCTIONS
 // ============================================================
@@ -358,7 +315,7 @@ async function addWithdrawal(email, amount, address) {
         const user = await getUserByEmail(email);
         if (!user) throw new Error('User not found');
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('withdrawals')
             .insert({
                 user_id: user.id,
@@ -383,7 +340,7 @@ async function addWithdrawal(email, amount, address) {
 // Get user withdrawals
 async function getUserWithdrawals(email) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('withdrawals')
             .select('*')
             .eq('email', email)
@@ -400,7 +357,7 @@ async function getUserWithdrawals(email) {
 // Get all withdrawals (admin)
 async function getAllWithdrawals() {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('withdrawals')
             .select('*')
             .order('timestamp', { ascending: false });
@@ -416,7 +373,7 @@ async function getAllWithdrawals() {
 // Update withdrawal status
 async function updateWithdrawalStatus(id, status) {
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('withdrawals')
             .update({ status: status })
             .eq('id', id);
@@ -430,23 +387,6 @@ async function updateWithdrawalStatus(id, status) {
     }
 }
 
-// Get withdrawal by ID
-async function getWithdrawalById(id) {
-    try {
-        const { data, error } = await supabase
-            .from('withdrawals')
-            .select('*')
-            .eq('id', id)
-            .single();
-
-        if (error) throw error;
-        return data;
-    } catch (error) {
-        console.error('❌ Get withdrawal by ID error:', error);
-        return null;
-    }
-}
-
 // ============================================================
 // 8. SETTINGS FUNCTIONS
 // ============================================================
@@ -454,7 +394,7 @@ async function getWithdrawalById(id) {
 // Get setting
 async function getSetting(key) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('settings')
             .select('value')
             .eq('key', key)
@@ -472,7 +412,7 @@ async function getSetting(key) {
 // Save setting
 async function saveSetting(key, value) {
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('settings')
             .upsert({
                 key: key,
@@ -489,31 +429,11 @@ async function saveSetting(key, value) {
     }
 }
 
-// Get multiple settings
-async function getSettings(keys) {
-    try {
-        const { data, error } = await supabase
-            .from('settings')
-            .select('*')
-            .in('key', keys);
-
-        if (error) throw error;
-        const result = {};
-        data.forEach(item => {
-            result[item.key] = item.value;
-        });
-        return result;
-    } catch (error) {
-        console.error('❌ Get settings error:', error);
-        return {};
-    }
-}
-
 // ============================================================
 // 9. BALANCE FUNCTIONS
 // ============================================================
 
-// Get personal balance (USDT)
+// Get personal balance
 async function getPersonalBalance(email) {
     try {
         const deposits = await getUserDeposits(email);
@@ -526,13 +446,13 @@ async function getPersonalBalance(email) {
     }
 }
 
-// Get referral balance (USDT)
+// Get referral balance
 async function getReferralBalance(email) {
     try {
         const user = await getUserByEmail(email);
         if (!user) return 0;
 
-        const { data: referrals } = await supabase
+        const { data: referrals } = await supabaseClient
             .from('users')
             .select('email')
             .eq('referred_by', user.ref_code);
@@ -563,7 +483,7 @@ async function getReferralBalance(email) {
     }
 }
 
-// Get total minted USDT (all users)
+// Get total minted
 async function getTotalMinted() {
     try {
         const deposits = await getAllDeposits();
@@ -576,7 +496,7 @@ async function getTotalMinted() {
     }
 }
 
-// Get total USDT raised
+// Get total raised
 async function getTotalRaised() {
     try {
         const deposits = await getAllDeposits();
@@ -590,104 +510,57 @@ async function getTotalRaised() {
 }
 
 // ============================================================
-// 10. REFERRAL FUNCTIONS
+// 10. EXPORT
 // ============================================================
 
-// Get referred users
-async function getReferredUsers(refCode) {
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('referred_by', refCode);
-
-        if (error) throw error;
-        return data || [];
-    } catch (error) {
-        console.error('❌ Get referred users error:', error);
-        return [];
-    }
-}
-
-// Get referral stats
-async function getReferralStats(email) {
-    try {
-        const user = await getUserByEmail(email);
-        if (!user) return { total: 0, active: 0, earnings: 0 };
-
-        const referrals = await getReferredUsers(user.ref_code);
-        const total = referrals.length;
-        const active = referrals.filter(r => r.verified).length;
-        const earnings = await getReferralBalance(email);
-
-        return { total, active, earnings };
-    } catch (error) {
-        console.error('❌ Get referral stats error:', error);
-        return { total: 0, active: 0, earnings: 0 };
-    }
-}
-
-// ============================================================
-// 11. ADMIN CHECK
-// ============================================================
-
-// Get admin email (tidak muncul di HTML)
-function getAdminEmail() {
-    return ADMIN_EMAIL;
-}
-
-// ============================================================
-// 12. EXPORT
-// ============================================================
-
+// Buat global object
 window.Supabase = {
     // Config
-    supabase,
+    supabase: supabaseClient,
     ADMIN_EMAIL,
-    getAdminEmail,
+    
+    // Helper
+    generateOTP,
+    maskEmail,
+    formatCurrency,
+    formatNumber,
+    hashPassword,
+    verifyPassword,
     
     // User
     registerUser,
     loginUser,
     getUserByEmail,
     getUserById,
-    getUserByRefCode,
     getAllUsers,
     updatePassword,
     verifyUser,
     isAdmin,
-    getAdmins,
     
     // Deposit
     addDeposit,
     getUserDeposits,
     getAllDeposits,
     updateDepositStatus,
-    getDepositById,
     
     // Withdrawal
     addWithdrawal,
     getUserWithdrawals,
     getAllWithdrawals,
     updateWithdrawalStatus,
-    getWithdrawalById,
     
     // Settings
     getSetting,
     saveSetting,
-    getSettings,
     
     // Balance
     getPersonalBalance,
     getReferralBalance,
     getTotalMinted,
-    getTotalRaised,
-    
-    // Referral
-    getReferredUsers,
-    getReferralStats
+    getTotalRaised
 };
 
 console.log('🟢 Supabase Config loaded successfully!');
-console.log('📌 Supabase URL:', SUPABASE_URL);
-console.log('📌 Admin email hidden (not in HTML)');
+console.log('📌 URL:', SUPABASE_URL);
+console.log('📌 Admin email hidden');
+console.log('📌 All functions ready for all pages!');
