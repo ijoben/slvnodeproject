@@ -3,8 +3,8 @@
 // ============================================================
 
 // Ganti dengan URL dan Key dari Supabase (STEP 3)
-const SUPABASE_URL = 'https://xxxxxxxxxxxxxxx.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI...';
 
 // Inisialisasi Supabase
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
