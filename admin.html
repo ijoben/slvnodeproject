@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ===== STYLE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -113,10 +112,12 @@
             display: inline;
         }
 
-        /* STATS GRID - KEREN */
+        /* ========================================================== */
+        /* STATS GRID - 2 KOLOM */
+        /* ========================================================== */
         .admin-stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 1rem;
             margin: 1rem 0 1.5rem;
         }
@@ -281,6 +282,50 @@
         }
         .btn-reject:hover {
             background: rgba(255, 60, 60, 0.25);
+        }
+
+        /* ========================================================== */
+        /* PAGINATION */
+        /* ========================================================== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            background: rgba(8, 20, 48, 0.4);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 60px;
+            padding: 0.3rem 0.8rem;
+            color: #c0c0c0;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.15s;
+            font-weight: 600;
+            min-width: 36px;
+            text-align: center;
+            border: none;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: rgba(60, 120, 255, 0.15);
+            border-color: rgba(80, 140, 255, 0.15);
+        }
+        .pagination button.active {
+            background: rgba(192, 192, 192, 0.15);
+            border-color: rgba(192, 192, 192, 0.2);
+            color: #e0e0e0;
+        }
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .pagination .page-info {
+            color: #888888;
+            font-size: 0.7rem;
+            padding: 0 0.5rem;
         }
 
         .settings-group {
@@ -538,6 +583,11 @@
             .btn-logout i {
                 font-size: 1rem;
             }
+            .pagination button {
+                padding: 0.2rem 0.5rem;
+                font-size: 0.65rem;
+                min-width: 30px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -623,6 +673,14 @@
                 font-size: 0.6rem;
                 padding: 0.15rem 0.6rem;
             }
+            .pagination button {
+                padding: 0.15rem 0.35rem;
+                font-size: 0.55rem;
+                min-width: 24px;
+            }
+            .pagination .page-info {
+                font-size: 0.55rem;
+            }
         }
 
         @media (min-width: 769px) {
@@ -667,7 +725,7 @@
             </div>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Manage users, deposits, withdrawals & settings</p>
 
-            <!-- STATS GRID -->
+            <!-- STATS GRID - 2 KOLOM -->
             <div class="admin-stats-grid" id="statsGrid">
                 <div class="admin-stat primary" data-tab="tabUsers">
                     <div class="icon"><i class="fas fa-users"></i></div>
@@ -695,7 +753,7 @@
                 </div>
             </div>
 
-            <!-- TAB: USERS -->
+            <!-- TAB: USERS dengan PAGINATION -->
             <div class="tab-content" id="tabUsers">
                 <div class="section-title">
                     <span><i class="fas fa-users"></i> All Users</span>
@@ -719,6 +777,14 @@
                             <tr><td colspan="6" class="empty">Loading...</td></tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="pagination" id="userPagination">
+                    <button id="prevPage" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+                    <div id="pageNumbers"></div>
+                    <button id="nextPage">Next <i class="fas fa-chevron-right"></i></button>
+                    <span class="page-info" id="pageInfo">Page 1 of 1</span>
                 </div>
             </div>
 
@@ -888,6 +954,7 @@
         // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+
         // ============================================================
         // 2. VARIABLES
         // ============================================================
@@ -895,12 +962,19 @@
             CURRENT_USER: 'silverchain_current_user'
         };
         const ADMIN_EMAIL = 'admin@silverchain.io';
+        const ROWS_PER_PAGE = 10;
 
         let currentUser = null;
         let usersData = [];
         let depositsData = [];
         let withdrawalsData = [];
         let supabaseClient = null;
+
+        // ============================================================
+        // PAGINATION VARIABLES
+        // ============================================================
+        let currentPage = 1;
+        let totalPages = 1;
 
         // ============================================================
         // 3. INIT SUPABASE
@@ -1028,12 +1102,8 @@
             }
         }
 
-        // ============================================================
-        // SAVE SETTING - FIXED (tidak error duplicate key)
-        // ============================================================
         async function saveSetting(key, value) {
             try {
-                // Cek apakah key sudah ada
                 const { data: existing } = await supabaseClient
                     .from('settings')
                     .select('key')
@@ -1041,7 +1111,6 @@
                     .single();
 
                 if (existing) {
-                    // UPDATE jika sudah ada
                     const { error } = await supabaseClient
                         .from('settings')
                         .update({
@@ -1052,7 +1121,6 @@
                     if (error) throw error;
                     console.log('✅ Setting updated:', key, '=', value);
                 } else {
-                    // INSERT jika belum ada
                     const { error } = await supabaseClient
                         .from('settings')
                         .insert({
@@ -1063,7 +1131,6 @@
                     if (error) throw error;
                     console.log('✅ Setting inserted:', key, '=', value);
                 }
-
                 return true;
             } catch (error) {
                 console.error('❌ Save setting error:', error);
@@ -1186,22 +1253,36 @@
         });
 
         // ============================================================
-        // 9. RENDER FUNCTIONS
+        // 9. RENDER USERS WITH PAGINATION
         // ============================================================
         function renderUsersTable() {
             const tbody = document.getElementById('adminUserBody');
 
             if (!usersData || usersData.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="empty">No users registered</td></tr>`;
+                document.getElementById('userPagination').style.display = 'none';
                 return;
             }
 
+            document.getElementById('userPagination').style.display = 'flex';
+
+            const totalUsers = usersData.length;
+            totalPages = Math.ceil(totalUsers / ROWS_PER_PAGE);
+
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * ROWS_PER_PAGE;
+            const end = Math.min(start + ROWS_PER_PAGE, totalUsers);
+            const pageUsers = usersData.slice(start, end);
+
             let html = '';
-            usersData.forEach((u, index) => {
+            pageUsers.forEach((u, index) => {
                 const isOwner = u.email === ADMIN_EMAIL;
                 const verifiedStatus = u.verified ? '✅ Verified' : '⏳ Pending';
+                const num = start + index + 1;
                 html += `<tr>
-                    <td>${index + 1}</td>
+                    <td>${num}</td>
                     <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
                     <td><span class="badge-admin">${u.ref_code || '-'}</span></td>
                     <td>${u.referred_by || '-'}</td>
@@ -1210,8 +1291,74 @@
                 </tr>`;
             });
             tbody.innerHTML = html;
+
+            updatePaginationControls();
         }
 
+        function updatePaginationControls() {
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageNumbers = document.getElementById('pageNumbers');
+            const pageInfo = document.getElementById('pageInfo');
+
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+
+            let html = '';
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+            if (endPage - startPage < maxVisible - 1) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            if (startPage > 1) {
+                html += `<button data-page="1">1</button>`;
+                if (startPage > 2) html += `<button disabled>…</button>`;
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button data-page="${i}" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) html += `<button disabled>…</button>`;
+                html += `<button data-page="${totalPages}">${totalPages}</button>`;
+            }
+
+            pageNumbers.innerHTML = html;
+
+            document.querySelectorAll('#pageNumbers button[data-page]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.dataset.page);
+                    if (page !== currentPage) {
+                        currentPage = page;
+                        renderUsersTable();
+                    }
+                });
+            });
+        }
+
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderUsersTable();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderUsersTable();
+            }
+        });
+
+        // ============================================================
+        // 10. RENDER DEPOSITS & WITHDRAWALS
+        // ============================================================
         function renderPendingDeposits() {
             const tbody = document.getElementById('adminPendingBody');
             const pending = depositsData.filter(d => d.status === 'pending');
@@ -1319,7 +1466,7 @@
         }
 
         // ============================================================
-        // 10. QRIS & SETTINGS UI
+        // 11. QRIS & SETTINGS UI
         // ============================================================
         function loadQrisPreview() {
             try {
@@ -1385,7 +1532,7 @@
         });
 
         // ============================================================
-        // 11. SAVE SETTINGS
+        // 12. SAVE SETTINGS
         // ============================================================
         document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
             const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
@@ -1483,7 +1630,7 @@
         });
 
         // ============================================================
-        // 12. LOGOUT
+        // 13. LOGOUT
         // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -1493,7 +1640,7 @@
         });
 
         // ============================================================
-        // 13. MAIN UPDATE UI
+        // 14. MAIN UPDATE UI
         // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
@@ -1538,6 +1685,9 @@
                 document.getElementById('adminBonusPercent').value = bonus || 10;
                 document.getElementById('adminRefPercent').value = ref || 3;
 
+                // Reset pagination ke halaman 1
+                currentPage = 1;
+
                 // Render tables
                 renderUsersTable();
                 renderPendingDeposits();
@@ -1554,12 +1704,11 @@
         }
 
         // ============================================================
-        // 14. INIT
+        // 15. INIT
         // ============================================================
         async function init() {
             console.log('🔄 Admin panel initializing...');
 
-            // Check Supabase
             if (!supabaseClient) {
                 console.error('❌ Supabase not ready!');
                 showToast('❌ System not ready. Please refresh.');
@@ -1567,14 +1716,10 @@
                 return;
             }
 
-            // Check auth
             const authPassed = await checkAuth();
             if (!authPassed) return;
 
-            // Show stats tab by default
             showTab('tabStats');
-
-            // Load data
             await updateUI();
 
             console.log('🟢 Admin panel ready!');
@@ -1584,12 +1729,12 @@
         // Start
         init();
 
-        // Auto refresh every 10 seconds
+        // Auto refresh every 15 seconds
         setInterval(async () => {
             if (currentUser) {
                 await updateUI();
             }
-        }, 10000);
+        }, 15000);
 
         console.log('🟢 SilverChain Admin Panel loaded.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
