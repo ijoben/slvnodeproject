@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>SilverChain · Auth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+    <!-- Supabase Config -->
+    <script src="supabase-config.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1228;
+            background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
+            color: #d4d4d4;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .auth-container {
+            max-width: 440px;
+            width: 100%;
+            background: rgba(18, 34, 72, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2.8rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
+        }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .auth-logo i {
+            font-size: 3rem;
+            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .auth-logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 0.2rem;
+        }
+        .auth-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 0.2rem;
+        }
+        .auth-sub {
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+        }
+        .input-field {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            background: rgba(8, 20, 48, 0.5);
+            color: #d4d4d4;
+            font-size: 0.95rem;
+            outline: none;
+            margin-bottom: 0.7rem;
+        }
+        .input-field:focus {
+            border-color: rgba(80, 140, 255, 0.3);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: 60px;
+            border: none;
+            background: linear-gradient(145deg, #c0c0c0, #888888);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 0.3rem;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.2);
+            transform: translateY(-2px);
+        }
+        .error-msg {
+            color: #ff6a6a;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        .error-msg.show {
+            display: block;
+        }
+        .success-msg {
+            color: #6aff8a;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        .success-msg.show {
+            display: block;
+        }
+        .divider {
+            text-align: center;
+            color: #666666;
+            font-size: 0.75rem;
+            margin: 0.8rem 0;
+            position: relative;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: rgba(80, 140, 255, 0.08);
+        }
+        .divider::before {
+            left: 0;
+        }
+        .divider::after {
+            right: 0;
+        }
+        .toast-message {
+            background: rgba(12, 28, 60, 0.9);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #c0c0c0;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
+        }
+        .demo-info {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
+            margin-top: 0.8rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            font-size: 0.7rem;
+            color: #888888;
+            text-align: center;
+        }
+        .demo-info code {
+            background: rgba(8, 20, 48, 0.5);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            color: #c0c0c0;
+            font-size: 0.65rem;
+        }
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-logo">
+            <i class="fas fa-coins"></i>
+            <h1 id="brandName">SilverChain</h1>
+        </div>
+
+        <div id="toastMessage" class="toast-message">
+            <i class="fas fa-check-circle"></i> <span id="toastText">Success</span>
+        </div>
+
+        <div class="auth-title">📝 Test Register</div>
+        <div class="auth-sub">Cek koneksi Supabase (tanpa OTP)</div>
+
+        <input type="email" class="input-field" id="regEmail" placeholder="Email" />
+        <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
+        <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Confirm Password" />
+
+        <button class="btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Test Register</button>
+
+        <div class="error-msg" id="regError"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText">Error</span></div>
+        <div class="success-msg" id="regSuccess"><i class="fas fa-check-circle"></i> <span id="regSuccessText">Success</span></div>
+
+        <div class="divider">or</div>
+
+        <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
+            <a href="/auth" style="color:#c0c0c0;">Back to full auth page</a>
+        </div>
+
+        <div class="demo-info">
+            <i class="fas fa-info-circle"></i> Test akan langsung register ke Supabase tanpa OTP
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // STORAGE KEYS
+        // ============================================================
+        const STORAGE_KEYS = {
+            CURRENT_USER: 'silverchain_current_user'
+        };
+        const OWNER_EMAIL = 'admin@silverchain.io';
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // TEST REGISTER (TANPA OTP)
+        // ============================================================
+        document.getElementById('registerBtn').addEventListener('click', async function() {
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const confirm = document.getElementById('regPasswordConfirm').value.trim();
+            const error = document.getElementById('regError');
+            const success = document.getElementById('regSuccess');
+
+            error.classList.remove('show');
+            success.classList.remove('show');
+
+            // Validasi
+            if (!email || !email.includes('@')) {
+                document.getElementById('regErrorText').textContent = 'Please enter a valid email.';
+                error.classList.add('show');
+                return;
+            }
+            if (password.length < 4) {
+                document.getElementById('regErrorText').textContent = 'Password must be at least 4 characters.';
+                error.classList.add('show');
+                return;
+            }
+            if (password !== confirm) {
+                document.getElementById('regErrorText').textContent = 'Passwords do not match.';
+                error.classList.add('show');
+                return;
+            }
+
+            // Disable button
+            const btn = document.getElementById('registerBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+
+            try {
+                // CEK: Apakah Supabase tersedia?
+                if (typeof Supabase === 'undefined') {
+                    throw new Error('Supabase not loaded! Check supabase-config.js');
+                }
+
+                console.log('✅ Supabase object found, trying to register...');
+
+                // Cek apakah email sudah terdaftar
+                const existingUser = await Supabase.getUserByEmail(email);
+                if (existingUser) {
+                    throw new Error('Email already registered in database!');
+                }
+
+                // Register ke Supabase
+                const result = await Supabase.registerUser(email, password, null);
+                console.log('✅ Registration result:', result);
+
+                document.getElementById('regSuccessText').textContent = '✅ User registered successfully! Check Supabase Table Editor.';
+                success.classList.add('show');
+                showToast('✅ User registered! Check Supabase.');
+
+                // Reset form
+                document.getElementById('regEmail').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('regPasswordConfirm').value = '';
+
+            } catch (err) {
+                console.error('❌ Registration error:', err);
+                document.getElementById('regErrorText').textContent = err.message || 'Registration failed. Check console.';
+                error.classList.add('show');
+                showToast('❌ ' + (err.message || 'Registration failed'));
+            }
+
+            // Enable button
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> Test Register';
+        });
+
+        // Enter key support
+        document.getElementById('regEmail').addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('regPassword').focus();
+        });
+        document.getElementById('regPassword').addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('regPasswordConfirm').focus();
+        });
+        document.getElementById('regPasswordConfirm').addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('registerBtn').click();
+        });
+
+        // ============================================================
+        // LOAD SETTINGS
+        // ============================================================
+        async function loadSettings() {
+            try {
+                const data = localStorage.getItem('silverchain_settings');
+                if (data) {
+                    const settings = JSON.parse(data);
+                    if (settings.brandName) {
+                        document.getElementById('brandName').textContent = settings.brandName;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // CHECK SUPABASE CONNECTION ON LOAD
+        // ============================================================
+        async function checkConnection() {
+            try {
+                if (typeof Supabase === 'undefined') {
+                    console.error('❌ Supabase is not loaded!');
+                    showToast('❌ Supabase not loaded. Check supabase-config.js');
+                    return;
+                }
+
+                console.log('✅ Supabase object detected!');
+
+                // Test get settings
+                const settings = await Supabase.getSetting('bonus_percent');
+                console.log('✅ Test query result - bonus_percent:', settings);
+
+                if (settings) {
+                    showToast('✅ Connected to Supabase!');
+                } else {
+                    console.warn('⚠️ Settings table might be empty, but connection works');
+                    showToast('⚠️ Connected to Supabase but settings empty');
+                }
+
+            } catch (err) {
+                console.error('❌ Connection test failed:', err);
+                showToast('❌ Cannot connect to Supabase. Check console.');
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadSettings();
+
+        // Cek koneksi setelah 1 detik
+        setTimeout(checkConnection, 1000);
+
+        console.log('🟢 Test Register Page ready.');
+        console.log('📌 Untuk test, daftar dengan email baru');
+        console.log('📌 Cek hasil di Supabase Table Editor → users');
+    </script>
+</body>
+</html>
