@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>SilverChain · Auth</title>
+    <title>SilverChain · Test Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
-    <!-- Supabase Config -->
-<script src="supabase-config.js?v=2"></script>
     <style>
         * {
             margin: 0;
@@ -101,6 +99,11 @@
             box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.2);
             transform: translateY(-2px);
         }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
         .error-msg {
             color: #ff6a6a;
             font-size: 0.8rem;
@@ -174,6 +177,24 @@
             color: #c0c0c0;
             font-size: 0.65rem;
         }
+        .status-box {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1rem;
+            padding: 0.5rem 1rem;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            font-size: 0.75rem;
+            color: #888888;
+            text-align: center;
+        }
+        .status-box.connected {
+            color: #6aff8a;
+            border-color: rgba(60, 220, 80, 0.15);
+        }
+        .status-box.error {
+            color: #ff6a6a;
+            border-color: rgba(255, 60, 60, 0.15);
+        }
         @media (max-width: 480px) {
             .auth-container {
                 padding: 1.5rem 1rem;
@@ -191,6 +212,9 @@
         <div id="toastMessage" class="toast-message">
             <i class="fas fa-check-circle"></i> <span id="toastText">Success</span>
         </div>
+
+        <!-- Status Koneksi -->
+        <div class="status-box" id="statusBox">⏳ Checking connection...</div>
 
         <div class="auth-title">📝 Test Register</div>
         <div class="auth-sub">Cek koneksi Supabase (tanpa OTP)</div>
@@ -211,29 +235,151 @@
         </div>
 
         <div class="demo-info">
-            <i class="fas fa-info-circle"></i> Test akan langsung register ke Supabase tanpa OTP
+            <i class="fas fa-info-circle"></i> Data akan langsung masuk ke Supabase
         </div>
     </div>
 
     <script>
         // ============================================================
-        // STORAGE KEYS
+        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
         // ============================================================
-        const STORAGE_KEYS = {
-            CURRENT_USER: 'silverchain_current_user'
-        };
-        const OWNER_EMAIL = 'admin@silverchain.io';
+        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
 
-        function showToast(msg) {
-            const toast = document.getElementById('toastMessage');
-            document.getElementById('toastText').textContent = msg;
-            toast.style.display = 'flex';
-            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        // ============================================================
+        // INISIALISASI SUPABASE
+        // ============================================================
+        console.log('🔄 Initializing Supabase...');
+        console.log('📌 URL:', SUPABASE_URL);
+
+        let supabase;
+
+        try {
+            // Cek apakah supabase SDK sudah terload
+            if (typeof window.supabase === 'undefined') {
+                throw new Error('Supabase SDK not loaded! Check CDN link.');
+            }
+
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client created!');
+        } catch (err) {
+            console.error('❌ Failed to create Supabase client:', err);
+            document.getElementById('statusBox').textContent = '❌ ' + err.message;
+            document.getElementById('statusBox').className = 'status-box error';
         }
 
         // ============================================================
-        // TEST REGISTER (TANPA OTP)
+        // FUNGSI
         // ============================================================
+
+        async function hashPassword(password) {
+            return btoa(password + 'silverchain_salt_2026');
+        }
+
+        async function verifyPassword(password, hashed) {
+            return hashed === btoa(password + 'silverchain_salt_2026');
+        }
+
+        async function getUserByEmail(email) {
+            try {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Get user error:', error);
+                return null;
+            }
+        }
+
+        async function registerUser(email, password, referredBy = null) {
+            try {
+                const existing = await getUserByEmail(email);
+                if (existing) throw new Error('Email already registered');
+
+                const hashedPassword = await hashPassword(password);
+                const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
+
+                const { data, error } = await supabase
+                    .from('users')
+                    .insert({
+                        email: email,
+                        password: hashedPassword,
+                        ref_code: refCode,
+                        referred_by: referredBy,
+                        verified: false,
+                        role: 'user'
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                console.log('✅ User registered:', email);
+                return data;
+            } catch (error) {
+                console.error('❌ Register error:', error);
+                throw error;
+            }
+        }
+
+        async function getSetting(key) {
+            try {
+                const { data, error } = await supabase
+                    .from('settings')
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data ? data.value : null;
+            } catch (error) {
+                console.error('Get setting error:', error);
+                return null;
+            }
+        }
+
+        // ============================================================
+        // TEST CONNECTION
+        // ============================================================
+
+        async function testConnection() {
+            const statusBox = document.getElementById('statusBox');
+
+            try {
+                if (!supabase) {
+                    throw new Error('Supabase client not initialized');
+                }
+
+                // Test query ke settings
+                const result = await getSetting('bonus_percent');
+                console.log('✅ Test query result - bonus_percent:', result);
+
+                if (result !== null) {
+                    statusBox.textContent = '✅ Connected to Supabase! Bonus: ' + result + '%';
+                    statusBox.className = 'status-box connected';
+                } else {
+                    statusBox.textContent = '⚠️ Connected but settings empty. Database may be empty.';
+                    statusBox.className = 'status-box';
+                }
+
+                return true;
+            } catch (err) {
+                console.error('❌ Connection test failed:', err);
+                statusBox.textContent = '❌ Cannot connect to Supabase: ' + err.message;
+                statusBox.className = 'status-box error';
+                return false;
+            }
+        }
+
+        // ============================================================
+        // REGISTER BUTTON
+        // ============================================================
+
         document.getElementById('registerBtn').addEventListener('click', async function() {
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value.trim();
@@ -244,7 +390,6 @@
             error.classList.remove('show');
             success.classList.remove('show');
 
-            // Validasi
             if (!email || !email.includes('@')) {
                 document.getElementById('regErrorText').textContent = 'Please enter a valid email.';
                 error.classList.add('show');
@@ -261,34 +406,24 @@
                 return;
             }
 
-            // Disable button
+            if (!supabase) {
+                document.getElementById('regErrorText').textContent = 'Supabase not connected!';
+                error.classList.add('show');
+                return;
+            }
+
             const btn = document.getElementById('registerBtn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
 
             try {
-                // CEK: Apakah Supabase tersedia?
-                if (typeof Supabase === 'undefined') {
-                    throw new Error('Supabase not loaded! Check supabase-config.js');
-                }
-
-                console.log('✅ Supabase object found, trying to register...');
-
-                // Cek apakah email sudah terdaftar
-                const existingUser = await Supabase.getUserByEmail(email);
-                if (existingUser) {
-                    throw new Error('Email already registered in database!');
-                }
-
-                // Register ke Supabase
-                const result = await Supabase.registerUser(email, password, null);
+                const result = await registerUser(email, password, null);
                 console.log('✅ Registration result:', result);
 
                 document.getElementById('regSuccessText').textContent = '✅ User registered successfully! Check Supabase Table Editor.';
                 success.classList.add('show');
                 showToast('✅ User registered! Check Supabase.');
 
-                // Reset form
                 document.getElementById('regEmail').value = '';
                 document.getElementById('regPassword').value = '';
                 document.getElementById('regPasswordConfirm').value = '';
@@ -300,12 +435,25 @@
                 showToast('❌ ' + (err.message || 'Registration failed'));
             }
 
-            // Enable button
             btn.disabled = false;
             btn.innerHTML = '<i class="fas fa-user-plus"></i> Test Register';
         });
 
-        // Enter key support
+        // ============================================================
+        // TOAST
+        // ============================================================
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // ENTER KEY SUPPORT
+        // ============================================================
+
         document.getElementById('regEmail').addEventListener('keydown', e => {
             if (e.key === 'Enter') document.getElementById('regPassword').focus();
         });
@@ -317,61 +465,14 @@
         });
 
         // ============================================================
-        // LOAD SETTINGS
-        // ============================================================
-        async function loadSettings() {
-            try {
-                const data = localStorage.getItem('silverchain_settings');
-                if (data) {
-                    const settings = JSON.parse(data);
-                    if (settings.brandName) {
-                        document.getElementById('brandName').textContent = settings.brandName;
-                    }
-                }
-            } catch (e) {}
-        }
-
-        // ============================================================
-        // CHECK SUPABASE CONNECTION ON LOAD
-        // ============================================================
-        async function checkConnection() {
-            try {
-                if (typeof Supabase === 'undefined') {
-                    console.error('❌ Supabase is not loaded!');
-                    showToast('❌ Supabase not loaded. Check supabase-config.js');
-                    return;
-                }
-
-                console.log('✅ Supabase object detected!');
-
-                // Test get settings
-                const settings = await Supabase.getSetting('bonus_percent');
-                console.log('✅ Test query result - bonus_percent:', settings);
-
-                if (settings) {
-                    showToast('✅ Connected to Supabase!');
-                } else {
-                    console.warn('⚠️ Settings table might be empty, but connection works');
-                    showToast('⚠️ Connected to Supabase but settings empty');
-                }
-
-            } catch (err) {
-                console.error('❌ Connection test failed:', err);
-                showToast('❌ Cannot connect to Supabase. Check console.');
-            }
-        }
-
-        // ============================================================
         // INIT
         // ============================================================
-        loadSettings();
 
-        // Cek koneksi setelah 1 detik
-        setTimeout(checkConnection, 1000);
+        // Test koneksi setelah 1 detik
+        setTimeout(testConnection, 1000);
 
         console.log('🟢 Test Register Page ready.');
-        console.log('📌 Untuk test, daftar dengan email baru');
-        console.log('📌 Cek hasil di Supabase Table Editor → users');
+        console.log('📌 Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian atas script!');
     </script>
 </body>
 </html>
