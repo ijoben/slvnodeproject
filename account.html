@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>SilverChain · Akun</title>
+    <title>SilverChain · Account</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
-<!-- Supabase Config -->
-<script src="supabase-config.js"></script>
+    <!-- Supabase SDK & Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+    <script src="supabase-config.js">
+    </script>
     <style>
         /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
@@ -40,8 +40,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
-            border: 1px solid rgba(80,140,255,0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -98,7 +98,7 @@
             font-size: 2.5rem;
             color: #fff;
             margin: 0 auto 1rem;
-            box-shadow: 0 8px 30px rgba(192,192,192,0.15);
+            box-shadow: 0 8px 30px rgba(192, 192, 192, 0.15);
         }
         .profile-name {
             text-align: center;
@@ -234,7 +234,7 @@
             white-space: nowrap;
         }
         .btn-change-password:hover {
-            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.2);
+            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.2);
             transform: translateY(-2px);
         }
         .btn-change-password:active {
@@ -324,7 +324,7 @@
             align-items: center;
             padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -353,7 +353,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192,192,192,0.15);
+            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -433,7 +433,7 @@
 <body>
     <div class="container">
 
-        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Berhasil</span></div>
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Success</span></div>
 
         <!-- PROFIL -->
         <div class="section-card">
@@ -446,14 +446,14 @@
             <!-- SALDO -->
             <div class="saldo-grid">
                 <div class="saldo-card">
-                    <div class="label">💰 Saldo Pribadi</div>
+                    <div class="label">💰 Personal Balance</div>
                     <div class="amount" id="saldoPersonal">0</div>
                     <div class="sub">USDT</div>
                 </div>
                 <div class="saldo-card">
-                    <div class="label">💎 Saldo Referral</div>
+                    <div class="label">💎 Referral Balance</div>
                     <div class="amount referral" id="saldoReferral">0</div>
-                    <div class="sub">USDT — <span style="color:#c0c0c0;">Bisa di-withdraw</span></div>
+                    <div class="sub">USDT — <span style="color:#c0c0c0;">Withdrawable</span></div>
                 </div>
             </div>
 
@@ -464,11 +464,11 @@
                     <span class="value" id="infoEmail">-</span>
                 </div>
                 <div class="info-row">
-                    <span class="label"><i class="fas fa-code"></i> Kode Referral</span>
+                    <span class="label"><i class="fas fa-code"></i> Referral Code</span>
                     <span class="value"><code id="infoRefCode">-</code></span>
                 </div>
                 <div class="info-row">
-                    <span class="label"><i class="fas fa-link"></i> Link Referral</span>
+                    <span class="label"><i class="fas fa-link"></i> Referral Link</span>
                     <span class="value" style="font-size:0.7rem; font-family:monospace; word-break:break-all;" id="infoRefLink">-</span>
                 </div>
                 <div class="info-row">
@@ -479,29 +479,29 @@
 
             <!-- ===== UBAH PASSWORD ===== -->
             <div class="change-password-section">
-                <h4><i class="fas fa-key"></i> Ubah Password</h4>
+                <h4><i class="fas fa-key"></i> Change Password</h4>
                 <div class="password-form">
                     <div class="input-group">
-                        <label>Password Saat Ini</label>
-                        <input type="password" id="currentPassword" placeholder="Masukkan password saat ini" />
+                        <label>Current Password</label>
+                        <input type="password" id="currentPassword" placeholder="Enter current password" />
                     </div>
                     <div class="input-group">
-                        <label>Password Baru</label>
-                        <input type="password" id="newPassword" placeholder="Minimal 4 karakter" />
+                        <label>New Password</label>
+                        <input type="password" id="newPassword" placeholder="Min 4 characters" />
                     </div>
                     <div class="input-group">
-                        <label>Konfirmasi Password Baru</label>
-                        <input type="password" id="confirmPassword" placeholder="Ulangi password baru" />
+                        <label>Confirm New Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Re-enter new password" />
                     </div>
                     <button class="btn-change-password" id="changePasswordBtn">
-                        <i class="fas fa-save"></i> Ubah Password
+                        <i class="fas fa-save"></i> Change Password
                     </button>
                 </div>
                 <div class="password-result" id="passwordResult"></div>
             </div>
 
             <!-- TOMBOL ADMIN -->
-            <button class="btn-admin" id="adminPanelBtn"><i class="fas fa-user-shield"></i> Panel Admin</button>
+            <button class="btn-admin" id="adminPanelBtn"><i class="fas fa-user-shield"></i> Admin Panel</button>
 
             <!-- LOGOUT -->
             <button class="btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -516,15 +516,15 @@
     <nav class="bottom-nav">
         <a href="/" id="navHome">
             <i class="fas fa-home"></i>
-            <span>Beranda</span>
+            <span>Home</span>
         </a>
         <a href="/dashboard" id="navBuy">
             <i class="fas fa-shopping-cart"></i>
-            <span>Beli Token</span>
+            <span>Buy</span>
         </a>
         <a href="/account" class="active" id="navAccount">
             <i class="fas fa-user"></i>
-            <span>Akun</span>
+            <span>Account</span>
         </a>
     </nav>
 
@@ -533,75 +533,27 @@
         // STORAGE KEYS
         // ============================================================
         const STORAGE_KEYS = {
-            USERS: 'silverchain_users',
-            DEPOSITS: 'silverchain_deposits',
-            WITHDRAWALS: 'silverchain_withdrawals',
-            BONUS: 'silverchain_bonus',
-            REF: 'silverchain_ref',
-            CURRENT_USER: 'silverchain_current_user',
-            SETTINGS: 'silverchain_settings'
+            CURRENT_USER: 'silverchain_current_user'
         };
-        const OWNER_EMAIL = 'admin@silverchain.io';
 
-        let usersDB = [];
-        let depositsDB = [];
-        let withdrawalsDB = [];
         let currentUser = null;
-        let refPercent = 3;
-        let settings = {};
 
         // ============================================================
         // LOAD
         // ============================================================
         function loadData() {
             try {
-                const users = localStorage.getItem(STORAGE_KEYS.USERS);
-                if (users) usersDB = JSON.parse(users);
-                const deposits = localStorage.getItem(STORAGE_KEYS.DEPOSITS);
-                if (deposits) depositsDB = JSON.parse(deposits);
-                const wd = localStorage.getItem(STORAGE_KEYS.WITHDRAWALS);
-                if (wd) withdrawalsDB = JSON.parse(wd);
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
-                    const found = usersDB.find(u => u.email === data.email);
-                    if (found) currentUser = found;
+                    if (typeof Supabase !== 'undefined') {
+                        Supabase.getUserByEmail(data.email).then(user => {
+                            if (user) currentUser = user;
+                            updateUI();
+                        });
+                    }
                 }
-                const ref = localStorage.getItem(STORAGE_KEYS.REF);
-                if (ref) refPercent = parseInt(ref) || 3;
-                
-                const settingsData = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-                if (settingsData) settings = JSON.parse(settingsData);
-                else settings = {};
             } catch (e) { console.warn('Load error:', e); }
-        }
-
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersDB)); }
-
-        function findUser(email) { return usersDB.find(u => u.email.toLowerCase() === email.toLowerCase()); }
-
-        // ===== SALDO FUNGSI =====
-        function getSaldoPersonal(email) {
-            const deposits = depositsDB.filter(d => d.email === email && d.status === 'approved');
-            return deposits.reduce((sum, d) => sum + (d.usdt + (d.bonus || 0)), 0);
-        }
-
-        function getSaldoReferral(email) {
-            const user = findUser(email);
-            if (!user) return 0;
-            const referrals = usersDB.filter(u => u.referredBy === user.refCode);
-            let total = 0;
-            referrals.forEach(ref => {
-                const firstDeposit = depositsDB
-                    .filter(d => d.email === ref.email && d.status === 'approved')
-                    .sort((a, b) => a.timestamp - b.timestamp)[0];
-                if (firstDeposit) {
-                    total += firstDeposit.usdt * refPercent / 100;
-                }
-            });
-            const wdHistory = withdrawalsDB.filter(w => w.email === email && w.status === 'approved');
-            const totalWd = wdHistory.reduce((sum, w) => sum + w.amount, 0);
-            return Math.round((total - totalWd) * 100) / 100;
         }
 
         function showToast(msg) {
@@ -612,9 +564,20 @@
         }
 
         // ============================================================
+        // CHECK SUPABASE
+        // ============================================================
+        function checkSupabase() {
+            if (typeof Supabase === 'undefined') {
+                showToast('❌ System error. Please refresh.');
+                return false;
+            }
+            return true;
+        }
+
+        // ============================================================
         // UBAH PASSWORD
         // ============================================================
-        document.getElementById('changePasswordBtn').addEventListener('click', function() {
+        document.getElementById('changePasswordBtn').addEventListener('click', async function() {
             const current = document.getElementById('currentPassword').value.trim();
             const newPass = document.getElementById('newPassword').value.trim();
             const confirm = document.getElementById('confirmPassword').value.trim();
@@ -624,65 +587,84 @@
             result.className = 'password-result';
             result.style.display = 'none';
 
+            if (!checkSupabase()) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> System error. Please refresh.';
+                result.style.display = 'block';
+                return;
+            }
+
+            if (!currentUser) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please login first.';
+                result.style.display = 'block';
+                return;
+            }
+
             // Validasi
             if (!current) {
                 result.className = 'password-result error';
-                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Masukkan password saat ini.';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter current password.';
                 result.style.display = 'block';
                 return;
             }
 
             if (newPass.length < 4) {
                 result.className = 'password-result error';
-                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password baru minimal 4 karakter.';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> New password must be at least 4 characters.';
                 result.style.display = 'block';
                 return;
             }
 
             if (newPass !== confirm) {
                 result.className = 'password-result error';
-                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Konfirmasi password tidak cocok.';
-                result.style.display = 'block';
-                return;
-            }
-
-            // Cek user
-            const user = findUser(currentUser.email);
-            if (!user) {
-                result.className = 'password-result error';
-                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Akun tidak ditemukan.';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Passwords do not match.';
                 result.style.display = 'block';
                 return;
             }
 
             // Cek password saat ini
-            if (user.password !== current) {
+            try {
+                // Login dengan password saat ini untuk verifikasi
+                await Supabase.loginUser(currentUser.email, current);
+            } catch (err) {
                 result.className = 'password-result error';
-                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password saat ini salah.';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Current password is incorrect.';
                 result.style.display = 'block';
                 return;
             }
 
             // Update password
-            user.password = newPass;
-            saveUsers();
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
 
-            // Bersihkan form
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
+            try {
+                await Supabase.updatePassword(currentUser.email, newPass);
 
-            // Tampilkan sukses
-            result.className = 'password-result success';
-            result.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Password berhasil diubah!';
-            result.style.display = 'block';
+                // Bersihkan form
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
 
-            showToast('✅ Password berhasil diubah!');
+                result.className = 'password-result success';
+                result.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Password changed successfully!';
+                result.style.display = 'block';
 
-            // Hilangkan pesan sukses setelah 5 detik
-            setTimeout(() => {
-                result.style.display = 'none';
-            }, 5000);
+                showToast('✅ Password changed successfully!');
+
+                setTimeout(() => {
+                    result.style.display = 'none';
+                }, 5000);
+
+            } catch (err) {
+                result.className = 'password-result error';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + (err.message || 'Failed to change password.');
+                result.style.display = 'block';
+                showToast('❌ ' + (err.message || 'Failed to change password'));
+            }
+
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-save"></i> Change Password';
         });
 
         // Enter key support untuk form password
@@ -699,13 +681,12 @@
         // ============================================================
         // UI
         // ============================================================
-        function updateUI() {
+        async function updateUI() {
             const isLoggedIn = !!currentUser;
-            const isOwner = isLoggedIn && currentUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
 
             if (!isLoggedIn) {
                 document.getElementById('profileName').textContent = '-';
-                document.getElementById('profileEmail').textContent = 'Silakan login terlebih dahulu';
+                document.getElementById('profileEmail').textContent = 'Please login first';
                 document.getElementById('saldoPersonal').textContent = '0';
                 document.getElementById('saldoReferral').textContent = '0';
                 document.getElementById('infoEmail').textContent = '-';
@@ -719,25 +700,24 @@
 
             document.getElementById('changePasswordBtn').disabled = false;
 
-            const user = findUser(currentUser.email);
-            if (!user) return;
-
             document.getElementById('profileName').textContent = currentUser.email.split('@')[0];
             document.getElementById('profileEmail').textContent = currentUser.email;
             document.getElementById('infoEmail').textContent = currentUser.email;
-            document.getElementById('infoRefCode').textContent = user.refCode || '-';
+            document.getElementById('infoRefCode').textContent = currentUser.ref_code || '-';
 
             const domain = window.location.host;
-            document.getElementById('infoRefLink').textContent = `https://${domain}/?ref=${user.refCode}`;
-            document.getElementById('infoRole').textContent = isOwner ? '👑 Owner / Admin' : 'Member';
+            document.getElementById('infoRefLink').textContent = `https://${domain}/?ref=${currentUser.ref_code || ''}`;
 
-            document.getElementById('adminPanelBtn').style.display = isOwner ? 'block' : 'none';
+            if (checkSupabase()) {
+                const isAdmin = await Supabase.isAdmin(currentUser.email);
+                document.getElementById('infoRole').textContent = isAdmin ? '👑 Admin' : 'Member';
+                document.getElementById('adminPanelBtn').style.display = isAdmin ? 'block' : 'none';
 
-            // Saldo
-            const saldoPersonal = getSaldoPersonal(currentUser.email);
-            const saldoReferral = getSaldoReferral(currentUser.email);
-            document.getElementById('saldoPersonal').textContent = saldoPersonal.toFixed(1);
-            document.getElementById('saldoReferral').textContent = saldoReferral.toFixed(1);
+                const personalBalance = await Supabase.getPersonalBalance(currentUser.email);
+                const referralBalance = await Supabase.getReferralBalance(currentUser.email);
+                document.getElementById('saldoPersonal').textContent = personalBalance.toFixed(1);
+                document.getElementById('saldoReferral').textContent = referralBalance.toFixed(1);
+            }
         }
 
         // ============================================================
@@ -747,7 +727,7 @@
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
             currentUser = null;
             updateUI();
-            showToast('👋 Berhasil keluar.');
+            showToast('👋 Logged out successfully.');
             setTimeout(() => { window.location.href = '/'; }, 500);
         }
 
@@ -761,19 +741,33 @@
         });
 
         // ============================================================
+        // CHECK SUPABASE CONFIG ON LOAD
+        // ============================================================
+        function checkConfigOnLoad() {
+            setTimeout(() => {
+                if (typeof Supabase === 'undefined') {
+                    console.error('❌ Supabase config not loaded!');
+                    showToast('⚠️ Config not loaded. Please refresh.');
+                } else {
+                    console.log('✅ Supabase config loaded!');
+                }
+            }, 1000);
+        }
+
+        // ============================================================
         // INIT
         // ============================================================
         loadData();
-        updateUI();
+        setTimeout(updateUI, 500);
+        checkConfigOnLoad();
 
         setInterval(() => {
             loadData();
             updateUI();
-        }, 3000);
+        }, 5000);
 
-        console.log('🟢 SilverChain Account Page siap.');
-        console.log('📌 Bonus referral dalam USDT — bisa di-WD');
-        console.log('🔑 Fitur Ubah Password tersedia di halaman ini');
+        console.log('🟢 SilverChain Account Page ready.');
+        console.log('📌 Supabase connected via supabase-config.js');
     </script>
 </body>
 </html>
