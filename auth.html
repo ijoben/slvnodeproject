@@ -9,6 +9,9 @@
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
+    <!-- Supabase Config -->
+    <script src="supabase-config.js">
+    </script>
     <style>
         /* ========================================================== */
         /* STYLE */
@@ -244,17 +247,6 @@
             color: #c0c0c0;
         }
 
-        .otp-timer {
-            color: #888888;
-            font-size: 0.75rem;
-            text-align: center;
-            margin-top: 0.5rem;
-        }
-        .otp-timer span {
-            color: #c0c0c0;
-            font-weight: 600;
-        }
-
         .toast-message {
             background: rgba(12, 28, 60, 0.9);
             backdrop-filter: blur(8px);
@@ -291,24 +283,6 @@
         }
         .back-link button i {
             margin-right: 0.4rem;
-        }
-
-        .demo-info {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 1rem;
-            padding: 0.6rem 1rem;
-            margin-top: 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            font-size: 0.7rem;
-            color: #888888;
-            text-align: center;
-        }
-        .demo-info code {
-            background: rgba(8, 20, 48, 0.5);
-            padding: 0.1rem 0.4rem;
-            border-radius: 4px;
-            color: #c0c0c0;
-            font-size: 0.65rem;
         }
 
         .reset-panel {
@@ -367,8 +341,8 @@
             <div class="auth-title">🔐 Login</div>
             <div class="auth-sub">Sign in to your account</div>
 
-            <input type="email" class="input-field" id="loginEmail" placeholder="Email" value="admin@silverchain.io" />
-            <input type="password" class="input-field" id="loginPassword" placeholder="Password" value="admin123" />
+            <input type="email" class="input-field" id="loginEmail" placeholder="Email" />
+            <input type="password" class="input-field" id="loginPassword" placeholder="Password" />
 
             <div class="forgot-link">
                 <button id="gotoForgotBtn">Forgot password?</button>
@@ -384,17 +358,12 @@
             <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
                 Don't have an account? <button id="gotoRegisterBtn" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Register Now</button>
             </div>
-
-            <div class="demo-info">
-                <i class="fas fa-info-circle"></i> Demo: <code>admin@silverchain.io</code> / <code>admin123</code> &nbsp;|&nbsp; <code>demo@silverchain.io</code> / <code>123456</code>
-            </div>
         </div>
 
         <!-- ========================================================== -->
-        <!-- PANEL 2: REGISTER + OTP -->
+        <!-- PANEL 2: REGISTER -->
         <!-- ========================================================== -->
         <div class="auth-panel" id="panelRegister">
-            <!-- Sub-Panel: Form Registrasi -->
             <div id="registerForm">
                 <div class="auth-title">📝 Create Account</div>
                 <div class="auth-sub">Join SilverChain community</div>
@@ -403,34 +372,15 @@
                 <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
                 <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Confirm Password" />
 
-                <button class="btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Register & Send OTP</button>
+                <button class="btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Register</button>
 
                 <div class="error-msg" id="regError"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText">Error</span></div>
+                <div class="success-msg" id="regSuccess"><i class="fas fa-check-circle"></i> <span id="regSuccessText">Success</span></div>
 
                 <div class="divider">or</div>
 
                 <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
                     Already have an account? <button id="gotoLoginFromRegister" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
-                </div>
-            </div>
-
-            <!-- Sub-Panel: Verifikasi OTP -->
-            <div id="otpForm" style="display:none;">
-                <div class="auth-title">🔐 Verify Email</div>
-                <div class="auth-sub" id="otpEmailDisplay">OTP code has been sent to your email</div>
-
-                <input type="text" class="input-field" id="otpInput" placeholder="Enter 6-digit OTP code" maxlength="6" />
-
-                <button class="btn-primary" id="verifyOtpBtn"><i class="fas fa-check"></i> Verify OTP</button>
-                <button class="btn-secondary" id="resendOtpBtn"><i class="fas fa-redo"></i> Resend OTP</button>
-
-                <div class="otp-timer">Code expires in <span id="otpCountdown">5:00</span></div>
-
-                <div class="error-msg" id="otpError"><i class="fas fa-exclamation-circle"></i> <span id="otpErrorText">Error</span></div>
-                <div class="success-msg" id="otpSuccess"><i class="fas fa-check-circle"></i> <span id="otpSuccessText">Success</span></div>
-
-                <div class="back-link">
-                    <button id="backToRegisterBtn"><i class="fas fa-arrow-left"></i> Back</button>
                 </div>
             </div>
         </div>
@@ -440,11 +390,11 @@
         <!-- ========================================================== -->
         <div class="auth-panel" id="panelForgot">
             <div class="auth-title">🔑 Forgot Password</div>
-            <div class="auth-sub">Enter your email to receive a reset link</div>
+            <div class="auth-sub">Enter your email to reset password</div>
 
             <input type="email" class="input-field" id="forgotEmail" placeholder="Email" />
 
-            <button class="btn-primary" id="forgotBtn"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
+            <button class="btn-primary" id="forgotBtn"><i class="fas fa-paper-plane"></i> Reset Password</button>
 
             <div class="error-msg" id="forgotError"><i class="fas fa-exclamation-circle"></i> <span id="forgotErrorText">Error</span></div>
             <div class="success-msg" id="forgotSuccess"><i class="fas fa-check-circle"></i> <span id="forgotSuccessText">Success</span></div>
@@ -481,50 +431,36 @@
 
     <script>
         // ============================================================
-        // 1. KONFIGURASI - GANTI DENGAN DATA ANDA!
-        // ============================================================
-
-        // ⚠️ SUPABASE
-        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
-
-        // ⚠️ BREVO (GANTI DENGAN DATA ANDA)
-        const BREVO_API_KEY = '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';
-        const FROM_EMAIL = 'ijobenz@gmail.com';
-
-        // ============================================================
-        // 2. STORAGE KEYS
+        // 1. STORAGE KEYS
         // ============================================================
         const STORAGE_KEYS = {
             CURRENT_USER: 'silverchain_current_user',
             RESET_TOKENS: 'silverchain_reset_tokens'
         };
-        const OWNER_EMAIL = 'admin@silverchain.io';
 
         // ============================================================
-        // 3. STATE VARIABLES
+        // 2. STATE VARIABLES
         // ============================================================
-        let registeredEmail = '';
-        let registeredPassword = '';
-        let generatedOtp = '';
-        let otpTimer = null;
-        let otpCountdown = 300;
         let resetTokens = {};
 
         // ============================================================
-        // 4. INISIALISASI SUPABASE
+        // 3. LOAD RESET TOKENS
         // ============================================================
-        console.log('🔄 Initializing Supabase...');
-        let supabaseClient = null;
-        try {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log('✅ Supabase client created!');
-        } catch (err) {
-            console.error('❌ Supabase error:', err);
+        function loadResetTokens() {
+            try {
+                const tokens = localStorage.getItem(STORAGE_KEYS.RESET_TOKENS);
+                if (tokens) {
+                    resetTokens = JSON.parse(tokens);
+                }
+            } catch (e) {}
+        }
+
+        function saveResetTokens() {
+            localStorage.setItem(STORAGE_KEYS.RESET_TOKENS, JSON.stringify(resetTokens));
         }
 
         // ============================================================
-        // 5. DOM ELEMENTS
+        // 4. DOM ELEMENTS
         // ============================================================
         const loginEmail = document.getElementById('loginEmail');
         const loginPassword = document.getElementById('loginPassword');
@@ -540,16 +476,8 @@
         const registerBtn = document.getElementById('registerBtn');
         const regError = document.getElementById('regError');
         const regErrorText = document.getElementById('regErrorText');
-
-        const otpInput = document.getElementById('otpInput');
-        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
-        const resendOtpBtn = document.getElementById('resendOtpBtn');
-        const otpError = document.getElementById('otpError');
-        const otpSuccess = document.getElementById('otpSuccess');
-        const otpErrorText = document.getElementById('otpErrorText');
-        const otpSuccessText = document.getElementById('otpSuccessText');
-        const otpCountdownEl = document.getElementById('otpCountdown');
-        const otpEmailDisplay = document.getElementById('otpEmailDisplay');
+        const regSuccess = document.getElementById('regSuccess');
+        const regSuccessText = document.getElementById('regSuccessText');
 
         const forgotEmail = document.getElementById('forgotEmail');
         const forgotBtn = document.getElementById('forgotBtn');
@@ -568,7 +496,7 @@
         const resetSuccessText = document.getElementById('resetSuccessText');
 
         // ============================================================
-        // 6. TOAST FUNCTION
+        // 5. TOAST FUNCTION
         // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
@@ -578,54 +506,18 @@
         }
 
         // ============================================================
-        // 7. LOAD RESET TOKENS
+        // 6. CHECK SUPABASE LOADED
         // ============================================================
-        function loadResetTokens() {
-            try {
-                const tokens = localStorage.getItem(STORAGE_KEYS.RESET_TOKENS);
-                if (tokens) {
-                    resetTokens = JSON.parse(tokens);
-                }
-            } catch (e) {}
-        }
-
-        function saveResetTokens() {
-            localStorage.setItem(STORAGE_KEYS.RESET_TOKENS, JSON.stringify(resetTokens));
+        function checkSupabase() {
+            if (typeof Supabase === 'undefined') {
+                console.error('❌ Supabase not loaded!');
+                return false;
+            }
+            return true;
         }
 
         // ============================================================
-        // 8. OTP TIMER
-        // ============================================================
-        function startOtpTimer() {
-            otpCountdown = 300;
-            updateOtpDisplay();
-            clearInterval(otpTimer);
-            verifyOtpBtn.disabled = false;
-            otpTimer = setInterval(() => {
-                otpCountdown--;
-                updateOtpDisplay();
-                if (otpCountdown <= 0) {
-                    clearInterval(otpTimer);
-                    otpCountdownEl.textContent = 'Expired';
-                    verifyOtpBtn.disabled = true;
-                }
-            }, 1000);
-        }
-
-        function updateOtpDisplay() {
-            const mins = Math.floor(otpCountdown / 60);
-            const secs = otpCountdown % 60;
-            otpCountdownEl.textContent =
-                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        }
-
-        function stopOtpTimer() {
-            clearInterval(otpTimer);
-            verifyOtpBtn.disabled = false;
-        }
-
-        // ============================================================
-        // 9. TABS NAVIGATION
+        // 7. TABS NAVIGATION
         // ============================================================
         const tabs = document.querySelectorAll('.auth-tab');
         const panels = {
@@ -643,11 +535,6 @@
                 });
                 const target = panels[this.dataset.panel];
                 if (target) target.classList.add('active');
-                if (this.dataset.panel !== 'panelRegister') {
-                    document.getElementById('otpForm').style.display = 'none';
-                    document.getElementById('registerForm').style.display = 'block';
-                    stopOtpTimer();
-                }
                 document.querySelectorAll('.error-msg, .success-msg').forEach(el => el.classList.remove('show'));
             });
         });
@@ -674,272 +561,7 @@
         });
 
         // ============================================================
-        // 10. HELPER FUNCTIONS
-        // ============================================================
-        function generateOTP() {
-            return Math.floor(100000 + Math.random() * 900000).toString();
-        }
-
-        async function hashPassword(password) {
-            return btoa(password + 'silverchain_salt_2026');
-        }
-
-        async function verifyPassword(password, hashed) {
-            return hashed === btoa(password + 'silverchain_salt_2026');
-        }
-
-        // ============================================================
-        // 11. KIRIM EMAIL VIA BREVO
-        // ============================================================
-        async function sendEmailViaBrevo(toEmail, subject, htmlContent) {
-            try {
-                const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'api-key': BREVO_API_KEY
-                    },
-                    body: JSON.stringify({
-                        sender: {
-                            email: FROM_EMAIL,
-                            name: 'SilverChain'
-                        },
-                        to: [{
-                            email: toEmail
-                        }],
-                        subject: subject,
-                        htmlContent: htmlContent
-                    })
-                });
-
-                if (response.ok) {
-                    console.log('✅ Email sent via Brevo to:', toEmail);
-                    return { success: true };
-                } else {
-                    const error = await response.text();
-                    console.error('❌ Brevo error:', error);
-                    return { success: false, error: error };
-                }
-            } catch (error) {
-                console.error('❌ Send email error:', error);
-                return { success: false, error: error.message };
-            }
-        }
-
-        // ============================================================
-        // 12. SEND OTP & RESET EMAIL
-        // ============================================================
-        async function sendOTPEmail(email, otp) {
-            const subject = 'SilverChain - OTP Verification Code';
-            const htmlContent = `
-                <!DOCTYPE html>
-                <html>
-                <body style="font-family: Arial, sans-serif; background: #0a1228; padding: 20px;">
-                    <div style="max-width: 500px; margin: 0 auto; background: #122a5a; padding: 30px; border-radius: 20px; color: #ffffff;">
-                        <h1 style="color: #c0c0c0; text-align: center;">🔐 SilverChain</h1>
-                        <p style="color: #c0c0c0;">Your OTP code is:</p>
-                        <div style="background: #0a1228; padding: 20px; border-radius: 12px; text-align: center; font-size: 32px; letter-spacing: 8px; color: #4a8aff; font-weight: bold;">
-                            ${otp}
-                        </div>
-                        <p style="color: #888888; text-align: center; margin-top: 20px;">This code expires in 5 minutes.</p>
-                        <p style="color: #888888; text-align: center; font-size: 12px;">If you didn't request this, please ignore this email.</p>
-                    </div>
-                </body>
-                </html>
-            `;
-
-            console.log('📧 Sending OTP to:', email);
-            return await sendEmailViaBrevo(email, subject, htmlContent);
-        }
-
-        async function sendResetEmail(email, resetLink) {
-            const subject = 'SilverChain - Password Reset';
-            const htmlContent = `
-                <!DOCTYPE html>
-                <html>
-                <body style="font-family: Arial, sans-serif; background: #0a1228; padding: 20px;">
-                    <div style="max-width: 500px; margin: 0 auto; background: #122a5a; padding: 30px; border-radius: 20px; color: #ffffff;">
-                        <h1 style="color: #c0c0c0; text-align: center;">🔑 SilverChain</h1>
-                        <p style="color: #c0c0c0;">Click the button below to reset your password:</p>
-                        <div style="text-align: center; margin: 30px 0;">
-                            <a href="${resetLink}" style="display: inline-block; padding: 14px 40px; background: linear-gradient(145deg, #c0c0c0, #888888); color: #fff; text-decoration: none; border-radius: 60px; font-weight: 700;">Reset Password</a>
-                        </div>
-                        <p style="color: #888888; text-align: center;">This link expires in 15 minutes.</p>
-                        <p style="color: #888888; text-align: center; font-size: 12px;">If you didn't request this, please ignore this email.</p>
-                    </div>
-                </body>
-                </html>
-            `;
-
-            console.log('🔑 Sending reset link to:', email);
-            return await sendEmailViaBrevo(email, subject, htmlContent);
-        }
-
-        // ============================================================
-        // 13. USER FUNCTIONS (Supabase)
-        // ============================================================
-        async function getUserByEmail(email) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-
-                if (error && error.code === 'PGRST116') return null;
-                if (error) throw error;
-                return data;
-            } catch (error) {
-                console.error('❌ Get user error:', error);
-                return null;
-            }
-        }
-
-        async function registerUser(email, password, referredBy = null) {
-            try {
-                const existing = await getUserByEmail(email);
-                if (existing) throw new Error('Email already registered');
-
-                const hashedPassword = await hashPassword(password);
-                const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
-
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .insert({
-                        email: email,
-                        password: hashedPassword,
-                        ref_code: refCode,
-                        referred_by: referredBy,
-                        verified: false,
-                        role: 'user'
-                    })
-                    .select()
-                    .single();
-
-                if (error) throw error;
-                console.log('✅ User registered (pending verification):', email);
-                return data;
-            } catch (error) {
-                console.error('❌ Register error:', error);
-                throw error;
-            }
-        }
-
-        async function verifyUser(email) {
-            try {
-                const { error } = await supabaseClient
-                    .from('users')
-                    .update({ verified: true, updated_at: new Date().toISOString() })
-                    .eq('email', email);
-
-                if (error) throw error;
-                console.log('✅ User verified:', email);
-                return true;
-            } catch (error) {
-                console.error('❌ Verify user error:', error);
-                throw error;
-            }
-        }
-
-        async function loginUser(email, password) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-
-                if (error) throw new Error('Email not found');
-                if (!data) throw new Error('User not found');
-
-                const isValid = await verifyPassword(password, data.password);
-                if (!isValid) throw new Error('Invalid password');
-
-                if (!data.verified) throw new Error('Email not verified. Please verify your email first.');
-
-                return data;
-            } catch (error) {
-                console.error('❌ Login error:', error);
-                throw error;
-            }
-        }
-
-        async function updatePassword(email, newPassword) {
-            try {
-                const hashedPassword = await hashPassword(newPassword);
-
-                const { error } = await supabaseClient
-                    .from('users')
-                    .update({ password: hashedPassword, updated_at: new Date().toISOString() })
-                    .eq('email', email);
-
-                if (error) throw error;
-                console.log('✅ Password updated for:', email);
-                return true;
-            } catch (error) {
-                console.error('❌ Update password error:', error);
-                throw error;
-            }
-        }
-
-        // ============================================================
-        // 14. OTP FUNCTIONS (Supabase)
-        // ============================================================
-        async function saveOTP(email, otp, type = 'register') {
-            try {
-                const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
-
-                const { error } = await supabaseClient
-                    .from('otp_codes')
-                    .insert({
-                        email: email,
-                        otp: otp,
-                        type: type,
-                        expires_at: expiresAt.toISOString(),
-                        used: false
-                    });
-
-                if (error) throw error;
-                console.log('✅ OTP saved for:', email);
-                return true;
-            } catch (error) {
-                console.error('❌ Save OTP error:', error);
-                throw error;
-            }
-        }
-
-        async function verifyOTP(email, otp, type = 'register') {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('otp_codes')
-                    .select('*')
-                    .eq('email', email)
-                    .eq('otp', otp)
-                    .eq('type', type)
-                    .eq('used', false)
-                    .gt('expires_at', new Date().toISOString())
-                    .order('created_at', { ascending: false })
-                    .limit(1)
-                    .single();
-
-                if (error) throw new Error('Invalid or expired OTP');
-                if (!data) throw new Error('Invalid or expired OTP');
-
-                await supabaseClient
-                    .from('otp_codes')
-                    .update({ used: true })
-                    .eq('id', data.id);
-
-                console.log('✅ OTP verified for:', email);
-                return true;
-            } catch (error) {
-                console.error('❌ Verify OTP error:', error);
-                throw error;
-            }
-        }
-
-        // ============================================================
-        // 15. LOGIN
+        // 8. LOGIN
         // ============================================================
         loginBtn.addEventListener('click', async function() {
             const email = loginEmail.value.trim();
@@ -947,6 +569,12 @@
 
             loginError.classList.remove('show');
             loginSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                loginErrorText.textContent = 'System error. Please refresh.';
+                loginError.classList.add('show');
+                return;
+            }
 
             if (!email || !email.includes('@') || password.length < 4) {
                 loginErrorText.textContent = 'Invalid email or password.';
@@ -958,12 +586,12 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
             try {
-                const user = await loginUser(email, password);
+                const user = await Supabase.loginUser(email, password);
                 console.log('✅ Login result:', user);
 
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
 
-                const isAdmin = email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+                const isAdmin = await Supabase.isAdmin(email);
 
                 loginSuccessText.textContent = isAdmin ?
                     '✅ Admin login successful! Redirecting to Admin Panel...' :
@@ -997,7 +625,7 @@
         });
 
         // ============================================================
-        // 16. REGISTER + OTP
+        // 9. REGISTER
         // ============================================================
         registerBtn.addEventListener('click', async function() {
             const email = regEmail.value.trim();
@@ -1005,6 +633,13 @@
             const confirm = regPasswordConfirm.value.trim();
 
             regError.classList.remove('show');
+            regSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                regErrorText.textContent = 'System error. Please refresh.';
+                regError.classList.add('show');
+                return;
+            }
 
             if (!email || !email.includes('@')) {
                 regErrorText.textContent = 'Please enter a valid email.';
@@ -1022,78 +657,37 @@
                 return;
             }
 
-            // Cek email sudah terdaftar
-            try {
-                const existing = await getUserByEmail(email);
-                if (existing) {
-                    regErrorText.textContent = 'Email already registered.';
-                    regError.classList.add('show');
-                    return;
-                }
-            } catch (err) {
-                console.error('Check user error:', err);
-            }
-
-            registeredEmail = email;
-            registeredPassword = password;
-            generatedOtp = generateOTP();
-
-            // Simpan OTP ke Supabase
-            try {
-                await saveOTP(email, generatedOtp, 'register');
-            } catch (err) {
-                console.error('Save OTP error:', err);
-                regErrorText.textContent = 'Failed to save OTP. Please try again.';
-                regError.classList.add('show');
-                return;
-            }
-
-            // Kirim OTP via Brevo
             this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending OTP...';
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
 
             try {
-                const result = await sendOTPEmail(email, generatedOtp);
+                const result = await Supabase.registerUser(email, password, null);
+                console.log('✅ Registration result:', result);
 
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-user-plus"></i> Register & Send OTP';
+                regSuccessText.textContent = '✅ Account created successfully! Please login.';
+                regSuccess.classList.add('show');
+                showToast('✅ Account created! Please login.');
 
-                if (result.success) {
-                    otpEmailDisplay.textContent = `OTP code has been sent to ${email}`;
-                    document.getElementById('registerForm').style.display = 'none';
-                    document.getElementById('otpForm').style.display = 'block';
-                    startOtpTimer();
-                    showToast('📧 OTP code has been sent to your email');
+                regEmail.value = '';
+                regPassword.value = '';
+                regPasswordConfirm.value = '';
 
-                    // Simpan user sementara (verified: false)
-                    try {
-                        await registerUser(email, password, null);
-                    } catch (err) {
-                        console.error('Register user error:', err);
-                    }
-                } else {
-                    // FALLBACK: tampilkan di console
-                    console.log('📧 [FALLBACK] OTP for', email, ':', generatedOtp);
-                    otpEmailDisplay.textContent = `OTP code: ${generatedOtp} (check console)`;
-                    document.getElementById('registerForm').style.display = 'none';
-                    document.getElementById('otpForm').style.display = 'block';
-                    startOtpTimer();
-                    showToast('📧 OTP: ' + generatedOtp + ' (check console)');
-                    
-                    try {
-                        await registerUser(email, password, null);
-                    } catch (err) {
-                        console.error('Register user error:', err);
-                    }
-                }
+                setTimeout(() => {
+                    switchTab('panelLogin');
+                    loginEmail.value = email;
+                    loginPassword.value = password;
+                    showToast('✅ Account created! Please login.');
+                }, 1500);
+
             } catch (err) {
-                console.error('Register error:', err);
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-user-plus"></i> Register & Send OTP';
+                console.error('❌ Registration error:', err);
                 regErrorText.textContent = err.message || 'Registration failed.';
                 regError.classList.add('show');
                 showToast('❌ ' + (err.message || 'Registration failed'));
             }
+
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-user-plus"></i> Register';
         });
 
         // Enter key support for register
@@ -1108,132 +702,19 @@
         });
 
         // ============================================================
-        // 17. VERIFY OTP
-        // ============================================================
-        verifyOtpBtn.addEventListener('click', async function() {
-            const otp = otpInput.value.trim();
-
-            otpError.classList.remove('show');
-            otpSuccess.classList.remove('show');
-
-            if (otp.length < 6) {
-                otpErrorText.textContent = 'Please enter 6-digit OTP.';
-                otpError.classList.add('show');
-                return;
-            }
-
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
-
-            try {
-                await verifyOTP(registeredEmail, otp, 'register');
-                await verifyUser(registeredEmail);
-
-                otpSuccessText.textContent = '✅ Email verified successfully! Account created.';
-                otpSuccess.classList.add('show');
-                showToast('✅ Email verified! Account created.');
-
-                setTimeout(() => {
-                    document.getElementById('otpForm').style.display = 'none';
-                    document.getElementById('registerForm').style.display = 'block';
-                    regEmail.value = '';
-                    regPassword.value = '';
-                    regPasswordConfirm.value = '';
-                    otpInput.value = '';
-                    stopOtpTimer();
-                    switchTab('panelLogin');
-                    loginEmail.value = registeredEmail;
-                    loginPassword.value = registeredPassword;
-                    showToast('✅ Account created! Please login.');
-                }, 1500);
-
-            } catch (err) {
-                console.error('Verify OTP error:', err);
-                otpErrorText.textContent = err.message || 'Invalid or expired OTP.';
-                otpError.classList.add('show');
-                showToast('❌ ' + (err.message || 'Invalid or expired OTP'));
-            }
-
-            this.disabled = false;
-            this.innerHTML = '<i class="fas fa-check"></i> Verify OTP';
-        });
-
-        // Enter key support for OTP
-        otpInput.addEventListener('keydown', e => {
-            if (e.key === 'Enter') verifyOtpBtn.click();
-        });
-
-        // ============================================================
-        // 18. RESEND OTP
-        // ============================================================
-        resendOtpBtn.addEventListener('click', async function() {
-            if (!registeredEmail) {
-                showToast('❌ Please register first.');
-                return;
-            }
-
-            generatedOtp = generateOTP();
-
-            try {
-                await saveOTP(registeredEmail, generatedOtp, 'register');
-            } catch (err) {
-                console.error('Save OTP error:', err);
-                showToast('❌ Failed to save OTP. Please try again.');
-                return;
-            }
-
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-            try {
-                const result = await sendOTPEmail(registeredEmail, generatedOtp);
-
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-redo"></i> Resend OTP';
-
-                if (result.success) {
-                    startOtpTimer();
-                    verifyOtpBtn.disabled = false;
-                    showToast('📧 New OTP sent to your email');
-                    otpError.classList.remove('show');
-                    otpSuccess.classList.remove('show');
-                } else {
-                    // FALLBACK
-                    console.log('📧 [FALLBACK] New OTP for', registeredEmail, ':', generatedOtp);
-                    startOtpTimer();
-                    verifyOtpBtn.disabled = false;
-                    showToast('📧 New OTP: ' + generatedOtp + ' (check console)');
-                    otpError.classList.remove('show');
-                    otpSuccess.classList.remove('show');
-                }
-            } catch (err) {
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-redo"></i> Resend OTP';
-                showToast('❌ Failed to send OTP. Please try again.');
-            }
-        });
-
-        // ============================================================
-        // 19. BACK TO REGISTER
-        // ============================================================
-        document.getElementById('backToRegisterBtn').addEventListener('click', function() {
-            document.getElementById('otpForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-            otpInput.value = '';
-            stopOtpTimer();
-            otpError.classList.remove('show');
-            otpSuccess.classList.remove('show');
-            verifyOtpBtn.disabled = false;
-        });
-
-        // ============================================================
-        // 20. FORGOT PASSWORD
+        // 10. FORGOT PASSWORD
         // ============================================================
         forgotBtn.addEventListener('click', async function() {
             const email = forgotEmail.value.trim();
 
             forgotError.classList.remove('show');
             forgotSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                forgotErrorText.textContent = 'System error. Please refresh.';
+                forgotError.classList.add('show');
+                return;
+            }
 
             if (!email || !email.includes('@')) {
                 forgotErrorText.textContent = 'Please enter a valid email.';
@@ -1242,53 +723,31 @@
             }
 
             try {
-                const user = await getUserByEmail(email);
+                const user = await Supabase.getUserByEmail(email);
                 if (!user) {
                     forgotErrorText.textContent = 'Email not found.';
                     forgotError.classList.add('show');
                     return;
                 }
+
+                const token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                resetTokens[email] = {
+                    token: token,
+                    expires: Date.now() + 15 * 60 * 1000
+                };
+                saveResetTokens();
+
+                resetEmail.value = email;
+                document.getElementById('panelReset').style.display = 'block';
+                document.getElementById('panelReset').classList.add('active');
+                document.getElementById('authTabs').style.display = 'none';
+                document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+                forgotEmail.value = '';
+                showToast('🔑 Please enter your new password');
+
             } catch (err) {
-                forgotErrorText.textContent = 'Error checking email. Please try again.';
+                forgotErrorText.textContent = 'Error. Please try again.';
                 forgotError.classList.add('show');
-                return;
-            }
-
-            const token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-            const resetLink = `${window.location.origin}/auth?reset=${token}&email=${encodeURIComponent(email)}`;
-
-            resetTokens[email] = {
-                token: token,
-                expires: Date.now() + 15 * 60 * 1000
-            };
-            saveResetTokens();
-
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-            try {
-                const result = await sendResetEmail(email, resetLink);
-
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
-
-                if (result.success) {
-                    forgotSuccessText.textContent = '✅ Reset link has been sent to your email.';
-                    forgotSuccess.classList.add('show');
-                    forgotEmail.value = '';
-                    showToast('📧 Reset link sent to your email');
-                } else {
-                    // FALLBACK
-                    console.log('🔑 [FALLBACK] Reset link for', email, ':', resetLink);
-                    forgotSuccessText.textContent = '✅ Reset link: ' + resetLink + ' (check console)';
-                    forgotSuccess.classList.add('show');
-                    forgotEmail.value = '';
-                    showToast('🔑 Reset link in console');
-                }
-            } catch (err) {
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
-                showToast('❌ Failed to send reset link. Please try again.');
             }
         });
 
@@ -1298,7 +757,7 @@
         });
 
         // ============================================================
-        // 21. CHECK RESET TOKEN FROM URL
+        // 11. CHECK RESET TOKEN FROM URL
         // ============================================================
         function checkResetToken() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1324,7 +783,7 @@
         }
 
         // ============================================================
-        // 22. RESET PASSWORD
+        // 12. RESET PASSWORD
         // ============================================================
         resetPasswordBtn.addEventListener('click', async function() {
             const email = resetEmail.value;
@@ -1333,6 +792,12 @@
 
             resetError.classList.remove('show');
             resetSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                resetErrorText.textContent = 'System error. Please refresh.';
+                resetError.classList.add('show');
+                return;
+            }
 
             if (newPass.length < 4) {
                 resetErrorText.textContent = 'Password must be at least 4 characters.';
@@ -1350,7 +815,7 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
 
             try {
-                await updatePassword(email, newPass);
+                await Supabase.updatePassword(email, newPass);
 
                 delete resetTokens[email];
                 saveResetTokens();
@@ -1387,7 +852,7 @@
         });
 
         // ============================================================
-        // 23. LOAD SETTINGS
+        // 13. LOAD SETTINGS
         // ============================================================
         function loadSettings() {
             try {
@@ -1402,7 +867,7 @@
         }
 
         // ============================================================
-        // 24. CHECK IF USER ALREADY LOGGED IN
+        // 14. CHECK IF USER ALREADY LOGGED IN
         // ============================================================
         function checkLoggedIn() {
             const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
@@ -1410,31 +875,30 @@
                 try {
                     const data = JSON.parse(savedUser);
                     if (data.email) {
-                        if (data.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
-                            window.location.href = '/admin';
-                        } else {
-                            window.location.href = '/dashboard';
-                        }
+                        // Cek admin dari Supabase
+                        Supabase.isAdmin(data.email).then(isAdmin => {
+                            if (isAdmin) {
+                                window.location.href = '/admin';
+                            } else {
+                                window.location.href = '/dashboard';
+                            }
+                        });
                     }
                 } catch (e) {}
             }
         }
 
         // ============================================================
-        // 25. INIT
+        // 15. INIT
         // ============================================================
         loadSettings();
         loadResetTokens();
         checkLoggedIn();
         checkResetToken();
 
-        console.log('🟢 SilverChain Auth Page ready! (Brevo)');
-        console.log('📌 Supabase URL:', SUPABASE_URL);
-        console.log('📌 Brevo API Key:', BREVO_API_KEY ? '✅ Set' : '❌ Not set');
-        console.log('📌 From Email:', FROM_EMAIL);
-        console.log('📌 Admin: admin@silverchain.io / admin123');
-        console.log('📌 Demo: demo@silverchain.io / 123456');
-        console.log('📌 OTP akan dikirim via Brevo (cek spam jika tidak masuk)');
+        console.log('🟢 SilverChain Auth Page ready!');
+        console.log('📌 Supabase connected via supabase-config.js');
+        console.log('📌 Admin email hidden (not in HTML)');
     </script>
 
 </body>
