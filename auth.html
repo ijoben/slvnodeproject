@@ -909,4 +909,503 @@ const EMAILJS_CONFIG = {
 
         function switchTab(tabId) {
             tabs.forEach(t => t.classList.remove('active'));
-            document.querySelector(`[data-panel="${tabId}"]`).classList.add('
+            document.querySelector(`[data-panel="${tabId}"]`).classList.add('active');
+            Object.keys(panels).forEach(key => {
+                panels[key].classList.remove('active');
+            });
+            panels[tabId].classList.add('active');
+        }
+
+        // Navigation buttons
+        document.getElementById('gotoRegisterBtn').addEventListener('click', () => switchTab('panelRegister'));
+        document.getElementById('gotoLoginFromRegister').addEventListener('click', () => switchTab('panelLogin'));
+        document.getElementById('gotoLoginFromForgot').addEventListener('click', () => switchTab('panelLogin'));
+        document.getElementById('gotoForgotBtn').addEventListener('click', () => switchTab('panelForgot'));
+        document.getElementById('gotoLoginFromReset').addEventListener('click', () => {
+            document.getElementById('panelReset').classList.remove('active');
+            document.getElementById('panelReset').style.display = 'none';
+            document.getElementById('authTabs').style.display = 'flex';
+            switchTab('panelLogin');
+        });
+
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        loginBtn.addEventListener('click', async function() {
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
+
+            loginError.classList.remove('show');
+            loginSuccess.classList.remove('show');
+
+            if (!email || !email.includes('@') || password.length < 4) {
+                loginErrorText.textContent = 'Invalid email or password.';
+                loginError.classList.add('show');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+            try {
+                const user = await loginUser(email, password);
+                console.log('✅ Login result:', user);
+
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+
+                const isAdmin = email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+
+                loginSuccessText.textContent = isAdmin ?
+                    '✅ Admin login successful! Redirecting to Admin Panel...' :
+                    '✅ Login successful! Redirecting...';
+                loginSuccess.classList.add('show');
+
+                setTimeout(() => {
+                    if (isAdmin) {
+                        window.location.href = '/admin';
+                    } else {
+                        window.location.href = '/dashboard';
+                    }
+                }, 800);
+
+            } catch (err) {
+                console.error('❌ Login error:', err);
+                loginErrorText.textContent = err.message || 'Login failed.';
+                loginError.classList.add('show');
+            }
+
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        });
+
+        // Enter key support for login
+        loginEmail.addEventListener('keydown', e => {
+            if (e.key === 'Enter') loginPassword.focus();
+        });
+        loginPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+
+        // ============================================================
+        // REGISTER + OTP
+        // ============================================================
+        registerBtn.addEventListener('click', async function() {
+            const email = regEmail.value.trim();
+            const password = regPassword.value.trim();
+            const confirm = regPasswordConfirm.value.trim();
+
+            regError.classList.remove('show');
+
+            if (!email || !email.includes('@')) {
+                regErrorText.textContent = 'Please enter a valid email.';
+                regError.classList.add('show');
+                return;
+            }
+            if (password.length < 4) {
+                regErrorText.textContent = 'Password must be at least 4 characters.';
+                regError.classList.add('show');
+                return;
+            }
+            if (password !== confirm) {
+                regErrorText.textContent = 'Passwords do not match.';
+                regError.classList.add('show');
+                return;
+            }
+
+            // Cek email sudah terdaftar
+            try {
+                const existing = await getUserByEmail(email);
+                if (existing) {
+                    regErrorText.textContent = 'Email already registered.';
+                    regError.classList.add('show');
+                    return;
+                }
+            } catch (err) {
+                console.error('Check user error:', err);
+            }
+
+            registeredEmail = email;
+            registeredPassword = password;
+            generatedOtp = generateOTP();
+
+            // Simpan OTP ke Supabase
+            try {
+                await saveOTP(email, generatedOtp, 'register');
+            } catch (err) {
+                console.error('Save OTP error:', err);
+                regErrorText.textContent = 'Failed to save OTP. Please try again.';
+                regError.classList.add('show');
+                return;
+            }
+
+            // Kirim OTP via EmailJS
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending OTP...';
+
+            try {
+                const result = await sendOTPEmail(email, generatedOtp);
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-user-plus"></i> Register & Send OTP';
+
+                if (result.success) {
+                    otpEmailDisplay.textContent = `OTP code has been sent to ${email}`;
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.getElementById('otpForm').style.display = 'block';
+                    startOtpTimer();
+                    showToast('📧 OTP code has been sent to your email');
+
+                    // Simpan user sementara (verified: false)
+                    try {
+                        await registerUser(email, password, null);
+                    } catch (err) {
+                        console.error('Register user error:', err);
+                    }
+                } else {
+                    showToast('❌ Failed to send OTP. Please try again.');
+                }
+            } catch (err) {
+                console.error('Register error:', err);
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-user-plus"></i> Register & Send OTP';
+                regErrorText.textContent = err.message || 'Registration failed.';
+                regError.classList.add('show');
+                showToast('❌ ' + (err.message || 'Registration failed'));
+            }
+        });
+
+        // Enter key support for register
+        regEmail.addEventListener('keydown', e => {
+            if (e.key === 'Enter') regPassword.focus();
+        });
+        regPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') regPasswordConfirm.focus();
+        });
+        regPasswordConfirm.addEventListener('keydown', e => {
+            if (e.key === 'Enter') registerBtn.click();
+        });
+
+        // ============================================================
+        // VERIFY OTP
+        // ============================================================
+        verifyOtpBtn.addEventListener('click', async function() {
+            const otp = otpInput.value.trim();
+
+            otpError.classList.remove('show');
+            otpSuccess.classList.remove('show');
+
+            if (otp.length < 6) {
+                otpErrorText.textContent = 'Please enter 6-digit OTP.';
+                otpError.classList.add('show');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+
+            try {
+                await verifyOTP(registeredEmail, otp, 'register');
+                await verifyUser(registeredEmail);
+
+                otpSuccessText.textContent = '✅ Email verified successfully! Account created.';
+                otpSuccess.classList.add('show');
+                showToast('✅ Email verified! Account created.');
+
+                setTimeout(() => {
+                    document.getElementById('otpForm').style.display = 'none';
+                    document.getElementById('registerForm').style.display = 'block';
+                    regEmail.value = '';
+                    regPassword.value = '';
+                    regPasswordConfirm.value = '';
+                    otpInput.value = '';
+                    stopOtpTimer();
+                    switchTab('panelLogin');
+                    loginEmail.value = registeredEmail;
+                    loginPassword.value = registeredPassword;
+                    showToast('✅ Account created! Please login.');
+                }, 1500);
+
+            } catch (err) {
+                console.error('Verify OTP error:', err);
+                otpErrorText.textContent = err.message || 'Invalid or expired OTP.';
+                otpError.classList.add('show');
+                showToast('❌ ' + (err.message || 'Invalid or expired OTP'));
+            }
+
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-check"></i> Verify OTP';
+        });
+
+        // Enter key support for OTP
+        otpInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') verifyOtpBtn.click();
+        });
+
+        // ============================================================
+        // RESEND OTP
+        // ============================================================
+        resendOtpBtn.addEventListener('click', async function() {
+            if (!registeredEmail) {
+                showToast('❌ Please register first.');
+                return;
+            }
+
+            generatedOtp = generateOTP();
+
+            try {
+                await saveOTP(registeredEmail, generatedOtp, 'register');
+            } catch (err) {
+                console.error('Save OTP error:', err);
+                showToast('❌ Failed to save OTP. Please try again.');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                const result = await sendOTPEmail(registeredEmail, generatedOtp);
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-redo"></i> Resend OTP';
+
+                if (result.success) {
+                    startOtpTimer();
+                    verifyOtpBtn.disabled = false;
+                    showToast('📧 New OTP sent to your email');
+                    otpError.classList.remove('show');
+                    otpSuccess.classList.remove('show');
+                } else {
+                    showToast('❌ Failed to send OTP. Please try again.');
+                }
+            } catch (err) {
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-redo"></i> Resend OTP';
+                showToast('❌ Failed to send OTP. Please try again.');
+            }
+        });
+
+        // ============================================================
+        // BACK TO REGISTER
+        // ============================================================
+        document.getElementById('backToRegisterBtn').addEventListener('click', function() {
+            document.getElementById('otpForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            otpInput.value = '';
+            stopOtpTimer();
+            otpError.classList.remove('show');
+            otpSuccess.classList.remove('show');
+            verifyOtpBtn.disabled = false;
+        });
+
+        // ============================================================
+        // FORGOT PASSWORD
+        // ============================================================
+        forgotBtn.addEventListener('click', async function() {
+            const email = forgotEmail.value.trim();
+
+            forgotError.classList.remove('show');
+            forgotSuccess.classList.remove('show');
+
+            if (!email || !email.includes('@')) {
+                forgotErrorText.textContent = 'Please enter a valid email.';
+                forgotError.classList.add('show');
+                return;
+            }
+
+            try {
+                const user = await getUserByEmail(email);
+                if (!user) {
+                    forgotErrorText.textContent = 'Email not found.';
+                    forgotError.classList.add('show');
+                    return;
+                }
+            } catch (err) {
+                forgotErrorText.textContent = 'Error checking email. Please try again.';
+                forgotError.classList.add('show');
+                return;
+            }
+
+            const token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+            const resetLink = `${window.location.origin}/auth?reset=${token}&email=${encodeURIComponent(email)}`;
+
+            resetTokens[email] = {
+                token: token,
+                expires: Date.now() + 15 * 60 * 1000
+            };
+            saveResetTokens();
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                const result = await sendResetEmail(email, resetLink);
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
+
+                if (result.success) {
+                    forgotSuccessText.textContent = '✅ Reset link has been sent to your email.';
+                    forgotSuccess.classList.add('show');
+                    forgotEmail.value = '';
+                    showToast('📧 Reset link sent to your email');
+                } else {
+                    showToast('❌ Failed to send reset link. Please try again.');
+                }
+            } catch (err) {
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
+                showToast('❌ Failed to send reset link. Please try again.');
+            }
+        });
+
+        // Enter key support for forgot
+        forgotEmail.addEventListener('keydown', e => {
+            if (e.key === 'Enter') forgotBtn.click();
+        });
+
+        // ============================================================
+        // CHECK RESET TOKEN FROM URL
+        // ============================================================
+        function checkResetToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('reset');
+            const email = urlParams.get('email');
+
+            if (token && email) {
+                const stored = resetTokens[decodeURIComponent(email)];
+                if (stored && stored.token === token && stored.expires > Date.now()) {
+                    resetEmail.value = decodeURIComponent(email);
+                    document.getElementById('panelReset').style.display = 'block';
+                    document.getElementById('panelReset').classList.add('active');
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState({}, '', window.location.pathname);
+                    }
+                    showToast('🔑 Please enter your new password');
+                } else {
+                    showToast('❌ Invalid or expired reset link.');
+                }
+            }
+        }
+
+        // ============================================================
+        // RESET PASSWORD
+        // ============================================================
+        resetPasswordBtn.addEventListener('click', async function() {
+            const email = resetEmail.value;
+            const newPass = resetNewPassword.value.trim();
+            const confirm = resetConfirmPassword.value.trim();
+
+            resetError.classList.remove('show');
+            resetSuccess.classList.remove('show');
+
+            if (newPass.length < 4) {
+                resetErrorText.textContent = 'Password must be at least 4 characters.';
+                resetError.classList.add('show');
+                return;
+            }
+
+            if (newPass !== confirm) {
+                resetErrorText.textContent = 'Passwords do not match.';
+                resetError.classList.add('show');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
+
+            try {
+                await updatePassword(email, newPass);
+
+                delete resetTokens[email];
+                saveResetTokens();
+
+                resetSuccessText.textContent = '✅ Password reset successful! Redirecting to Login...';
+                resetSuccess.classList.add('show');
+
+                setTimeout(() => {
+                    document.getElementById('panelReset').classList.remove('active');
+                    document.getElementById('panelReset').style.display = 'none';
+                    document.getElementById('authTabs').style.display = 'flex';
+                    switchTab('panelLogin');
+                    loginEmail.value = email;
+                    loginPassword.value = newPass;
+                    showToast('✅ Password reset successful! Please login.');
+                }, 1500);
+
+            } catch (err) {
+                console.error('Reset password error:', err);
+                resetErrorText.textContent = err.message || 'Reset failed.';
+                resetError.classList.add('show');
+            }
+
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+        });
+
+        // Enter key support for reset
+        resetNewPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') resetConfirmPassword.focus();
+        });
+        resetConfirmPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') resetPasswordBtn.click();
+        });
+
+        // ============================================================
+        // LOAD SETTINGS
+        // ============================================================
+        function loadSettings() {
+            try {
+                const data = localStorage.getItem('silverchain_settings');
+                if (data) {
+                    const settings = JSON.parse(data);
+                    if (settings.brandName) {
+                        document.getElementById('brandName').textContent = settings.brandName;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // CHECK IF USER ALREADY LOGGED IN
+        // ============================================================
+        function checkLoggedIn() {
+            const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (savedUser) {
+                try {
+                    const data = JSON.parse(savedUser);
+                    if (data.email) {
+                        if (data.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                            window.location.href = '/admin';
+                        } else {
+                            window.location.href = '/dashboard';
+                        }
+                    }
+                } catch (e) {}
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadSettings();
+        loadResetTokens();
+        checkLoggedIn();
+        checkResetToken();
+
+        console.log('🟢 SilverChain Auth Page ready!');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
+        console.log('📌 EmailJS Config:', {
+            service: EMAILJS_CONFIG.SERVICE_ID,
+            otpTemplate: EMAILJS_CONFIG.OTP_TEMPLATE_ID,
+            resetTemplate: EMAILJS_CONFIG.RESET_TEMPLATE_ID
+        });
+        console.log('📌 Admin: admin@silverchain.io / admin123');
+        console.log('📌 Demo: demo@silverchain.io / 123456');
+        console.log('📌 OTP akan dikirim via EmailJS (cek spam jika tidak masuk)');
+    </script>
+
+</body>
+</html>
