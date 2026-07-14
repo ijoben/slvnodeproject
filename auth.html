@@ -6,15 +6,24 @@
     <title>SilverChain · Authentication</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    
+    <!-- ========================================================== -->
+    <!-- SDKs & Config -->
+    <!-- ========================================================== -->
     <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
     </script>
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
-    <!-- Supabase Config (FILE INI YANG DIPAKAI) -->
-    <script src="supabase-config.js"></script>
+    <!-- Supabase Config (SEMUA FUNGSI DI SINI) -->
+    <script src="supabase-config.js">
+    </script>
+    
     <style>
+        /* ========================================================== */
+        /* STYLE */
+        /* ========================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -246,6 +255,17 @@
             color: #c0c0c0;
         }
 
+        .otp-timer {
+            color: #888888;
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .otp-timer span {
+            color: #c0c0c0;
+            font-weight: 600;
+        }
+
         .toast-message {
             background: rgba(12, 28, 60, 0.9);
             backdrop-filter: blur(8px);
@@ -266,6 +286,24 @@
             color: #c0c0c0;
         }
 
+        .back-link {
+            text-align: center;
+            margin-top: 0.8rem;
+        }
+        .back-link button {
+            background: none;
+            border: none;
+            color: #888888;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .back-link button:hover {
+            color: #c0c0c0;
+        }
+        .back-link button i {
+            margin-right: 0.4rem;
+        }
+
         .demo-info {
             background: rgba(8, 20, 48, 0.3);
             border-radius: 1rem;
@@ -282,6 +320,13 @@
             border-radius: 4px;
             color: #c0c0c0;
             font-size: 0.65rem;
+        }
+
+        .reset-panel {
+            display: none;
+        }
+        .reset-panel.active {
+            display: block;
         }
 
         @media (max-width: 480px) {
@@ -357,25 +402,47 @@
         </div>
 
         <!-- ========================================================== -->
-        <!-- PANEL 2: REGISTER (Tanpa OTP dulu) -->
+        <!-- PANEL 2: REGISTER + OTP -->
         <!-- ========================================================== -->
         <div class="auth-panel" id="panelRegister">
-            <div class="auth-title">📝 Create Account</div>
-            <div class="auth-sub">Join SilverChain community</div>
+            <!-- Sub-Panel: Form Registrasi -->
+            <div id="registerForm">
+                <div class="auth-title">📝 Create Account</div>
+                <div class="auth-sub">Join SilverChain community</div>
 
-            <input type="email" class="input-field" id="regEmail" placeholder="Email" />
-            <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
-            <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Confirm Password" />
+                <input type="email" class="input-field" id="regEmail" placeholder="Email" />
+                <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
+                <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Confirm Password" />
 
-            <button class="btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Register</button>
+                <button class="btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Register & Send OTP</button>
 
-            <div class="error-msg" id="regError"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText">Error</span></div>
-            <div class="success-msg" id="regSuccess"><i class="fas fa-check-circle"></i> <span id="regSuccessText">Success</span></div>
+                <div class="error-msg" id="regError"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText">Error</span></div>
 
-            <div class="divider">or</div>
+                <div class="divider">or</div>
 
-            <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
-                Already have an account? <button id="gotoLoginFromRegister" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
+                <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
+                    Already have an account? <button id="gotoLoginFromRegister" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
+                </div>
+            </div>
+
+            <!-- Sub-Panel: Verifikasi OTP -->
+            <div id="otpForm" style="display:none;">
+                <div class="auth-title">🔐 Verify Email</div>
+                <div class="auth-sub" id="otpEmailDisplay">OTP code has been sent to your email</div>
+
+                <input type="text" class="input-field" id="otpInput" placeholder="Enter 6-digit OTP code" maxlength="6" />
+
+                <button class="btn-primary" id="verifyOtpBtn"><i class="fas fa-check"></i> Verify OTP</button>
+                <button class="btn-secondary" id="resendOtpBtn"><i class="fas fa-redo"></i> Resend OTP</button>
+
+                <div class="otp-timer">Code expires in <span id="otpCountdown">5:00</span></div>
+
+                <div class="error-msg" id="otpError"><i class="fas fa-exclamation-circle"></i> <span id="otpErrorText">Error</span></div>
+                <div class="success-msg" id="otpSuccess"><i class="fas fa-check-circle"></i> <span id="otpSuccessText">Success</span></div>
+
+                <div class="back-link">
+                    <button id="backToRegisterBtn"><i class="fas fa-arrow-left"></i> Back</button>
+                </div>
             </div>
         </div>
 
@@ -400,41 +467,96 @@
             </div>
         </div>
 
+        <!-- ========================================================== -->
+        <!-- PANEL 4: RESET PASSWORD -->
+        <!-- ========================================================== -->
+        <div class="reset-panel" id="panelReset">
+            <div class="auth-title">🔑 Reset Password</div>
+            <div class="auth-sub">Enter your new password</div>
+
+            <input type="hidden" id="resetEmail" />
+            <input type="password" class="input-field" id="resetNewPassword" placeholder="New Password (min 4)" />
+            <input type="password" class="input-field" id="resetConfirmPassword" placeholder="Confirm New Password" />
+
+            <button class="btn-primary" id="resetPasswordBtn"><i class="fas fa-check"></i> Reset Password</button>
+
+            <div class="error-msg" id="resetError"><i class="fas fa-exclamation-circle"></i> <span id="resetErrorText">Error</span></div>
+            <div class="success-msg" id="resetSuccess"><i class="fas fa-check-circle"></i> <span id="resetSuccessText">Success</span></div>
+
+            <div class="back-link">
+                <button id="gotoLoginFromReset"><i class="fas fa-arrow-left"></i> Back to Login</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
         // ============================================================
-        // SUPABASE CONFIG (LANGSUNG DI SINI)
-        // ============================================================
-        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
-        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
-
-        // ============================================================
         // STORAGE KEYS
         // ============================================================
         const STORAGE_KEYS = {
-            CURRENT_USER: 'silverchain_current_user'
+            CURRENT_USER: 'silverchain_current_user',
+            RESET_TOKENS: 'silverchain_reset_tokens'
         };
         const OWNER_EMAIL = 'admin@silverchain.io';
 
         // ============================================================
-        // INISIALISASI SUPABASE
+        // STATE VARIABLES
         // ============================================================
-        let supabaseClient = null;
-        let usersDB = [];
-
-        try {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log('✅ Supabase client created!');
-        } catch (err) {
-            console.error('❌ Failed to create Supabase client:', err);
-        }
+        let registeredEmail = '';
+        let registeredPassword = '';
+        let generatedOtp = '';
+        let otpTimer = null;
+        let otpCountdown = 300;
+        let resetTokens = {};
 
         // ============================================================
-        // FUNGSI
+        // DOM ELEMENTS
         // ============================================================
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const loginSuccess = document.getElementById('loginSuccess');
+        const loginErrorText = document.getElementById('loginErrorText');
+        const loginSuccessText = document.getElementById('loginSuccessText');
 
+        const regEmail = document.getElementById('regEmail');
+        const regPassword = document.getElementById('regPassword');
+        const regPasswordConfirm = document.getElementById('regPasswordConfirm');
+        const registerBtn = document.getElementById('registerBtn');
+        const regError = document.getElementById('regError');
+        const regErrorText = document.getElementById('regErrorText');
+
+        const otpInput = document.getElementById('otpInput');
+        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+        const resendOtpBtn = document.getElementById('resendOtpBtn');
+        const otpError = document.getElementById('otpError');
+        const otpSuccess = document.getElementById('otpSuccess');
+        const otpErrorText = document.getElementById('otpErrorText');
+        const otpSuccessText = document.getElementById('otpSuccessText');
+        const otpCountdownEl = document.getElementById('otpCountdown');
+        const otpEmailDisplay = document.getElementById('otpEmailDisplay');
+
+        const forgotEmail = document.getElementById('forgotEmail');
+        const forgotBtn = document.getElementById('forgotBtn');
+        const forgotError = document.getElementById('forgotError');
+        const forgotSuccess = document.getElementById('forgotSuccess');
+        const forgotErrorText = document.getElementById('forgotErrorText');
+        const forgotSuccessText = document.getElementById('forgotSuccessText');
+
+        const resetEmail = document.getElementById('resetEmail');
+        const resetNewPassword = document.getElementById('resetNewPassword');
+        const resetConfirmPassword = document.getElementById('resetConfirmPassword');
+        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+        const resetError = document.getElementById('resetError');
+        const resetSuccess = document.getElementById('resetSuccess');
+        const resetErrorText = document.getElementById('resetErrorText');
+        const resetSuccessText = document.getElementById('resetSuccessText');
+
+        // ============================================================
+        // TOAST FUNCTION
+        // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
             document.getElementById('toastText').textContent = msg;
@@ -442,82 +564,51 @@
             setTimeout(() => { toast.style.display = 'none'; }, 3500);
         }
 
-        async function hashPassword(password) {
-            return btoa(password + 'silverchain_salt_2026');
-        }
-
-        async function verifyPassword(password, hashed) {
-            return hashed === btoa(password + 'silverchain_salt_2026');
-        }
-
-        async function getUserByEmail(email) {
+        // ============================================================
+        // LOAD RESET TOKENS
+        // ============================================================
+        function loadResetTokens() {
             try {
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-
-                if (error && error.code === 'PGRST116') return null;
-                if (error) throw error;
-                return data;
-            } catch (error) {
-                console.error('Get user error:', error);
-                return null;
-            }
+                const tokens = localStorage.getItem(STORAGE_KEYS.RESET_TOKENS);
+                if (tokens) {
+                    resetTokens = JSON.parse(tokens);
+                }
+            } catch (e) {}
         }
 
-        async function registerUserToSupabase(email, password, referredBy = null) {
-            try {
-                const existing = await getUserByEmail(email);
-                if (existing) throw new Error('Email already registered');
-
-                const hashedPassword = await hashPassword(password);
-                const refCode = email.split('@')[0].toUpperCase() + Math.floor(100 + Math.random() * 900);
-
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .insert({
-                        email: email,
-                        password: hashedPassword,
-                        ref_code: refCode,
-                        referred_by: referredBy,
-                        verified: true,
-                        role: 'user'
-                    })
-                    .select()
-                    .single();
-
-                if (error) throw error;
-                console.log('✅ User registered:', email);
-                return data;
-            } catch (error) {
-                console.error('❌ Register error:', error);
-                throw error;
-            }
+        function saveResetTokens() {
+            localStorage.setItem(STORAGE_KEYS.RESET_TOKENS, JSON.stringify(resetTokens));
         }
 
-        async function loginUserToSupabase(email, password) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
+        // ============================================================
+        // OTP TIMER
+        // ============================================================
+        function startOtpTimer() {
+            otpCountdown = 300;
+            updateOtpDisplay();
+            clearInterval(otpTimer);
+            verifyOtpBtn.disabled = false;
+            otpTimer = setInterval(() => {
+                otpCountdown--;
+                updateOtpDisplay();
+                if (otpCountdown <= 0) {
+                    clearInterval(otpTimer);
+                    otpCountdownEl.textContent = 'Expired';
+                    verifyOtpBtn.disabled = true;
+                }
+            }, 1000);
+        }
 
-                if (error) throw new Error('Email not found');
-                if (!data) throw new Error('User not found');
+        function updateOtpDisplay() {
+            const mins = Math.floor(otpCountdown / 60);
+            const secs = otpCountdown % 60;
+            otpCountdownEl.textContent =
+                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
 
-                const isValid = await verifyPassword(password, data.password);
-                if (!isValid) throw new Error('Invalid password');
-
-                if (!data.verified) throw new Error('Email not verified');
-
-                return data;
-            } catch (error) {
-                console.error('❌ Login error:', error);
-                throw error;
-            }
+        function stopOtpTimer() {
+            clearInterval(otpTimer);
+            verifyOtpBtn.disabled = false;
         }
 
         // ============================================================
@@ -539,6 +630,11 @@
                 });
                 const target = panels[this.dataset.panel];
                 if (target) target.classList.add('active');
+                if (this.dataset.panel !== 'panelRegister') {
+                    document.getElementById('otpForm').style.display = 'none';
+                    document.getElementById('registerForm').style.display = 'block';
+                    stopOtpTimer();
+                }
                 document.querySelectorAll('.error-msg, .success-msg').forEach(el => el.classList.remove('show'));
             });
         });
@@ -552,135 +648,68 @@
             panels[tabId].classList.add('active');
         }
 
+        // Navigation buttons
         document.getElementById('gotoRegisterBtn').addEventListener('click', () => switchTab('panelRegister'));
         document.getElementById('gotoLoginFromRegister').addEventListener('click', () => switchTab('panelLogin'));
         document.getElementById('gotoLoginFromForgot').addEventListener('click', () => switchTab('panelLogin'));
         document.getElementById('gotoForgotBtn').addEventListener('click', () => switchTab('panelForgot'));
-
-        // ============================================================
-        // REGISTER (Tanpa OTP)
-        // ============================================================
-        document.getElementById('registerBtn').addEventListener('click', async function() {
-            const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            const confirm = document.getElementById('regPasswordConfirm').value.trim();
-            const error = document.getElementById('regError');
-            const success = document.getElementById('regSuccess');
-
-            error.classList.remove('show');
-            success.classList.remove('show');
-
-            // Validasi
-            if (!email || !email.includes('@')) {
-                document.getElementById('regErrorText').textContent = 'Please enter a valid email.';
-                error.classList.add('show');
-                return;
-            }
-            if (password.length < 4) {
-                document.getElementById('regErrorText').textContent = 'Password must be at least 4 characters.';
-                error.classList.add('show');
-                return;
-            }
-            if (password !== confirm) {
-                document.getElementById('regErrorText').textContent = 'Passwords do not match.';
-                error.classList.add('show');
-                return;
-            }
-
-            if (!supabaseClient) {
-                document.getElementById('regErrorText').textContent = 'Supabase not connected. Please refresh.';
-                error.classList.add('show');
-                return;
-            }
-
-            // Disable button
-            const btn = this;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
-
-            try {
-                // Cek apakah email sudah terdaftar
-                const existing = await getUserByEmail(email);
-                if (existing) {
-                    throw new Error('Email already registered');
-                }
-
-                // Register ke Supabase
-                const result = await registerUserToSupabase(email, password, null);
-                console.log('✅ Registration result:', result);
-
-                document.getElementById('regSuccessText').textContent = '✅ Account created successfully! Please login.';
-                success.classList.add('show');
-                showToast('✅ Account created! Please login.');
-
-                // Reset form
-                document.getElementById('regEmail').value = '';
-                document.getElementById('regPassword').value = '';
-                document.getElementById('regPasswordConfirm').value = '';
-
-                // Pindah ke tab Login setelah 1.5 detik
-                setTimeout(() => {
-                    switchTab('panelLogin');
-                    document.getElementById('loginEmail').value = email;
-                    document.getElementById('loginPassword').value = password;
-                    showToast('✅ Account created! Please login.');
-                }, 1500);
-
-            } catch (err) {
-                console.error('❌ Registration error:', err);
-                document.getElementById('regErrorText').textContent = err.message || 'Registration failed.';
-                error.classList.add('show');
-                showToast('❌ ' + (err.message || 'Registration failed'));
-            }
-
-            // Enable button
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+        document.getElementById('gotoLoginFromReset').addEventListener('click', () => {
+            document.getElementById('panelReset').classList.remove('active');
+            document.getElementById('panelReset').style.display = 'none';
+            document.getElementById('authTabs').style.display = 'flex';
+            switchTab('panelLogin');
         });
+
+        // ============================================================
+        // CHECK SUPABASE LOADED
+        // ============================================================
+        function checkSupabase() {
+            if (typeof Supabase === 'undefined') {
+                console.error('❌ Supabase not loaded!');
+                showToast('❌ Supabase not loaded. Please refresh.');
+                return false;
+            }
+            console.log('✅ Supabase loaded!');
+            return true;
+        }
 
         // ============================================================
         // LOGIN
         // ============================================================
-        document.getElementById('loginBtn').addEventListener('click', async function() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-            const error = document.getElementById('loginError');
-            const success = document.getElementById('loginSuccess');
+        loginBtn.addEventListener('click', async function() {
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
 
-            error.classList.remove('show');
-            success.classList.remove('show');
+            loginError.classList.remove('show');
+            loginSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                loginErrorText.textContent = 'Supabase not loaded. Please refresh.';
+                loginError.classList.add('show');
+                return;
+            }
 
             if (!email || !email.includes('@') || password.length < 4) {
-                document.getElementById('loginErrorText').textContent = 'Invalid email or password.';
-                error.classList.add('show');
+                loginErrorText.textContent = 'Invalid email or password.';
+                loginError.classList.add('show');
                 return;
             }
 
-            if (!supabaseClient) {
-                document.getElementById('loginErrorText').textContent = 'Supabase not connected. Please refresh.';
-                error.classList.add('show');
-                return;
-            }
-
-            const btn = this;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
             try {
-                const user = await loginUserToSupabase(email, password);
+                const user = await Supabase.loginUser(email, password);
                 console.log('✅ Login result:', user);
 
-                // Save session
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
 
                 const isAdmin = email.toLowerCase() === OWNER_EMAIL.toLowerCase();
 
-                if (isAdmin) {
-                    document.getElementById('loginSuccessText').textContent = '✅ Admin login successful! Redirecting to Admin Panel...';
-                } else {
-                    document.getElementById('loginSuccessText').textContent = '✅ Login successful! Redirecting...';
-                }
-                success.classList.add('show');
+                loginSuccessText.textContent = isAdmin ?
+                    '✅ Admin login successful! Redirecting to Admin Panel...' :
+                    '✅ Login successful! Redirecting...';
+                loginSuccess.classList.add('show');
 
                 setTimeout(() => {
                     if (isAdmin) {
@@ -692,62 +721,428 @@
 
             } catch (err) {
                 console.error('❌ Login error:', err);
-                document.getElementById('loginErrorText').textContent = err.message || 'Login failed.';
-                error.classList.add('show');
+                loginErrorText.textContent = err.message || 'Login failed.';
+                loginError.classList.add('show');
             }
 
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        });
+
+        // Enter key support for login
+        loginEmail.addEventListener('keydown', e => {
+            if (e.key === 'Enter') loginPassword.focus();
+        });
+        loginPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') loginBtn.click();
         });
 
         // ============================================================
-        // FORGOT PASSWORD (SEMENTARA - TAMPILAN SAJA)
+        // REGISTER + OTP
         // ============================================================
-        document.getElementById('forgotBtn').addEventListener('click', function() {
-            const email = document.getElementById('forgotEmail').value.trim();
-            const error = document.getElementById('forgotError');
-            const success = document.getElementById('forgotSuccess');
+        registerBtn.addEventListener('click', async function() {
+            const email = regEmail.value.trim();
+            const password = regPassword.value.trim();
+            const confirm = regPasswordConfirm.value.trim();
 
-            error.classList.remove('show');
-            success.classList.remove('show');
+            regError.classList.remove('show');
 
-            if (!email || !email.includes('@')) {
-                document.getElementById('forgotErrorText').textContent = 'Please enter a valid email.';
-                error.classList.add('show');
+            if (!checkSupabase()) {
+                regErrorText.textContent = 'Supabase not loaded. Please refresh.';
+                regError.classList.add('show');
                 return;
             }
 
-            // Untuk sementara, hanya tampilkan pesan (nanti diintegrasikan dengan EmailJS)
-            document.getElementById('forgotSuccessText').textContent = '✅ Reset link sent to your email (demo).';
-            success.classList.add('show');
-            document.getElementById('forgotEmail').value = '';
-            showToast('📧 Reset link sent (demo mode)');
+            if (!email || !email.includes('@')) {
+                regErrorText.textContent = 'Please enter a valid email.';
+                regError.classList.add('show');
+                return;
+            }
+            if (password.length < 4) {
+                regErrorText.textContent = 'Password must be at least 4 characters.';
+                regError.classList.add('show');
+                return;
+            }
+            if (password !== confirm) {
+                regErrorText.textContent = 'Passwords do not match.';
+                regError.classList.add('show');
+                return;
+            }
+
+            // Cek email sudah terdaftar
+            try {
+                const existing = await Supabase.getUserByEmail(email);
+                if (existing) {
+                    regErrorText.textContent = 'Email already registered.';
+                    regError.classList.add('show');
+                    return;
+                }
+            } catch (err) {
+                console.error('Check user error:', err);
+            }
+
+            registeredEmail = email;
+            registeredPassword = password;
+            generatedOtp = Supabase.generateOTP();
+
+            // Simpan OTP ke Supabase
+            try {
+                await Supabase.saveOTP(email, generatedOtp, 'register');
+            } catch (err) {
+                console.error('Save OTP error:', err);
+                regErrorText.textContent = 'Failed to save OTP. Please try again.';
+                regError.classList.add('show');
+                return;
+            }
+
+            // Kirim OTP via EmailJS
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending OTP...';
+
+            try {
+                const result = await Supabase.sendOTPEmail(email, generatedOtp);
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-user-plus"></i> Register & Send OTP';
+
+                if (result.success) {
+                    otpEmailDisplay.textContent = `OTP code has been sent to ${email}`;
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.getElementById('otpForm').style.display = 'block';
+                    startOtpTimer();
+                    showToast('📧 OTP code has been sent to your email');
+
+                    // Simpan user sementara (verified: false)
+                    try {
+                        await Supabase.registerUser(email, password, null);
+                    } catch (err) {
+                        console.error('Register user error:', err);
+                        // Lanjutkan meskipun error (user sudah dibuat di Supabase)
+                    }
+                } else {
+                    showToast('❌ Failed to send OTP. Please try again.');
+                }
+            } catch (err) {
+                console.error('Register error:', err);
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-user-plus"></i> Register & Send OTP';
+                regErrorText.textContent = err.message || 'Registration failed.';
+                regError.classList.add('show');
+                showToast('❌ ' + (err.message || 'Registration failed'));
+            }
+        });
+
+        // Enter key support for register
+        regEmail.addEventListener('keydown', e => {
+            if (e.key === 'Enter') regPassword.focus();
+        });
+        regPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') regPasswordConfirm.focus();
+        });
+        regPasswordConfirm.addEventListener('keydown', e => {
+            if (e.key === 'Enter') registerBtn.click();
         });
 
         // ============================================================
-        // ENTER KEY SUPPORT
+        // VERIFY OTP
         // ============================================================
-        document.getElementById('loginEmail').addEventListener('keydown', e => {
-            if (e.key === 'Enter') document.getElementById('loginPassword').focus();
+        verifyOtpBtn.addEventListener('click', async function() {
+            const otp = otpInput.value.trim();
+
+            otpError.classList.remove('show');
+            otpSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                otpErrorText.textContent = 'Supabase not loaded. Please refresh.';
+                otpError.classList.add('show');
+                return;
+            }
+
+            if (otp.length < 6) {
+                otpErrorText.textContent = 'Please enter 6-digit OTP.';
+                otpError.classList.add('show');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+
+            try {
+                // Verifikasi OTP di Supabase
+                await Supabase.verifyOTP(registeredEmail, otp, 'register');
+
+                // Verifikasi user di Supabase
+                await Supabase.verifyUser(registeredEmail);
+
+                otpSuccessText.textContent = '✅ Email verified successfully! Account created.';
+                otpSuccess.classList.add('show');
+                showToast('✅ Email verified! Account created.');
+
+                setTimeout(() => {
+                    document.getElementById('otpForm').style.display = 'none';
+                    document.getElementById('registerForm').style.display = 'block';
+                    regEmail.value = '';
+                    regPassword.value = '';
+                    regPasswordConfirm.value = '';
+                    otpInput.value = '';
+                    stopOtpTimer();
+                    switchTab('panelLogin');
+                    loginEmail.value = registeredEmail;
+                    loginPassword.value = registeredPassword;
+                    showToast('✅ Account created! Please login.');
+                }, 1500);
+
+            } catch (err) {
+                console.error('Verify OTP error:', err);
+                otpErrorText.textContent = err.message || 'Invalid or expired OTP.';
+                otpError.classList.add('show');
+                showToast('❌ ' + (err.message || 'Invalid or expired OTP'));
+            }
+
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-check"></i> Verify OTP';
         });
-        document.getElementById('loginPassword').addEventListener('keydown', e => {
-            if (e.key === 'Enter') document.getElementById('loginBtn').click();
-        });
-        document.getElementById('regEmail').addEventListener('keydown', e => {
-            if (e.key === 'Enter') document.getElementById('regPassword').focus();
-        });
-        document.getElementById('regPassword').addEventListener('keydown', e => {
-            if (e.key === 'Enter') document.getElementById('regPasswordConfirm').focus();
-        });
-        document.getElementById('regPasswordConfirm').addEventListener('keydown', e => {
-            if (e.key === 'Enter') document.getElementById('registerBtn').click();
-        });
-        document.getElementById('forgotEmail').addEventListener('keydown', e => {
-            if (e.key === 'Enter') document.getElementById('forgotBtn').click();
+
+        // Enter key support for OTP
+        otpInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') verifyOtpBtn.click();
         });
 
         // ============================================================
-        // LOAD SETTINGS
+        // RESEND OTP
+        // ============================================================
+        resendOtpBtn.addEventListener('click', async function() {
+            if (!registeredEmail) {
+                showToast('❌ Please register first.');
+                return;
+            }
+
+            if (!checkSupabase()) {
+                showToast('❌ Supabase not loaded. Please refresh.');
+                return;
+            }
+
+            generatedOtp = Supabase.generateOTP();
+
+            // Simpan OTP baru ke Supabase
+            try {
+                await Supabase.saveOTP(registeredEmail, generatedOtp, 'register');
+            } catch (err) {
+                console.error('Save OTP error:', err);
+                showToast('❌ Failed to save OTP. Please try again.');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                const result = await Supabase.sendOTPEmail(registeredEmail, generatedOtp);
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-redo"></i> Resend OTP';
+
+                if (result.success) {
+                    startOtpTimer();
+                    verifyOtpBtn.disabled = false;
+                    showToast('📧 New OTP sent to your email');
+                    otpError.classList.remove('show');
+                    otpSuccess.classList.remove('show');
+                } else {
+                    showToast('❌ Failed to send OTP. Please try again.');
+                }
+            } catch (err) {
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-redo"></i> Resend OTP';
+                showToast('❌ Failed to send OTP. Please try again.');
+            }
+        });
+
+        // ============================================================
+        // BACK TO REGISTER
+        // ============================================================
+        document.getElementById('backToRegisterBtn').addEventListener('click', function() {
+            document.getElementById('otpForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            otpInput.value = '';
+            stopOtpTimer();
+            otpError.classList.remove('show');
+            otpSuccess.classList.remove('show');
+            verifyOtpBtn.disabled = false;
+        });
+
+        // ============================================================
+        // FORGOT PASSWORD
+        // ============================================================
+        forgotBtn.addEventListener('click', async function() {
+            const email = forgotEmail.value.trim();
+
+            forgotError.classList.remove('show');
+            forgotSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                forgotErrorText.textContent = 'Supabase not loaded. Please refresh.';
+                forgotError.classList.add('show');
+                return;
+            }
+
+            if (!email || !email.includes('@')) {
+                forgotErrorText.textContent = 'Please enter a valid email.';
+                forgotError.classList.add('show');
+                return;
+            }
+
+            try {
+                const user = await Supabase.getUserByEmail(email);
+                if (!user) {
+                    forgotErrorText.textContent = 'Email not found.';
+                    forgotError.classList.add('show');
+                    return;
+                }
+            } catch (err) {
+                forgotErrorText.textContent = 'Error checking email. Please try again.';
+                forgotError.classList.add('show');
+                return;
+            }
+
+            // Generate reset token
+            const token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+            const resetLink = `${window.location.origin}/auth?reset=${token}&email=${encodeURIComponent(email)}`;
+
+            // Simpan token
+            resetTokens[email] = {
+                token: token,
+                expires: Date.now() + 15 * 60 * 1000
+            };
+            saveResetTokens();
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                const result = await Supabase.sendResetEmail(email, resetLink);
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
+
+                if (result.success) {
+                    forgotSuccessText.textContent = '✅ Reset link has been sent to your email.';
+                    forgotSuccess.classList.add('show');
+                    forgotEmail.value = '';
+                    showToast('📧 Reset link sent to your email');
+                } else {
+                    showToast('❌ Failed to send reset link. Please try again.');
+                }
+            } catch (err) {
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
+                showToast('❌ Failed to send reset link. Please try again.');
+            }
+        });
+
+        // Enter key support for forgot
+        forgotEmail.addEventListener('keydown', e => {
+            if (e.key === 'Enter') forgotBtn.click();
+        });
+
+        // ============================================================
+        // CHECK RESET TOKEN FROM URL
+        // ============================================================
+        function checkResetToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('reset');
+            const email = urlParams.get('email');
+
+            if (token && email) {
+                const stored = resetTokens[decodeURIComponent(email)];
+                if (stored && stored.token === token && stored.expires > Date.now()) {
+                    resetEmail.value = decodeURIComponent(email);
+                    document.getElementById('panelReset').style.display = 'block';
+                    document.getElementById('panelReset').classList.add('active');
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState({}, '', window.location.pathname);
+                    }
+                    showToast('🔑 Please enter your new password');
+                } else {
+                    showToast('❌ Invalid or expired reset link.');
+                }
+            }
+        }
+
+        // ============================================================
+        // RESET PASSWORD
+        // ============================================================
+        resetPasswordBtn.addEventListener('click', async function() {
+            const email = resetEmail.value;
+            const newPass = resetNewPassword.value.trim();
+            const confirm = resetConfirmPassword.value.trim();
+
+            resetError.classList.remove('show');
+            resetSuccess.classList.remove('show');
+
+            if (!checkSupabase()) {
+                resetErrorText.textContent = 'Supabase not loaded. Please refresh.';
+                resetError.classList.add('show');
+                return;
+            }
+
+            if (newPass.length < 4) {
+                resetErrorText.textContent = 'Password must be at least 4 characters.';
+                resetError.classList.add('show');
+                return;
+            }
+
+            if (newPass !== confirm) {
+                resetErrorText.textContent = 'Passwords do not match.';
+                resetError.classList.add('show');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
+
+            try {
+                await Supabase.updatePassword(email, newPass);
+
+                // Hapus token
+                delete resetTokens[email];
+                saveResetTokens();
+
+                resetSuccessText.textContent = '✅ Password reset successful! Redirecting to Login...';
+                resetSuccess.classList.add('show');
+
+                setTimeout(() => {
+                    document.getElementById('panelReset').classList.remove('active');
+                    document.getElementById('panelReset').style.display = 'none';
+                    document.getElementById('authTabs').style.display = 'flex';
+                    switchTab('panelLogin');
+                    loginEmail.value = email;
+                    loginPassword.value = newPass;
+                    showToast('✅ Password reset successful! Please login.');
+                }, 1500);
+
+            } catch (err) {
+                console.error('Reset password error:', err);
+                resetErrorText.textContent = err.message || 'Reset failed.';
+                resetError.classList.add('show');
+            }
+
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+        });
+
+        // Enter key support for reset
+        resetNewPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') resetConfirmPassword.focus();
+        });
+        resetConfirmPassword.addEventListener('keydown', e => {
+            if (e.key === 'Enter') resetPasswordBtn.click();
+        });
+
+        // ============================================================
+        // LOAD SETTINGS (Logo & Brand)
         // ============================================================
         function loadSettings() {
             try {
@@ -784,12 +1179,15 @@
         // INIT
         // ============================================================
         loadSettings();
+        loadResetTokens();
         checkLoggedIn();
+        checkResetToken();
 
-        console.log('🟢 SilverChain Auth Page ready (Supabase)');
-        console.log('📌 Supabase URL:', SUPABASE_URL);
-        console.log('📌 Admin Login: admin@silverchain.io / admin123');
-        console.log('📌 Demo Login: demo@silverchain.io / 123456');
+        console.log('🟢 SilverChain Auth Page ready!');
+        console.log('📌 Supabase + EmailJS integrated via supabase-config.js');
+        console.log('📌 Admin: admin@silverchain.io / admin123');
+        console.log('📌 Demo: demo@silverchain.io / 123456');
+        console.log('📌 OTP akan dikirim via EmailJS (cek spam jika tidak masuk)');
     </script>
 
 </body>
