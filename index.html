@@ -6,11 +6,9 @@
     <title>SilverChain · DAO Prelaunch</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -22,7 +20,7 @@
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
             color: #d4d4d4;
             min-height: 100vh;
-            padding: 0.5rem 1rem 4rem;
+            padding: 1.5rem 1rem 7rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -55,12 +53,11 @@
             font-size: 1.8rem;
         }
 
-        /* HEADER - Logo besar */
         .header {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0rem;
+            padding: 0.5rem 0 1rem 0;
         }
         .header .brand-center {
             display: flex;
@@ -74,9 +71,11 @@
             justify-content: center;
         }
         .header .brand-center .logo-icon img {
-            width: 300px;
-            height: 54px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
             object-fit: contain;
+            box-shadow: 0 0 60px rgba(192,192,192,0.1);
         }
         .header .brand-center .logo-icon i {
             font-size: 6rem;
@@ -85,7 +84,6 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        /* Sembunyikan tulisan brand dan ticker */
         .header .brand-center h1 {
             display: none;
         }
@@ -93,7 +91,6 @@
             display: none;
         }
 
-        /* PROGRESS */
         .progress-wrap {
             display: flex;
             flex-direction: column;
@@ -146,7 +143,6 @@
             box-shadow: 0 0 30px rgba(192,192,192,0.1);
         }
 
-        /* MEMBER */
         .member-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -201,7 +197,6 @@
             flex-shrink: 0;
         }
 
-        /* ===== LOAD MORE ===== */
         .load-more-wrap {
             display: flex;
             justify-content: center;
@@ -233,7 +228,6 @@
             font-size: 0.8rem;
         }
 
-        /* STATS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -481,37 +475,44 @@
             cursor: default;
         }
 
+        /* ===== BOTTOM NAV - UKURAN SERAGAM ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(12, 28, 60, 0.95);
+            background: rgba(12, 28, 60, 0.97);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid rgba(80, 140, 255, 0.08);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0.4rem 0 0.6rem;
+            padding: 0.7rem 0.5rem 0.9rem;
             z-index: 100;
             box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
             text-decoration: none;
-            font-size: 0.55rem;
+            font-size: 0.65rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            padding: 0.2rem 0.8rem;
+            gap: 4px;
+            transition: 0.2s;
+            padding: 0.3rem 1rem;
             border-radius: 60px;
-            min-width: 60px;
+            min-width: 70px;
             position: relative;
         }
         .bottom-nav a i {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
+        }
+        .bottom-nav a span {
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
         .bottom-nav a.active {
             color: #e0e0e0;
@@ -662,9 +663,23 @@
             .roadmap-item .desc {
                 font-size: 0.9rem;
             }
+            .bottom-nav {
+                padding: 0.8rem 2rem 1rem;
+                gap: 0.5rem;
+                justify-content: center;
+            }
+            .bottom-nav a {
+                padding: 0.4rem 1.5rem;
+                min-width: 80px;
+            }
+            .bottom-nav a i {
+                font-size: 1.6rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.65rem;
+            }
         }
 
-        /* ===== RESPONSIVE HP: MEMBER 1 KOLOM ===== */
         @media (max-width: 768px) {
             .member-grid {
                 grid-template-columns: 1fr !important;
@@ -739,8 +754,6 @@
             .stat-item .label {
                 font-size: 0.5rem;
             }
-
-            /* Logo lebih besar di HP */
             .header .brand-center .logo-icon img {
                 width: 90px;
                 height: 90px;
@@ -748,17 +761,22 @@
             .header .brand-center .logo-icon i {
                 font-size: 4.5rem;
             }
-
             .subhead {
                 font-size: 0.8rem;
             }
+            .bottom-nav {
+                padding: 0.5rem 0.3rem 0.7rem;
+            }
             .bottom-nav a {
-                font-size: 0.45rem;
-                min-width: 40px;
-                padding: 0.1rem 0.3rem;
+                font-size: 0.55rem;
+                padding: 0.2rem 0.5rem;
+                min-width: 55px;
             }
             .bottom-nav a i {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.5rem;
             }
             .progress-wrap {
                 padding: 0.5rem 0.8rem;
@@ -844,14 +862,26 @@
             .btn-load-more i {
                 font-size: 0.65rem;
             }
-
-            /* Logo lebih besar di HP kecil */
             .header .brand-center .logo-icon img {
-                width: 250px;
-                height: 90px;
+                width: 80px;
+                height: 80px;
             }
             .header .brand-center .logo-icon i {
                 font-size: 4rem;
+            }
+            .bottom-nav {
+                padding: 0.4rem 0.2rem 0.6rem;
+            }
+            .bottom-nav a {
+                font-size: 0.5rem;
+                padding: 0.15rem 0.3rem;
+                min-width: 45px;
+            }
+            .bottom-nav a i {
+                font-size: 1.1rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.45rem;
             }
         }
     </style>
@@ -859,7 +889,6 @@
 <body>
     <div class="container">
 
-        <!-- HEADER - HANYA LOGO BESAR -->
         <div class="header">
             <div class="brand-center">
                 <span class="logo-icon" id="logoDisplay"><i class="fas fa-coins"></i></span>
@@ -870,10 +899,7 @@
 
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Success</span></div>
 
-        <!-- HERO -->
         <div class="section-card hero">
-
-            <!-- PROGRESS -->
             <div class="progress-wrap">
                 <div class="progress-top">
                     <span class="progress-label"><i class="fas fa-dollar-sign"></i> Raised</span>
@@ -916,7 +942,6 @@
             </div>
         </div>
 
-        <!-- ACTIVE MEMBERS -->
         <div class="section-card">
             <div class="section-title">
                 <span><i class="fas fa-users"></i> Active Members</span>
@@ -930,7 +955,6 @@
             </div>
         </div>
 
-        <!-- ABOUT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-info-circle"></i> About</div>
             <p style="color:#c0c0c0; line-height:1.6; font-size:0.9rem;">
@@ -945,7 +969,6 @@
             </div>
         </div>
 
-        <!-- FEATURES -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-star"></i> Features</div>
             <div class="grid-3">
@@ -958,7 +981,6 @@
             </div>
         </div>
 
-        <!-- WHY -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question-circle"></i> Why SilverChain?</div>
             <div class="grid-2">
@@ -969,7 +991,6 @@
             </div>
         </div>
 
-        <!-- ROADMAP -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-map-signs"></i> Roadmap</div>
             <div class="roadmap-list">
@@ -981,7 +1002,6 @@
             </div>
         </div>
 
-        <!-- WHITEPAPER -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Complete SilverChain whitepaper available.</p>
@@ -992,7 +1012,6 @@
             </div>
         </div>
 
-        <!-- FAQ -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-question"></i> FAQ</div>
             <div class="faq-item">
@@ -1013,7 +1032,6 @@
             </div>
         </div>
 
-        <!-- CONTACT -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Contact</div>
             <div class="contact-grid" id="contactGrid">
@@ -1027,7 +1045,6 @@
 
     </div>
 
-    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <a href="/" class="active" id="navHome">
             <i class="fas fa-home"></i>
@@ -1045,20 +1062,9 @@
     </nav>
 
     <script>
-        // ============================================================
-        // 1. SUPABASE CONFIG
-        // ============================================================
-
-        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
-
-        // ============================================================
-        // 2. VARIABLES
-        // ============================================================
-        const STORAGE_KEYS = {
-            CURRENT_USER: 'silverchain_current_user'
-        };
+        const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
         const TARGET_USDT = 1000000;
         const MEMBERS_PER_PAGE = 6;
 
@@ -1068,9 +1074,6 @@
         let displayedCount = 0;
         let settings = {};
 
-        // ============================================================
-        // 3. INIT SUPABASE
-        // ============================================================
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('✅ Supabase client created!');
@@ -1078,11 +1081,6 @@
             console.error('❌ Supabase error:', err);
         }
 
-        // ============================================================
-        // 4. SUPABASE FUNCTIONS
-        // ============================================================
-
-        // --- USER ---
         async function getUserByEmail(email) {
             try {
                 const { data, error } = await supabaseClient
@@ -1113,7 +1111,6 @@
             }
         }
 
-        // --- DEPOSIT ---
         async function getAllDeposits() {
             try {
                 const { data, error } = await supabaseClient
@@ -1128,7 +1125,6 @@
             }
         }
 
-        // --- SETTINGS ---
         async function getSetting(key) {
             try {
                 const { data, error } = await supabaseClient
@@ -1163,9 +1159,6 @@
             }
         }
 
-        // ============================================================
-        // 5. TOAST
-        // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
             document.getElementById('toastText').textContent = msg;
@@ -1173,9 +1166,6 @@
             setTimeout(() => { toast.style.display = 'none'; }, 3500);
         }
 
-        // ============================================================
-        // 6. LOAD CURRENT USER
-        // ============================================================
         async function loadCurrentUser() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
@@ -1194,9 +1184,6 @@
             }
         }
 
-        // ============================================================
-        // 7. FORMAT FUNCTIONS
-        // ============================================================
         function maskEmail(email) {
             if (!email) return '-';
             const parts = email.split('@');
@@ -1218,9 +1205,6 @@
             return '$' + num.toFixed(0);
         }
 
-        // ============================================================
-        // 8. LOAD SETTINGS UI (LOGO)
-        // ============================================================
         function loadSettingsUI(settingsData) {
             const logoDisplay = document.getElementById('logoDisplay');
             if (settingsData.logo_type === 'image' && settingsData.logo_image) {
@@ -1230,9 +1214,6 @@
             }
         }
 
-        // ============================================================
-        // 9. RENDER MEMBERS (PAGINATION 6)
-        // ============================================================
         function renderMembers() {
             const grid = document.getElementById('memberGrid');
             const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -1278,9 +1259,6 @@
             }
         }
 
-        // ============================================================
-        // 10. UPDATE UI
-        // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
                 console.warn('⏳ Waiting for Supabase...');
@@ -1323,7 +1301,6 @@
 
                 displayedCount = 0;
                 renderMembers();
-
                 loadSettingsUI(settings);
 
                 const isLoggedIn = !!currentUser;
@@ -1352,9 +1329,6 @@
             }
         }
 
-        // ============================================================
-        // 11. LOAD MORE
-        // ============================================================
         document.getElementById('loadMoreBtn').addEventListener('click', function() {
             renderMembers();
             const grid = document.getElementById('memberGrid');
@@ -1365,9 +1339,6 @@
             });
         });
 
-        // ============================================================
-        // 12. FAQ
-        // ============================================================
         document.querySelectorAll('.faq-question').forEach(q => {
             q.addEventListener('click', function() {
                 const parent = this.parentElement;
@@ -1379,9 +1350,6 @@
         });
         document.querySelector('.faq-item')?.classList.add('active');
 
-        // ============================================================
-        // 13. INIT
-        // ============================================================
         async function init() {
             console.log('🔄 Landing page initializing...');
 
