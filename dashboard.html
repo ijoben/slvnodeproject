@@ -37,8 +37,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -194,11 +194,11 @@
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
             width: 100%;
         }
         .buy-card .btn-buy:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
             transform: translateY(-2px);
         }
         .buy-card .btn-buy:active {
@@ -276,10 +276,10 @@
             color: #fff;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
         }
         .wd-box .btn-wd:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
             transform: translateY(-2px);
         }
         .wd-box .btn-wd:active {
@@ -352,6 +352,9 @@
             display: flex;
         }
 
+        /* ========================================================== */
+        /* MODAL PAYMENT CONFIRMATION - FIX */
+        /* ========================================================== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -359,11 +362,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 999;
             justify-content: center;
             align-items: center;
+            padding: 1rem;
         }
         .modal-overlay.active {
             display: flex;
@@ -374,7 +379,7 @@
             border-radius: 2.5rem;
             padding: 2rem 2rem;
             max-width: 480px;
-            width: 90%;
+            width: 100%;
             border: 1px solid rgba(80, 140, 255, 0.1);
             box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
             position: relative;
@@ -390,15 +395,22 @@
             color: #a0a0a0;
             font-size: 1.4rem;
             cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-box .close-btn:hover {
+            color: #e0e0e0;
         }
         .modal-box h2 {
             color: #e0e0e0;
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+        }
+        .modal-box h2 i {
+            color: #c0c0c0;
         }
         .modal-box p {
             color: #c0c0c0;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             margin-bottom: 1rem;
         }
         .modal-box .address-box {
@@ -432,6 +444,10 @@
             cursor: pointer;
             font-size: 0.7rem;
             white-space: nowrap;
+            transition: 0.15s;
+        }
+        .modal-box .address-box button:hover {
+            background: rgba(60, 120, 255, 0.2);
         }
         .modal-box .qr-section {
             display: flex;
@@ -445,8 +461,8 @@
             flex-wrap: wrap;
         }
         .modal-box .qr-section .qr-placeholder {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             display: flex;
@@ -456,6 +472,7 @@
             color: #c0c0c0;
             border: 2px dashed rgba(80, 140, 255, 0.15);
             overflow: hidden;
+            flex-shrink: 0;
         }
         .modal-box .qr-section .qr-placeholder img {
             width: 100%;
@@ -469,6 +486,21 @@
         }
         .modal-box .qr-section .qr-text strong {
             color: #e0e0e0;
+        }
+        .modal-box .qr-section button {
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 60px;
+            padding: 0.2rem 0.8rem;
+            color: #c0c0c0;
+            cursor: pointer;
+            font-size: 0.65rem;
+            transition: 0.15s;
+            border: none;
+            flex-shrink: 0;
+        }
+        .modal-box .qr-section button:hover {
+            background: rgba(60, 120, 255, 0.2);
         }
         .modal-box .input-field {
             width: 100%;
@@ -491,9 +523,12 @@
         .modal-box .detail-row {
             display: flex;
             justify-content: space-between;
-            padding: 0.3rem 0;
+            padding: 0.4rem 0;
             border-bottom: 1px solid rgba(80, 140, 255, 0.04);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+        }
+        .modal-box .detail-row:last-child {
+            border-bottom: none;
         }
         .modal-box .detail-row .label {
             color: #c0c0c0;
@@ -514,14 +549,25 @@
             transition: 0.15s;
             width: 100%;
             margin-top: 0.8rem;
-            box-shadow: 0 8px 30px -6px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px -6px rgba(192,192,192,0.15);
         }
         .modal-box .btn-submit-payment:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.25);
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.25);
             transform: translateY(-2px);
         }
         .modal-box .btn-submit-payment:active {
             transform: scale(0.97);
+        }
+        .modal-box .btn-submit-payment:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .modal-box .note {
+            color: #a0a0a0;
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 0.5rem;
         }
 
         .bottom-nav {
@@ -538,7 +584,7 @@
             align-items: center;
             padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -567,7 +613,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -621,6 +667,11 @@
                 font-size: 0.7rem;
                 padding: 0.3rem 0.9rem;
             }
+            .modal-box .qr-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
         }
         @media (max-width: 480px) {
             .section-card {
@@ -659,6 +710,15 @@
             .tab-btn {
                 font-size: 0.65rem;
                 padding: 0.25rem 0.7rem;
+            }
+            .modal-box {
+                padding: 1.2rem 1rem;
+                border-radius: 2rem;
+            }
+            .modal-box .qr-section .qr-placeholder {
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -831,28 +891,49 @@
         </a>
     </nav>
 
+    <!-- ========================================================== -->
+    <!-- MODAL PAYMENT CONFIRMATION -->
+    <!-- ========================================================== -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-box">
             <button class="close-btn" id="closePaymentModal"><i class="fas fa-times"></i></button>
             <h2><i class="fas fa-credit-card" style="color:#c0c0c0;"></i> Payment Confirmation</h2>
             <p>Send USDT to the address below, then enter the transaction hash.</p>
+
             <div id="paymentDetails" style="margin:0.5rem 0;">
-                <div class="detail-row"><span class="label">Amount USDT</span><span class="value" id="modalUsdt">0</span></div>
-                <div class="detail-row"><span class="label">Bonus (First Purchase)</span><span class="value" id="modalBonus">0</span></div>
-                <div class="detail-row"><span class="label">Total USDT</span><span class="value" id="modalTotal">0</span></div>
+                <div class="detail-row">
+                    <span class="label">Amount USDT</span>
+                    <span class="value" id="modalUsdt">0</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Bonus (First Purchase)</span>
+                    <span class="value" id="modalBonus">0</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Total USDT</span>
+                    <span class="value" id="modalTotal">0</span>
+                </div>
             </div>
+
             <div class="address-box">
                 <input type="text" id="modalAdminAddress" readonly style="font-family:monospace;" />
                 <button id="modalCopyAddress"><i class="fas fa-copy"></i> Copy</button>
             </div>
+
             <div class="qr-section">
                 <div class="qr-placeholder" id="modalQrPlaceholder"><i class="fas fa-qrcode"></i></div>
-                <div class="qr-text"><strong>QRIS</strong><br />Scan QRIS for payment<br /><span style="font-size:0.65rem; color:#a0a0a0;" id="modalQrText">ID: 1234567890 | SilverChain DAO</span></div>
-                <button id="modalCopyQRIS" style="background:rgba(60,120,255,0.1); border:1px solid rgba(80,140,255,0.06); border-radius:60px; padding:0.2rem 0.8rem; color:#c0c0c0; cursor:pointer; font-size:0.65rem;"><i class="fas fa-copy"></i> Copy ID</button>
+                <div class="qr-text">
+                    <strong>QRIS</strong><br />
+                    Scan QRIS for payment<br />
+                    <span style="font-size:0.65rem; color:#a0a0a0;" id="modalQrText">ID: 1234567890 | SilverChain DAO</span>
+                </div>
+                <button id="modalCopyQRIS"><i class="fas fa-copy"></i> Copy ID</button>
             </div>
+
             <input type="text" class="input-field" id="modalTxHash" placeholder="Enter transaction hash (0x...)" style="font-family:monospace;" />
+
             <button class="btn-submit-payment" id="modalSubmitBtn"><i class="fas fa-paper-plane"></i> Submit Deposit Proof</button>
-            <p style="color:#a0a0a0; font-size:0.6rem; text-align:center; margin-top:0.3rem;">* Admin will verify and approve manually</p>
+            <p class="note">* Admin will verify and approve manually</p>
         </div>
     </div>
 
@@ -864,6 +945,7 @@
         // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+
         // ============================================================
         // 2. VARIABLES
         // ============================================================
@@ -1264,11 +1346,21 @@
             return addr || '0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ';
         }
 
+        async function getQrisData() {
+            const qris = await getSetting('qris_image');
+            return qris || null;
+        }
+
         async function updatePaymentModal() {
-            document.getElementById('modalAdminAddress').value = await getUsdtAddress();
-            const qrisData = localStorage.getItem('silverchain_qris_data');
+            // Update USDT Address
+            const addr = await getUsdtAddress();
+            document.getElementById('modalAdminAddress').value = addr;
+
+            // Update QRIS
+            const qrisData = await getQrisData();
             const placeholder = document.getElementById('modalQrPlaceholder');
             const qrText = document.getElementById('modalQrText');
+
             if (qrisData) {
                 placeholder.innerHTML =
                     `<img src="${qrisData}" alt="QRIS" style="width:100%;height:100%;object-fit:contain;" />`;
@@ -1314,7 +1406,10 @@
             document.getElementById('modalTotal').textContent = finalTotal;
             document.getElementById('modalTxHash').value = '';
 
-            updatePaymentModal();
+            // Update payment modal dengan data terbaru
+            await updatePaymentModal();
+
+            // Tampilkan modal
             document.getElementById('paymentModal').classList.add('active');
         });
 
@@ -1344,8 +1439,12 @@
                 ta.style.left = '-9999px';
                 document.body.appendChild(ta);
                 ta.select();
-                try { document.execCommand('copy');
-                    showToast('📋 Address copied!'); } catch (e) { showToast('❌ Failed to copy.'); }
+                try {
+                    document.execCommand('copy');
+                    showToast('📋 Address copied!');
+                } catch (e) {
+                    showToast('❌ Failed to copy.');
+                }
                 document.body.removeChild(ta);
             }
         });
@@ -1361,8 +1460,12 @@
                 ta.style.left = '-9999px';
                 document.body.appendChild(ta);
                 ta.select();
-                try { document.execCommand('copy');
-                    showToast('📋 QRIS ID copied!'); } catch (e) { showToast('❌ Failed to copy.'); }
+                try {
+                    document.execCommand('copy');
+                    showToast('📋 QRIS ID copied!');
+                } catch (e) {
+                    showToast('❌ Failed to copy.');
+                }
                 document.body.removeChild(ta);
             }
         });
