@@ -112,13 +112,20 @@
             display: inline;
         }
 
-        /* STATS GRID - 2 KOLOM */
-        .admin-stats-grid {
+        /* ========================================================== */
+        /* STATS GRID - 2 KOLOM - HANYA UNTUK TAB STATS */
+        /* ========================================================== */
+        #tabStats .admin-stats-grid {
             display: grid !important;
             grid-template-columns: 1fr 1fr !important;
             gap: 1rem !important;
             margin: 1rem 0 1.5rem !important;
         }
+
+        .admin-stats-grid {
+            display: none !important;
+        }
+
         .admin-stat {
             background: rgba(8, 20, 48, 0.4);
             border-radius: 1.5rem;
@@ -172,6 +179,7 @@
             position: relative;
             z-index: 1;
         }
+
         .admin-stat.primary .icon { color: #c0c0c0; }
         .admin-stat.primary .num { color: #e0e0e0; }
         .admin-stat.success .icon { color: #6aff8a; }
@@ -410,7 +418,7 @@
         }
 
         /* ========================================================== */
-        /* BOTTOM NAV - KHUSUS ADMIN - DIPERBAIKI UNTUK HP */
+        /* BOTTOM NAV */
         /* ========================================================== */
         .bottom-nav {
             position: fixed;
@@ -503,7 +511,7 @@
 
         /* TABLET & HP */
         @media (max-width: 768px) {
-            .admin-stats-grid {
+            #tabStats .admin-stats-grid {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 0.6rem !important;
             }
@@ -527,7 +535,6 @@
                 min-width: auto;
             }
 
-            /* BOTTOM NAV HP - RAPI DAN PROPORSI */
             .bottom-nav {
                 padding: 0.3rem 0.2rem 0.5rem;
                 gap: 0.05rem;
@@ -587,7 +594,7 @@
                 padding: 1.2rem 0.8rem;
                 border-radius: 2rem;
             }
-            .admin-stats-grid {
+            #tabStats .admin-stats-grid {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 0.4rem !important;
             }
@@ -608,7 +615,6 @@
                 font-size: 0.45rem;
             }
 
-            /* BOTTOM NAV HP KECIL - TETAP RAPI */
             .bottom-nav {
                 padding: 0.2rem 0.1rem 0.4rem;
                 gap: 0;
@@ -760,35 +766,39 @@
             </div>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Manage users, deposits, withdrawals & settings</p>
 
-            <!-- STATS GRID - 2 KOLOM -->
-            <div class="admin-stats-grid" id="statsGrid">
-                <div class="admin-stat primary" data-tab="tabUsers">
-                    <div class="icon"><i class="fas fa-users"></i></div>
-                    <div class="num" id="adminTotalUsers">0</div>
-                    <div class="label">Total Users</div>
-                    <div class="sub">Registered</div>
-                </div>
-                <div class="admin-stat warning" data-tab="tabDeposit">
-                    <div class="icon"><i class="fas fa-clock"></i></div>
-                    <div class="num" id="adminPendingDeposits">0</div>
-                    <div class="label">Pending Deposits</div>
-                    <div class="sub">Awaiting Approval</div>
-                </div>
-                <div class="admin-stat info" data-tab="tabWithdraw">
-                    <div class="icon"><i class="fas fa-arrow-up"></i></div>
-                    <div class="num" id="adminPendingWithdraw">0</div>
-                    <div class="label">Pending Withdrawals</div>
-                    <div class="sub">Awaiting Approval</div>
-                </div>
-                <div class="admin-stat success" data-tab="tabStats">
-                    <div class="icon"><i class="fas fa-coins"></i></div>
-                    <div class="num" id="adminTotalUSDTMinted">0</div>
-                    <div class="label">Total USDT Minted</div>
-                    <div class="sub">All Users</div>
+            <!-- ========================================================== -->
+            <!-- TAB STATS - Card Statistik HANYA DI SINI -->
+            <!-- ========================================================== -->
+            <div class="tab-content active" id="tabStats">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat primary" data-tab="tabUsers">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <div class="num" id="adminTotalUsers">0</div>
+                        <div class="label">Total Users</div>
+                        <div class="sub">Registered</div>
+                    </div>
+                    <div class="admin-stat warning" data-tab="tabDeposit">
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <div class="num" id="adminPendingDeposits">0</div>
+                        <div class="label">Pending Deposits</div>
+                        <div class="sub">Awaiting Approval</div>
+                    </div>
+                    <div class="admin-stat info" data-tab="tabWithdraw">
+                        <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                        <div class="num" id="adminPendingWithdraw">0</div>
+                        <div class="label">Pending Withdrawals</div>
+                        <div class="sub">Awaiting Approval</div>
+                    </div>
+                    <div class="admin-stat success" data-tab="tabStats">
+                        <div class="icon"><i class="fas fa-coins"></i></div>
+                        <div class="num" id="adminTotalUSDTMinted">0</div>
+                        <div class="label">Total USDT Minted</div>
+                        <div class="sub">All Users</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- TAB: USERS dengan PAGINATION -->
+            <!-- TAB: USERS -->
             <div class="tab-content" id="tabUsers">
                 <div class="section-title">
                     <span><i class="fas fa-users"></i> All Users</span>
@@ -953,7 +963,7 @@
     </div>
 
     <!-- ========================================================== -->
-    <!-- BOTTOM NAV - DIPERBAIKI UNTUK HP -->
+    <!-- BOTTOM NAV -->
     <!-- ========================================================== -->
     <nav class="bottom-nav">
         <a href="#" class="active" data-tab="tabStats" id="navStats">
@@ -1251,7 +1261,7 @@
         // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
         const tabContents = {
-            tabStats: document.getElementById('statsGrid'),
+            tabStats: document.getElementById('tabStats'),
             tabUsers: document.getElementById('tabUsers'),
             tabDeposit: document.getElementById('tabDeposit'),
             tabWithdraw: document.getElementById('tabWithdraw'),
@@ -1262,12 +1272,12 @@
         function showTab(tabId) {
             Object.keys(tabContents).forEach(key => {
                 if (tabContents[key]) {
-                    tabContents[key].style.display = 'none';
+                    tabContents[key].classList.remove('active');
                 }
             });
             const target = tabContents[tabId];
             if (target) {
-                target.style.display = 'block';
+                target.classList.add('active');
             }
             navItems.forEach(item => {
                 item.classList.remove('active');
@@ -1760,6 +1770,7 @@
             const authPassed = await checkAuth();
             if (!authPassed) return;
 
+            // Tampilkan tab Stats sebagai default
             showTab('tabStats');
             await updateUI();
 
