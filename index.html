@@ -6,10 +6,8 @@
     <title>SilverChain · DAO Prelaunch</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK & Config -->
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
-    <script src="supabase-config.js">
     </script>
     <style>
         /* ===== SAMA SEPERTI SEBELUMNYA ===== */
@@ -157,37 +155,37 @@
         /* MEMBER */
         .member-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.8rem;
         }
         .member-card-item {
             background: rgba(8, 20, 48, 0.3);
             border-radius: 1rem;
-            padding: 0.6rem 1rem;
+            padding: 0.7rem 1rem;
             display: flex;
             align-items: center;
             gap: 0.8rem;
             border: 1px solid rgba(80, 140, 255, 0.04);
+            transition: 0.2s;
+        }
+        .member-card-item:hover {
+            border-color: rgba(80, 140, 255, 0.12);
         }
         .member-card-item .avatar {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: linear-gradient(145deg, #c0c0c0, #888888);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #fff;
             flex-shrink: 0;
         }
         .member-card-item .info {
             flex: 1;
             min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
         }
         .member-card-item .info .name {
             font-size: 0.85rem;
@@ -196,21 +194,49 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 150px;
         }
         .member-card-item .info .sct {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #c0c0c0;
             font-weight: 500;
-            background: rgba(60, 120, 255, 0.08);
-            padding: 0.1rem 0.6rem;
-            border-radius: 60px;
         }
         .member-card-item .rank {
             color: #a0a0a0;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             flex-shrink: 0;
+        }
+
+        /* ===== LOAD MORE ===== */
+        .load-more-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.2rem;
+        }
+        .btn-load-more {
+            background: rgba(60, 120, 255, 0.08);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            color: #c0c0c0;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-load-more:hover {
+            background: rgba(60, 120, 255, 0.15);
+            border-color: rgba(80, 140, 255, 0.15);
+        }
+        .btn-load-more:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .btn-load-more i {
+            font-size: 0.8rem;
         }
 
         /* STATS */
@@ -416,11 +442,6 @@
             font-size: 0.75rem;
             word-break: break-word;
         }
-        .contact-item a {
-            color: #c0c0c0;
-            text-decoration: none;
-            font-size: 0.75rem;
-        }
 
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -581,27 +602,26 @@
                 font-size: 0.85rem;
             }
             .member-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 0.8rem;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
             }
             .member-card-item {
                 padding: 0.8rem 1.2rem;
                 border-radius: 1.2rem;
             }
             .member-card-item .avatar {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
             }
             .member-card-item .info .name {
                 font-size: 0.9rem;
-                max-width: none;
             }
             .member-card-item .info .sct {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
             .member-card-item .rank {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
             .progress-wrap {
                 flex-direction: row;
@@ -650,21 +670,32 @@
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             .member-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+            .member-card-item {
+                padding: 0.5rem 0.6rem;
+                border-radius: 0.8rem;
+            }
+            .member-card-item .avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
             }
             .member-card-item .info .name {
-                max-width: 100px;
                 font-size: 0.75rem;
             }
             .member-card-item .info .sct {
-                font-size: 0.65rem;
+                font-size: 0.6rem;
             }
-            .member-card-item .avatar {
-                width: 30px;
-                height: 30px;
-                font-size: 0.7rem;
+            .member-card-item .rank {
+                font-size: 0.6rem;
+            }
+            .btn-load-more {
+                padding: 0.4rem 1.2rem;
+                font-size: 0.75rem;
             }
             .contact-grid {
                 grid-template-columns: 1fr 1fr;
@@ -791,6 +822,38 @@
                 padding: 0.4rem 0.8rem;
             }
         }
+
+        @media (max-width: 480px) {
+            .member-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.4rem;
+            }
+            .member-card-item {
+                padding: 0.4rem 0.4rem;
+                border-radius: 0.6rem;
+            }
+            .member-card-item .avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 0.6rem;
+            }
+            .member-card-item .info .name {
+                font-size: 0.65rem;
+            }
+            .member-card-item .info .sct {
+                font-size: 0.5rem;
+            }
+            .member-card-item .rank {
+                font-size: 0.5rem;
+            }
+            .btn-load-more {
+                padding: 0.3rem 1rem;
+                font-size: 0.65rem;
+            }
+            .btn-load-more i {
+                font-size: 0.65rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -855,9 +918,15 @@
 
         <!-- ACTIVE MEMBERS -->
         <div class="section-card">
-            <div class="section-title"><i class="fas fa-users"></i> Active Members</div>
-            <div class="member-grid" id="memberGrid">
-                <div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">Loading...</div>
+            <div class="section-title">
+                <span><i class="fas fa-users"></i> Active Members</span>
+                <span class="badge-silver" id="memberCountBadge">Total: 0</span>
+            </div>
+            <div class="member-grid" id="memberGrid"></div>
+            <div class="load-more-wrap">
+                <button class="btn-load-more" id="loadMoreBtn">
+                    <i class="fas fa-chevron-down"></i> Load More
+                </button>
             </div>
         </div>
 
@@ -977,63 +1046,164 @@
 
     <script>
         // ============================================================
-        // STORAGE KEYS
+        // 1. SUPABASE CONFIG
+        // ============================================================
+
+        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
+        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+
+        // ============================================================
+        // 2. VARIABLES
         // ============================================================
         const STORAGE_KEYS = {
             CURRENT_USER: 'silverchain_current_user'
         };
         const TARGET_USDT = 1000000;
+        const MEMBERS_PER_PAGE = 6;
 
         let currentUser = null;
-        let bonusPercent = 10;
-        let refPercent = 3;
+        let supabaseClient = null;
+        let allMembers = [];
+        let displayedCount = 0;
         let settings = {};
 
         // ============================================================
-        // LOAD
+        // 3. INIT SUPABASE
         // ============================================================
-        function loadData() {
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client created!');
+        } catch (err) {
+            console.error('❌ Supabase error:', err);
+        }
+
+        // ============================================================
+        // 4. SUPABASE FUNCTIONS
+        // ============================================================
+
+        // --- USER ---
+        async function getUserByEmail(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Get user error:', error);
+                return null;
+            }
+        }
+
+        async function getAllUsers() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all users error:', error);
+                return [];
+            }
+        }
+
+        // --- DEPOSIT ---
+        async function getAllDeposits() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('deposits')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all deposits error:', error);
+                return [];
+            }
+        }
+
+        // --- SETTINGS ---
+        async function getSetting(key) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('settings')
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data ? data.value : null;
+            } catch (error) {
+                console.error('Get setting error:', error);
+                return null;
+            }
+        }
+
+        async function getSettings(keys) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('settings')
+                    .select('*')
+                    .in('key', keys);
+                if (error) throw error;
+                const result = {};
+                data.forEach(item => {
+                    result[item.key] = item.value;
+                });
+                return result;
+            } catch (error) {
+                console.error('Get settings error:', error);
+                return {};
+            }
+        }
+
+        // ============================================================
+        // 5. TOAST
+        // ============================================================
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // 6. LOAD CURRENT USER
+        // ============================================================
+        async function loadCurrentUser() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
-                    // Cek user di Supabase
-                    if (typeof Supabase !== 'undefined') {
-                        Supabase.getUserByEmail(data.email).then(user => {
-                            if (user) currentUser = user;
-                        });
+                    const user = await getUserByEmail(data.email);
+                    if (user) {
+                        currentUser = user;
+                        return true;
                     }
                 }
-
-                // Load settings dari Supabase
-                if (typeof Supabase !== 'undefined') {
-                    Supabase.getSetting('bonus_percent').then(val => {
-                        if (val) bonusPercent = parseInt(val);
-                    });
-                    Supabase.getSetting('ref_percent').then(val => {
-                        if (val) refPercent = parseInt(val);
-                    });
-                }
-
-                const settingsData = localStorage.getItem('silverchain_settings');
-                if (settingsData) settings = JSON.parse(settingsData);
-                else settings = {};
-            } catch (e) { console.error('Load error:', e); }
+                return false;
+            } catch (e) {
+                console.error('Load user error:', e);
+                return false;
+            }
         }
 
         // ============================================================
-        // FUNGSI
+        // 7. FORMAT FUNCTIONS
         // ============================================================
-        async function getTotalUSDT() {
-            if (typeof Supabase === 'undefined') return 0;
-            const total = await Supabase.getTotalRaised();
-            return total || 0;
-        }
-
-        async function getTotalMinted() {
-            if (typeof Supabase === 'undefined') return 0;
-            const total = await Supabase.getTotalMinted();
-            return total || 0;
+        function maskEmail(email) {
+            if (!email) return '-';
+            const parts = email.split('@');
+            const name = parts[0] || '';
+            const domain = parts[1] || '';
+            if (name.length <= 2) return name + '@' + domain;
+            return name.substring(0, 2) + '***@' + domain;
         }
 
         function formatNumber(num) {
@@ -1048,136 +1218,216 @@
             return '$' + num.toFixed(0);
         }
 
-        function maskEmail(email) {
-            if (!email) return '-';
-            const parts = email.split('@');
-            const name = parts[0] || '';
-            const domain = parts[1] || '';
-            if (name.length <= 2) return name + '@' + domain;
-            return name.substring(0, 2) + '***@' + domain;
-        }
-
         // ============================================================
-        // LOAD SETTINGS UI
+        // 8. LOAD SETTINGS UI (LOGO, BRAND, CONTACTS)
         // ============================================================
-        function loadSettingsUI() {
+        function loadSettingsUI(settingsData) {
+            // Logo
             const logoDisplay = document.getElementById('logoDisplay');
-            if (settings.logoType === 'image' && settings.logoImage) {
-                logoDisplay.innerHTML = `<img src="${settings.logoImage}" alt="Logo" style="width:50px;height:50px;border-radius:50%;object-fit:contain;" />`;
-            } else if (settings.logoType === 'icon' && settings.logoIcon) {
-                logoDisplay.innerHTML = `<i class="${settings.logoIcon}"></i>`;
+            if (settingsData.logo_type === 'image' && settingsData.logo_image) {
+                logoDisplay.innerHTML = `<img src="${settingsData.logo_image}" alt="Logo" style="width:50px;height:50px;border-radius:50%;object-fit:contain;" />`;
+            } else if (settingsData.logo_type === 'icon' && settingsData.logo_icon) {
+                logoDisplay.innerHTML = `<i class="${settingsData.logo_icon}"></i>`;
             } else {
                 logoDisplay.innerHTML = `<i class="fas fa-coins"></i>`;
             }
 
-            if (settings.brandName) {
-                document.getElementById('brandName').textContent = settings.brandName;
+            // Brand Name
+            if (settingsData.brand_name) {
+                document.getElementById('brandName').textContent = settingsData.brand_name;
             }
 
-            if (settings.contactTwitter) {
+            // Contacts
+            if (settingsData.contact_twitter) {
                 const el = document.getElementById('contactTwitter');
                 if (el) {
-                    el.href = settings.contactTwitter;
-                    el.querySelector('span').textContent = settings.contactTwitter.replace('https://', '').replace('http://', '');
+                    el.href = settingsData.contact_twitter;
+                    el.querySelector('span').textContent = settingsData.contact_twitter.replace('https://', '').replace(
+                        'http://', '');
                 }
             }
-            if (settings.contactTelegram) {
+            if (settingsData.contact_telegram) {
                 const el = document.getElementById('contactTelegram');
                 if (el) {
-                    el.href = settings.contactTelegram;
-                    el.querySelector('span').textContent = settings.contactTelegram.replace('https://', '').replace('http://', '');
+                    el.href = settingsData.contact_telegram;
+                    el.querySelector('span').textContent = settingsData.contact_telegram.replace('https://', '').replace(
+                        'http://', '');
                 }
             }
-            if (settings.contactDiscord) {
+            if (settingsData.contact_discord) {
                 const el = document.getElementById('contactDiscord');
                 if (el) {
-                    el.href = settings.contactDiscord;
-                    el.querySelector('span').textContent = settings.contactDiscord.replace('https://', '').replace('http://', '');
+                    el.href = settingsData.contact_discord;
+                    el.querySelector('span').textContent = settingsData.contact_discord.replace('https://', '').replace(
+                        'http://', '');
                 }
             }
-            if (settings.contactEmail) {
+            if (settingsData.contact_email) {
                 const el = document.getElementById('contactEmail');
                 if (el) {
-                    el.href = 'mailto:' + settings.contactEmail;
-                    el.querySelector('span').textContent = settings.contactEmail;
+                    el.href = 'mailto:' + settingsData.contact_email;
+                    el.querySelector('span').textContent = settingsData.contact_email;
                 }
             }
         }
 
         // ============================================================
-        // UPDATE UI
+        // 9. RENDER MEMBERS (PAGINATION 6)
+        // ============================================================
+        function renderMembers() {
+            const grid = document.getElementById('memberGrid');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const totalMembers = allMembers.length;
+
+            // Update total badge
+            document.getElementById('memberCountBadge').textContent = `Total: ${totalMembers}`;
+
+            if (totalMembers === 0) {
+                grid.innerHTML =
+                    `<div style="color:#a0a0a0; text-align:center; padding:1rem; grid-column:1/-1; font-size:0.85rem;">No members yet</div>`;
+                loadMoreBtn.style.display = 'none';
+                return;
+            }
+
+            const end = Math.min(displayedCount + MEMBERS_PER_PAGE, totalMembers);
+            const membersToShow = allMembers.slice(0, end);
+
+            let html = '';
+            membersToShow.forEach((member, index) => {
+                const initial = member.email.charAt(0).toUpperCase();
+                const masked = maskEmail(member.email);
+                const totalUSDT = member.total_usdt || 0;
+                html += `
+                    <div class="member-card-item">
+                        <div class="avatar">${initial}</div>
+                        <div class="info">
+                            <div class="name">${masked}</div>
+                            <div class="sct">${totalUSDT.toFixed(1)} USDT</div>
+                        </div>
+                        <div class="rank">#${index + 1}</div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            displayedCount = end;
+
+            // Show/hide load more button
+            if (displayedCount >= totalMembers) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'inline-flex';
+                loadMoreBtn.innerHTML = `<i class="fas fa-chevron-down"></i> Load More (${displayedCount}/${totalMembers})`;
+            }
+        }
+
+        // ============================================================
+        // 10. UPDATE UI
         // ============================================================
         async function updateUI() {
-            const isLoggedIn = !!currentUser;
-
-            const badge = document.getElementById('navBadge');
-            if (isLoggedIn) {
-                const deposits = await Supabase.getUserDeposits(currentUser.email);
-                const pending = deposits.filter(d => d.status === 'pending');
-                badge.style.display = pending.length > 0 ? 'block' : 'none';
-            } else {
-                badge.style.display = 'none';
+            if (!supabaseClient) {
+                console.warn('⏳ Waiting for Supabase...');
+                setTimeout(updateUI, 1000);
+                return;
             }
 
-            const heroContainer = document.getElementById('heroButtonContainer');
-            if (isLoggedIn) {
-                heroContainer.innerHTML = `
-                    <a href="/dashboard" class="btn-hero"><i class="fas fa-chart-pie"></i> Dashboard</a>
-                `;
-            } else {
-                heroContainer.innerHTML = `
-                    <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Register</a>
-                `;
-            }
-
-            const totalUSDT = await getTotalUSDT();
-            const pct = Math.min((totalUSDT / TARGET_USDT) * 100, 100);
-            document.getElementById('progressFill').style.width = pct + '%';
-            document.getElementById('counterDisplay').innerHTML = formatCurrency(totalUSDT) + ' <small>USDT</small>';
-
-            const totalMinted = await getTotalMinted();
-            document.getElementById('statSold').textContent = formatNumber(totalMinted);
-
-            // Member list
             try {
-                const users = await Supabase.getAllUsers();
-                const grid = document.getElementById('memberGrid');
-                if (!users || users.length === 0) {
-                    grid.innerHTML = `<div style="color:#a0a0a0; text-align:center; padding:0.5rem; grid-column:1/-1; font-size:0.85rem;">No members yet</div>`;
-                } else {
-                    let html = '';
-                    users.slice(0, 10).forEach((user, index) => {
-                        const initial = user.email.charAt(0).toUpperCase();
-                        const masked = maskEmail(user.email);
-                        html += `
-                            <div class="member-card-item">
-                                <div class="avatar">${initial}</div>
-                                <div class="info">
-                                    <span class="name">${masked}</span>
-                                    <span class="sct">${user.role === 'admin' ? '👑 Admin' : 'Member'}</span>
-                                </div>
-                                <div class="rank">#${index + 1}</div>
-                            </div>
-                        `;
-                    });
-                    if (users.length > 10) {
-                        html += `
-                            <div class="member-card-item" style="border-style:dashed; justify-content:center;">
-                                <div style="color:#a0a0a0; font-size:0.7rem;">+${users.length - 10} more</div>
-                            </div>
-                        `;
-                    }
-                    grid.innerHTML = html;
-                }
-            } catch (e) {
-                console.error('Load members error:', e);
-            }
+                // === LOAD DATA ===
+                // 1. Settings (bonus, ref, logo, brand, contacts)
+                const settingsKeys = [
+                    'bonus_percent', 'ref_percent',
+                    'logo_image', 'logo_type', 'logo_icon',
+                    'brand_name',
+                    'contact_twitter', 'contact_telegram', 'contact_discord', 'contact_email'
+                ];
+                const settingsData = await getSettings(settingsKeys);
+                settings = settingsData;
 
-            loadSettingsUI();
+                // 2. Deposits
+                const deposits = await getAllDeposits();
+                const approvedDeposits = deposits.filter(d => d.status === 'approved');
+
+                // 3. Users
+                const users = await getAllUsers();
+
+                // 4. Calculate member totals
+                const memberMap = {};
+                approvedDeposits.forEach(d => {
+                    if (!memberMap[d.email]) {
+                        memberMap[d.email] = { email: d.email, total: 0 };
+                    }
+                    memberMap[d.email].total += d.total || d.usdt || 0;
+                });
+
+                // Convert to array and sort
+                allMembers = Object.values(memberMap)
+                    .sort((a, b) => b.total - a.total);
+
+                // === UPDATE STATS ===
+                const totalRaised = approvedDeposits.reduce((sum, d) => sum + d.usdt, 0);
+                const totalMinted = approvedDeposits.reduce((sum, d) => sum + (d.total || d.usdt), 0);
+
+                // Progress
+                const pct = Math.min((totalRaised / TARGET_USDT) * 100, 100);
+                document.getElementById('progressFill').style.width = pct + '%';
+                document.getElementById('counterDisplay').innerHTML = formatCurrency(totalRaised) + ' <small>USDT</small>';
+
+                // Stats
+                document.getElementById('statSold').textContent = formatNumber(totalMinted);
+                document.getElementById('statBonus').textContent = (settings.bonus_percent || 10) + '%';
+                document.getElementById('statRef').textContent = (settings.ref_percent || 3) + '%';
+
+                // === RENDER MEMBERS ===
+                displayedCount = 0;
+                renderMembers();
+
+                // === LOAD SETTINGS UI (LOGO, BRAND, CONTACTS) ===
+                loadSettingsUI(settings);
+
+                // === HERO BUTTON ===
+                const isLoggedIn = !!currentUser;
+                const heroContainer = document.getElementById('heroButtonContainer');
+                if (isLoggedIn) {
+                    heroContainer.innerHTML = `
+                        <a href="/dashboard" class="btn-hero"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                    `;
+                } else {
+                    heroContainer.innerHTML = `
+                        <a href="/auth" class="btn-hero"><i class="fas fa-sign-in-alt"></i> Login / Register</a>
+                    `;
+                }
+
+                // === BADGE ===
+                const badge = document.getElementById('navBadge');
+                if (isLoggedIn) {
+                    const userDeposits = deposits.filter(d => d.email === currentUser.email && d.status === 'pending');
+                    badge.style.display = userDeposits.length > 0 ? 'block' : 'none';
+                } else {
+                    badge.style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('❌ Update UI error:', error);
+                showToast('⚠️ Failed to load data: ' + error.message);
+            }
         }
 
         // ============================================================
-        // FAQ
+        // 11. LOAD MORE
+        // ============================================================
+        document.getElementById('loadMoreBtn').addEventListener('click', function() {
+            renderMembers();
+            // Scroll sedikit ke bawah untuk melihat member baru
+            const grid = document.getElementById('memberGrid');
+            const rect = grid.getBoundingClientRect();
+            window.scrollTo({
+                top: window.scrollY + rect.top - 80,
+                behavior: 'smooth'
+            });
+        });
+
+        // ============================================================
+        // 12. FAQ
         // ============================================================
         document.querySelectorAll('.faq-question').forEach(q => {
             q.addEventListener('click', function() {
@@ -1191,28 +1441,41 @@
         document.querySelector('.faq-item')?.classList.add('active');
 
         // ============================================================
-        // STORAGE & INTERVAL
+        // 13. INIT
         // ============================================================
-        window.addEventListener('storage', function(e) {
-            if (e.key === STORAGE_KEYS.CURRENT_USER) {
-                loadData();
-                updateUI();
+        async function init() {
+            console.log('🔄 Landing page initializing...');
+
+            if (!supabaseClient) {
+                console.error('❌ Supabase not ready!');
+                showToast('❌ System not ready. Please refresh.');
+                setTimeout(init, 2000);
+                return;
             }
-        });
 
-        // ============================================================
-        // INIT
-        // ============================================================
-        loadData();
-        setTimeout(updateUI, 500);
+            // Load current user
+            await loadCurrentUser();
 
-        setInterval(() => {
-            loadData();
-            updateUI();
-        }, 5000);
+            // Update UI
+            await updateUI();
+
+            console.log('🟢 Landing page ready!');
+            console.log('📌 Members:', allMembers.length);
+        }
+
+        // Start
+        init();
+
+        // Auto refresh every 10 seconds
+        setInterval(async () => {
+            if (supabaseClient) {
+                await updateUI();
+            }
+        }, 10000);
 
         console.log('🟢 SilverChain Landing Page ready.');
-        console.log('🔐 Login at: /auth');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
+        console.log('📌 Members per page: 6 with Load More');
     </script>
 </body>
 </html>
