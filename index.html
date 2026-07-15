@@ -53,11 +53,12 @@
             font-size: 1.8rem;
         }
 
+        /* ===== HEADER - LOGO BESAR DENGAN PADDING RAPAT ===== */
         .header {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0.5rem 0 1rem 0;
+            padding: 0.2rem 0 0.5rem 0;
         }
         .header .brand-center {
             display: flex;
@@ -71,14 +72,14 @@
             justify-content: center;
         }
         .header .brand-center .logo-icon img {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             object-fit: contain;
             box-shadow: 0 0 60px rgba(192,192,192,0.1);
         }
         .header .brand-center .logo-icon i {
-            font-size: 6rem;
+            font-size: 7rem;
             background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
             -webkit-background-clip: text;
             background-clip: text;
@@ -475,7 +476,7 @@
             cursor: default;
         }
 
-        /* ===== BOTTOM NAV - UKURAN SERAGAM ===== */
+        /* ===== BOTTOM NAV - UKURAN SAMA DENGAN FILE LAIN ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -663,6 +664,8 @@
             .roadmap-item .desc {
                 font-size: 0.9rem;
             }
+
+            /* BOTTOM NAV DESKTOP - SAMA DENGAN FILE LAIN */
             .bottom-nav {
                 padding: 0.8rem 2rem 1rem;
                 gap: 0.5rem;
@@ -754,16 +757,24 @@
             .stat-item .label {
                 font-size: 0.5rem;
             }
+
+            /* LOGO HP */
             .header .brand-center .logo-icon img {
-                width: 90px;
-                height: 90px;
+                width: 100px;
+                height: 100px;
             }
             .header .brand-center .logo-icon i {
-                font-size: 4.5rem;
+                font-size: 5rem;
             }
+            .header {
+                padding: 0.1rem 0 0.3rem 0;
+            }
+
             .subhead {
                 font-size: 0.8rem;
             }
+
+            /* BOTTOM NAV HP - SAMA DENGAN FILE LAIN */
             .bottom-nav {
                 padding: 0.5rem 0.3rem 0.7rem;
             }
@@ -778,6 +789,7 @@
             .bottom-nav a span {
                 font-size: 0.5rem;
             }
+
             .progress-wrap {
                 padding: 0.5rem 0.8rem;
             }
@@ -862,13 +874,20 @@
             .btn-load-more i {
                 font-size: 0.65rem;
             }
+
+            /* LOGO HP KECIL */
             .header .brand-center .logo-icon img {
-                width: 80px;
-                height: 80px;
+                width: 85px;
+                height: 85px;
             }
             .header .brand-center .logo-icon i {
-                font-size: 4rem;
+                font-size: 4.2rem;
             }
+            .header {
+                padding: 0.1rem 0 0.2rem 0;
+            }
+
+            /* BOTTOM NAV HP KECIL - SAMA DENGAN FILE LAIN */
             .bottom-nav {
                 padding: 0.4rem 0.2rem 0.6rem;
             }
@@ -882,6 +901,25 @@
             }
             .bottom-nav a span {
                 font-size: 0.45rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header .brand-center .logo-icon img {
+                width: 70px;
+                height: 70px;
+            }
+            .header .brand-center .logo-icon i {
+                font-size: 3.5rem;
+            }
+            .bottom-nav a {
+                min-width: 40px;
+            }
+            .bottom-nav a i {
+                font-size: 0.95rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.4rem;
             }
         }
     </style>
