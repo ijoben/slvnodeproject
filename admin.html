@@ -10,7 +10,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background: #0a1228;
@@ -22,7 +26,10 @@
             flex-direction: column;
             align-items: center;
         }
-        .container { max-width: 1050px; width: 100%; }
+        .container {
+            max-width: 1050px;
+            width: 100%;
+        }
         .section-card {
             background: rgba(18, 34, 72, 0.7);
             backdrop-filter: blur(14px);
@@ -30,8 +37,8 @@
             border-radius: 2rem;
             padding: 1.5rem 1.2rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
-            border: 1px solid rgba(80,140,255,0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -75,7 +82,10 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        .admin-header h2 i { color: #c0c0c0; margin-right: 6px; }
+        .admin-header h2 i {
+            color: #c0c0c0;
+            margin-right: 6px;
+        }
         .btn-logout {
             background: rgba(255, 60, 60, 0.1);
             border: 1px solid rgba(255, 60, 60, 0.15);
@@ -92,10 +102,20 @@
             flex-shrink: 0;
             border: none;
         }
-        .btn-logout:hover { background: rgba(255, 60, 60, 0.2); }
-        .btn-logout i { font-size: 1.1rem; }
-        .btn-logout .logout-text { display: inline; }
-        .admin-sub { color: #c0c0c0; font-size: 1rem; margin-bottom: 0.5rem; }
+        .btn-logout:hover {
+            background: rgba(255, 60, 60, 0.2);
+        }
+        .btn-logout i {
+            font-size: 1.1rem;
+        }
+        .btn-logout .logout-text {
+            display: inline;
+        }
+        .admin-sub {
+            color: #c0c0c0;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
 
         .admin-stats-grid {
             display: grid !important;
@@ -117,27 +137,69 @@
         .admin-stat::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, rgba(192,192,192,0.03), rgba(192,192,192,0.01));
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.03), rgba(192, 192, 192, 0.01));
             border-radius: 1.5rem;
         }
         .admin-stat:hover {
             transform: translateY(-2px);
             border-color: rgba(80, 140, 255, 0.2);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
-        .admin-stat .icon { font-size: 2.2rem; margin-bottom: 0.3rem; position: relative; z-index: 1; }
-        .admin-stat .num { font-size: 2.2rem; font-weight: 800; position: relative; z-index: 1; }
-        .admin-stat .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.2rem; position: relative; z-index: 1; }
-        .admin-stat .sub { font-size: 0.7rem; color: #666; margin-top: 0.1rem; position: relative; z-index: 1; }
-        .admin-stat.primary .icon { color: #c0c0c0; }
-        .admin-stat.primary .num { color: #e0e0e0; }
-        .admin-stat.success .icon { color: #6aff8a; }
-        .admin-stat.success .num { color: #6aff8a; }
-        .admin-stat.warning .icon { color: #fbbf24; }
-        .admin-stat.warning .num { color: #fbbf24; }
-        .admin-stat.info .icon { color: #60a5fa; }
-        .admin-stat.info .num { color: #60a5fa; }
+        .admin-stat .icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .sub {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 0.1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat.primary .icon {
+            color: #c0c0c0;
+        }
+        .admin-stat.primary .num {
+            color: #e0e0e0;
+        }
+        .admin-stat.success .icon {
+            color: #6aff8a;
+        }
+        .admin-stat.success .num {
+            color: #6aff8a;
+        }
+        .admin-stat.warning .icon {
+            color: #fbbf24;
+        }
+        .admin-stat.warning .num {
+            color: #fbbf24;
+        }
+        .admin-stat.info .icon {
+            color: #60a5fa;
+        }
+        .admin-stat.info .num {
+            color: #60a5fa;
+        }
 
         .section-title {
             font-size: 1.15rem;
@@ -150,7 +212,10 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        .section-title i { color: #c0c0c0; margin-right: 8px; }
+        .section-title i {
+            color: #c0c0c0;
+            margin-right: 8px;
+        }
 
         .table-wrapper {
             width: 100%;
@@ -200,7 +265,9 @@
             transition: 0.1s;
             border: none;
         }
-        .btn-approve:hover { background: rgba(60, 220, 80, 0.25); }
+        .btn-approve:hover {
+            background: rgba(60, 220, 80, 0.25);
+        }
         .btn-reject {
             background: rgba(255, 60, 60, 0.15);
             border: 1px solid rgba(255, 60, 60, 0.2);
@@ -213,7 +280,9 @@
             margin-left: 4px;
             border: none;
         }
-        .btn-reject:hover { background: rgba(255, 60, 60, 0.25); }
+        .btn-reject:hover {
+            background: rgba(255, 60, 60, 0.25);
+        }
 
         .pagination {
             display: flex;
@@ -237,10 +306,24 @@
             text-align: center;
             border: none;
         }
-        .pagination button:hover:not(:disabled) { background: rgba(60, 120, 255, 0.15); border-color: rgba(80, 140, 255, 0.15); }
-        .pagination button.active { background: rgba(192, 192, 192, 0.15); border-color: rgba(192, 192, 192, 0.2); color: #e0e0e0; }
-        .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
-        .pagination .page-info { color: #888888; font-size: 0.75rem; padding: 0 0.5rem; }
+        .pagination button:hover:not(:disabled) {
+            background: rgba(60, 120, 255, 0.15);
+            border-color: rgba(80, 140, 255, 0.15);
+        }
+        .pagination button.active {
+            background: rgba(192, 192, 192, 0.15);
+            border-color: rgba(192, 192, 192, 0.2);
+            color: #e0e0e0;
+        }
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .pagination .page-info {
+            color: #888888;
+            font-size: 0.75rem;
+            padding: 0 0.5rem;
+        }
 
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
@@ -249,7 +332,11 @@
             margin: 0.6rem 0;
             border: 1px solid rgba(80, 140, 255, 0.06);
         }
-        .settings-group h5 { color: #c0c0c0; margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .settings-group h5 {
+            color: #c0c0c0;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
         .settings-group .row {
             display: flex;
             flex-wrap: wrap;
@@ -257,7 +344,11 @@
             gap: 0.6rem;
             margin: 0.4rem 0;
         }
-        .settings-group label { color: #c0c0c0; font-size: 0.85rem; min-width: 120px; }
+        .settings-group label {
+            color: #c0c0c0;
+            font-size: 0.85rem;
+            min-width: 120px;
+        }
         .settings-group input {
             background: rgba(8, 20, 48, 0.5);
             border: 1px solid rgba(80, 140, 255, 0.06);
@@ -268,8 +359,13 @@
             width: 80px;
             outline: none;
         }
-        .settings-group input:focus { border-color: rgba(80, 140, 255, 0.2); }
-        .settings-group input[type="text"] { width: 350px; max-width: 100%; }
+        .settings-group input:focus {
+            border-color: rgba(80, 140, 255, 0.2);
+        }
+        .settings-group input[type="text"] {
+            width: 350px;
+            max-width: 100%;
+        }
         .btn-save {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -281,9 +377,17 @@
             transition: 0.15s;
             border: none;
         }
-        .btn-save:hover { background: rgba(60, 120, 255, 0.2); }
-        .btn-save.danger { background: rgba(255, 60, 60, 0.1); border-color: rgba(255, 60, 60, 0.15); color: #ff6a6a; }
-        .btn-save.danger:hover { background: rgba(255, 60, 60, 0.2); }
+        .btn-save:hover {
+            background: rgba(60, 120, 255, 0.2);
+        }
+        .btn-save.danger {
+            background: rgba(255, 60, 60, 0.1);
+            border-color: rgba(255, 60, 60, 0.15);
+            color: #ff6a6a;
+        }
+        .btn-save.danger:hover {
+            background: rgba(255, 60, 60, 0.2);
+        }
 
         .qr-preview {
             margin: 0.5rem 0;
@@ -325,11 +429,19 @@
             font-size: 0.85rem;
             flex: 1;
         }
-        .qr-preview .qr-status.success { color: #6aff8a; }
-        .qr-preview .qr-status.error { color: #ff6a6a; }
+        .qr-preview .qr-status.success {
+            color: #6aff8a;
+        }
+        .qr-preview .qr-status.error {
+            color: #ff6a6a;
+        }
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
 
         .bottom-nav {
             position: fixed;
@@ -345,7 +457,7 @@
             align-items: center;
             padding: 0.4rem 0.3rem 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -361,12 +473,33 @@
             flex: 0 1 auto;
             position: relative;
         }
-        .bottom-nav a i { font-size: 1.4rem; }
-        .bottom-nav a span { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.3px; text-align: center; line-height: 1.2; }
-        .bottom-nav a.active { color: #e0e0e0; }
-        .bottom-nav a.active i { color: #c0c0c0; text-shadow: 0 0 25px rgba(192,192,192,0.15); }
-        .bottom-nav a:hover { color: #e8e8e8; }
-        .bottom-nav .nav-divider { width: 1px; height: 28px; background: rgba(80, 140, 255, 0.08); flex-shrink: 0; margin: 0 0.15rem; }
+        .bottom-nav a i {
+            font-size: 1.4rem;
+        }
+        .bottom-nav a span {
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .bottom-nav a.active {
+            color: #e0e0e0;
+        }
+        .bottom-nav a.active i {
+            color: #c0c0c0;
+            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+        }
+        .bottom-nav a:hover {
+            color: #e8e8e8;
+        }
+        .bottom-nav .nav-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(80, 140, 255, 0.08);
+            flex-shrink: 0;
+            margin: 0 0.15rem;
+        }
 
         .toast-message {
             background: rgba(12, 28, 60, 0.9);
@@ -381,8 +514,12 @@
             align-items: center;
             gap: 0.6rem;
         }
-        .toast-message.show { display: flex; }
-        .toast-message i { color: #c0c0c0; }
+        .toast-message.show {
+            display: flex;
+        }
+        .toast-message i {
+            color: #c0c0c0;
+        }
 
         .footer-copyright {
             text-align: center;
@@ -394,92 +531,290 @@
         }
 
         @media (max-width: 768px) {
-            .section-card { padding: 1rem 0.8rem; border-radius: 1.5rem; }
-            .admin-header h2 { font-size: 1.3rem; }
-            .admin-header h2 i { font-size: 1.2rem; }
-            .btn-logout { padding: 0.4rem 0.9rem; font-size: 0.85rem; }
-            .btn-logout i { font-size: 0.95rem; }
-            .btn-logout .logout-text { display: none; }
-            .admin-sub { font-size: 0.9rem; }
-            .admin-stats-grid { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
-            .admin-stat { padding: 0.9rem 0.6rem; border-radius: 1.2rem; }
-            .admin-stat .icon { font-size: 1.6rem; }
-            .admin-stat .num { font-size: 1.6rem; }
-            .admin-stat .label { font-size: 0.7rem; }
-            .admin-stat .sub { font-size: 0.6rem; }
-            .section-title { font-size: 1rem; }
-            .table-wrapper table { font-size: 0.75rem; min-width: 500px; }
-            .table-wrapper table th, .table-wrapper table td { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
-            .btn-approve, .btn-reject { font-size: 0.65rem; padding: 0.18rem 0.6rem; }
-            .pagination button { padding: 0.25rem 0.6rem; font-size: 0.7rem; min-width: 34px; }
-            .pagination .page-info { font-size: 0.65rem; }
-            .settings-group { padding: 0.8rem; }
-            .settings-group h5 { font-size: 0.85rem; }
-            .settings-group .row { flex-direction: column; align-items: stretch; }
-            .settings-group label { font-size: 0.8rem; min-width: auto; }
-            .settings-group input { font-size: 0.85rem; padding: 0.35rem 0.9rem; }
-            .settings-group input[type="text"] { width: 100%; }
-            .btn-save { font-size: 0.7rem; padding: 0.3rem 1rem; }
-            .qr-preview .placeholder { width: 60px; height: 60px; font-size: 1.8rem; }
-            .qr-preview img { max-width: 80px; max-height: 80px; }
-            .bottom-nav { padding: 0.3rem 0.2rem 0.5rem; }
-            .bottom-nav a { padding: 0.2rem 0.2rem; min-width: 40px; }
-            .bottom-nav a i { font-size: 1.2rem; }
-            .bottom-nav a span { font-size: 0.5rem; }
-            .bottom-nav .nav-divider { height: 22px; margin: 0 0.08rem; }
+            .section-card {
+                padding: 1rem 0.8rem;
+                border-radius: 1.5rem;
+            }
+            .admin-header h2 {
+                font-size: 1.3rem;
+            }
+            .admin-header h2 i {
+                font-size: 1.2rem;
+            }
+            .btn-logout {
+                padding: 0.4rem 0.9rem;
+                font-size: 0.85rem;
+            }
+            .btn-logout i {
+                font-size: 0.95rem;
+            }
+            .btn-logout .logout-text {
+                display: none;
+            }
+            .admin-sub {
+                font-size: 0.9rem;
+            }
+            .admin-stats-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 0.6rem !important;
+            }
+            .admin-stat {
+                padding: 0.9rem 0.6rem;
+                border-radius: 1.2rem;
+            }
+            .admin-stat .icon {
+                font-size: 1.6rem;
+            }
+            .admin-stat .num {
+                font-size: 1.6rem;
+            }
+            .admin-stat .label {
+                font-size: 0.7rem;
+            }
+            .admin-stat .sub {
+                font-size: 0.6rem;
+            }
+            .section-title {
+                font-size: 1rem;
+            }
+            .table-wrapper table {
+                font-size: 0.75rem;
+                min-width: 500px;
+            }
+            .table-wrapper table th,
+            .table-wrapper table td {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+            .btn-approve,
+            .btn-reject {
+                font-size: 0.65rem;
+                padding: 0.18rem 0.6rem;
+            }
+            .pagination button {
+                padding: 0.25rem 0.6rem;
+                font-size: 0.7rem;
+                min-width: 34px;
+            }
+            .pagination .page-info {
+                font-size: 0.65rem;
+            }
+            .settings-group {
+                padding: 0.8rem;
+            }
+            .settings-group h5 {
+                font-size: 0.85rem;
+            }
+            .settings-group .row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .settings-group label {
+                font-size: 0.8rem;
+                min-width: auto;
+            }
+            .settings-group input {
+                font-size: 0.85rem;
+                padding: 0.35rem 0.9rem;
+            }
+            .settings-group input[type="text"] {
+                width: 100%;
+            }
+            .btn-save {
+                font-size: 0.7rem;
+                padding: 0.3rem 1rem;
+            }
+            .qr-preview .placeholder {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+            .qr-preview img {
+                max-width: 80px;
+                max-height: 80px;
+            }
+            .bottom-nav {
+                padding: 0.3rem 0.2rem 0.5rem;
+            }
+            .bottom-nav a {
+                padding: 0.2rem 0.2rem;
+                min-width: 40px;
+            }
+            .bottom-nav a i {
+                font-size: 1.2rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.5rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 22px;
+                margin: 0 0.08rem;
+            }
         }
 
         @media (max-width: 480px) {
-            .section-card { padding: 0.8rem 0.6rem; border-radius: 1.2rem; }
-            .admin-header h2 { font-size: 1.1rem; }
-            .admin-header h2 i { font-size: 1rem; }
-            .btn-logout { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
-            .btn-logout i { font-size: 0.85rem; }
-            .admin-sub { font-size: 0.8rem; }
-            .admin-stats-grid { grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; }
-            .admin-stat { padding: 0.7rem 0.5rem; border-radius: 1rem; }
-            .admin-stat .icon { font-size: 1.3rem; }
-            .admin-stat .num { font-size: 1.3rem; }
-            .admin-stat .label { font-size: 0.6rem; }
-            .admin-stat .sub { font-size: 0.5rem; }
-            .section-title { font-size: 0.9rem; }
-            .table-wrapper table { font-size: 0.65rem; min-width: 400px; }
-            .table-wrapper table th, .table-wrapper table td { padding: 0.3rem 0.4rem; font-size: 0.65rem; }
-            .btn-approve, .btn-reject { font-size: 0.55rem; padding: 0.15rem 0.5rem; }
-            .pagination button { padding: 0.2rem 0.45rem; font-size: 0.6rem; min-width: 30px; }
-            .pagination .page-info { font-size: 0.55rem; }
-            .settings-group { padding: 0.6rem; }
-            .settings-group h5 { font-size: 0.8rem; }
-            .settings-group label { font-size: 0.7rem; }
-            .settings-group input { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
-            .btn-save { font-size: 0.65rem; padding: 0.25rem 0.8rem; }
-            .qr-preview .placeholder { width: 50px; height: 50px; font-size: 1.5rem; }
-            .qr-preview img { max-width: 60px; max-height: 60px; }
-            .bottom-nav { padding: 0.2rem 0.15rem 0.4rem; }
-            .bottom-nav a { padding: 0.15rem 0.15rem; min-width: 34px; }
-            .bottom-nav a i { font-size: 1rem; }
-            .bottom-nav a span { font-size: 0.45rem; }
-            .bottom-nav .nav-divider { height: 18px; margin: 0 0.05rem; }
-            .footer-copyright { font-size: 0.65rem; }
+            .section-card {
+                padding: 0.8rem 0.6rem;
+                border-radius: 1.2rem;
+            }
+            .admin-header h2 {
+                font-size: 1.1rem;
+            }
+            .admin-header h2 i {
+                font-size: 1rem;
+            }
+            .btn-logout {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.8rem;
+            }
+            .btn-logout i {
+                font-size: 0.85rem;
+            }
+            .admin-sub {
+                font-size: 0.8rem;
+            }
+            .admin-stats-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 0.5rem !important;
+            }
+            .admin-stat {
+                padding: 0.7rem 0.5rem;
+                border-radius: 1rem;
+            }
+            .admin-stat .icon {
+                font-size: 1.3rem;
+            }
+            .admin-stat .num {
+                font-size: 1.3rem;
+            }
+            .admin-stat .label {
+                font-size: 0.6rem;
+            }
+            .admin-stat .sub {
+                font-size: 0.5rem;
+            }
+            .section-title {
+                font-size: 0.9rem;
+            }
+            .table-wrapper table {
+                font-size: 0.65rem;
+                min-width: 400px;
+            }
+            .table-wrapper table th,
+            .table-wrapper table td {
+                padding: 0.3rem 0.4rem;
+                font-size: 0.65rem;
+            }
+            .btn-approve,
+            .btn-reject {
+                font-size: 0.55rem;
+                padding: 0.15rem 0.5rem;
+            }
+            .pagination button {
+                padding: 0.2rem 0.45rem;
+                font-size: 0.6rem;
+                min-width: 30px;
+            }
+            .pagination .page-info {
+                font-size: 0.55rem;
+            }
+            .settings-group {
+                padding: 0.6rem;
+            }
+            .settings-group h5 {
+                font-size: 0.8rem;
+            }
+            .settings-group label {
+                font-size: 0.7rem;
+            }
+            .settings-group input {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.7rem;
+            }
+            .btn-save {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.8rem;
+            }
+            .qr-preview .placeholder {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            .qr-preview img {
+                max-width: 60px;
+                max-height: 60px;
+            }
+            .bottom-nav {
+                padding: 0.2rem 0.15rem 0.4rem;
+            }
+            .bottom-nav a {
+                padding: 0.15rem 0.15rem;
+                min-width: 34px;
+            }
+            .bottom-nav a i {
+                font-size: 1rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.45rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 18px;
+                margin: 0 0.05rem;
+            }
+            .footer-copyright {
+                font-size: 0.65rem;
+            }
         }
 
         @media (max-width: 360px) {
-            .admin-header h2 { font-size: 0.95rem; }
-            .admin-stat .num { font-size: 1.1rem; }
-            .admin-stat .icon { font-size: 1.1rem; }
-            .table-wrapper table { font-size: 0.55rem; min-width: 340px; }
-            .bottom-nav a { min-width: 28px; padding: 0.1rem 0.1rem; }
-            .bottom-nav a i { font-size: 0.85rem; }
-            .bottom-nav a span { font-size: 0.38rem; }
-            .bottom-nav .nav-divider { height: 14px; }
+            .admin-header h2 {
+                font-size: 0.95rem;
+            }
+            .admin-stat .num {
+                font-size: 1.1rem;
+            }
+            .admin-stat .icon {
+                font-size: 1.1rem;
+            }
+            .table-wrapper table {
+                font-size: 0.55rem;
+                min-width: 340px;
+            }
+            .bottom-nav a {
+                min-width: 28px;
+                padding: 0.1rem 0.1rem;
+            }
+            .bottom-nav a i {
+                font-size: 0.85rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.38rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 14px;
+            }
         }
 
         @media (min-width: 769px) {
-            .bottom-nav { gap: 0.5rem; padding: 0.5rem 2rem 0.7rem; justify-content: center; }
-            .bottom-nav a { padding: 0.3rem 1.2rem; min-width: 70px; }
-            .bottom-nav a i { font-size: 1.4rem; }
-            .bottom-nav a span { font-size: 0.6rem; }
-            .bottom-nav .nav-divider { height: 35px; margin: 0 0.3rem; }
+            .bottom-nav {
+                gap: 0.5rem;
+                padding: 0.5rem 2rem 0.7rem;
+                justify-content: center;
+            }
+            .bottom-nav a {
+                padding: 0.3rem 1.2rem;
+                min-width: 70px;
+            }
+            .bottom-nav a i {
+                font-size: 1.4rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.6rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 35px;
+                margin: 0 0.3rem;
+            }
         }
     </style>
 </head>
@@ -494,7 +829,8 @@
             <!-- HEADER -->
             <div class="admin-header">
                 <h2>
-                    <i class="fas fa-user-shield"></i>Admin Panel                    <span class="owner-badge">🔒 Owner Only</span>
+                    <i class="fas fa-user-shield"></i>Admin Panel
+                    <span class="owner-badge">🔒 Owner Only</span>
                 </h2>
                 <button class="btn-logout" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i>
@@ -506,22 +842,56 @@
             <!-- TAB USER -->
             <div class="tab-content active" id="tabUsers">
                 <div class="admin-stats-grid">
-                    <div class="admin-stat primary"><div class="icon"><i class="fas fa-users"></i></div><div class="num" id="adminTotalUsers">0</div><div class="label">Total Users</div><div class="sub">Registered</div></div>
-                    <div class="admin-stat warning"><div class="icon"><i class="fas fa-clock"></i></div><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending Deposits</div><div class="sub">Awaiting Approval</div></div>
-                    <div class="admin-stat info"><div class="icon"><i class="fas fa-arrow-up"></i></div><div class="num" id="adminPendingWithdraw">0</div><div class="label">Pending Withdrawals</div><div class="sub">Awaiting Approval</div></div>
-                    <div class="admin-stat success"><div class="icon"><i class="fas fa-coins"></i></div><div class="num" id="adminTotalUSDTMinted">0</div><div class="label">Total USDT Minted</div><div class="sub">All Users</div></div>
+                    <div class="admin-stat primary">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <div class="num" id="adminTotalUsers">0</div>
+                        <div class="label">Total Users</div>
+                        <div class="sub">Registered</div>
+                    </div>
+                    <div class="admin-stat warning">
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <div class="num" id="adminPendingDeposits">0</div>
+                        <div class="label">Pending Deposits</div>
+                        <div class="sub">Awaiting Approval</div>
+                    </div>
+                    <div class="admin-stat info">
+                        <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                        <div class="num" id="adminPendingWithdraw">0</div>
+                        <div class="label">Pending Withdrawals</div>
+                        <div class="sub">Awaiting Approval</div>
+                    </div>
+                    <div class="admin-stat success">
+                        <div class="icon"><i class="fas fa-coins"></i></div>
+                        <div class="num" id="adminTotalUSDTMinted">0</div>
+                        <div class="label">Total USDT Minted</div>
+                        <div class="sub">All Users</div>
+                    </div>
                 </div>
 
                 <div class="section-title">
                     <span><i class="fas fa-users"></i> All Users</span>
-                    <span class="badge-silver"><i class="fas fa-user"></i> Total: <strong id="totalUserCount">0</strong></span>
+                    <span class="badge-silver">
+                        <i class="fas fa-user"></i> Total: <strong id="totalUserCount">0</strong>
+                    </span>
                 </div>
                 <div class="table-wrapper">
                     <table>
-                        <thead><tr><th>#</th><th>Email</th><th>Ref Code</th><th>Referred By</th><th>Role</th><th>Status</th></tr></thead>
-                        <tbody id="adminUserBody"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Email</th>
+                                <th>Ref Code</th>
+                                <th>Referred By</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserBody">
+                            <tr><td colspan="6" class="empty">Loading...</td></tr>
+                        </tbody>
                     </table>
                 </div>
+
                 <div class="pagination" id="userPagination">
                     <button id="prevPage" disabled><i class="fas fa-chevron-left"></i> Prev</button>
                     <div id="pageNumbers"></div>
@@ -535,8 +905,19 @@
                 <div class="section-title"><i class="fas fa-clock"></i> Pending Deposits</div>
                 <div class="table-wrapper">
                     <table>
-                        <thead><tr><th>User</th><th>USDT</th><th>Bonus</th><th>Total</th><th>TX Hash</th><th>Actions</th></tr></thead>
-                        <tbody id="adminPendingBody"><tr><td colspan="6" class="empty">No pending deposits</td></tr></tbody>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>USDT</th>
+                                <th>Bonus</th>
+                                <th>Total</th>
+                                <th>TX Hash</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminPendingBody">
+                            <tr><td colspan="6" class="empty">No pending deposits</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -546,8 +927,18 @@
                 <div class="section-title"><i class="fas fa-arrow-up"></i> Pending Withdrawals</div>
                 <div class="table-wrapper">
                     <table>
-                        <thead><tr><th>User</th><th>Amount</th><th>Address</th><th>Date</th><th>Actions</th></tr></thead>
-                        <tbody id="adminWdBody"><tr><td colspan="5" class="empty">No pending withdrawals</td></tr></tbody>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>Address</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminWdBody">
+                            <tr><td colspan="5" class="empty">No pending withdrawals</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -621,7 +1012,6 @@
                         <label><i class="fas fa-qrcode"></i> QRIS Image URL</label>
                         <input type="text" id="adminQrisUrl" placeholder="https://i.imgur.com/xxxxx.png" style="width:350px;" />
                         <button class="btn-save" id="saveQrisUrlBtn"><i class="fas fa-save"></i> Save</button>
-                        <button class="btn-save" id="testQrisUrlBtn" style="background:rgba(60,220,80,0.1); border-color:rgba(60,220,80,0.15); color:#6aff8a;"><i class="fas fa-eye"></i> Test</button>
                     </div>
                     <div class="qr-preview" id="qrisPreviewContainer">
                         <div class="placeholder" id="qrisPlaceholder"><i class="fas fa-qrcode"></i></div>
@@ -641,15 +1031,30 @@
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-        <a href="#" class="active" data-tab="tabUsers" id="navUsers"><i class="fas fa-users"></i><span>Users</span></a>
+        <a href="#" class="active" data-tab="tabUsers" id="navUsers">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+        </a>
         <div class="nav-divider"></div>
-        <a href="#" data-tab="tabDeposit" id="navDeposit"><i class="fas fa-clock"></i><span>Deposit</span></a>
+        <a href="#" data-tab="tabDeposit" id="navDeposit">
+            <i class="fas fa-clock"></i>
+            <span>Deposit</span>
+        </a>
         <div class="nav-divider"></div>
-        <a href="#" data-tab="tabWithdraw" id="navWithdraw"><i class="fas fa-arrow-up"></i><span>Withdraw</span></a>
+        <a href="#" data-tab="tabWithdraw" id="navWithdraw">
+            <i class="fas fa-arrow-up"></i>
+            <span>Withdraw</span>
+        </a>
         <div class="nav-divider"></div>
-        <a href="#" data-tab="tabSettings" id="navSettings"><i class="fas fa-sliders-h"></i><span>Setting</span></a>
+        <a href="#" data-tab="tabSettings" id="navSettings">
+            <i class="fas fa-sliders-h"></i>
+            <span>Setting</span>
+        </a>
         <div class="nav-divider"></div>
-        <a href="#" data-tab="tabPayment" id="navPayment"><i class="fas fa-credit-card"></i><span>Payment</span></a>
+        <a href="#" data-tab="tabPayment" id="navPayment">
+            <i class="fas fa-credit-card"></i>
+            <span>Payment</span>
+        </a>
     </nav>
 
     <script>
@@ -664,7 +1069,9 @@
         // ============================================================
         // 2. VARIABLES
         // ============================================================
-        const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
+        const STORAGE_KEYS = {
+            CURRENT_USER: 'silverchain_current_user'
+        };
         const ADMIN_EMAIL = 'admin@silverchain.io';
         const ROWS_PER_PAGE = 10;
 
@@ -1161,7 +1568,7 @@
         async function loadQrisPreview() {
             try {
                 console.log('🔄 Loading QRIS preview...');
-                
+
                 const qrisUrl = await getSetting('qris_image');
                 const placeholder = document.getElementById('qrisPlaceholder');
                 const img = document.getElementById('qrisPreviewImg');
@@ -1180,15 +1587,15 @@
                     img.style.background = '#fff';
                     img.style.objectFit = 'contain';
                     img.style.padding = '8px';
-                    
+
                     placeholder.style.display = 'none';
                     status.textContent = '✅ QRIS loaded';
                     status.className = 'qr-status success';
-                    
+
                     if (inputField) {
                         inputField.value = qrisUrl;
                     }
-                    
+
                     console.log('✅ QRIS image loaded:', qrisUrl);
                 } else {
                     img.style.display = 'none';
@@ -1421,24 +1828,24 @@
         // ============================================================
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
             const url = document.getElementById('adminQrisUrl').value.trim();
-            
+
             console.log('📌 Saving QRIS URL:', url);
-            
+
             if (!url) {
                 showToast('❌ Please enter a QRIS image URL.');
                 return;
             }
-            
+
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 showToast('❌ Please enter a valid URL (http:// or https://)');
                 return;
             }
-            
+
             if (url.includes('imgur.com/a/') || url.includes('imgur.com/gallery/')) {
                 showToast('❌ Gunakan direct image URL: i.imgur.com/xxxxx.png');
                 return;
             }
-            
+
             try {
                 await saveSetting('qris_image', url);
                 showToast('✅ QRIS image URL saved to database!');
@@ -1447,50 +1854,6 @@
                 console.error('❌ Save QRIS error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
-        });
-
-        // ============================================================
-        // TEST QRIS URL
-        // ============================================================
-        document.getElementById('testQrisUrlBtn').addEventListener('click', function() {
-            const url = document.getElementById('adminQrisUrl').value.trim();
-            const img = document.getElementById('qrisPreviewImg');
-            const status = document.getElementById('qrisStatus');
-            const placeholder = document.getElementById('qrisPlaceholder');
-            
-            if (!url) {
-                showToast('❌ Please enter a URL first.');
-                return;
-            }
-            
-            console.log('🔍 Testing QRIS URL:', url);
-            
-            const testImg = new Image();
-            testImg.onload = function() {
-                console.log('✅ Image loaded successfully!');
-                img.src = url;
-                img.style.display = 'block';
-                img.style.maxWidth = '150px';
-                img.style.maxHeight = '150px';
-                img.style.borderRadius = '0.8rem';
-                img.style.border = '1px solid rgba(80, 140, 255, 0.06)';
-                img.style.background = '#fff';
-                img.style.objectFit = 'contain';
-                img.style.padding = '8px';
-                placeholder.style.display = 'none';
-                status.textContent = '✅ Image loaded! Click Save to save.';
-                status.className = 'qr-status success';
-                showToast('✅ Image loaded successfully!');
-            };
-            testImg.onerror = function() {
-                console.error('❌ Image failed to load');
-                img.style.display = 'none';
-                placeholder.style.display = 'flex';
-                status.textContent = '❌ Failed to load image. Check URL.';
-                status.className = 'qr-status error';
-                showToast('❌ Failed to load image. Check URL.');
-            };
-            testImg.src = url;
         });
 
         // ============================================================
