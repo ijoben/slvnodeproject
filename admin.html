@@ -6,7 +6,6 @@
     <title>SilverChain · Admin Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
@@ -21,7 +20,7 @@
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
             color: #d4d4d4;
             min-height: 100vh;
-            padding: 1rem 0.8rem 6rem;
+            padding: 1rem 0.8rem 7rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -443,6 +442,7 @@
             display: block;
         }
 
+        /* ===== BOTTOM NAV - UKURAN SERAGAM ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -455,40 +455,39 @@
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            padding: 0.4rem 0.3rem 0.6rem;
+            padding: 0.7rem 0.5rem 0.9rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
             text-decoration: none;
+            font-size: 0.65rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
+            gap: 4px;
             transition: 0.2s;
-            padding: 0.25rem 0.3rem;
+            padding: 0.3rem 1rem;
             border-radius: 60px;
-            min-width: 48px;
-            flex: 0 1 auto;
+            min-width: 70px;
             position: relative;
         }
         .bottom-nav a i {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
         }
         .bottom-nav a span {
             font-size: 0.6rem;
             font-weight: 500;
             letter-spacing: 0.3px;
             text-align: center;
-            line-height: 1.2;
         }
         .bottom-nav a.active {
             color: #e0e0e0;
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -528,6 +527,28 @@
             padding: 1rem 0 0.5rem;
             border-top: 1px solid rgba(80, 140, 255, 0.05);
             margin-top: 0.8rem;
+        }
+
+        @media (min-width: 768px) {
+            .bottom-nav {
+                padding: 0.8rem 2rem 1rem;
+                gap: 0.5rem;
+                justify-content: center;
+            }
+            .bottom-nav a {
+                padding: 0.4rem 1.5rem;
+                min-width: 80px;
+            }
+            .bottom-nav a i {
+                font-size: 1.6rem;
+            }
+            .bottom-nav a span {
+                font-size: 0.65rem;
+            }
+            .bottom-nav .nav-divider {
+                height: 35px;
+                margin: 0 0.3rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -634,11 +655,12 @@
                 max-height: 80px;
             }
             .bottom-nav {
-                padding: 0.3rem 0.2rem 0.5rem;
+                padding: 0.5rem 0.3rem 0.7rem;
             }
             .bottom-nav a {
-                padding: 0.2rem 0.2rem;
-                min-width: 40px;
+                font-size: 0.55rem;
+                padding: 0.2rem 0.5rem;
+                min-width: 55px;
             }
             .bottom-nav a i {
                 font-size: 1.2rem;
@@ -745,14 +767,15 @@
                 max-height: 60px;
             }
             .bottom-nav {
-                padding: 0.2rem 0.15rem 0.4rem;
+                padding: 0.4rem 0.2rem 0.6rem;
             }
             .bottom-nav a {
-                padding: 0.15rem 0.15rem;
-                min-width: 34px;
+                font-size: 0.5rem;
+                padding: 0.15rem 0.3rem;
+                min-width: 45px;
             }
             .bottom-nav a i {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             .bottom-nav a span {
                 font-size: 0.45rem;
@@ -781,39 +804,16 @@
                 min-width: 340px;
             }
             .bottom-nav a {
-                min-width: 28px;
-                padding: 0.1rem 0.1rem;
+                min-width: 40px;
             }
             .bottom-nav a i {
-                font-size: 0.85rem;
+                font-size: 0.95rem;
             }
             .bottom-nav a span {
-                font-size: 0.38rem;
+                font-size: 0.4rem;
             }
             .bottom-nav .nav-divider {
                 height: 14px;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .bottom-nav {
-                gap: 0.5rem;
-                padding: 0.5rem 2rem 0.7rem;
-                justify-content: center;
-            }
-            .bottom-nav a {
-                padding: 0.3rem 1.2rem;
-                min-width: 70px;
-            }
-            .bottom-nav a i {
-                font-size: 1.4rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.6rem;
-            }
-            .bottom-nav .nav-divider {
-                height: 35px;
-                margin: 0 0.3rem;
             }
         }
     </style>
@@ -826,7 +826,6 @@
 
         <div class="section-card">
 
-            <!-- HEADER -->
             <div class="admin-header">
                 <h2>
                     <i class="fas fa-user-shield"></i>Admin Panel
@@ -839,7 +838,6 @@
             </div>
             <p class="admin-sub">Manage users, deposits, withdrawals & settings</p>
 
-            <!-- TAB USER -->
             <div class="tab-content active" id="tabUsers">
                 <div class="admin-stats-grid">
                     <div class="admin-stat primary">
@@ -900,7 +898,6 @@
                 </div>
             </div>
 
-            <!-- TAB DEPOSIT -->
             <div class="tab-content" id="tabDeposit">
                 <div class="section-title"><i class="fas fa-clock"></i> Pending Deposits</div>
                 <div class="table-wrapper">
@@ -922,7 +919,6 @@
                 </div>
             </div>
 
-            <!-- TAB WITHDRAW -->
             <div class="tab-content" id="tabWithdraw">
                 <div class="section-title"><i class="fas fa-arrow-up"></i> Pending Withdrawals</div>
                 <div class="table-wrapper">
@@ -943,7 +939,6 @@
                 </div>
             </div>
 
-            <!-- TAB SETTINGS -->
             <div class="tab-content" id="tabSettings">
                 <div class="settings-group">
                     <h5><i class="fas fa-sliders-h"></i> Bonus & Referral</h5>
@@ -999,7 +994,6 @@
                 </div>
             </div>
 
-            <!-- TAB PAYMENT - QRIS URL -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
                     <h5><i class="fas fa-credit-card"></i> Payment</h5>
@@ -1029,7 +1023,6 @@
 
     </div>
 
-    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <a href="#" class="active" data-tab="tabUsers" id="navUsers">
             <i class="fas fa-users"></i>
@@ -1058,20 +1051,9 @@
     </nav>
 
     <script>
-        // ============================================================
-        // 1. SUPABASE CONFIG
-        // ============================================================
-
-        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
-
-        // ============================================================
-        // 2. VARIABLES
-        // ============================================================
-        const STORAGE_KEYS = {
-            CURRENT_USER: 'silverchain_current_user'
-        };
+        const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
         const ADMIN_EMAIL = 'admin@silverchain.io';
         const ROWS_PER_PAGE = 10;
 
@@ -1084,9 +1066,6 @@
         let currentPage = 1;
         let totalPages = 1;
 
-        // ============================================================
-        // 3. INIT SUPABASE
-        // ============================================================
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('✅ Supabase client created!');
@@ -1094,9 +1073,6 @@
             console.error('❌ Supabase error:', err);
         }
 
-        // ============================================================
-        // 4. HELPER FUNCTIONS
-        // ============================================================
         async function hashPassword(password) {
             return btoa(password + 'silverchain_salt_2026');
         }
@@ -1105,9 +1081,6 @@
             return hashed === btoa(password + 'silverchain_salt_2026');
         }
 
-        // ============================================================
-        // 5. SUPABASE FUNCTIONS
-        // ============================================================
         async function getUserByEmail(email) {
             try {
                 const { data, error } = await supabaseClient
@@ -1256,9 +1229,6 @@
             }
         }
 
-        // ============================================================
-        // 6. TOAST
-        // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
             document.getElementById('toastText').textContent = msg;
@@ -1266,9 +1236,6 @@
             setTimeout(() => { toast.style.display = 'none'; }, 3500);
         }
 
-        // ============================================================
-        // 7. LOAD & CHECK AUTH
-        // ============================================================
         async function loadCurrentUser() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
@@ -1313,9 +1280,6 @@
             return true;
         }
 
-        // ============================================================
-        // 8. TABS
-        // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
         const tabContents = {
             tabUsers: document.getElementById('tabUsers'),
@@ -1352,9 +1316,6 @@
             });
         });
 
-        // ============================================================
-        // 9. RENDER FUNCTIONS
-        // ============================================================
         function renderUsersTable() {
             const tbody = document.getElementById('adminUserBody');
 
@@ -1562,9 +1523,6 @@
             });
         }
 
-        // ============================================================
-        // 10. LOAD QRIS & SETTINGS
-        // ============================================================
         async function loadQrisPreview() {
             try {
                 console.log('🔄 Loading QRIS preview...');
@@ -1669,9 +1627,6 @@
             }
         }
 
-        // ============================================================
-        // 11. SAVE SETTINGS
-        // ============================================================
         document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
             const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
             const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
@@ -1823,9 +1778,6 @@
             }
         });
 
-        // ============================================================
-        // SAVE QRIS URL
-        // ============================================================
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
             const url = document.getElementById('adminQrisUrl').value.trim();
 
@@ -1856,9 +1808,6 @@
             }
         });
 
-        // ============================================================
-        // 12. LOGOUT
-        // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
             currentUser = null;
@@ -1866,9 +1815,6 @@
             setTimeout(() => { window.location.href = '/'; }, 500);
         });
 
-        // ============================================================
-        // 13. UPDATE UI
-        // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
                 console.warn('⏳ Waiting for Supabase...');
@@ -1919,9 +1865,6 @@
             }
         }
 
-        // ============================================================
-        // 14. INIT
-        // ============================================================
         async function init() {
             console.log('🔄 Admin panel initializing...');
 
