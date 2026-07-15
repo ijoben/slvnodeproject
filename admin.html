@@ -10,11 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: #0a1228;
@@ -26,10 +22,7 @@
             flex-direction: column;
             align-items: center;
         }
-        .container {
-            max-width: 1050px;
-            width: 100%;
-        }
+        .container { max-width: 1050px; width: 100%; }
         .section-card {
             background: rgba(18, 34, 72, 0.7);
             backdrop-filter: blur(14px);
@@ -82,10 +75,7 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        .admin-header h2 i {
-            color: #c0c0c0;
-            margin-right: 6px;
-        }
+        .admin-header h2 i { color: #c0c0c0; margin-right: 6px; }
         .btn-logout {
             background: rgba(255, 60, 60, 0.1);
             border: 1px solid rgba(255, 60, 60, 0.15);
@@ -102,20 +92,10 @@
             flex-shrink: 0;
             border: none;
         }
-        .btn-logout:hover {
-            background: rgba(255, 60, 60, 0.2);
-        }
-        .btn-logout i {
-            font-size: 1.1rem;
-        }
-        .btn-logout .logout-text {
-            display: inline;
-        }
-        .admin-sub {
-            color: #c0c0c0;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
+        .btn-logout:hover { background: rgba(255, 60, 60, 0.2); }
+        .btn-logout i { font-size: 1.1rem; }
+        .btn-logout .logout-text { display: inline; }
+        .admin-sub { color: #c0c0c0; font-size: 1rem; margin-bottom: 0.5rem; }
 
         .admin-stats-grid {
             display: grid !important;
@@ -137,10 +117,7 @@
         .admin-stat::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(135deg, rgba(192,192,192,0.03), rgba(192,192,192,0.01));
             border-radius: 1.5rem;
         }
@@ -149,33 +126,10 @@
             border-color: rgba(80, 140, 255, 0.2);
             box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
-        .admin-stat .icon {
-            font-size: 2.2rem;
-            margin-bottom: 0.3rem;
-            position: relative;
-            z-index: 1;
-        }
-        .admin-stat .num {
-            font-size: 2.2rem;
-            font-weight: 800;
-            position: relative;
-            z-index: 1;
-        }
-        .admin-stat .label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 0.2rem;
-            position: relative;
-            z-index: 1;
-        }
-        .admin-stat .sub {
-            font-size: 0.7rem;
-            color: #666;
-            margin-top: 0.1rem;
-            position: relative;
-            z-index: 1;
-        }
+        .admin-stat .icon { font-size: 2.2rem; margin-bottom: 0.3rem; position: relative; z-index: 1; }
+        .admin-stat .num { font-size: 2.2rem; font-weight: 800; position: relative; z-index: 1; }
+        .admin-stat .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.2rem; position: relative; z-index: 1; }
+        .admin-stat .sub { font-size: 0.7rem; color: #666; margin-top: 0.1rem; position: relative; z-index: 1; }
         .admin-stat.primary .icon { color: #c0c0c0; }
         .admin-stat.primary .num { color: #e0e0e0; }
         .admin-stat.success .icon { color: #6aff8a; }
@@ -196,10 +150,7 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        .section-title i {
-            color: #c0c0c0;
-            margin-right: 8px;
-        }
+        .section-title i { color: #c0c0c0; margin-right: 8px; }
 
         .table-wrapper {
             width: 100%;
@@ -249,9 +200,7 @@
             transition: 0.1s;
             border: none;
         }
-        .btn-approve:hover {
-            background: rgba(60, 220, 80, 0.25);
-        }
+        .btn-approve:hover { background: rgba(60, 220, 80, 0.25); }
         .btn-reject {
             background: rgba(255, 60, 60, 0.15);
             border: 1px solid rgba(255, 60, 60, 0.2);
@@ -264,9 +213,7 @@
             margin-left: 4px;
             border: none;
         }
-        .btn-reject:hover {
-            background: rgba(255, 60, 60, 0.25);
-        }
+        .btn-reject:hover { background: rgba(255, 60, 60, 0.25); }
 
         .pagination {
             display: flex;
@@ -290,24 +237,10 @@
             text-align: center;
             border: none;
         }
-        .pagination button:hover:not(:disabled) {
-            background: rgba(60, 120, 255, 0.15);
-            border-color: rgba(80, 140, 255, 0.15);
-        }
-        .pagination button.active {
-            background: rgba(192, 192, 192, 0.15);
-            border-color: rgba(192, 192, 192, 0.2);
-            color: #e0e0e0;
-        }
-        .pagination button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        .pagination .page-info {
-            color: #888888;
-            font-size: 0.75rem;
-            padding: 0 0.5rem;
-        }
+        .pagination button:hover:not(:disabled) { background: rgba(60, 120, 255, 0.15); border-color: rgba(80, 140, 255, 0.15); }
+        .pagination button.active { background: rgba(192, 192, 192, 0.15); border-color: rgba(192, 192, 192, 0.2); color: #e0e0e0; }
+        .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .pagination .page-info { color: #888888; font-size: 0.75rem; padding: 0 0.5rem; }
 
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
@@ -316,11 +249,7 @@
             margin: 0.6rem 0;
             border: 1px solid rgba(80, 140, 255, 0.06);
         }
-        .settings-group h5 {
-            color: #c0c0c0;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
+        .settings-group h5 { color: #c0c0c0; margin-bottom: 0.5rem; font-size: 0.95rem; }
         .settings-group .row {
             display: flex;
             flex-wrap: wrap;
@@ -328,11 +257,7 @@
             gap: 0.6rem;
             margin: 0.4rem 0;
         }
-        .settings-group label {
-            color: #c0c0c0;
-            font-size: 0.85rem;
-            min-width: 120px;
-        }
+        .settings-group label { color: #c0c0c0; font-size: 0.85rem; min-width: 120px; }
         .settings-group input {
             background: rgba(8, 20, 48, 0.5);
             border: 1px solid rgba(80, 140, 255, 0.06);
@@ -343,13 +268,8 @@
             width: 80px;
             outline: none;
         }
-        .settings-group input:focus {
-            border-color: rgba(80, 140, 255, 0.2);
-        }
-        .settings-group input[type="text"] {
-            width: 350px;
-            max-width: 100%;
-        }
+        .settings-group input:focus { border-color: rgba(80, 140, 255, 0.2); }
+        .settings-group input[type="text"] { width: 350px; max-width: 100%; }
         .btn-save {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -361,19 +281,10 @@
             transition: 0.15s;
             border: none;
         }
-        .btn-save:hover {
-            background: rgba(60, 120, 255, 0.2);
-        }
-        .btn-save.danger {
-            background: rgba(255, 60, 60, 0.1);
-            border-color: rgba(255, 60, 60, 0.15);
-            color: #ff6a6a;
-        }
-        .btn-save.danger:hover {
-            background: rgba(255, 60, 60, 0.2);
-        }
+        .btn-save:hover { background: rgba(60, 120, 255, 0.2); }
+        .btn-save.danger { background: rgba(255, 60, 60, 0.1); border-color: rgba(255, 60, 60, 0.15); color: #ff6a6a; }
+        .btn-save.danger:hover { background: rgba(255, 60, 60, 0.2); }
 
-        /* QRIS PREVIEW - SAMA SEPERTI LOGO */
         .qr-preview {
             margin: 0.5rem 0;
             padding: 0.8rem;
@@ -400,13 +311,13 @@
             flex-shrink: 0;
         }
         .qr-preview img {
-            max-width: 120px;
-            max-height: 120px;
+            max-width: 150px;
+            max-height: 150px;
             border-radius: 0.8rem;
             border: 1px solid rgba(80, 140, 255, 0.06);
             background: #fff;
             object-fit: contain;
-            padding: 4px;
+            padding: 8px;
             display: none;
         }
         .qr-preview .qr-status {
@@ -414,19 +325,11 @@
             font-size: 0.85rem;
             flex: 1;
         }
-        .qr-preview .qr-status.success {
-            color: #6aff8a;
-        }
-        .qr-preview .qr-status.error {
-            color: #ff6a6a;
-        }
+        .qr-preview .qr-status.success { color: #6aff8a; }
+        .qr-preview .qr-status.error { color: #ff6a6a; }
 
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
         .bottom-nav {
             position: fixed;
@@ -458,33 +361,12 @@
             flex: 0 1 auto;
             position: relative;
         }
-        .bottom-nav a i {
-            font-size: 1.4rem;
-        }
-        .bottom-nav a span {
-            font-size: 0.6rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            text-align: center;
-            line-height: 1.2;
-        }
-        .bottom-nav a.active {
-            color: #e0e0e0;
-        }
-        .bottom-nav a.active i {
-            color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192,192,192,0.15);
-        }
-        .bottom-nav a:hover {
-            color: #e8e8e8;
-        }
-        .bottom-nav .nav-divider {
-            width: 1px;
-            height: 28px;
-            background: rgba(80, 140, 255, 0.08);
-            flex-shrink: 0;
-            margin: 0 0.15rem;
-        }
+        .bottom-nav a i { font-size: 1.4rem; }
+        .bottom-nav a span { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.3px; text-align: center; line-height: 1.2; }
+        .bottom-nav a.active { color: #e0e0e0; }
+        .bottom-nav a.active i { color: #c0c0c0; text-shadow: 0 0 25px rgba(192,192,192,0.15); }
+        .bottom-nav a:hover { color: #e8e8e8; }
+        .bottom-nav .nav-divider { width: 1px; height: 28px; background: rgba(80, 140, 255, 0.08); flex-shrink: 0; margin: 0 0.15rem; }
 
         .toast-message {
             background: rgba(12, 28, 60, 0.9);
@@ -499,12 +381,8 @@
             align-items: center;
             gap: 0.6rem;
         }
-        .toast-message.show {
-            display: flex;
-        }
-        .toast-message i {
-            color: #c0c0c0;
-        }
+        .toast-message.show { display: flex; }
+        .toast-message i { color: #c0c0c0; }
 
         .footer-copyright {
             text-align: center;
@@ -543,7 +421,7 @@
             .settings-group input[type="text"] { width: 100%; }
             .btn-save { font-size: 0.7rem; padding: 0.3rem 1rem; }
             .qr-preview .placeholder { width: 60px; height: 60px; font-size: 1.8rem; }
-            .qr-preview img { max-width: 70px; max-height: 70px; }
+            .qr-preview img { max-width: 80px; max-height: 80px; }
             .bottom-nav { padding: 0.3rem 0.2rem 0.5rem; }
             .bottom-nav a { padding: 0.2rem 0.2rem; min-width: 40px; }
             .bottom-nav a i { font-size: 1.2rem; }
@@ -576,7 +454,7 @@
             .settings-group input { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
             .btn-save { font-size: 0.65rem; padding: 0.25rem 0.8rem; }
             .qr-preview .placeholder { width: 50px; height: 50px; font-size: 1.5rem; }
-            .qr-preview img { max-width: 55px; max-height: 55px; }
+            .qr-preview img { max-width: 60px; max-height: 60px; }
             .bottom-nav { padding: 0.2rem 0.15rem 0.4rem; }
             .bottom-nav a { padding: 0.15rem 0.15rem; min-width: 34px; }
             .bottom-nav a i { font-size: 1rem; }
@@ -616,8 +494,7 @@
             <!-- HEADER -->
             <div class="admin-header">
                 <h2>
-                    <i class="fas fa-user-shield"></i>Admin Panel
-                    <span class="owner-badge">🔒 Owner Only</span>
+                    <i class="fas fa-user-shield"></i>Admin Panel                    <span class="owner-badge">🔒 Owner Only</span>
                 </h2>
                 <button class="btn-logout" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i>
@@ -629,37 +506,15 @@
             <!-- TAB USER -->
             <div class="tab-content active" id="tabUsers">
                 <div class="admin-stats-grid">
-                    <div class="admin-stat primary">
-                        <div class="icon"><i class="fas fa-users"></i></div>
-                        <div class="num" id="adminTotalUsers">0</div>
-                        <div class="label">Total Users</div>
-                        <div class="sub">Registered</div>
-                    </div>
-                    <div class="admin-stat warning">
-                        <div class="icon"><i class="fas fa-clock"></i></div>
-                        <div class="num" id="adminPendingDeposits">0</div>
-                        <div class="label">Pending Deposits</div>
-                        <div class="sub">Awaiting Approval</div>
-                    </div>
-                    <div class="admin-stat info">
-                        <div class="icon"><i class="fas fa-arrow-up"></i></div>
-                        <div class="num" id="adminPendingWithdraw">0</div>
-                        <div class="label">Pending Withdrawals</div>
-                        <div class="sub">Awaiting Approval</div>
-                    </div>
-                    <div class="admin-stat success">
-                        <div class="icon"><i class="fas fa-coins"></i></div>
-                        <div class="num" id="adminTotalUSDTMinted">0</div>
-                        <div class="label">Total USDT Minted</div>
-                        <div class="sub">All Users</div>
-                    </div>
+                    <div class="admin-stat primary"><div class="icon"><i class="fas fa-users"></i></div><div class="num" id="adminTotalUsers">0</div><div class="label">Total Users</div><div class="sub">Registered</div></div>
+                    <div class="admin-stat warning"><div class="icon"><i class="fas fa-clock"></i></div><div class="num" id="adminPendingDeposits">0</div><div class="label">Pending Deposits</div><div class="sub">Awaiting Approval</div></div>
+                    <div class="admin-stat info"><div class="icon"><i class="fas fa-arrow-up"></i></div><div class="num" id="adminPendingWithdraw">0</div><div class="label">Pending Withdrawals</div><div class="sub">Awaiting Approval</div></div>
+                    <div class="admin-stat success"><div class="icon"><i class="fas fa-coins"></i></div><div class="num" id="adminTotalUSDTMinted">0</div><div class="label">Total USDT Minted</div><div class="sub">All Users</div></div>
                 </div>
 
                 <div class="section-title">
                     <span><i class="fas fa-users"></i> All Users</span>
-                    <span class="badge-silver">
-                        <i class="fas fa-user"></i> Total: <strong id="totalUserCount">0</strong>
-                    </span>
+                    <span class="badge-silver"><i class="fas fa-user"></i> Total: <strong id="totalUserCount">0</strong></span>
                 </div>
                 <div class="table-wrapper">
                     <table>
@@ -753,7 +608,7 @@
                 </div>
             </div>
 
-            <!-- TAB PAYMENT - QRIS URL SISTEM SAMA SEPERTI LOGO -->
+            <!-- TAB PAYMENT - QRIS URL -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
                     <h5><i class="fas fa-credit-card"></i> Payment</h5>
@@ -764,8 +619,9 @@
                     </div>
                     <div class="row" style="margin-top:0.5rem;">
                         <label><i class="fas fa-qrcode"></i> QRIS Image URL</label>
-                        <input type="text" id="adminQrisUrl" placeholder="https://example.com/qris.png" style="width:350px;" />
+                        <input type="text" id="adminQrisUrl" placeholder="https://i.imgur.com/xxxxx.png" style="width:350px;" />
                         <button class="btn-save" id="saveQrisUrlBtn"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn-save" id="testQrisUrlBtn" style="background:rgba(60,220,80,0.1); border-color:rgba(60,220,80,0.15); color:#6aff8a;"><i class="fas fa-eye"></i> Test</button>
                     </div>
                     <div class="qr-preview" id="qrisPreviewContainer">
                         <div class="placeholder" id="qrisPlaceholder"><i class="fas fa-qrcode"></i></div>
@@ -773,7 +629,7 @@
                         <span class="qr-status" id="qrisStatus">No QRIS</span>
                     </div>
                     <p style="color:#a0a0a0; font-size:0.75rem; margin-top:0.3rem;">
-                        <i class="fas fa-info-circle"></i> USDT Address & QRIS used on purchase page.
+                        <i class="fas fa-info-circle"></i> Gunakan direct image URL: <code style="color:#c0c0c0;">https://i.imgur.com/xxxxx.png</code>
                     </p>
                 </div>
             </div>
@@ -1300,7 +1156,7 @@
         }
 
         // ============================================================
-        // 10. LOAD QRIS & SETTINGS (SISTEM SAMA SEPERTI LOGO)
+        // 10. LOAD QRIS & SETTINGS
         // ============================================================
         async function loadQrisPreview() {
             try {
@@ -1314,17 +1170,16 @@
 
                 console.log('📌 QRIS URL from Supabase:', qrisUrl);
 
-                if (qrisUrl && qrisUrl.trim() !== '') {
-                    // Tampilkan gambar
+                if (qrisUrl && qrisUrl.trim() !== '' && qrisUrl.trim() !== 'null' && qrisUrl.trim() !== 'undefined') {
                     img.src = qrisUrl;
                     img.style.display = 'block';
-                    img.style.maxWidth = '120px';
-                    img.style.maxHeight = '120px';
+                    img.style.maxWidth = '150px';
+                    img.style.maxHeight = '150px';
                     img.style.borderRadius = '0.8rem';
                     img.style.border = '1px solid rgba(80, 140, 255, 0.06)';
                     img.style.background = '#fff';
                     img.style.objectFit = 'contain';
-                    img.style.padding = '4px';
+                    img.style.padding = '8px';
                     
                     placeholder.style.display = 'none';
                     status.textContent = '✅ QRIS loaded';
@@ -1562,7 +1417,7 @@
         });
 
         // ============================================================
-        // SAVE QRIS URL - SISTEM SAMA SEPERTI LOGO
+        // SAVE QRIS URL
         // ============================================================
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
             const url = document.getElementById('adminQrisUrl').value.trim();
@@ -1579,35 +1434,63 @@
                 return;
             }
             
+            if (url.includes('imgur.com/a/') || url.includes('imgur.com/gallery/')) {
+                showToast('❌ Gunakan direct image URL: i.imgur.com/xxxxx.png');
+                return;
+            }
+            
             try {
-                // Coba load image untuk test
-                const testImg = new Image();
-                let loaded = false;
-                
-                await new Promise((resolve) => {
-                    testImg.onload = function() {
-                        loaded = true;
-                        console.log('✅ Image loaded successfully');
-                        resolve();
-                    };
-                    testImg.onerror = function() {
-                        console.warn('⚠️ Image failed to load, but saving anyway');
-                        resolve();
-                    };
-                    testImg.src = url;
-                    setTimeout(resolve, 5000);
-                });
-                
                 await saveSetting('qris_image', url);
                 showToast('✅ QRIS image URL saved to database!');
-                
-                // Reload preview
                 await loadQrisPreview();
-                
             } catch (err) {
                 console.error('❌ Save QRIS error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
+        });
+
+        // ============================================================
+        // TEST QRIS URL
+        // ============================================================
+        document.getElementById('testQrisUrlBtn').addEventListener('click', function() {
+            const url = document.getElementById('adminQrisUrl').value.trim();
+            const img = document.getElementById('qrisPreviewImg');
+            const status = document.getElementById('qrisStatus');
+            const placeholder = document.getElementById('qrisPlaceholder');
+            
+            if (!url) {
+                showToast('❌ Please enter a URL first.');
+                return;
+            }
+            
+            console.log('🔍 Testing QRIS URL:', url);
+            
+            const testImg = new Image();
+            testImg.onload = function() {
+                console.log('✅ Image loaded successfully!');
+                img.src = url;
+                img.style.display = 'block';
+                img.style.maxWidth = '150px';
+                img.style.maxHeight = '150px';
+                img.style.borderRadius = '0.8rem';
+                img.style.border = '1px solid rgba(80, 140, 255, 0.06)';
+                img.style.background = '#fff';
+                img.style.objectFit = 'contain';
+                img.style.padding = '8px';
+                placeholder.style.display = 'none';
+                status.textContent = '✅ Image loaded! Click Save to save.';
+                status.className = 'qr-status success';
+                showToast('✅ Image loaded successfully!');
+            };
+            testImg.onerror = function() {
+                console.error('❌ Image failed to load');
+                img.style.display = 'none';
+                placeholder.style.display = 'flex';
+                status.textContent = '❌ Failed to load image. Check URL.';
+                status.className = 'qr-status error';
+                showToast('❌ Failed to load image. Check URL.');
+            };
+            testImg.src = url;
         });
 
         // ============================================================
@@ -1706,7 +1589,7 @@
 
         console.log('🟢 SilverChain Admin Panel loaded.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
-        console.log('📌 QRIS URL system sama seperti logo');
+        console.log('📌 QRIS: gunakan direct image URL (i.imgur.com/xxxxx.png)');
     </script>
 </body>
 </html>
