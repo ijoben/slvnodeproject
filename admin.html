@@ -21,7 +21,7 @@
             background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
             color: #d4d4d4;
             min-height: 100vh;
-            padding: 1.5rem 1rem 6rem;
+            padding: 1rem 0.8rem 6rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -34,9 +34,9 @@
             background: rgba(18, 34, 72, 0.7);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border-radius: 2.8rem;
-            padding: 2rem 2rem;
-            margin-bottom: 2rem;
+            border-radius: 2rem;
+            padding: 1.5rem 1.2rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
             border: 1px solid rgba(80, 140, 255, 0.08);
         }
@@ -44,8 +44,8 @@
             background: rgba(60, 120, 255, 0.06);
             border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
-            padding: 0.25rem 1rem;
-            font-size: 0.7rem;
+            padding: 0.25rem 0.8rem;
+            font-size: 0.65rem;
             font-weight: 600;
             color: #c0c0c0;
         }
@@ -54,7 +54,7 @@
             border: 1px solid rgba(255, 200, 60, 0.15);
             border-radius: 60px;
             padding: 0.15rem 0.6rem;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: #fcd34d;
         }
         .badge-admin {
@@ -62,7 +62,7 @@
             border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
             padding: 0.15rem 0.6rem;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: #c0c0c0;
         }
 
@@ -76,29 +76,30 @@
         }
         .admin-header h2 {
             color: #e0e0e0;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.3rem;
         }
         .admin-header h2 i {
             color: #c0c0c0;
-            margin-right: 6px;
+            margin-right: 4px;
+            font-size: 1.2rem;
         }
         .btn-logout {
             background: rgba(255, 60, 60, 0.1);
             border: 1px solid rgba(255, 60, 60, 0.15);
             border-radius: 60px;
-            padding: 0.4rem 1.2rem;
+            padding: 0.35rem 1rem;
             color: #ff6a6a;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: 0.15s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             flex-shrink: 0;
             border: none;
         }
@@ -106,30 +107,27 @@
             background: rgba(255, 60, 60, 0.2);
         }
         .btn-logout i {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .btn-logout .logout-text {
             display: inline;
         }
-
-        /* ========================================================== */
-        /* STATS GRID - 2 KOLOM - HANYA UNTUK TAB STATS */
-        /* ========================================================== */
-        #tabStats .admin-stats-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 1rem !important;
-            margin: 1rem 0 1.5rem !important;
+        .admin-sub {
+            color: #c0c0c0;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
         }
 
         .admin-stats-grid {
-            display: none !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.8rem !important;
+            margin: 0.8rem 0 1.2rem !important;
         }
-
         .admin-stat {
             background: rgba(8, 20, 48, 0.4);
-            border-radius: 1.5rem;
-            padding: 1.2rem 1rem;
+            border-radius: 1.2rem;
+            padding: 1rem 0.8rem;
             text-align: center;
             border: 1px solid rgba(80, 140, 255, 0.08);
             transition: 0.3s;
@@ -145,21 +143,21 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, rgba(192, 192, 192, 0.03), rgba(192, 192, 192, 0.01));
-            border-radius: 1.5rem;
+            border-radius: 1.2rem;
         }
         .admin-stat:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: rgba(80, 140, 255, 0.2);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
         .admin-stat .icon {
-            font-size: 1.8rem;
-            margin-bottom: 0.3rem;
+            font-size: 1.6rem;
+            margin-bottom: 0.2rem;
             position: relative;
             z-index: 1;
         }
         .admin-stat .num {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             position: relative;
             z-index: 1;
@@ -167,19 +165,18 @@
         .admin-stat .label {
             font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 0.2rem;
-            position: relative;
-            z-index: 1;
-        }
-        .admin-stat .sub {
-            font-size: 0.55rem;
-            color: #666;
+            letter-spacing: 0.3px;
             margin-top: 0.1rem;
             position: relative;
             z-index: 1;
         }
-
+        .admin-stat .sub {
+            font-size: 0.5rem;
+            color: #666;
+            margin-top: 0.05rem;
+            position: relative;
+            z-index: 1;
+        }
         .admin-stat.primary .icon { color: #c0c0c0; }
         .admin-stat.primary .num { color: #e0e0e0; }
         .admin-stat.success .icon { color: #6aff8a; }
@@ -190,10 +187,10 @@
         .admin-stat.info .num { color: #60a5fa; }
 
         .section-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #e0e0e0;
-            margin: 1rem 0 0.5rem;
+            margin: 0.8rem 0 0.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -202,50 +199,53 @@
         }
         .section-title i {
             color: #c0c0c0;
-            margin-right: 8px;
+            margin-right: 6px;
         }
 
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            margin-top: 0.5rem;
-            border-radius: 1.2rem;
+            margin-top: 0.3rem;
+            border-radius: 1rem;
             border: 1px solid rgba(80, 140, 255, 0.04);
         }
         .table-wrapper table {
             width: 100%;
-            min-width: 700px;
+            min-width: 600px;
             border-collapse: collapse;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
         .table-wrapper table th {
             text-align: left;
             color: #a0a0a0;
             font-weight: 600;
-            padding: 0.3rem 0.8rem;
+            padding: 0.4rem 0.6rem;
             border-bottom: 1px solid rgba(80, 140, 255, 0.06);
             white-space: nowrap;
+            font-size: 0.65rem;
         }
         .table-wrapper table td {
-            padding: 0.3rem 0.8rem;
+            padding: 0.4rem 0.6rem;
             color: #c0c0c0;
             border-bottom: 1px solid rgba(80, 140, 255, 0.03);
             white-space: nowrap;
+            font-size: 0.65rem;
         }
         .table-wrapper table .empty {
             color: #a0a0a0;
             text-align: center;
-            padding: 0.8rem 0;
+            padding: 1rem 0;
+            font-size: 0.75rem;
         }
 
         .btn-approve {
             background: rgba(60, 220, 80, 0.15);
             border: 1px solid rgba(60, 220, 80, 0.2);
             border-radius: 60px;
-            padding: 0.1rem 0.6rem;
+            padding: 0.15rem 0.5rem;
             color: #6aff8a;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             cursor: pointer;
             transition: 0.1s;
             border: none;
@@ -257,40 +257,37 @@
             background: rgba(255, 60, 60, 0.15);
             border: 1px solid rgba(255, 60, 60, 0.2);
             border-radius: 60px;
-            padding: 0.1rem 0.6rem;
+            padding: 0.15rem 0.5rem;
             color: #ff6a6a;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             cursor: pointer;
             transition: 0.1s;
-            margin-left: 4px;
+            margin-left: 3px;
             border: none;
         }
         .btn-reject:hover {
             background: rgba(255, 60, 60, 0.25);
         }
 
-        /* ========================================================== */
-        /* PAGINATION */
-        /* ========================================================== */
         .pagination {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 0.3rem;
-            margin-top: 1rem;
+            margin-top: 0.8rem;
             flex-wrap: wrap;
         }
         .pagination button {
             background: rgba(8, 20, 48, 0.4);
             border: 1px solid rgba(80, 140, 255, 0.06);
             border-radius: 60px;
-            padding: 0.3rem 0.8rem;
+            padding: 0.25rem 0.6rem;
             color: #c0c0c0;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             cursor: pointer;
             transition: 0.15s;
             font-weight: 600;
-            min-width: 36px;
+            min-width: 32px;
             text-align: center;
             border: none;
         }
@@ -309,50 +306,55 @@
         }
         .pagination .page-info {
             color: #888888;
-            font-size: 0.7rem;
-            padding: 0 0.5rem;
+            font-size: 0.6rem;
+            padding: 0 0.3rem;
         }
 
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
-            border-radius: 1.2rem;
-            padding: 1rem;
-            margin: 0.8rem 0;
+            border-radius: 1rem;
+            padding: 0.8rem;
+            margin: 0.6rem 0;
             border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .settings-group h5 {
+            color: #c0c0c0;
+            margin-bottom: 0.3rem;
+            font-size: 0.75rem;
         }
         .settings-group .row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             margin: 0.3rem 0;
         }
         .settings-group label {
             color: #c0c0c0;
-            font-size: 0.8rem;
-            min-width: 120px;
+            font-size: 0.7rem;
+            min-width: 80px;
         }
         .settings-group input {
             background: rgba(8, 20, 48, 0.5);
             border: 1px solid rgba(80, 140, 255, 0.06);
             border-radius: 60px;
-            padding: 0.3rem 1rem;
+            padding: 0.25rem 0.8rem;
             color: #d4d4d4;
-            font-size: 0.85rem;
-            width: 80px;
+            font-size: 0.75rem;
+            width: 70px;
             outline: none;
         }
         .settings-group input:focus {
             border-color: rgba(80, 140, 255, 0.2);
         }
         .settings-group input[type="text"] {
-            width: 250px;
+            width: 200px;
             max-width: 100%;
         }
         .settings-group input[type="file"] {
             width: auto;
             background: transparent;
-            padding: 0.3rem 0;
+            padding: 0.2rem 0;
             border: none;
             color: #c0c0c0;
         }
@@ -361,9 +363,9 @@
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
             border-radius: 60px;
-            padding: 0.2rem 1rem;
+            padding: 0.2rem 0.8rem;
             color: #c0c0c0;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             cursor: pointer;
             transition: 0.15s;
             border: none;
@@ -387,25 +389,25 @@
             border-radius: 1rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
         }
         .qr-preview .placeholder {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 0.8rem;
+            border-radius: 0.6rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #c0c0c0;
             border: 2px dashed rgba(80, 140, 255, 0.15);
         }
         .qr-preview img {
-            max-width: 120px;
-            max-height: 120px;
-            border-radius: 0.8rem;
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 0.6rem;
             border: 1px solid rgba(80, 140, 255, 0.06);
             background: #fff;
         }
@@ -417,9 +419,6 @@
             display: block;
         }
 
-        /* ========================================================== */
-        /* BOTTOM NAV */
-        /* ========================================================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -472,7 +471,7 @@
         }
         .bottom-nav .nav-divider {
             width: 1px;
-            height: 26px;
+            height: 22px;
             background: rgba(80, 140, 255, 0.08);
             flex-shrink: 0;
             margin: 0 0.1rem;
@@ -483,13 +482,13 @@
             backdrop-filter: blur(8px);
             border-left: 4px solid #c0c0c0;
             border-radius: 40px;
-            padding: 0.6rem 1.4rem;
-            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
             color: #e0e0e0;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             display: none;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
         .toast-message.show {
             display: flex;
@@ -501,40 +500,73 @@
         .footer-copyright {
             text-align: center;
             color: #888888;
-            font-size: 0.7rem;
-            padding: 1rem 0 0.5rem;
+            font-size: 0.6rem;
+            padding: 0.8rem 0 0.3rem;
             border-top: 1px solid rgba(80, 140, 255, 0.05);
-            margin-top: 1rem;
+            margin-top: 0.8rem;
         }
 
-        /* ===== RESPONSIVE ===== */
-
-        /* TABLET & HP */
         @media (max-width: 768px) {
-            #tabStats .admin-stats-grid {
+            .section-card {
+                padding: 1rem 0.8rem;
+                border-radius: 1.5rem;
+            }
+            .admin-header h2 {
+                font-size: 1.1rem;
+            }
+            .admin-header h2 i {
+                font-size: 1rem;
+            }
+            .btn-logout {
+                padding: 0.25rem 0.7rem;
+                font-size: 0.65rem;
+            }
+            .btn-logout i {
+                font-size: 0.75rem;
+            }
+            .btn-logout .logout-text {
+                display: none;
+            }
+            .admin-sub {
+                font-size: 0.75rem;
+            }
+            .admin-stats-grid {
                 grid-template-columns: 1fr 1fr !important;
-                gap: 0.6rem !important;
+                gap: 0.5rem !important;
             }
             .admin-stat {
-                padding: 0.8rem 0.6rem;
-            }
-            .admin-stat .num {
-                font-size: 1.3rem;
+                padding: 0.7rem 0.5rem;
+                border-radius: 1rem;
             }
             .admin-stat .icon {
                 font-size: 1.3rem;
             }
-            .settings-group .row {
-                flex-direction: column;
-                align-items: stretch;
+            .admin-stat .num {
+                font-size: 1.3rem;
             }
-            .settings-group input[type="text"] {
-                width: 100%;
+            .admin-stat .label {
+                font-size: 0.55rem;
             }
-            .settings-group label {
-                min-width: auto;
+            .admin-stat .sub {
+                font-size: 0.45rem;
             }
-
+            .section-title {
+                font-size: 0.9rem;
+            }
+            .table-wrapper table {
+                font-size: 0.6rem;
+                min-width: 480px;
+            }
+            .table-wrapper table th,
+            .table-wrapper table td {
+                padding: 0.3rem 0.4rem;
+                font-size: 0.6rem;
+            }
+            .btn-approve,
+            .btn-reject {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.4rem;
+            }
             .bottom-nav {
                 padding: 0.3rem 0.2rem 0.5rem;
                 gap: 0.05rem;
@@ -543,7 +575,6 @@
             .bottom-nav a {
                 padding: 0.15rem 0.15rem;
                 min-width: 34px;
-                flex: 0 1 auto;
             }
             .bottom-nav a i {
                 font-size: 1rem;
@@ -556,65 +587,61 @@
                 height: 18px;
                 margin: 0 0.05rem;
             }
-
-            .admin-header {
-                flex-direction: row;
-                align-items: center;
-                gap: 0.3rem;
+            .settings-group .row {
+                flex-direction: column;
+                align-items: stretch;
             }
-            .admin-header h2 {
-                font-size: 1.1rem;
-                flex: 1;
+            .settings-group input[type="text"] {
+                width: 100%;
             }
-            .admin-header h2 .owner-badge {
-                font-size: 0.5rem;
-            }
-            .btn-logout {
-                padding: 0.3rem 0.7rem;
-                font-size: 0.7rem;
-                gap: 0.3rem;
-                flex-shrink: 0;
-            }
-            .btn-logout .logout-text {
-                display: none;
-            }
-            .btn-logout i {
-                font-size: 1rem;
+            .settings-group label {
+                min-width: auto;
             }
             .pagination button {
-                padding: 0.2rem 0.5rem;
-                font-size: 0.65rem;
-                min-width: 30px;
+                padding: 0.15rem 0.4rem;
+                font-size: 0.55rem;
+                min-width: 28px;
+            }
+            .pagination .page-info {
+                font-size: 0.5rem;
             }
         }
 
-        /* HP KECIL */
         @media (max-width: 480px) {
             .section-card {
-                padding: 1.2rem 0.8rem;
-                border-radius: 2rem;
+                padding: 0.8rem 0.6rem;
+                border-radius: 1.2rem;
             }
-            #tabStats .admin-stats-grid {
+            .admin-stats-grid {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 0.4rem !important;
             }
             .admin-stat {
-                padding: 0.6rem 0.3rem;
-                border-radius: 1rem;
-            }
-            .admin-stat .num {
-                font-size: 1.1rem;
+                padding: 0.5rem 0.3rem;
+                border-radius: 0.8rem;
             }
             .admin-stat .icon {
+                font-size: 1.1rem;
+            }
+            .admin-stat .num {
                 font-size: 1.1rem;
             }
             .admin-stat .label {
                 font-size: 0.5rem;
             }
             .admin-stat .sub {
-                font-size: 0.45rem;
+                font-size: 0.4rem;
             }
-
+            .admin-header h2 {
+                font-size: 0.95rem;
+            }
+            .btn-logout {
+                padding: 0.2rem 0.5rem;
+                font-size: 0.55rem;
+            }
+            .btn-logout i {
+                font-size: 0.7rem;
+            }
             .bottom-nav {
                 padding: 0.2rem 0.1rem 0.4rem;
                 gap: 0;
@@ -623,7 +650,6 @@
             .bottom-nav a {
                 padding: 0.1rem 0.1rem;
                 min-width: 28px;
-                flex: 0 1 auto;
             }
             .bottom-nav a i {
                 font-size: 0.85rem;
@@ -636,63 +662,52 @@
                 height: 14px;
                 margin: 0 0.03rem;
             }
-
-            .admin-header h2 {
-                font-size: 0.9rem;
-            }
-            .admin-header h2 i {
-                font-size: 0.9rem;
-            }
-            .btn-logout {
-                padding: 0.2rem 0.5rem;
-                border-radius: 60px;
-            }
-            .btn-logout i {
-                font-size: 0.85rem;
-            }
             .table-wrapper table {
-                font-size: 0.65rem;
-                min-width: 500px;
+                font-size: 0.55rem;
+                min-width: 400px;
             }
             .table-wrapper table th,
             .table-wrapper table td {
-                padding: 0.2rem 0.4rem;
+                padding: 0.2rem 0.3rem;
+                font-size: 0.55rem;
             }
             .section-title {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
             .settings-group {
-                padding: 0.6rem;
-            }
-            .settings-group .row {
-                gap: 0.4rem;
+                padding: 0.5rem;
             }
             .settings-group label {
-                font-size: 0.7rem;
+                font-size: 0.6rem;
             }
             .settings-group input {
-                font-size: 0.75rem;
+                font-size: 0.65rem;
                 padding: 0.2rem 0.6rem;
             }
             .btn-save {
-                font-size: 0.6rem;
+                font-size: 0.55rem;
                 padding: 0.15rem 0.6rem;
             }
             .pagination button {
-                padding: 0.15rem 0.35rem;
-                font-size: 0.55rem;
+                padding: 0.15rem 0.3rem;
+                font-size: 0.5rem;
                 min-width: 24px;
             }
             .pagination .page-info {
-                font-size: 0.55rem;
+                font-size: 0.45rem;
+            }
+            .qr-preview .placeholder {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            .qr-preview img {
+                max-width: 60px;
+                max-height: 60px;
             }
         }
 
-        /* HP SANGAT KECIL */
         @media (max-width: 360px) {
-            .bottom-nav {
-                padding: 0.15rem 0.05rem 0.3rem;
-            }
             .bottom-nav a {
                 min-width: 22px;
                 padding: 0.08rem 0.05rem;
@@ -707,10 +722,7 @@
                 height: 12px;
             }
             .admin-header h2 {
-                font-size: 0.75rem;
-            }
-            .btn-logout i {
-                font-size: 0.7rem;
+                font-size: 0.8rem;
             }
             .admin-stat .num {
                 font-size: 0.9rem;
@@ -720,7 +732,6 @@
             }
         }
 
-        /* PC - LAYAR LEBAR */
         @media (min-width: 769px) {
             .bottom-nav {
                 gap: 0.5rem;
@@ -730,7 +741,6 @@
             .bottom-nav a {
                 padding: 0.3rem 1.2rem;
                 min-width: 70px;
-                flex: 0 1 auto;
             }
             .bottom-nav a i {
                 font-size: 1.3rem;
@@ -741,6 +751,18 @@
             .bottom-nav .nav-divider {
                 height: 35px;
                 margin: 0 0.3rem;
+            }
+            .admin-stats-grid {
+                gap: 1rem !important;
+            }
+            .admin-stat {
+                padding: 1.2rem 1rem;
+            }
+            .admin-stat .icon {
+                font-size: 1.8rem;
+            }
+            .admin-stat .num {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -764,42 +786,41 @@
                     <span class="logout-text">Logout</span>
                 </button>
             </div>
-            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Manage users, deposits, withdrawals & settings</p>
+            <p class="admin-sub">Manage users, deposits, withdrawals & settings</p>
 
             <!-- ========================================================== -->
-            <!-- TAB STATS - Card Statistik HANYA DI SINI -->
+            <!-- TAB USER (DEFAULT) - Statistik + User Table -->
             <!-- ========================================================== -->
-            <div class="tab-content active" id="tabStats">
+            <div class="tab-content active" id="tabUsers">
+                <!-- STATS GRID -->
                 <div class="admin-stats-grid">
-                    <div class="admin-stat primary" data-tab="tabUsers">
+                    <div class="admin-stat primary">
                         <div class="icon"><i class="fas fa-users"></i></div>
                         <div class="num" id="adminTotalUsers">0</div>
                         <div class="label">Total Users</div>
                         <div class="sub">Registered</div>
                     </div>
-                    <div class="admin-stat warning" data-tab="tabDeposit">
+                    <div class="admin-stat warning">
                         <div class="icon"><i class="fas fa-clock"></i></div>
                         <div class="num" id="adminPendingDeposits">0</div>
                         <div class="label">Pending Deposits</div>
                         <div class="sub">Awaiting Approval</div>
                     </div>
-                    <div class="admin-stat info" data-tab="tabWithdraw">
+                    <div class="admin-stat info">
                         <div class="icon"><i class="fas fa-arrow-up"></i></div>
                         <div class="num" id="adminPendingWithdraw">0</div>
                         <div class="label">Pending Withdrawals</div>
                         <div class="sub">Awaiting Approval</div>
                     </div>
-                    <div class="admin-stat success" data-tab="tabStats">
+                    <div class="admin-stat success">
                         <div class="icon"><i class="fas fa-coins"></i></div>
                         <div class="num" id="adminTotalUSDTMinted">0</div>
                         <div class="label">Total USDT Minted</div>
                         <div class="sub">All Users</div>
                     </div>
                 </div>
-            </div>
 
-            <!-- TAB: USERS -->
-            <div class="tab-content" id="tabUsers">
+                <!-- TABLE USERS -->
                 <div class="section-title">
                     <span><i class="fas fa-users"></i> All Users</span>
                     <span class="badge-silver">
@@ -876,29 +897,33 @@
                 </div>
             </div>
 
-            <!-- TAB: SETTINGS -->
+            <!-- ========================================================== -->
+            <!-- TAB: SETTINGS - SEMUA TERSIMPAN KE SUPABASE -->
+            <!-- ========================================================== -->
             <div class="tab-content" id="tabSettings">
+                <!-- Bonus & Referral -->
                 <div class="settings-group">
-                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-sliders-h"></i> Bonus & Referral Settings</h5>
+                    <h5><i class="fas fa-sliders-h"></i> Bonus & Referral</h5>
                     <div class="row">
                         <label>Bonus (%)</label>
                         <input type="number" id="adminBonusPercent" value="10" min="0" max="100" />
-                        <label style="min-width:80px;">Referral (%)</label>
+                        <label style="min-width:70px;">Referral (%)</label>
                         <input type="number" id="adminRefPercent" value="3" min="0" max="100" />
                         <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </div>
 
+                <!-- Brand -->
                 <div class="settings-group">
-                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-paint-brush"></i> Brand Settings</h5>
+                    <h5><i class="fas fa-paint-brush"></i> Brand</h5>
                     <div class="row">
                         <label><i class="fas fa-tag"></i> Brand Name</label>
-                        <input type="text" id="adminBrandName" placeholder="SilverChain" style="width:200px;" />
+                        <input type="text" id="adminBrandName" placeholder="SilverChain" style="width:180px;" />
                         <button class="btn-save" id="saveBrandBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
-                        <label><i class="fas fa-image"></i> Logo (URL/Base64)</label>
-                        <input type="text" id="adminLogoUrl" placeholder="Image URL or base64" style="width:300px;" />
+                        <label><i class="fas fa-image"></i> Logo URL</label>
+                        <input type="text" id="adminLogoUrl" placeholder="Image URL or base64" style="width:200px;" />
                         <button class="btn-save" id="saveLogoBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
@@ -907,26 +932,27 @@
                     </div>
                 </div>
 
+                <!-- Contact -->
                 <div class="settings-group">
-                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-address-card"></i> Contact & Social Media</h5>
+                    <h5><i class="fas fa-address-card"></i> Contact</h5>
                     <div class="row">
-                        <label><i class="fab fa-twitter"></i> Twitter URL</label>
-                        <input type="text" id="adminTwitter" placeholder="https://twitter.com/SilverChain" style="width:300px;" />
+                        <label><i class="fab fa-twitter"></i> Twitter</label>
+                        <input type="text" id="adminTwitter" placeholder="https://twitter.com/SilverChain" style="width:200px;" />
                         <button class="btn-save" id="saveTwitterBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
-                        <label><i class="fab fa-telegram"></i> Telegram URL</label>
-                        <input type="text" id="adminTelegram" placeholder="https://t.me/SilverChain" style="width:300px;" />
+                        <label><i class="fab fa-telegram"></i> Telegram</label>
+                        <input type="text" id="adminTelegram" placeholder="https://t.me/SilverChain" style="width:200px;" />
                         <button class="btn-save" id="saveTelegramBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
-                        <label><i class="fab fa-discord"></i> Discord URL</label>
-                        <input type="text" id="adminDiscord" placeholder="https://discord.gg/silver" style="width:300px;" />
+                        <label><i class="fab fa-discord"></i> Discord</label>
+                        <input type="text" id="adminDiscord" placeholder="https://discord.gg/silver" style="width:200px;" />
                         <button class="btn-save" id="saveDiscordBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
-                        <label><i class="fas fa-envelope"></i> Contact Email</label>
-                        <input type="text" id="adminContactEmail" placeholder="dao@silverchain.io" style="width:300px;" />
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <input type="text" id="adminContactEmail" placeholder="dao@silverchain.io" style="width:200px;" />
                         <button class="btn-save" id="saveContactEmailBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </div>
@@ -935,13 +961,13 @@
             <!-- TAB: PAYMENT -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
-                    <h5 style="color:#c0c0c0; margin-bottom:0.5rem; font-size:0.85rem;"><i class="fas fa-credit-card"></i> Payment Settings</h5>
+                    <h5><i class="fas fa-credit-card"></i> Payment</h5>
                     <div class="row">
                         <label><i class="fab fa-ethereum"></i> USDT Address</label>
-                        <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="width:350px;" />
+                        <input type="text" id="adminUsdtAddress" placeholder="0x..." value="0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ" style="width:250px;" />
                         <button class="btn-save" id="saveUsdtBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
-                    <div class="row" style="margin-top:0.8rem;">
+                    <div class="row" style="margin-top:0.5rem;">
                         <label><i class="fas fa-qrcode"></i> QRIS Image</label>
                         <input type="file" id="qrisUpload" accept="image/*" />
                         <button class="btn-save" id="uploadQrisBtn"><i class="fas fa-upload"></i> Upload</button>
@@ -949,10 +975,10 @@
                     <div class="qr-preview" id="qrisPreviewContainer">
                         <div class="placeholder" id="qrisPlaceholder"><i class="fas fa-qrcode"></i></div>
                         <img id="qrisPreviewImg" style="display:none;" alt="QRIS" />
-                        <span style="color:#a0a0a0; font-size:0.75rem;" id="qrisStatus">No QRIS uploaded</span>
+                        <span style="color:#a0a0a0; font-size:0.65rem;" id="qrisStatus">No QRIS</span>
                     </div>
-                    <p style="color:#a0a0a0; font-size:0.7rem; margin-top:0.3rem;">
-                        <i class="fas fa-info-circle"></i> USDT Address & QRIS will be used on the purchase page.
+                    <p style="color:#a0a0a0; font-size:0.6rem; margin-top:0.2rem;">
+                        <i class="fas fa-info-circle"></i> USDT Address & QRIS used on purchase page.
                     </p>
                 </div>
             </div>
@@ -966,12 +992,7 @@
     <!-- BOTTOM NAV -->
     <!-- ========================================================== -->
     <nav class="bottom-nav">
-        <a href="#" class="active" data-tab="tabStats" id="navStats">
-            <i class="fas fa-chart-bar"></i>
-            <span>Stats</span>
-        </a>
-        <div class="nav-divider"></div>
-        <a href="#" data-tab="tabUsers" id="navUsers">
+        <a href="#" class="active" data-tab="tabUsers" id="navUsers">
             <i class="fas fa-users"></i>
             <span>Users</span>
         </a>
@@ -1153,8 +1174,12 @@
             }
         }
 
+        // ============================================================
+        // SAVE SETTING - KE SUPABASE (FIXED)
+        // ============================================================
         async function saveSetting(key, value) {
             try {
+                // Cek apakah key sudah ada
                 const { data: existing } = await supabaseClient
                     .from('settings')
                     .select('key')
@@ -1162,6 +1187,7 @@
                     .single();
 
                 if (existing) {
+                    // UPDATE jika sudah ada
                     const { error } = await supabaseClient
                         .from('settings')
                         .update({
@@ -1172,6 +1198,7 @@
                     if (error) throw error;
                     console.log('✅ Setting updated:', key, '=', value);
                 } else {
+                    // INSERT jika belum ada
                     const { error } = await supabaseClient
                         .from('settings')
                         .insert({
@@ -1261,7 +1288,6 @@
         // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
         const tabContents = {
-            tabStats: document.getElementById('tabStats'),
             tabUsers: document.getElementById('tabUsers'),
             tabDeposit: document.getElementById('tabDeposit'),
             tabWithdraw: document.getElementById('tabWithdraw'),
@@ -1291,13 +1317,6 @@
         navItems.forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
-                const tabId = this.dataset.tab;
-                showTab(tabId);
-            });
-        });
-
-        document.querySelectorAll('.admin-stat[data-tab]').forEach(card => {
-            card.addEventListener('click', function() {
                 const tabId = this.dataset.tab;
                 showTab(tabId);
             });
@@ -1426,7 +1445,7 @@
                     <td>${d.usdt}</td>
                     <td>${d.bonus || 0}</td>
                     <td>${d.total || d.usdt}</td>
-                    <td style="font-family:monospace; font-size:0.6rem;">${d.tx_hash || '-'}</td>
+                    <td style="font-family:monospace; font-size:0.55rem;">${d.tx_hash || '-'}</td>
                     <td>
                         <button class="btn-approve deposit-approve" data-id="${d.id}">✅ Approve</button>
                         <button class="btn-reject deposit-reject" data-id="${d.id}">✖ Reject</button>
@@ -1479,7 +1498,7 @@
                 html += `<tr>
                     <td>${w.email}</td>
                     <td>${w.amount} USDT</td>
-                    <td style="font-family:monospace; font-size:0.6rem;">${addrShort}</td>
+                    <td style="font-family:monospace; font-size:0.55rem;">${addrShort}</td>
                     <td>${date}</td>
                     <td>
                         <button class="btn-approve wd-approve" data-id="${w.id}">✅ Approve</button>
@@ -1535,27 +1554,70 @@
                 } else {
                     img.style.display = 'none';
                     placeholder.style.display = 'flex';
-                    status.textContent = 'No QRIS uploaded';
+                    status.textContent = 'No QRIS';
                     status.style.color = '#a0a0a0';
                 }
             } catch (e) { console.warn('QRIS load error:', e); }
         }
 
-        function loadSettingsUI() {
+        // ============================================================
+        // LOAD SETTINGS UI - DARI SUPABASE
+        // ============================================================
+        async function loadSettingsUI() {
             try {
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                document.getElementById('adminBrandName').value = settings.brandName || '';
-                document.getElementById('adminLogoUrl').value = settings.logoImage || '';
-                document.getElementById('adminTwitter').value = settings.contactTwitter || '';
-                document.getElementById('adminTelegram').value = settings.contactTelegram || '';
-                document.getElementById('adminDiscord').value = settings.contactDiscord || '';
-                document.getElementById('adminContactEmail').value = settings.contactEmail || '';
+                // Ambil dari Supabase
+                const brandName = await getSetting('brand_name');
+                const logoImage = await getSetting('logo_image');
+                const contactTwitter = await getSetting('contact_twitter');
+                const contactTelegram = await getSetting('contact_telegram');
+                const contactDiscord = await getSetting('contact_discord');
+                const contactEmail = await getSetting('contact_email');
+                const usdtAddress = await getSetting('usdt_address');
+                const bonus = await getSetting('bonus_percent');
+                const ref = await getSetting('ref_percent');
 
-                const usdtAddr = localStorage.getItem('silverchain_usdt_address');
-                if (usdtAddr) {
-                    document.getElementById('adminUsdtAddress').value = usdtAddr;
+                // Isi ke input
+                document.getElementById('adminBrandName').value = brandName || '';
+                document.getElementById('adminLogoUrl').value = logoImage || '';
+                document.getElementById('adminTwitter').value = contactTwitter || '';
+                document.getElementById('adminTelegram').value = contactTelegram || '';
+                document.getElementById('adminDiscord').value = contactDiscord || '';
+                document.getElementById('adminContactEmail').value = contactEmail || '';
+
+                if (usdtAddress) {
+                    document.getElementById('adminUsdtAddress').value = usdtAddress;
                 }
-            } catch (e) {}
+                if (bonus) {
+                    document.getElementById('adminBonusPercent').value = bonus;
+                }
+                if (ref) {
+                    document.getElementById('adminRefPercent').value = ref;
+                }
+
+                // Simpan ke localStorage untuk kompatibilitas lintas halaman
+                const settings = {
+                    brandName: brandName || '',
+                    logoImage: logoImage || '',
+                    contactTwitter: contactTwitter || '',
+                    contactTelegram: contactTelegram || '',
+                    contactDiscord: contactDiscord || '',
+                    contactEmail: contactEmail || ''
+                };
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+
+            } catch (e) {
+                console.warn('Load settings error:', e);
+                // Fallback ke localStorage
+                try {
+                    const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                    document.getElementById('adminBrandName').value = settings.brandName || '';
+                    document.getElementById('adminLogoUrl').value = settings.logoImage || '';
+                    document.getElementById('adminTwitter').value = settings.contactTwitter || '';
+                    document.getElementById('adminTelegram').value = settings.contactTelegram || '';
+                    document.getElementById('adminDiscord').value = settings.contactDiscord || '';
+                    document.getElementById('adminContactEmail').value = settings.contactEmail || '';
+                } catch (e2) {}
+            }
         }
 
         document.getElementById('uploadQrisBtn').addEventListener('click', function() {
@@ -1583,8 +1645,10 @@
         });
 
         // ============================================================
-        // 12. SAVE SETTINGS
+        // 12. SAVE SETTINGS - SEMUA KE SUPABASE
         // ============================================================
+
+        // Bonus & Referral
         document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
             const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
             const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
@@ -1592,13 +1656,144 @@
             try {
                 await saveSetting('bonus_percent', String(bonus));
                 await saveSetting('ref_percent', String(ref));
-                showToast('✅ Settings saved!');
+                showToast('✅ Settings saved to database!');
                 await updateUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
+        // Brand Name
+        document.getElementById('saveBrandBtn').addEventListener('click', async function() {
+            const name = document.getElementById('adminBrandName').value.trim();
+            if (!name) {
+                showToast('❌ Please enter a brand name.');
+                return;
+            }
+            try {
+                await saveSetting('brand_name', name);
+                showToast('✅ Brand name saved to database!');
+                // Update UI di halaman lain
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings.brandName = name;
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // Logo
+        document.getElementById('saveLogoBtn').addEventListener('click', async function() {
+            const url = document.getElementById('adminLogoUrl').value.trim();
+            if (!url) {
+                showToast('❌ Please enter a logo URL.');
+                return;
+            }
+            try {
+                await saveSetting('logo_image', url);
+                await saveSetting('logo_type', 'image');
+                showToast('✅ Logo saved to database!');
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings.logoImage = url;
+                settings.logoType = 'image';
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // Reset Logo
+        document.getElementById('resetLogoBtn').addEventListener('click', async function() {
+            if (!confirm('Reset logo to default icon?')) return;
+            try {
+                await saveSetting('logo_image', '');
+                await saveSetting('logo_type', 'icon');
+                await saveSetting('logo_icon', 'fas fa-coins');
+                showToast('✅ Logo reset to default!');
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings.logoImage = '';
+                settings.logoType = 'icon';
+                settings.logoIcon = 'fas fa-coins';
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                document.getElementById('adminLogoUrl').value = '';
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // Twitter
+        document.getElementById('saveTwitterBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminTwitter').value.trim();
+            if (!value) {
+                showToast('❌ Please enter a Twitter URL.');
+                return;
+            }
+            try {
+                await saveSetting('contact_twitter', value);
+                showToast('✅ Twitter URL saved to database!');
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings.contactTwitter = value;
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // Telegram
+        document.getElementById('saveTelegramBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminTelegram').value.trim();
+            if (!value) {
+                showToast('❌ Please enter a Telegram URL.');
+                return;
+            }
+            try {
+                await saveSetting('contact_telegram', value);
+                showToast('✅ Telegram URL saved to database!');
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings.contactTelegram = value;
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // Discord
+        document.getElementById('saveDiscordBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminDiscord').value.trim();
+            if (!value) {
+                showToast('❌ Please enter a Discord URL.');
+                return;
+            }
+            try {
+                await saveSetting('contact_discord', value);
+                showToast('✅ Discord URL saved to database!');
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings.contactDiscord = value;
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // Contact Email
+        document.getElementById('saveContactEmailBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminContactEmail').value.trim();
+            if (!value || !value.includes('@')) {
+                showToast('❌ Please enter a valid email.');
+                return;
+            }
+            try {
+                await saveSetting('contact_email', value);
+                showToast('✅ Contact email saved to database!');
+                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
+                settings.contactEmail = value;
+                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+            } catch (err) {
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // USDT Address
         document.getElementById('saveUsdtBtn').addEventListener('click', async function() {
             const address = document.getElementById('adminUsdtAddress').value.trim();
             if (!address || address.length < 10) {
@@ -1608,75 +1803,9 @@
             try {
                 await saveSetting('usdt_address', address);
                 localStorage.setItem('silverchain_usdt_address', address);
-                showToast('✅ USDT address saved!');
+                showToast('✅ USDT address saved to database!');
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
-            }
-        });
-
-        function saveContact(key, value) {
-            if (value) {
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings[key] = value;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                showToast(`✅ ${key} saved!`);
-            } else {
-                showToast('❌ Please enter a valid value.');
-            }
-        }
-
-        document.getElementById('saveBrandBtn').addEventListener('click', function() {
-            const name = document.getElementById('adminBrandName').value.trim();
-            if (name) {
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.brandName = name;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                showToast('✅ Brand name saved!');
-            } else {
-                showToast('❌ Please enter a brand name.');
-            }
-        });
-
-        document.getElementById('saveLogoBtn').addEventListener('click', function() {
-            const url = document.getElementById('adminLogoUrl').value.trim();
-            if (url) {
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.logoImage = url;
-                settings.logoType = 'image';
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                showToast('✅ Logo saved!');
-            } else {
-                showToast('❌ Please enter a logo URL.');
-            }
-        });
-
-        document.getElementById('resetLogoBtn').addEventListener('click', function() {
-            if (confirm('Reset logo to default icon?')) {
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.logoImage = '';
-                settings.logoType = 'icon';
-                settings.logoIcon = 'fas fa-coins';
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                document.getElementById('adminLogoUrl').value = '';
-                showToast('✅ Logo reset to default.');
-            }
-        });
-
-        document.getElementById('saveTwitterBtn').addEventListener('click', function() {
-            saveContact('contactTwitter', document.getElementById('adminTwitter').value.trim());
-        });
-        document.getElementById('saveTelegramBtn').addEventListener('click', function() {
-            saveContact('contactTelegram', document.getElementById('adminTelegram').value.trim());
-        });
-        document.getElementById('saveDiscordBtn').addEventListener('click', function() {
-            saveContact('contactDiscord', document.getElementById('adminDiscord').value.trim());
-        });
-        document.getElementById('saveContactEmailBtn').addEventListener('click', function() {
-            const email = document.getElementById('adminContactEmail').value.trim();
-            if (email && email.includes('@')) {
-                saveContact('contactEmail', email);
-            } else {
-                showToast('❌ Please enter a valid email.');
             }
         });
 
@@ -1730,12 +1859,6 @@
                     .usdt), 0);
                 document.getElementById('adminTotalUSDTMinted').textContent = totalMinted.toFixed(1);
 
-                // Load settings
-                const bonus = await getSetting('bonus_percent');
-                const ref = await getSetting('ref_percent');
-                document.getElementById('adminBonusPercent').value = bonus || 10;
-                document.getElementById('adminRefPercent').value = ref || 3;
-
                 // Reset pagination ke halaman 1
                 currentPage = 1;
 
@@ -1744,9 +1867,9 @@
                 renderPendingDeposits();
                 renderPendingWithdrawals();
 
-                // Load QRIS & Settings
+                // Load QRIS & Settings dari Supabase
                 loadQrisPreview();
-                loadSettingsUI();
+                await loadSettingsUI();
 
             } catch (error) {
                 console.error('❌ Update UI error:', error);
@@ -1770,8 +1893,8 @@
             const authPassed = await checkAuth();
             if (!authPassed) return;
 
-            // Tampilkan tab Stats sebagai default
-            showTab('tabStats');
+            // Tampilkan tab Users sebagai default (dengan statistik di dalamnya)
+            showTab('tabUsers');
             await updateUI();
 
             console.log('🟢 Admin panel ready!');
@@ -1790,6 +1913,7 @@
 
         console.log('🟢 SilverChain Admin Panel loaded.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
+        console.log('📌 All settings saved to Supabase database!');
     </script>
 </body>
 </html>
