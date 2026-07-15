@@ -10,8 +10,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ===== STYLE SAMA ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background: #0a1228;
@@ -23,7 +26,10 @@
             flex-direction: column;
             align-items: center;
         }
-        .container { max-width: 1050px; width: 100%; }
+        .container {
+            max-width: 1050px;
+            width: 100%;
+        }
         .section-card {
             background: rgba(18, 34, 72, 0.7);
             backdrop-filter: blur(14px);
@@ -76,7 +82,10 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        .admin-header h2 i { color: #c0c0c0; margin-right: 6px; }
+        .admin-header h2 i {
+            color: #c0c0c0;
+            margin-right: 6px;
+        }
         .btn-logout {
             background: rgba(255, 60, 60, 0.1);
             border: 1px solid rgba(255, 60, 60, 0.15);
@@ -93,10 +102,20 @@
             flex-shrink: 0;
             border: none;
         }
-        .btn-logout:hover { background: rgba(255, 60, 60, 0.2); }
-        .btn-logout i { font-size: 1.1rem; }
-        .btn-logout .logout-text { display: inline; }
-        .admin-sub { color: #c0c0c0; font-size: 1rem; margin-bottom: 0.5rem; }
+        .btn-logout:hover {
+            background: rgba(255, 60, 60, 0.2);
+        }
+        .btn-logout i {
+            font-size: 1.1rem;
+        }
+        .btn-logout .logout-text {
+            display: inline;
+        }
+        .admin-sub {
+            color: #c0c0c0;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
 
         .admin-stats-grid {
             display: grid !important;
@@ -118,7 +137,10 @@
         .admin-stat::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: linear-gradient(135deg, rgba(192,192,192,0.03), rgba(192,192,192,0.01));
             border-radius: 1.5rem;
         }
@@ -127,10 +149,33 @@
             border-color: rgba(80, 140, 255, 0.2);
             box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
-        .admin-stat .icon { font-size: 2.2rem; margin-bottom: 0.3rem; position: relative; z-index: 1; }
-        .admin-stat .num { font-size: 2.2rem; font-weight: 800; position: relative; z-index: 1; }
-        .admin-stat .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.2rem; position: relative; z-index: 1; }
-        .admin-stat .sub { font-size: 0.7rem; color: #666; margin-top: 0.1rem; position: relative; z-index: 1; }
+        .admin-stat .icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .admin-stat .sub {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 0.1rem;
+            position: relative;
+            z-index: 1;
+        }
         .admin-stat.primary .icon { color: #c0c0c0; }
         .admin-stat.primary .num { color: #e0e0e0; }
         .admin-stat.success .icon { color: #6aff8a; }
@@ -151,7 +196,10 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        .section-title i { color: #c0c0c0; margin-right: 8px; }
+        .section-title i {
+            color: #c0c0c0;
+            margin-right: 8px;
+        }
 
         .table-wrapper {
             width: 100%;
@@ -201,7 +249,9 @@
             transition: 0.1s;
             border: none;
         }
-        .btn-approve:hover { background: rgba(60, 220, 80, 0.25); }
+        .btn-approve:hover {
+            background: rgba(60, 220, 80, 0.25);
+        }
         .btn-reject {
             background: rgba(255, 60, 60, 0.15);
             border: 1px solid rgba(255, 60, 60, 0.2);
@@ -214,7 +264,9 @@
             margin-left: 4px;
             border: none;
         }
-        .btn-reject:hover { background: rgba(255, 60, 60, 0.25); }
+        .btn-reject:hover {
+            background: rgba(255, 60, 60, 0.25);
+        }
 
         .pagination {
             display: flex;
@@ -238,10 +290,24 @@
             text-align: center;
             border: none;
         }
-        .pagination button:hover:not(:disabled) { background: rgba(60, 120, 255, 0.15); border-color: rgba(80, 140, 255, 0.15); }
-        .pagination button.active { background: rgba(192, 192, 192, 0.15); border-color: rgba(192, 192, 192, 0.2); color: #e0e0e0; }
-        .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
-        .pagination .page-info { color: #888888; font-size: 0.75rem; padding: 0 0.5rem; }
+        .pagination button:hover:not(:disabled) {
+            background: rgba(60, 120, 255, 0.15);
+            border-color: rgba(80, 140, 255, 0.15);
+        }
+        .pagination button.active {
+            background: rgba(192, 192, 192, 0.15);
+            border-color: rgba(192, 192, 192, 0.2);
+            color: #e0e0e0;
+        }
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .pagination .page-info {
+            color: #888888;
+            font-size: 0.75rem;
+            padding: 0 0.5rem;
+        }
 
         .settings-group {
             background: rgba(8, 20, 48, 0.2);
@@ -250,7 +316,11 @@
             margin: 0.6rem 0;
             border: 1px solid rgba(80, 140, 255, 0.06);
         }
-        .settings-group h5 { color: #c0c0c0; margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .settings-group h5 {
+            color: #c0c0c0;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
         .settings-group .row {
             display: flex;
             flex-wrap: wrap;
@@ -258,7 +328,11 @@
             gap: 0.6rem;
             margin: 0.4rem 0;
         }
-        .settings-group label { color: #c0c0c0; font-size: 0.85rem; min-width: 120px; }
+        .settings-group label {
+            color: #c0c0c0;
+            font-size: 0.85rem;
+            min-width: 120px;
+        }
         .settings-group input {
             background: rgba(8, 20, 48, 0.5);
             border: 1px solid rgba(80, 140, 255, 0.06);
@@ -269,8 +343,13 @@
             width: 80px;
             outline: none;
         }
-        .settings-group input:focus { border-color: rgba(80, 140, 255, 0.2); }
-        .settings-group input[type="text"] { width: 300px; max-width: 100%; }
+        .settings-group input:focus {
+            border-color: rgba(80, 140, 255, 0.2);
+        }
+        .settings-group input[type="text"] {
+            width: 350px;
+            max-width: 100%;
+        }
         .btn-save {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -282,11 +361,19 @@
             transition: 0.15s;
             border: none;
         }
-        .btn-save:hover { background: rgba(60, 120, 255, 0.2); }
-        .btn-save.danger { background: rgba(255, 60, 60, 0.1); border-color: rgba(255, 60, 60, 0.15); color: #ff6a6a; }
-        .btn-save.danger:hover { background: rgba(255, 60, 60, 0.2); }
+        .btn-save:hover {
+            background: rgba(60, 120, 255, 0.2);
+        }
+        .btn-save.danger {
+            background: rgba(255, 60, 60, 0.1);
+            border-color: rgba(255, 60, 60, 0.15);
+            color: #ff6a6a;
+        }
+        .btn-save.danger:hover {
+            background: rgba(255, 60, 60, 0.2);
+        }
 
-        /* QRIS PREVIEW - DIPERBAIKI */
+        /* QRIS PREVIEW - SAMA SEPERTI LOGO */
         .qr-preview {
             margin: 0.5rem 0;
             padding: 0.8rem;
@@ -307,7 +394,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #c0c0c0;
             border: 2px dashed rgba(80, 140, 255, 0.15);
             flex-shrink: 0;
@@ -320,17 +407,26 @@
             background: #fff;
             object-fit: contain;
             padding: 4px;
+            display: none;
         }
         .qr-preview .qr-status {
             color: #a0a0a0;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             flex: 1;
         }
-        .qr-preview .qr-status.success { color: #6aff8a; }
-        .qr-preview .qr-status.error { color: #ff6a6a; }
+        .qr-preview .qr-status.success {
+            color: #6aff8a;
+        }
+        .qr-preview .qr-status.error {
+            color: #ff6a6a;
+        }
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
 
         .bottom-nav {
             position: fixed;
@@ -362,12 +458,33 @@
             flex: 0 1 auto;
             position: relative;
         }
-        .bottom-nav a i { font-size: 1.4rem; }
-        .bottom-nav a span { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.3px; text-align: center; line-height: 1.2; }
-        .bottom-nav a.active { color: #e0e0e0; }
-        .bottom-nav a.active i { color: #c0c0c0; text-shadow: 0 0 25px rgba(192,192,192,0.15); }
-        .bottom-nav a:hover { color: #e8e8e8; }
-        .bottom-nav .nav-divider { width: 1px; height: 28px; background: rgba(80, 140, 255, 0.08); flex-shrink: 0; margin: 0 0.15rem; }
+        .bottom-nav a i {
+            font-size: 1.4rem;
+        }
+        .bottom-nav a span {
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .bottom-nav a.active {
+            color: #e0e0e0;
+        }
+        .bottom-nav a.active i {
+            color: #c0c0c0;
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
+        }
+        .bottom-nav a:hover {
+            color: #e8e8e8;
+        }
+        .bottom-nav .nav-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(80, 140, 255, 0.08);
+            flex-shrink: 0;
+            margin: 0 0.15rem;
+        }
 
         .toast-message {
             background: rgba(12, 28, 60, 0.9);
@@ -382,8 +499,12 @@
             align-items: center;
             gap: 0.6rem;
         }
-        .toast-message.show { display: flex; }
-        .toast-message i { color: #c0c0c0; }
+        .toast-message.show {
+            display: flex;
+        }
+        .toast-message i {
+            color: #c0c0c0;
+        }
 
         .footer-copyright {
             text-align: center;
@@ -421,7 +542,7 @@
             .settings-group input { font-size: 0.85rem; padding: 0.35rem 0.9rem; }
             .settings-group input[type="text"] { width: 100%; }
             .btn-save { font-size: 0.7rem; padding: 0.3rem 1rem; }
-            .qr-preview .placeholder { width: 60px; height: 60px; font-size: 1.5rem; }
+            .qr-preview .placeholder { width: 60px; height: 60px; font-size: 1.8rem; }
             .qr-preview img { max-width: 70px; max-height: 70px; }
             .bottom-nav { padding: 0.3rem 0.2rem 0.5rem; }
             .bottom-nav a { padding: 0.2rem 0.2rem; min-width: 40px; }
@@ -454,7 +575,7 @@
             .settings-group label { font-size: 0.7rem; }
             .settings-group input { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
             .btn-save { font-size: 0.65rem; padding: 0.25rem 0.8rem; }
-            .qr-preview .placeholder { width: 50px; height: 50px; font-size: 1.2rem; }
+            .qr-preview .placeholder { width: 50px; height: 50px; font-size: 1.5rem; }
             .qr-preview img { max-width: 55px; max-height: 55px; }
             .bottom-nav { padding: 0.2rem 0.15rem 0.4rem; }
             .bottom-nav a { padding: 0.15rem 0.15rem; min-width: 34px; }
@@ -593,12 +714,12 @@
                     <h5><i class="fas fa-paint-brush"></i> Brand</h5>
                     <div class="row">
                         <label><i class="fas fa-tag"></i> Brand Name</label>
-                        <input type="text" id="adminBrandName" placeholder="SilverChain" style="width:300px;" />
+                        <input type="text" id="adminBrandName" placeholder="SilverChain" style="width:350px;" />
                         <button class="btn-save" id="saveBrandBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
                         <label><i class="fas fa-image"></i> Logo URL</label>
-                        <input type="text" id="adminLogoUrl" placeholder="Image URL or base64" style="width:300px;" />
+                        <input type="text" id="adminLogoUrl" placeholder="https://example.com/logo.png" style="width:350px;" />
                         <button class="btn-save" id="saveLogoBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
@@ -611,28 +732,28 @@
                     <h5><i class="fas fa-address-card"></i> Contact</h5>
                     <div class="row">
                         <label><i class="fab fa-twitter"></i> Twitter</label>
-                        <input type="text" id="adminTwitter" placeholder="https://twitter.com/SilverChain" style="width:300px;" />
+                        <input type="text" id="adminTwitter" placeholder="https://twitter.com/SilverChain" style="width:350px;" />
                         <button class="btn-save" id="saveTwitterBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
                         <label><i class="fab fa-telegram"></i> Telegram</label>
-                        <input type="text" id="adminTelegram" placeholder="https://t.me/SilverChain" style="width:300px;" />
+                        <input type="text" id="adminTelegram" placeholder="https://t.me/SilverChain" style="width:350px;" />
                         <button class="btn-save" id="saveTelegramBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
                         <label><i class="fab fa-discord"></i> Discord</label>
-                        <input type="text" id="adminDiscord" placeholder="https://discord.gg/silver" style="width:300px;" />
+                        <input type="text" id="adminDiscord" placeholder="https://discord.gg/silver" style="width:350px;" />
                         <button class="btn-save" id="saveDiscordBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <div class="row">
                         <label><i class="fas fa-envelope"></i> Email</label>
-                        <input type="text" id="adminContactEmail" placeholder="dao@silverchain.io" style="width:300px;" />
+                        <input type="text" id="adminContactEmail" placeholder="dao@silverchain.io" style="width:350px;" />
                         <button class="btn-save" id="saveContactEmailBtn"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB PAYMENT - QRIS DENGAN URL -->
+            <!-- TAB PAYMENT - QRIS URL SISTEM SAMA SEPERTI LOGO -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
                     <h5><i class="fas fa-credit-card"></i> Payment</h5>
@@ -648,7 +769,7 @@
                     </div>
                     <div class="qr-preview" id="qrisPreviewContainer">
                         <div class="placeholder" id="qrisPlaceholder"><i class="fas fa-qrcode"></i></div>
-                        <img id="qrisPreviewImg" style="display:none;" alt="QRIS" />
+                        <img id="qrisPreviewImg" alt="QRIS" />
                         <span class="qr-status" id="qrisStatus">No QRIS</span>
                     </div>
                     <p style="color:#a0a0a0; font-size:0.75rem; margin-top:0.3rem;">
@@ -1179,7 +1300,7 @@
         }
 
         // ============================================================
-        // 10. LOAD QRIS & SETTINGS
+        // 10. LOAD QRIS & SETTINGS (SISTEM SAMA SEPERTI LOGO)
         // ============================================================
         async function loadQrisPreview() {
             try {
@@ -1194,6 +1315,7 @@
                 console.log('📌 QRIS URL from Supabase:', qrisUrl);
 
                 if (qrisUrl && qrisUrl.trim() !== '') {
+                    // Tampilkan gambar
                     img.src = qrisUrl;
                     img.style.display = 'block';
                     img.style.maxWidth = '120px';
@@ -1202,6 +1324,7 @@
                     img.style.border = '1px solid rgba(80, 140, 255, 0.06)';
                     img.style.background = '#fff';
                     img.style.objectFit = 'contain';
+                    img.style.padding = '4px';
                     
                     placeholder.style.display = 'none';
                     status.textContent = '✅ QRIS loaded';
@@ -1439,7 +1562,7 @@
         });
 
         // ============================================================
-        // SAVE QRIS URL - DIPERBAIKI
+        // SAVE QRIS URL - SISTEM SAMA SEPERTI LOGO
         // ============================================================
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
             const url = document.getElementById('adminQrisUrl').value.trim();
@@ -1457,19 +1580,28 @@
             }
             
             try {
-                // Test load image dulu
+                // Coba load image untuk test
                 const testImg = new Image();
-                testImg.onload = function() {
-                    console.log('✅ Image loaded successfully');
-                };
-                testImg.onerror = function() {
-                    console.warn('⚠️ Image may not be accessible, but saving anyway');
-                };
-                testImg.src = url;
+                let loaded = false;
+                
+                await new Promise((resolve) => {
+                    testImg.onload = function() {
+                        loaded = true;
+                        console.log('✅ Image loaded successfully');
+                        resolve();
+                    };
+                    testImg.onerror = function() {
+                        console.warn('⚠️ Image failed to load, but saving anyway');
+                        resolve();
+                    };
+                    testImg.src = url;
+                    setTimeout(resolve, 5000);
+                });
                 
                 await saveSetting('qris_image', url);
                 showToast('✅ QRIS image URL saved to database!');
                 
+                // Reload preview
                 await loadQrisPreview();
                 
             } catch (err) {
@@ -1574,8 +1706,7 @@
 
         console.log('🟢 SilverChain Admin Panel loaded.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
-        console.log('📌 QRIS using URL image (saved to Supabase)');
-        console.log('📌 Check console for QRIS debug info');
+        console.log('📌 QRIS URL system sama seperti logo');
     </script>
 </body>
 </html>
