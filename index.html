@@ -55,48 +55,44 @@
             font-size: 1.8rem;
         }
 
-        /* HEADER */
+        /* HEADER - Logo besar */
         .header {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0.5rem 0;
+            padding: 0.5rem 0 1rem 0;
         }
         .header .brand-center {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            justify-content: center;
             text-decoration: none;
         }
         .header .brand-center .logo-icon {
-            font-size: 2.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header .brand-center .logo-icon img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: contain;
+            box-shadow: 0 0 60px rgba(192,192,192,0.1);
+        }
+        .header .brand-center .logo-icon i {
+            font-size: 6rem;
             background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .header .brand-center .logo-icon img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: contain;
-        }
+        /* Sembunyikan tulisan brand dan ticker */
         .header .brand-center h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            display: none;
         }
         .header .brand-center .ticker {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #a0a0a0;
-            background: rgba(60, 120, 255, 0.06);
-            padding: 0.2rem 1rem;
-            border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            display: none;
         }
 
         /* PROGRESS */
@@ -673,7 +669,7 @@
         /* ===== RESPONSIVE HP: MEMBER 1 KOLOM ===== */
         @media (max-width: 768px) {
             .member-grid {
-                grid-template-columns: 1fr !important; /* 1 kolom di HP */
+                grid-template-columns: 1fr !important;
                 gap: 0.5rem;
             }
             .member-card-item {
@@ -745,20 +741,16 @@
             .stat-item .label {
                 font-size: 0.5rem;
             }
-            .header .brand-center h1 {
-                font-size: 1.5rem;
-            }
-            .header .brand-center .logo-icon {
-                font-size: 1.6rem;
-            }
+
+            /* Logo lebih besar di HP */
             .header .brand-center .logo-icon img {
-                width: 35px;
-                height: 35px;
+                width: 90px;
+                height: 90px;
             }
-            .header .brand-center .ticker {
-                font-size: 0.7rem;
-                padding: 0.1rem 0.6rem;
+            .header .brand-center .logo-icon i {
+                font-size: 4.5rem;
             }
+
             .subhead {
                 font-size: 0.8rem;
             }
@@ -854,18 +846,27 @@
             .btn-load-more i {
                 font-size: 0.65rem;
             }
+
+            /* Logo lebih besar di HP kecil */
+            .header .brand-center .logo-icon img {
+                width: 80px;
+                height: 80px;
+            }
+            .header .brand-center .logo-icon i {
+                font-size: 4rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
 
-        <!-- HEADER -->
+        <!-- HEADER - HANYA LOGO BESAR -->
         <div class="header">
             <div class="brand-center">
                 <span class="logo-icon" id="logoDisplay"><i class="fas fa-coins"></i></span>
-                <h1 id="brandName">SilverChain</h1>
-                <span class="ticker">USDT</span>
+                <h1 id="brandName" style="display:none;">SilverChain</h1>
+                <span class="ticker" style="display:none;">USDT</span>
             </div>
         </div>
 
@@ -1220,55 +1221,14 @@
         }
 
         // ============================================================
-        // 8. LOAD SETTINGS UI (LOGO, BRAND, CONTACTS)
+        // 8. LOAD SETTINGS UI (LOGO)
         // ============================================================
         function loadSettingsUI(settingsData) {
-            // Logo
             const logoDisplay = document.getElementById('logoDisplay');
             if (settingsData.logo_type === 'image' && settingsData.logo_image) {
-                logoDisplay.innerHTML = `<img src="${settingsData.logo_image}" alt="Logo" style="width:50px;height:50px;border-radius:50%;object-fit:contain;" />`;
-            } else if (settingsData.logo_type === 'icon' && settingsData.logo_icon) {
-                logoDisplay.innerHTML = `<i class="${settingsData.logo_icon}"></i>`;
+                logoDisplay.innerHTML = `<img src="${settingsData.logo_image}" alt="Logo" />`;
             } else {
                 logoDisplay.innerHTML = `<i class="fas fa-coins"></i>`;
-            }
-
-            // Brand Name
-            if (settingsData.brand_name) {
-                document.getElementById('brandName').textContent = settingsData.brand_name;
-            }
-
-            // Contacts
-            if (settingsData.contact_twitter) {
-                const el = document.getElementById('contactTwitter');
-                if (el) {
-                    el.href = settingsData.contact_twitter;
-                    el.querySelector('span').textContent = settingsData.contact_twitter.replace('https://', '').replace(
-                        'http://', '');
-                }
-            }
-            if (settingsData.contact_telegram) {
-                const el = document.getElementById('contactTelegram');
-                if (el) {
-                    el.href = settingsData.contact_telegram;
-                    el.querySelector('span').textContent = settingsData.contact_telegram.replace('https://', '').replace(
-                        'http://', '');
-                }
-            }
-            if (settingsData.contact_discord) {
-                const el = document.getElementById('contactDiscord');
-                if (el) {
-                    el.href = settingsData.contact_discord;
-                    el.querySelector('span').textContent = settingsData.contact_discord.replace('https://', '').replace(
-                        'http://', '');
-                }
-            }
-            if (settingsData.contact_email) {
-                const el = document.getElementById('contactEmail');
-                if (el) {
-                    el.href = 'mailto:' + settingsData.contact_email;
-                    el.querySelector('span').textContent = settingsData.contact_email;
-                }
             }
         }
 
@@ -1280,7 +1240,6 @@
             const loadMoreBtn = document.getElementById('loadMoreBtn');
             const totalMembers = allMembers.length;
 
-            // Update total badge
             document.getElementById('memberCountBadge').textContent = `Total: ${totalMembers}`;
 
             if (totalMembers === 0) {
@@ -1313,7 +1272,6 @@
             grid.innerHTML = html;
             displayedCount = end;
 
-            // Show/hide load more button
             if (displayedCount >= totalMembers) {
                 loadMoreBtn.style.display = 'none';
             } else {
@@ -1333,25 +1291,17 @@
             }
 
             try {
-                // === LOAD DATA ===
-                // 1. Settings (bonus, ref, logo, brand, contacts)
                 const settingsKeys = [
                     'bonus_percent', 'ref_percent',
-                    'logo_image', 'logo_type', 'logo_icon',
-                    'brand_name',
+                    'logo_image', 'logo_type',
                     'contact_twitter', 'contact_telegram', 'contact_discord', 'contact_email'
                 ];
                 const settingsData = await getSettings(settingsKeys);
                 settings = settingsData;
 
-                // 2. Deposits
                 const deposits = await getAllDeposits();
                 const approvedDeposits = deposits.filter(d => d.status === 'approved');
 
-                // 3. Users
-                const users = await getAllUsers();
-
-                // 4. Calculate member totals
                 const memberMap = {};
                 approvedDeposits.forEach(d => {
                     if (!memberMap[d.email]) {
@@ -1360,32 +1310,24 @@
                     memberMap[d.email].total += d.total || d.usdt || 0;
                 });
 
-                // Convert to array and sort
-                allMembers = Object.values(memberMap)
-                    .sort((a, b) => b.total - a.total);
+                allMembers = Object.values(memberMap).sort((a, b) => b.total - a.total);
 
-                // === UPDATE STATS ===
                 const totalRaised = approvedDeposits.reduce((sum, d) => sum + d.usdt, 0);
                 const totalMinted = approvedDeposits.reduce((sum, d) => sum + (d.total || d.usdt), 0);
 
-                // Progress
                 const pct = Math.min((totalRaised / TARGET_USDT) * 100, 100);
                 document.getElementById('progressFill').style.width = pct + '%';
                 document.getElementById('counterDisplay').innerHTML = formatCurrency(totalRaised) + ' <small>USDT</small>';
 
-                // Stats
                 document.getElementById('statSold').textContent = formatNumber(totalMinted);
                 document.getElementById('statBonus').textContent = (settings.bonus_percent || 10) + '%';
                 document.getElementById('statRef').textContent = (settings.ref_percent || 3) + '%';
 
-                // === RENDER MEMBERS ===
                 displayedCount = 0;
                 renderMembers();
 
-                // === LOAD SETTINGS UI (LOGO, BRAND, CONTACTS) ===
                 loadSettingsUI(settings);
 
-                // === HERO BUTTON ===
                 const isLoggedIn = !!currentUser;
                 const heroContainer = document.getElementById('heroButtonContainer');
                 if (isLoggedIn) {
@@ -1398,7 +1340,6 @@
                     `;
                 }
 
-                // === BADGE ===
                 const badge = document.getElementById('navBadge');
                 if (isLoggedIn) {
                     const userDeposits = deposits.filter(d => d.email === currentUser.email && d.status === 'pending');
@@ -1418,7 +1359,6 @@
         // ============================================================
         document.getElementById('loadMoreBtn').addEventListener('click', function() {
             renderMembers();
-            // Scroll sedikit ke bawah untuk melihat member baru
             const grid = document.getElementById('memberGrid');
             const rect = grid.getBoundingClientRect();
             window.scrollTo({
@@ -1454,20 +1394,15 @@
                 return;
             }
 
-            // Load current user
             await loadCurrentUser();
-
-            // Update UI
             await updateUI();
 
             console.log('🟢 Landing page ready!');
             console.log('📌 Members:', allMembers.length);
         }
 
-        // Start
         init();
 
-        // Auto refresh every 10 seconds
         setInterval(async () => {
             if (supabaseClient) {
                 await updateUI();
@@ -1476,7 +1411,6 @@
 
         console.log('🟢 SilverChain Landing Page ready.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
-        console.log('📌 Members per page: 6 with Load More');
     </script>
 </body>
 </html>
