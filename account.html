@@ -6,13 +6,10 @@
     <title>SilverChain · Account</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK & Config -->
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
-    <script src="supabase-config.js">
-    </script>
     <style>
-        /* ===== SAMA SEPERTI SEBELUMNYA ===== */
         * {
             margin: 0;
             padding: 0;
@@ -40,8 +37,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
         }
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
@@ -98,7 +95,7 @@
             font-size: 2.5rem;
             color: #fff;
             margin: 0 auto 1rem;
-            box-shadow: 0 8px 30px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 8px 30px rgba(192,192,192,0.15);
         }
         .profile-name {
             text-align: center;
@@ -170,6 +167,88 @@
             color: #c0c0c0;
         }
 
+        /* ===== DOWNLINE SECTION ===== */
+        .downline-section {
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(80, 140, 255, 0.06);
+            padding-top: 1.2rem;
+        }
+        .downline-section h4 {
+            color: #e0e0e0;
+            margin-bottom: 0.8rem;
+        }
+        .downline-section h4 i {
+            color: #c0c0c0;
+            margin-right: 8px;
+        }
+        .downline-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.6rem;
+            margin-bottom: 0.8rem;
+        }
+        .downline-stat {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1rem;
+            padding: 0.6rem;
+            text-align: center;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .downline-stat .num {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        .downline-stat .label {
+            font-size: 0.55rem;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .downline-stat.active .num {
+            color: #6aff8a;
+        }
+        .downline-stat.pending .num {
+            color: #fbbf24;
+        }
+        .downline-stat.earnings .num {
+            color: #60a5fa;
+        }
+
+        .downline-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 0.5rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+        }
+        .downline-table-wrapper table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+        .downline-table-wrapper table th {
+            text-align: left;
+            color: #a0a0a0;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            white-space: nowrap;
+        }
+        .downline-table-wrapper table td {
+            padding: 0.4rem 0.8rem;
+            color: #c0c0c0;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+            white-space: nowrap;
+        }
+        .downline-table-wrapper table .empty {
+            color: #a0a0a0;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
         /* ===== UBAH PASSWORD ===== */
         .change-password-section {
             margin-top: 1.5rem;
@@ -234,7 +313,7 @@
             white-space: nowrap;
         }
         .btn-change-password:hover {
-            box-shadow: 0 12px 40px -6px rgba(192, 192, 192, 0.2);
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.2);
             transform: translateY(-2px);
         }
         .btn-change-password:active {
@@ -324,7 +403,7 @@
             align-items: center;
             padding: 0.4rem 0 0.6rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -353,7 +432,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -389,6 +468,13 @@
             .saldo-grid {
                 grid-template-columns: 1fr 1fr;
             }
+            .downline-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 0.4rem;
+            }
+            .downline-stat .num {
+                font-size: 1rem;
+            }
             .password-form {
                 flex-direction: column;
                 align-items: stretch;
@@ -408,6 +494,19 @@
             .saldo-grid {
                 grid-template-columns: 1fr;
             }
+            .downline-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 0.3rem;
+            }
+            .downline-stat {
+                padding: 0.4rem 0.3rem;
+            }
+            .downline-stat .num {
+                font-size: 0.9rem;
+            }
+            .downline-stat .label {
+                font-size: 0.45rem;
+            }
             .bottom-nav a {
                 font-size: 0.5rem;
                 padding: 0.1rem 0.3rem;
@@ -426,6 +525,14 @@
             .password-result {
                 font-size: 0.75rem;
                 padding: 0.4rem 0.8rem;
+            }
+            .downline-table-wrapper table {
+                font-size: 0.65rem;
+                min-width: 400px;
+            }
+            .downline-table-wrapper table th,
+            .downline-table-wrapper table td {
+                padding: 0.3rem 0.4rem;
             }
         }
     </style>
@@ -474,6 +581,45 @@
                 <div class="info-row">
                     <span class="label"><i class="fas fa-user-tag"></i> Role</span>
                     <span class="value" id="infoRole">Member</span>
+                </div>
+            </div>
+
+            <!-- ===== DOWNLINE SECTION ===== -->
+            <div class="downline-section">
+                <h4><i class="fas fa-users"></i> Referral Network</h4>
+
+                <!-- Downline Stats -->
+                <div class="downline-stats">
+                    <div class="downline-stat active">
+                        <div class="num" id="downlineTotal">0</div>
+                        <div class="label">Total Referrals</div>
+                    </div>
+                    <div class="downline-stat pending">
+                        <div class="num" id="downlineActive">0</div>
+                        <div class="label">Active</div>
+                    </div>
+                    <div class="downline-stat earnings">
+                        <div class="num" id="downlineEarnings">0</div>
+                        <div class="label">Earnings (USDT)</div>
+                    </div>
+                </div>
+
+                <!-- Downline Table -->
+                <div class="downline-table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Email</th>
+                                <th>Joined</th>
+                                <th>Status</th>
+                                <th>Contribution</th>
+                            </tr>
+                        </thead>
+                        <tbody id="downlineBody">
+                            <tr><td colspan="5" class="empty">No referrals yet</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -530,32 +676,192 @@
 
     <script>
         // ============================================================
-        // STORAGE KEYS
+        // 1. SUPABASE CONFIG
+        // ============================================================
+
+        // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
+        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+
+        // ============================================================
+        // 2. VARIABLES
         // ============================================================
         const STORAGE_KEYS = {
             CURRENT_USER: 'silverchain_current_user'
         };
+        const ADMIN_EMAIL = 'admin@silverchain.io';
 
         let currentUser = null;
+        let supabaseClient = null;
 
         // ============================================================
-        // LOAD
+        // 3. INIT SUPABASE
         // ============================================================
-        function loadData() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    if (typeof Supabase !== 'undefined') {
-                        Supabase.getUserByEmail(data.email).then(user => {
-                            if (user) currentUser = user;
-                            updateUI();
-                        });
-                    }
-                }
-            } catch (e) { console.warn('Load error:', e); }
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client created!');
+        } catch (err) {
+            console.error('❌ Supabase error:', err);
         }
 
+        // ============================================================
+        // 4. SUPABASE FUNCTIONS
+        // ============================================================
+
+        // --- USER ---
+        async function getUserByEmail(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Get user error:', error);
+                return null;
+            }
+        }
+
+        async function getAllUsers() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all users error:', error);
+                return [];
+            }
+        }
+
+        // --- DEPOSIT ---
+        async function getUserDeposits(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('deposits')
+                    .select('*')
+                    .eq('email', email)
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get user deposits error:', error);
+                return [];
+            }
+        }
+
+        // --- WITHDRAW ---
+        async function getUserWithdrawals(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('withdrawals')
+                    .select('*')
+                    .eq('email', email)
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get user withdrawals error:', error);
+                return [];
+            }
+        }
+
+        // --- BALANCE ---
+        async function getPersonalBalance(email) {
+            try {
+                const deposits = await getUserDeposits(email);
+                const approved = deposits.filter(d => d.status === 'approved');
+                const total = approved.reduce((sum, d) => sum + d.usdt + (d.bonus || 0), 0);
+                return Math.round(total * 100) / 100;
+            } catch (error) {
+                console.error('Get personal balance error:', error);
+                return 0;
+            }
+        }
+
+        async function getReferralBalance(email) {
+            try {
+                const user = await getUserByEmail(email);
+                if (!user) return 0;
+
+                const { data: referrals } = await supabaseClient
+                    .from('users')
+                    .select('email')
+                    .eq('referred_by', user.ref_code);
+
+                const { data: settings } = await supabaseClient
+                    .from('settings')
+                    .select('value')
+                    .eq('key', 'ref_percent')
+                    .single();
+
+                const refPercent = parseInt(settings ? settings.value : 3) || 3;
+                let total = 0;
+
+                for (const ref of referrals) {
+                    const deposits = await getUserDeposits(ref.email);
+                    const firstDeposit = deposits
+                        .filter(d => d.status === 'approved')
+                        .sort((a, b) => a.timestamp - b.timestamp)[0];
+
+                    if (firstDeposit) {
+                        total += firstDeposit.usdt * refPercent / 100;
+                    }
+                }
+
+                const withdrawals = await getUserWithdrawals(email);
+                const totalWd = withdrawals
+                    .filter(w => w.status === 'approved')
+                    .reduce((sum, w) => sum + w.amount, 0);
+
+                return Math.round((total - totalWd) * 100) / 100;
+            } catch (error) {
+                console.error('Get referral balance error:', error);
+                return 0;
+            }
+        }
+
+        // --- DOWNLINE ---
+        async function getDownline(refCode) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('referred_by', refCode)
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get downline error:', error);
+                return [];
+            }
+        }
+
+        // --- SETTINGS ---
+        async function getSetting(key) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('settings')
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data ? data.value : null;
+            } catch (error) {
+                console.error('Get setting error:', error);
+                return null;
+            }
+        }
+
+        // ============================================================
+        // 5. TOAST
+        // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
             document.getElementById('toastText').textContent = msg;
@@ -564,18 +870,46 @@
         }
 
         // ============================================================
-        // CHECK SUPABASE
+        // 6. LOAD & CHECK AUTH
         // ============================================================
-        function checkSupabase() {
-            if (typeof Supabase === 'undefined') {
-                showToast('❌ System error. Please refresh.');
+        async function loadCurrentUser() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const user = await getUserByEmail(data.email);
+                    if (user) {
+                        currentUser = user;
+                        return true;
+                    }
+                }
+                return false;
+            } catch (e) {
+                console.error('Load user error:', e);
                 return false;
             }
+        }
+
+        async function checkAuth() {
+            if (!supabaseClient) {
+                console.error('❌ Supabase not initialized!');
+                showToast('⚠️ System not ready. Please refresh.');
+                return false;
+            }
+
+            const isLoggedIn = await loadCurrentUser();
+
+            if (!isLoggedIn || !currentUser) {
+                console.log('🔒 Not logged in, redirecting to /auth');
+                window.location.href = '/auth';
+                return false;
+            }
+
             return true;
         }
 
         // ============================================================
-        // UBAH PASSWORD
+        // 7. UBAH PASSWORD
         // ============================================================
         document.getElementById('changePasswordBtn').addEventListener('click', async function() {
             const current = document.getElementById('currentPassword').value.trim();
@@ -587,7 +921,7 @@
             result.className = 'password-result';
             result.style.display = 'none';
 
-            if (!checkSupabase()) {
+            if (!supabaseClient) {
                 result.className = 'password-result error';
                 result.innerHTML = '<i class="fas fa-exclamation-circle"></i> System error. Please refresh.';
                 result.style.display = 'block';
@@ -623,13 +957,27 @@
                 return;
             }
 
-            // Cek password saat ini
+            // Cek password saat ini - login dengan password saat ini
             try {
-                // Login dengan password saat ini untuk verifikasi
-                await Supabase.loginUser(currentUser.email, current);
+                const user = await getUserByEmail(currentUser.email);
+                if (!user) {
+                    result.className = 'password-result error';
+                    result.innerHTML = '<i class="fas fa-exclamation-circle"></i> User not found.';
+                    result.style.display = 'block';
+                    return;
+                }
+
+                // Hash password untuk verifikasi
+                const hashed = btoa(current + 'silverchain_salt_2026');
+                if (user.password !== hashed) {
+                    result.className = 'password-result error';
+                    result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Current password is incorrect.';
+                    result.style.display = 'block';
+                    return;
+                }
             } catch (err) {
                 result.className = 'password-result error';
-                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Current password is incorrect.';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error verifying password.';
                 result.style.display = 'block';
                 return;
             }
@@ -639,7 +987,16 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
 
             try {
-                await Supabase.updatePassword(currentUser.email, newPass);
+                const newHashed = btoa(newPass + 'silverchain_salt_2026');
+                const { error } = await supabaseClient
+                    .from('users')
+                    .update({
+                        password: newHashed,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('email', currentUser.email);
+
+                if (error) throw error;
 
                 // Bersihkan form
                 document.getElementById('currentPassword').value = '';
@@ -679,12 +1036,16 @@
         });
 
         // ============================================================
-        // UI
+        // 8. UI UPDATE
         // ============================================================
         async function updateUI() {
-            const isLoggedIn = !!currentUser;
+            if (!supabaseClient) {
+                console.warn('⏳ Waiting for Supabase...');
+                setTimeout(updateUI, 1000);
+                return;
+            }
 
-            if (!isLoggedIn) {
+            if (!currentUser) {
                 document.getElementById('profileName').textContent = '-';
                 document.getElementById('profileEmail').textContent = 'Please login first';
                 document.getElementById('saldoPersonal').textContent = '0';
@@ -695,33 +1056,97 @@
                 document.getElementById('infoRole').textContent = '-';
                 document.getElementById('adminPanelBtn').style.display = 'none';
                 document.getElementById('changePasswordBtn').disabled = true;
+                document.getElementById('downlineBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">Please login first</td></tr>`;
+                document.getElementById('downlineTotal').textContent = '0';
+                document.getElementById('downlineActive').textContent = '0';
+                document.getElementById('downlineEarnings').textContent = '0';
                 return;
             }
 
             document.getElementById('changePasswordBtn').disabled = false;
 
+            const user = await getUserByEmail(currentUser.email);
+            if (!user) return;
+
             document.getElementById('profileName').textContent = currentUser.email.split('@')[0];
             document.getElementById('profileEmail').textContent = currentUser.email;
             document.getElementById('infoEmail').textContent = currentUser.email;
-            document.getElementById('infoRefCode').textContent = currentUser.ref_code || '-';
+            document.getElementById('infoRefCode').textContent = user.ref_code || '-';
 
             const domain = window.location.host;
-            document.getElementById('infoRefLink').textContent = `https://${domain}/?ref=${currentUser.ref_code || ''}`;
+            document.getElementById('infoRefLink').textContent = `https://${domain}/?ref=${user.ref_code || ''}`;
 
-            if (checkSupabase()) {
-                const isAdmin = await Supabase.isAdmin(currentUser.email);
-                document.getElementById('infoRole').textContent = isAdmin ? '👑 Admin' : 'Member';
-                document.getElementById('adminPanelBtn').style.display = isAdmin ? 'block' : 'none';
+            const isAdmin = user.role === 'admin';
+            document.getElementById('infoRole').textContent = isAdmin ? '👑 Admin' : 'Member';
+            document.getElementById('adminPanelBtn').style.display = isAdmin ? 'block' : 'none';
 
-                const personalBalance = await Supabase.getPersonalBalance(currentUser.email);
-                const referralBalance = await Supabase.getReferralBalance(currentUser.email);
-                document.getElementById('saldoPersonal').textContent = personalBalance.toFixed(1);
-                document.getElementById('saldoReferral').textContent = referralBalance.toFixed(1);
+            // Saldo
+            const personalBalance = await getPersonalBalance(currentUser.email);
+            const referralBalance = await getReferralBalance(currentUser.email);
+            document.getElementById('saldoPersonal').textContent = personalBalance.toFixed(1);
+            document.getElementById('saldoReferral').textContent = referralBalance.toFixed(1);
+
+            // ===== DOWNLINE =====
+            const downline = await getDownline(user.ref_code);
+            const totalReferrals = downline.length;
+            const activeReferrals = downline.filter(d => d.verified === true).length;
+
+            // Hitung total earnings dari downline
+            let totalEarnings = 0;
+            const refPercent = parseInt(await getSetting('ref_percent')) || 3;
+            for (const ref of downline) {
+                const deposits = await getUserDeposits(ref.email);
+                const firstDeposit = deposits
+                    .filter(d => d.status === 'approved')
+                    .sort((a, b) => a.timestamp - b.timestamp)[0];
+                if (firstDeposit) {
+                    totalEarnings += firstDeposit.usdt * refPercent / 100;
+                }
+            }
+            // Kurangi withdraw
+            const wdHistory = await getUserWithdrawals(currentUser.email);
+            const totalWd = wdHistory
+                .filter(w => w.status === 'approved')
+                .reduce((sum, w) => sum + w.amount, 0);
+            totalEarnings = Math.round((totalEarnings - totalWd) * 100) / 100;
+
+            document.getElementById('downlineTotal').textContent = totalReferrals;
+            document.getElementById('downlineActive').textContent = activeReferrals;
+            document.getElementById('downlineEarnings').textContent = totalEarnings.toFixed(1);
+
+            // Downline Table
+            if (downline.length === 0) {
+                document.getElementById('downlineBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">No referrals yet</td></tr>`;
+            } else {
+                let html = '';
+                downline.forEach((d, index) => {
+                    const joined = new Date(d.created_at).toLocaleDateString('en-US');
+                    const status = d.verified ? '✅ Active' : '⏳ Pending';
+                    // Cari kontribusi user ini
+                    let contribution = '0 USDT';
+                    const deposits = depositsDB ? depositsDB.filter(dep => dep.email === d.email && dep.status ===
+                        'approved') : [];
+                    const firstDeposit = deposits.length > 0 ? deposits.sort((a, b) => a.timestamp - b.timestamp)[0] :
+                        null;
+                    if (firstDeposit) {
+                        contribution = (firstDeposit.usdt * refPercent / 100).toFixed(1) + ' USDT';
+                    }
+                    html += `<tr>
+                        <td>${index + 1}</td>
+                        <td style="font-size:0.7rem;">${d.email}</td>
+                        <td>${joined}</td>
+                        <td>${status}</td>
+                        <td>${contribution}</td>
+                    </tr>`;
+                });
+                document.getElementById('downlineBody').innerHTML = html;
             }
         }
 
         // ============================================================
-        // LOGOUT
+        // 9. LOGOUT
         // ============================================================
         function logout() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -734,40 +1159,48 @@
         document.getElementById('logoutBtn').addEventListener('click', logout);
 
         // ============================================================
-        // ADMIN PANEL BUTTON
+        // 10. ADMIN PANEL BUTTON
         // ============================================================
         document.getElementById('adminPanelBtn').addEventListener('click', function() {
             window.location.href = '/admin';
         });
 
         // ============================================================
-        // CHECK SUPABASE CONFIG ON LOAD
+        // 11. INIT
         // ============================================================
-        function checkConfigOnLoad() {
-            setTimeout(() => {
-                if (typeof Supabase === 'undefined') {
-                    console.error('❌ Supabase config not loaded!');
-                    showToast('⚠️ Config not loaded. Please refresh.');
-                } else {
-                    console.log('✅ Supabase config loaded!');
-                }
-            }, 1000);
+        async function init() {
+            console.log('🔄 Account page initializing...');
+
+            if (!supabaseClient) {
+                console.error('❌ Supabase not ready!');
+                showToast('❌ System not ready. Please refresh.');
+                setTimeout(init, 2000);
+                return;
+            }
+
+            const authPassed = await checkAuth();
+            if (!authPassed) return;
+
+            await updateUI();
+
+            console.log('🟢 Account page ready!');
+            console.log('👤 User:', currentUser.email);
+            console.log('📌 Downline system connected to Supabase');
         }
 
-        // ============================================================
-        // INIT
-        // ============================================================
-        loadData();
-        setTimeout(updateUI, 500);
-        checkConfigOnLoad();
+        // Start
+        init();
 
-        setInterval(() => {
-            loadData();
-            updateUI();
-        }, 5000);
+        // Auto refresh every 10 seconds
+        setInterval(async () => {
+            if (currentUser) {
+                await updateUI();
+            }
+        }, 10000);
 
         console.log('🟢 SilverChain Account Page ready.');
-        console.log('📌 Supabase connected via supabase-config.js');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
+        console.log('📌 Downline data from Supabase');
     </script>
 </body>
 </html>
