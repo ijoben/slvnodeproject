@@ -353,7 +353,7 @@
         }
 
         /* ========================================================== */
-        /* MODAL PAYMENT CONFIRMATION - FIX */
+        /* MODAL PAYMENT CONFIRMATION - QRIS FIX */
         /* ========================================================== */
         .modal-overlay {
             display: none;
@@ -449,59 +449,59 @@
         .modal-box .address-box button:hover {
             background: rgba(60, 120, 255, 0.2);
         }
-        .modal-box .qr-section {
+
+        /* QRIS - TAMPILAN FULL DI TENGAH */
+        .modal-box .qris-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 1rem;
-            background: rgba(8, 20, 48, 0.2);
+            justify-content: center;
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: rgba(8, 20, 48, 0.3);
             border-radius: 1.2rem;
-            padding: 0.8rem 1.2rem;
-            margin: 0.5rem 0;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-            flex-wrap: wrap;
+            border: 1px solid rgba(80, 140, 255, 0.06);
         }
-        .modal-box .qr-section .qr-placeholder {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+        .modal-box .qris-wrapper .qris-image {
+            width: 200px;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: #c0c0c0;
-            border: 2px dashed rgba(80, 140, 255, 0.15);
+            background: #fff;
+            border-radius: 1rem;
             overflow: hidden;
-            flex-shrink: 0;
+            border: 2px solid rgba(80, 140, 255, 0.1);
+            padding: 8px;
         }
-        .modal-box .qr-section .qr-placeholder img {
+        .modal-box .qris-wrapper .qris-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-        .modal-box .qr-section .qr-text {
+        .modal-box .qris-wrapper .qris-image .placeholder {
+            font-size: 4rem;
+            color: #c0c0c0;
+        }
+        .modal-box .qris-wrapper .qris-download {
+            margin-top: 0.8rem;
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.4rem 1.5rem;
             color: #c0c0c0;
             font-size: 0.75rem;
-            flex: 1;
-        }
-        .modal-box .qr-section .qr-text strong {
-            color: #e0e0e0;
-        }
-        .modal-box .qr-section button {
-            background: rgba(60, 120, 255, 0.1);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            border-radius: 60px;
-            padding: 0.2rem 0.8rem;
-            color: #c0c0c0;
             cursor: pointer;
-            font-size: 0.65rem;
             transition: 0.15s;
-            border: none;
-            flex-shrink: 0;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .modal-box .qr-section button:hover {
+        .modal-box .qris-wrapper .qris-download:hover {
             background: rgba(60, 120, 255, 0.2);
         }
+
         .modal-box .input-field {
             width: 100%;
             padding: 0.7rem 1.2rem;
@@ -667,10 +667,9 @@
                 font-size: 0.7rem;
                 padding: 0.3rem 0.9rem;
             }
-            .modal-box .qr-section {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+            .modal-box .qris-wrapper .qris-image {
+                width: 160px;
+                height: 160px;
             }
         }
         @media (max-width: 480px) {
@@ -691,10 +690,9 @@
             .bottom-nav a span {
                 font-size: 0.5rem;
             }
-            .modal-box .qr-section {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+            .modal-box .qris-wrapper .qris-image {
+                width: 140px;
+                height: 140px;
             }
             .buy-card .input-group {
                 padding: 0.1rem 0.1rem 0.1rem 1rem;
@@ -715,10 +713,9 @@
                 padding: 1.2rem 1rem;
                 border-radius: 2rem;
             }
-            .modal-box .qr-section .qr-placeholder {
-                width: 55px;
-                height: 55px;
-                font-size: 1.5rem;
+            .modal-box .qris-wrapper .qris-image {
+                width: 120px;
+                height: 120px;
             }
         }
     </style>
@@ -892,7 +889,7 @@
     </nav>
 
     <!-- ========================================================== -->
-    <!-- MODAL PAYMENT CONFIRMATION -->
+    <!-- MODAL PAYMENT CONFIRMATION - QRIS FIX -->
     <!-- ========================================================== -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-box">
@@ -920,14 +917,15 @@
                 <button id="modalCopyAddress"><i class="fas fa-copy"></i> Copy</button>
             </div>
 
-            <div class="qr-section">
-                <div class="qr-placeholder" id="modalQrPlaceholder"><i class="fas fa-qrcode"></i></div>
-                <div class="qr-text">
-                    <strong>QRIS</strong><br />
-                    Scan QRIS for payment<br />
-                    <span style="font-size:0.65rem; color:#a0a0a0;" id="modalQrText">ID: 1234567890 | SilverChain DAO</span>
+            <!-- QRIS - TAMPILAN DI TENGAH -->
+            <div class="qris-wrapper">
+                <div class="qris-image" id="qrisImageContainer">
+                    <div class="placeholder" id="qrisPlaceholder"><i class="fas fa-qrcode"></i></div>
+                    <img id="qrisPreviewImg" style="display:none;" alt="QRIS" />
                 </div>
-                <button id="modalCopyQRIS"><i class="fas fa-copy"></i> Copy ID</button>
+                <button class="qris-download" id="downloadQrisBtn">
+                    <i class="fas fa-download"></i> Download QRIS
+                </button>
             </div>
 
             <input type="text" class="input-field" id="modalTxHash" placeholder="Enter transaction hash (0x...)" style="font-family:monospace;" />
@@ -939,7 +937,7 @@
 
     <script>
         // ============================================================
-        // 1. SUPABASE CONFIG - ALL IN ONE
+        // 1. SUPABASE CONFIG
         // ============================================================
 
         // ⚠️ GANTI DENGAN DATA SUPABASE ANDA! ⚠️
@@ -971,6 +969,8 @@
         // ============================================================
         // 4. SUPABASE FUNCTIONS
         // ============================================================
+
+        // --- USER ---
         async function getUserByEmail(email) {
             try {
                 const { data, error } = await supabaseClient
@@ -987,6 +987,7 @@
             }
         }
 
+        // --- DEPOSIT ---
         async function getUserDeposits(email) {
             try {
                 const { data, error } = await supabaseClient
@@ -998,21 +999,6 @@
                 return data || [];
             } catch (error) {
                 console.error('Get user deposits error:', error);
-                return [];
-            }
-        }
-
-        async function getUserWithdrawals(email) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('withdrawals')
-                    .select('*')
-                    .eq('email', email)
-                    .order('timestamp', { ascending: false });
-                if (error) throw error;
-                return data || [];
-            } catch (error) {
-                console.error('Get user withdrawals error:', error);
                 return [];
             }
         }
@@ -1046,6 +1032,22 @@
             }
         }
 
+        // --- WITHDRAW ---
+        async function getUserWithdrawals(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('withdrawals')
+                    .select('*')
+                    .eq('email', email)
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get user withdrawals error:', error);
+                return [];
+            }
+        }
+
         async function addWithdrawal(email, amount, address) {
             try {
                 const user = await getUserByEmail(email);
@@ -1073,6 +1075,7 @@
             }
         }
 
+        // --- BALANCE ---
         async function getPersonalBalance(email) {
             try {
                 const deposits = await getUserDeposits(email);
@@ -1095,13 +1098,7 @@
                     .select('email')
                     .eq('referred_by', user.ref_code);
 
-                const { data: settings } = await supabaseClient
-                    .from('settings')
-                    .select('value')
-                    .eq('key', 'ref_percent')
-                    .single();
-
-                const refPercent = parseInt(settings ? settings.value : 3) || 3;
+                const refPercent = parseInt(await getSetting('ref_percent')) || 3;
                 let total = 0;
 
                 for (const ref of referrals) {
@@ -1127,6 +1124,7 @@
             }
         }
 
+        // --- SETTINGS ---
         async function getSetting(key) {
             try {
                 const { data, error } = await supabaseClient
@@ -1143,6 +1141,7 @@
             }
         }
 
+        // --- TOAST ---
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
             document.getElementById('toastText').textContent = msg;
@@ -1212,7 +1211,51 @@
         });
 
         // ============================================================
-        // 7. UI UPDATE
+        // 7. QRIS FUNCTIONS
+        // ============================================================
+        async function loadQris() {
+            try {
+                const qrisUrl = await getSetting('qris_image');
+                const placeholder = document.getElementById('qrisPlaceholder');
+                const img = document.getElementById('qrisPreviewImg');
+
+                if (qrisUrl && qrisUrl.trim() !== '' && qrisUrl.trim() !== 'null') {
+                    img.src = qrisUrl;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    console.log('✅ QRIS loaded:', qrisUrl);
+                } else {
+                    img.style.display = 'none';
+                    placeholder.style.display = 'flex';
+                    console.log('ℹ️ No QRIS image set');
+                }
+            } catch (e) {
+                console.error('QRIS load error:', e);
+            }
+        }
+
+        // ============================================================
+        // 8. DOWNLOAD QRIS
+        // ============================================================
+        document.getElementById('downloadQrisBtn').addEventListener('click', function() {
+            const img = document.getElementById('qrisPreviewImg');
+            if (!img.src || img.style.display === 'none') {
+                showToast('❌ No QRIS image available to download.');
+                return;
+            }
+
+            // Download image
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = 'qris_silverchain.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ QRIS image downloaded!');
+        });
+
+        // ============================================================
+        // 9. UI UPDATE
         // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
@@ -1311,7 +1354,7 @@
         }
 
         // ============================================================
-        // 8. BONUS PREVIEW
+        // 10. BONUS PREVIEW
         // ============================================================
         async function updateBonusPreview() {
             const raw = document.getElementById('depositAmount').value.trim();
@@ -1339,16 +1382,11 @@
         document.getElementById('depositAmount').addEventListener('change', updateBonusPreview);
 
         // ============================================================
-        // 9. PAYMENT MODAL
+        // 11. PAYMENT MODAL
         // ============================================================
         async function getUsdtAddress() {
             const addr = await getSetting('usdt_address');
             return addr || '0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ';
-        }
-
-        async function getQrisData() {
-            const qris = await getSetting('qris_image');
-            return qris || null;
         }
 
         async function updatePaymentModal() {
@@ -1357,22 +1395,11 @@
             document.getElementById('modalAdminAddress').value = addr;
 
             // Update QRIS
-            const qrisData = await getQrisData();
-            const placeholder = document.getElementById('modalQrPlaceholder');
-            const qrText = document.getElementById('modalQrText');
-
-            if (qrisData) {
-                placeholder.innerHTML =
-                    `<img src="${qrisData}" alt="QRIS" style="width:100%;height:100%;object-fit:contain;" />`;
-                qrText.textContent = 'QRIS available — scan to pay';
-            } else {
-                placeholder.innerHTML = `<i class="fas fa-qrcode"></i>`;
-                qrText.textContent = 'ID: 1234567890 | SilverChain DAO';
-            }
+            await loadQris();
         }
 
         // ============================================================
-        // 10. BUY BUTTON
+        // 12. BUY BUTTON
         // ============================================================
         document.getElementById('buyBtn').addEventListener('click', async function() {
             if (!currentUser) {
@@ -1406,7 +1433,7 @@
             document.getElementById('modalTotal').textContent = finalTotal;
             document.getElementById('modalTxHash').value = '';
 
-            // Update payment modal dengan data terbaru
+            // Update payment modal
             await updatePaymentModal();
 
             // Tampilkan modal
@@ -1414,7 +1441,7 @@
         });
 
         // ============================================================
-        // 11. MODAL PAYMENT ACTIONS
+        // 13. MODAL PAYMENT ACTIONS
         // ============================================================
         document.getElementById('closePaymentModal').addEventListener('click', function() {
             document.getElementById('paymentModal').classList.remove('active');
@@ -1449,27 +1476,6 @@
             }
         });
 
-        document.getElementById('modalCopyQRIS').addEventListener('click', function() {
-            const id = '1234567890';
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(id).then(() => showToast('📋 QRIS ID copied!'));
-            } else {
-                const ta = document.createElement('textarea');
-                ta.value = id;
-                ta.style.position = 'fixed';
-                ta.style.left = '-9999px';
-                document.body.appendChild(ta);
-                ta.select();
-                try {
-                    document.execCommand('copy');
-                    showToast('📋 QRIS ID copied!');
-                } catch (e) {
-                    showToast('❌ Failed to copy.');
-                }
-                document.body.removeChild(ta);
-            }
-        });
-
         document.getElementById('modalSubmitBtn').addEventListener('click', async function() {
             if (!pendingDepositData || !currentUser) {
                 showToast('❌ Invalid transaction data.');
@@ -1496,7 +1502,7 @@
         });
 
         // ============================================================
-        // 12. WITHDRAW
+        // 14. WITHDRAW
         // ============================================================
         document.getElementById('wdSubmitBtn').addEventListener('click', async function() {
             if (!currentUser) {
@@ -1535,7 +1541,7 @@
         });
 
         // ============================================================
-        // 13. LOGOUT
+        // 15. LOGOUT
         // ============================================================
         document.getElementById('logoutBtn')?.addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -1545,7 +1551,7 @@
         });
 
         // ============================================================
-        // 14. INIT
+        // 16. INIT
         // ============================================================
         async function init() {
             console.log('🔄 Dashboard initializing...');
@@ -1560,6 +1566,7 @@
             const authPassed = await checkAuth();
             if (!authPassed) return;
 
+            await loadQris();
             await updateUI();
 
             console.log('🟢 Dashboard ready!');
@@ -1578,6 +1585,7 @@
 
         console.log('🟢 SilverChain Dashboard loaded.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
+        console.log('📌 All systems connected to Supabase');
     </script>
 </body>
 </html>
