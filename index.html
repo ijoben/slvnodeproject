@@ -36,8 +36,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
-            border: 1px solid rgba(80, 140, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
         }
         .section-title {
             font-size: 1.7rem;
@@ -52,6 +52,7 @@
             color: #c0c0c0;
             font-size: 1.8rem;
         }
+
         .header {
             display: flex;
             justify-content: center;
@@ -81,6 +82,13 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .header .brand-center h1 {
+            display: none;
+        }
+        .header .brand-center .ticker {
+            display: none;
+        }
+
         .progress-wrap {
             display: flex;
             flex-direction: column;
@@ -130,8 +138,9 @@
             background: linear-gradient(90deg, #c0c0c0, #e8e8e8);
             border-radius: 20px;
             transition: width 0.8s ease;
-            box-shadow: 0 0 30px rgba(192, 192, 192, 0.1);
+            box-shadow: 0 0 30px rgba(192,192,192,0.1);
         }
+
         .member-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -185,6 +194,7 @@
             font-weight: 600;
             flex-shrink: 0;
         }
+
         .load-more-wrap {
             display: flex;
             justify-content: center;
@@ -212,6 +222,10 @@
             opacity: 0.4;
             cursor: not-allowed;
         }
+        .btn-load-more i {
+            font-size: 0.8rem;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -239,8 +253,9 @@
         }
         .stat-item.highlight .num {
             color: #c0c0c0;
-            text-shadow: 0 0 20px rgba(192, 192, 192, 0.1);
+            text-shadow: 0 0 20px rgba(192,192,192,0.1);
         }
+
         .subhead {
             font-size: 0.95rem;
             color: #c0c0c0;
@@ -249,6 +264,7 @@
             border-left: 3px solid #c0c0c0;
             padding-left: 1rem;
         }
+
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -278,6 +294,7 @@
             color: #c0c0c0;
             line-height: 1.3;
         }
+
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -307,6 +324,7 @@
             color: #c0c0c0;
             line-height: 1.3;
         }
+
         .roadmap-list {
             display: flex;
             flex-direction: column;
@@ -341,6 +359,7 @@
             color: #c0c0c0;
             font-size: 0.85rem;
         }
+
         .faq-item {
             background: rgba(12, 28, 60, 0.35);
             backdrop-filter: blur(4px);
@@ -380,6 +399,7 @@
         .faq-item.active .faq-question i {
             transform: rotate(180deg);
         }
+
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -413,6 +433,7 @@
             font-size: 0.75rem;
             word-break: break-word;
         }
+
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -422,6 +443,7 @@
             font-weight: 600;
             color: #c0c0c0;
         }
+
         .btn-hero {
             background: rgba(60, 120, 255, 0.12);
             border: 1px solid rgba(80, 140, 255, 0.15);
@@ -444,6 +466,7 @@
         .btn-hero i {
             color: #c0c0c0;
         }
+
         .btn-outline {
             background: transparent;
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -460,6 +483,140 @@
         .btn-outline i {
             color: #c0c0c0;
         }
+
+        /* ===== WHITEPAPER STYLES ===== */
+        .whitepaper-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .whitepaper-preview-box {
+            background: rgba(12, 28, 60, 0.4);
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(80, 140, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .whitepaper-preview-box .wp-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .whitepaper-preview-box .wp-info i {
+            font-size: 2.5rem;
+            color: #c0c0c0;
+        }
+        .whitepaper-preview-box .wp-info .wp-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .whitepaper-preview-box .wp-info .wp-details .wp-title {
+            font-weight: 600;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+        .whitepaper-preview-box .wp-info .wp-details .wp-status {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+        }
+        .whitepaper-preview-box .wp-info .wp-details .wp-status.success {
+            color: #6aff8a;
+        }
+        .whitepaper-preview-box .wp-info .wp-details .wp-status.error {
+            color: #ff6a6a;
+        }
+        .whitepaper-preview-box .wp-info .wp-details .wp-url {
+            font-size: 0.7rem;
+            color: #60a5fa;
+            word-break: break-all;
+            max-width: 300px;
+        }
+        .whitepaper-preview-box .wp-info .wp-details .wp-url a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+        .whitepaper-preview-box .wp-info .wp-details .wp-url a:hover {
+            text-decoration: underline;
+        }
+        .whitepaper-preview-box .wp-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .btn-download {
+            background: rgba(60, 120, 255, 0.12);
+            border: 1px solid rgba(80, 140, 255, 0.15);
+            border-radius: 60px;
+            padding: 0.5rem 1.5rem;
+            color: #c0c0c0;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-download:hover {
+            background: rgba(60, 120, 255, 0.2);
+            border-color: rgba(80, 140, 255, 0.3);
+        }
+        .btn-download i {
+            color: #c0c0c0;
+        }
+        .btn-download:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .btn-preview {
+            background: rgba(60, 120, 255, 0.08);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.5rem 1.5rem;
+            color: #c0c0c0;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-preview:hover {
+            background: rgba(60, 120, 255, 0.15);
+            border-color: rgba(80, 140, 255, 0.2);
+        }
+        .btn-preview i {
+            color: #c0c0c0;
+        }
+        .btn-preview:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .whitepaper-placeholder {
+            background: rgba(12, 28, 60, 0.3);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            border: 2px dashed rgba(80, 140, 255, 0.08);
+        }
+        .whitepaper-placeholder i {
+            font-size: 3rem;
+            color: #888888;
+            margin-bottom: 0.5rem;
+        }
+        .whitepaper-placeholder p {
+            color: #888888;
+            font-size: 0.9rem;
+        }
+
         .btn-pdf {
             background: rgba(60, 120, 255, 0.08);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -482,6 +639,7 @@
         .btn-pdf i {
             color: #c0c0c0;
         }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -496,7 +654,7 @@
             align-items: center;
             padding: 0.7rem 0.5rem 0.9rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -525,7 +683,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
+            text-shadow: 0 0 25px rgba(192,192,192,0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -541,6 +699,7 @@
             border: 2px solid rgba(12, 28, 60, 0.9);
             display: none;
         }
+
         .footer-copyright {
             text-align: center;
             color: #888888;
@@ -549,6 +708,7 @@
             border-top: 1px solid rgba(80, 140, 255, 0.05);
             margin-top: 1rem;
         }
+
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -564,12 +724,6 @@
         }
         .toast-message.show {
             display: flex;
-        }
-        .whitepaper-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
         }
 
         @media (min-width: 768px) {
@@ -687,6 +841,9 @@
             }
             .bottom-nav a span {
                 font-size: 0.65rem;
+            }
+            .whitepaper-preview-box .wp-info .wp-details .wp-url {
+                max-width: 400px;
             }
         }
 
@@ -843,6 +1000,31 @@
                 font-size: 0.75rem;
                 padding: 0.4rem 0.8rem;
             }
+            .whitepaper-preview-box {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .whitepaper-preview-box .wp-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            .whitepaper-preview-box .wp-info .wp-details .wp-url {
+                max-width: 100%;
+            }
+            .whitepaper-preview-box .wp-actions {
+                justify-content: center;
+            }
+            .btn-download, .btn-preview {
+                font-size: 0.75rem;
+                padding: 0.4rem 1rem;
+            }
+            .whitepaper-placeholder {
+                padding: 1.5rem;
+            }
+            .whitepaper-placeholder i {
+                font-size: 2.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -899,6 +1081,19 @@
             .bottom-nav a span {
                 font-size: 0.45rem;
             }
+            .whitepaper-preview-box .wp-info .wp-details .wp-title {
+                font-size: 0.85rem;
+            }
+            .whitepaper-preview-box .wp-info .wp-details .wp-status {
+                font-size: 0.7rem;
+            }
+            .whitepaper-preview-box .wp-info .wp-details .wp-url {
+                font-size: 0.6rem;
+            }
+            .btn-download, .btn-preview {
+                font-size: 0.65rem;
+                padding: 0.3rem 0.8rem;
+            }
         }
 
         @media (max-width: 360px) {
@@ -917,6 +1112,9 @@
             }
             .bottom-nav a span {
                 font-size: 0.4rem;
+            }
+            .whitepaper-preview-box .wp-info i {
+                font-size: 2rem;
             }
         }
     </style>
@@ -1037,13 +1235,11 @@
             </div>
         </div>
 
+        <!-- ===== WHITEPAPER SECTION DENGAN PREVIEW & DOWNLOAD ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
-            <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Complete SilverChain whitepaper available.</p>
-            <div class="whitepaper-links" id="whitepaperLinks">
-                <a href="#" class="btn-pdf" id="pdfLink"><i class="fas fa-file-pdf"></i> PDF</a>
-                <span class="btn-outline"><i class="fas fa-book-open"></i> Summary</span>
-                <span class="btn-outline"><i class="fas fa-code-branch"></i> GitHub</span>
+            <div id="whitepaperContainer">
+                <!-- Akan diisi oleh JavaScript -->
             </div>
         </div>
 
@@ -1240,6 +1436,64 @@
             return '$' + num.toFixed(0);
         }
 
+        // ============================================================
+        // WHITEPAPER RENDER
+        // ============================================================
+        function renderWhitepaper(wpUrl) {
+            const container = document.getElementById('whitepaperContainer');
+            
+            if (wpUrl && wpUrl.trim() !== '' && wpUrl.trim() !== 'null' && wpUrl.trim() !== 'undefined') {
+                // Extract filename from URL
+                const filename = wpUrl.split('/').pop() || 'whitepaper.pdf';
+                const isPDF = wpUrl.toLowerCase().endsWith('.pdf');
+                const isDoc = wpUrl.toLowerCase().endsWith('.doc') || wpUrl.toLowerCase().endsWith('.docx');
+                const isTxt = wpUrl.toLowerCase().endsWith('.txt') || wpUrl.toLowerCase().endsWith('.md');
+                
+                let fileIcon = 'fa-file-pdf';
+                let fileType = 'PDF';
+                if (isDoc) { fileIcon = 'fa-file-word'; fileType = 'DOC'; }
+                else if (isTxt) { fileIcon = 'fa-file-alt'; fileType = 'TXT'; }
+                else if (wpUrl.includes('google.com') || wpUrl.includes('docs.google')) { fileIcon = 'fa-file-pdf'; fileType = 'Google Docs'; }
+                
+                container.innerHTML = `
+                    <div class="whitepaper-wrapper">
+                        <div class="whitepaper-preview-box">
+                            <div class="wp-info">
+                                <i class="fas ${fileIcon}"></i>
+                                <div class="wp-details">
+                                    <span class="wp-title">SilverChain Whitepaper</span>
+                                    <span class="wp-status success">
+                                        <i class="fas fa-check-circle"></i> Available (${fileType})
+                                    </span>
+                                    <span class="wp-url">
+                                        <a href="${wpUrl}" target="_blank">${wpUrl.length > 60 ? wpUrl.substring(0, 60) + '...' : wpUrl}</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="wp-actions">
+                                <a href="${wpUrl}" target="_blank" class="btn-preview">
+                                    <i class="fas fa-eye"></i> Preview
+                                </a>
+                                <a href="${wpUrl}" download class="btn-download">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="whitepaper-placeholder">
+                        <i class="fas fa-file-pdf"></i>
+                        <p>Whitepaper not available yet.<br>Coming soon!</p>
+                        <div style="margin-top:0.5rem;">
+                            <span class="badge-silver"><i class="fas fa-clock"></i> In Progress</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         function loadSettingsUI(settingsData) {
             const logoDisplay = document.getElementById('logoDisplay');
             if (settingsData.logo_type === 'image' && settingsData.logo_image) {
@@ -1272,12 +1526,9 @@
                 }
             }
 
-            // Update whitepaper PDF link
-            const pdfLink = document.getElementById('pdfLink');
-            if (pdfLink && settingsData.whitepaper_pdf) {
-                pdfLink.href = settingsData.whitepaper_pdf;
-                pdfLink.target = '_blank';
-            }
+            // Update whitepaper
+            const wpUrl = settingsData.whitepaper_pdf;
+            renderWhitepaper(wpUrl);
         }
 
         function renderMembers() {
