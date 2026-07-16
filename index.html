@@ -36,8 +36,8 @@
             border-radius: 2.8rem;
             padding: 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
-            border: 1px solid rgba(80,140,255,0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(100, 140, 220, 0.15);
+            border: 1px solid rgba(80, 140, 255, 0.08);
         }
         .section-title {
             font-size: 1.7rem;
@@ -52,8 +52,6 @@
             color: #c0c0c0;
             font-size: 1.8rem;
         }
-
-        /* ===== HEADER - LOGO BESAR DENGAN PADDING RAPAT ===== */
         .header {
             display: flex;
             justify-content: center;
@@ -83,13 +81,6 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .header .brand-center h1 {
-            display: none;
-        }
-        .header .brand-center .ticker {
-            display: none;
-        }
-
         .progress-wrap {
             display: flex;
             flex-direction: column;
@@ -139,9 +130,8 @@
             background: linear-gradient(90deg, #c0c0c0, #e8e8e8);
             border-radius: 20px;
             transition: width 0.8s ease;
-            box-shadow: 0 0 30px rgba(192,192,192,0.1);
+            box-shadow: 0 0 30px rgba(192, 192, 192, 0.1);
         }
-
         .member-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -195,7 +185,6 @@
             font-weight: 600;
             flex-shrink: 0;
         }
-
         .load-more-wrap {
             display: flex;
             justify-content: center;
@@ -223,10 +212,6 @@
             opacity: 0.4;
             cursor: not-allowed;
         }
-        .btn-load-more i {
-            font-size: 0.8rem;
-        }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -254,9 +239,8 @@
         }
         .stat-item.highlight .num {
             color: #c0c0c0;
-            text-shadow: 0 0 20px rgba(192,192,192,0.1);
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.1);
         }
-
         .subhead {
             font-size: 0.95rem;
             color: #c0c0c0;
@@ -265,7 +249,6 @@
             border-left: 3px solid #c0c0c0;
             padding-left: 1rem;
         }
-
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -295,7 +278,6 @@
             color: #c0c0c0;
             line-height: 1.3;
         }
-
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -325,7 +307,6 @@
             color: #c0c0c0;
             line-height: 1.3;
         }
-
         .roadmap-list {
             display: flex;
             flex-direction: column;
@@ -360,7 +341,6 @@
             color: #c0c0c0;
             font-size: 0.85rem;
         }
-
         .faq-item {
             background: rgba(12, 28, 60, 0.35);
             backdrop-filter: blur(4px);
@@ -400,7 +380,6 @@
         .faq-item.active .faq-question i {
             transform: rotate(180deg);
         }
-
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -417,6 +396,11 @@
             text-decoration: none;
             color: #c0c0c0;
             font-size: 0.8rem;
+            transition: 0.15s;
+        }
+        .contact-item:hover {
+            border-color: rgba(80, 140, 255, 0.15);
+            background: rgba(12, 28, 60, 0.5);
         }
         .contact-item i {
             color: #c0c0c0;
@@ -429,7 +413,6 @@
             font-size: 0.75rem;
             word-break: break-word;
         }
-
         .badge-silver {
             background: rgba(60, 120, 255, 0.06);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -439,7 +422,6 @@
             font-weight: 600;
             color: #c0c0c0;
         }
-
         .btn-hero {
             background: rgba(60, 120, 255, 0.12);
             border: 1px solid rgba(80, 140, 255, 0.15);
@@ -462,7 +444,6 @@
         .btn-hero i {
             color: #c0c0c0;
         }
-
         .btn-outline {
             background: transparent;
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -472,9 +453,35 @@
             font-weight: 600;
             font-size: 0.7rem;
             cursor: default;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-
-        /* ===== BOTTOM NAV - UKURAN SAMA DENGAN FILE LAIN ===== */
+        .btn-outline i {
+            color: #c0c0c0;
+        }
+        .btn-pdf {
+            background: rgba(60, 120, 255, 0.08);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            color: #c0c0c0;
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-pdf:hover {
+            background: rgba(60, 120, 255, 0.15);
+            border-color: rgba(80, 140, 255, 0.2);
+        }
+        .btn-pdf i {
+            color: #c0c0c0;
+        }
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -489,7 +496,7 @@
             align-items: center;
             padding: 0.7rem 0.5rem 0.9rem;
             z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
         }
         .bottom-nav a {
             color: #a0a0a0;
@@ -518,7 +525,7 @@
         }
         .bottom-nav a.active i {
             color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192,192,192,0.15);
+            text-shadow: 0 0 25px rgba(192, 192, 192, 0.15);
         }
         .bottom-nav a:hover {
             color: #e8e8e8;
@@ -534,7 +541,6 @@
             border: 2px solid rgba(12, 28, 60, 0.9);
             display: none;
         }
-
         .footer-copyright {
             text-align: center;
             color: #888888;
@@ -543,7 +549,6 @@
             border-top: 1px solid rgba(80, 140, 255, 0.05);
             margin-top: 1rem;
         }
-
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -559,6 +564,12 @@
         }
         .toast-message.show {
             display: flex;
+        }
+        .whitepaper-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
         @media (min-width: 768px) {
@@ -662,8 +673,6 @@
             .roadmap-item .desc {
                 font-size: 0.9rem;
             }
-
-            /* BOTTOM NAV DESKTOP - SAMA DENGAN FILE LAIN */
             .bottom-nav {
                 padding: 0.8rem 2rem 1rem;
                 gap: 0.5rem;
@@ -755,8 +764,6 @@
             .stat-item .label {
                 font-size: 0.5rem;
             }
-
-            /* LOGO HP */
             .header .brand-center .logo-icon img {
                 width: 250px;
                 height: 60px;
@@ -767,12 +774,9 @@
             .header {
                 padding: 0.1rem 0 0.3rem 0;
             }
-
             .subhead {
                 font-size: 0.8rem;
             }
-
-            /* BOTTOM NAV HP - SAMA DENGAN FILE LAIN */
             .bottom-nav {
                 padding: 0.5rem 0.3rem 0.7rem;
             }
@@ -787,7 +791,6 @@
             .bottom-nav a span {
                 font-size: 0.5rem;
             }
-
             .progress-wrap {
                 padding: 0.5rem 0.8rem;
             }
@@ -872,8 +875,6 @@
             .btn-load-more i {
                 font-size: 0.65rem;
             }
-
-            /* LOGO HP KECIL */
             .header .brand-center .logo-icon img {
                 width: 250px;
                 height: 50px;
@@ -884,8 +885,6 @@
             .header {
                 padding: 0.1rem 0 0.2rem 0;
             }
-
-            /* BOTTOM NAV HP KECIL - SAMA DENGAN FILE LAIN */
             .bottom-nav {
                 padding: 0.4rem 0.2rem 0.6rem;
             }
@@ -1041,8 +1040,8 @@
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Complete SilverChain whitepaper available.</p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
-                <span class="btn-outline"><i class="fas fa-file-pdf"></i> PDF</span>
+            <div class="whitepaper-links" id="whitepaperLinks">
+                <a href="#" class="btn-pdf" id="pdfLink"><i class="fas fa-file-pdf"></i> PDF</a>
                 <span class="btn-outline"><i class="fas fa-book-open"></i> Summary</span>
                 <span class="btn-outline"><i class="fas fa-code-branch"></i> GitHub</span>
             </div>
@@ -1071,10 +1070,10 @@
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Contact</div>
             <div class="contact-grid" id="contactGrid">
-                <a href="#" class="contact-item" id="contactTwitter"><i class="fab fa-twitter"></i> <span>@SilverChain</span></a>
-                <a href="#" class="contact-item" id="contactTelegram"><i class="fab fa-telegram"></i> <span>t.me/SilverChain</span></a>
-                <a href="#" class="contact-item" id="contactDiscord"><i class="fab fa-discord"></i> <span>discord.gg/silver</span></a>
-                <a href="#" class="contact-item" id="contactEmail"><i class="fas fa-envelope"></i> <span>dao@silverchain.io</span></a>
+                <a href="#" class="contact-item" id="contactTwitter" target="_blank"><i class="fab fa-twitter"></i> <span>@SilverChain</span></a>
+                <a href="#" class="contact-item" id="contactTelegram" target="_blank"><i class="fab fa-telegram"></i> <span>t.me/SilverChain</span></a>
+                <a href="#" class="contact-item" id="contactDiscord" target="_blank"><i class="fab fa-discord"></i> <span>discord.gg/silver</span></a>
+                <a href="#" class="contact-item" id="contactEmail" target="_blank"><i class="fas fa-envelope"></i> <span>dao@silverchain.io</span></a>
             </div>
             <div class="footer-copyright">Copyright 2026</div>
         </div>
@@ -1248,6 +1247,37 @@
             } else {
                 logoDisplay.innerHTML = `<i class="fas fa-coins"></i>`;
             }
+
+            // Update contact links
+            const contactMap = {
+                contactTwitter: settingsData.contact_twitter,
+                contactTelegram: settingsData.contact_telegram,
+                contactDiscord: settingsData.contact_discord,
+                contactEmail: settingsData.contact_email
+            };
+            for (const [id, value] of Object.entries(contactMap)) {
+                const el = document.getElementById(id);
+                if (el && value) {
+                    const span = el.querySelector('span');
+                    if (span) span.textContent = value;
+                    if (id === 'contactEmail') {
+                        el.href = `mailto:${value}`;
+                    } else if (id === 'contactTwitter') {
+                        el.href = `https://twitter.com/${value.replace('@', '')}`;
+                    } else if (id === 'contactTelegram') {
+                        el.href = `https://t.me/${value.replace('t.me/', '')}`;
+                    } else if (id === 'contactDiscord') {
+                        el.href = `https://discord.gg/${value.replace('discord.gg/', '')}`;
+                    }
+                }
+            }
+
+            // Update whitepaper PDF link
+            const pdfLink = document.getElementById('pdfLink');
+            if (pdfLink && settingsData.whitepaper_pdf) {
+                pdfLink.href = settingsData.whitepaper_pdf;
+                pdfLink.target = '_blank';
+            }
         }
 
         function renderMembers() {
@@ -1306,7 +1336,8 @@
                 const settingsKeys = [
                     'bonus_percent', 'ref_percent',
                     'logo_image', 'logo_type',
-                    'contact_twitter', 'contact_telegram', 'contact_discord', 'contact_email'
+                    'contact_twitter', 'contact_telegram', 'contact_discord', 'contact_email',
+                    'whitepaper_pdf'
                 ];
                 const settingsData = await getSettings(settingsKeys);
                 settings = settingsData;
