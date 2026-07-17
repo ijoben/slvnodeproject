@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ===== SAME AS BEFORE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -529,35 +530,6 @@
             margin-top: 0.8rem;
         }
 
-        .whitepaper-preview {
-            margin: 0.5rem 0;
-            padding: 0.8rem;
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .whitepaper-preview .wp-status {
-            color: #a0a0a0;
-            font-size: 0.85rem;
-        }
-        .whitepaper-preview .wp-status.success {
-            color: #6aff8a;
-        }
-        .whitepaper-preview .wp-status.error {
-            color: #ff6a6a;
-        }
-        .whitepaper-preview a {
-            color: #60a5fa;
-            text-decoration: none;
-        }
-        .whitepaper-preview a:hover {
-            text-decoration: underline;
-        }
-
         @media (max-width: 768px) {
             .section-card {
                 padding: 1rem 0.8rem;
@@ -678,9 +650,6 @@
                 height: 22px;
                 margin: 0 0.08rem;
             }
-            .whitepaper-preview {
-                padding: 0.6rem;
-            }
         }
 
         @media (max-width: 480px) {
@@ -794,12 +763,6 @@
             }
             .footer-copyright {
                 font-size: 0.65rem;
-            }
-            .whitepaper-preview {
-                padding: 0.5rem;
-            }
-            .whitepaper-preview .wp-status {
-                font-size: 0.7rem;
             }
         }
 
@@ -1032,20 +995,6 @@
                         <label><i class="fas fa-envelope"></i> Email</label>
                         <input type="text" id="adminContactEmail" placeholder="dao@silverchain.io" style="width:350px;" />
                         <button class="btn-save" id="saveContactEmailBtn"><i class="fas fa-save"></i> Save</button>
-                    </div>
-                </div>
-
-                <!-- WHITEPAPER SETTINGS -->
-                <div class="settings-group">
-                    <h5><i class="fas fa-file-alt"></i> Whitepaper</h5>
-                    <div class="row">
-                        <label><i class="fas fa-file-pdf"></i> PDF URL</label>
-                        <input type="text" id="adminWhitepaperPdf" placeholder="https://example.com/whitepaper.pdf" style="width:350px;" />
-                        <button class="btn-save" id="saveWhitepaperBtn"><i class="fas fa-save"></i> Save</button>
-                    </div>
-                    <div class="whitepaper-preview" id="whitepaperPreview">
-                        <i class="fas fa-file-pdf" style="color:#c0c0c0; font-size:1.5rem;"></i>
-                        <span class="wp-status" id="wpStatus">No whitepaper set</span>
                     </div>
                 </div>
             </div>
@@ -1666,41 +1615,6 @@
             }
         }
 
-        // ============================================================
-        // 11. LOAD WHITEPAPER PREVIEW
-        // ============================================================
-        async function loadWhitepaperPreview() {
-            try {
-                console.log('🔄 Loading whitepaper preview...');
-
-                const wpUrl = await getSetting('whitepaper_pdf');
-                const status = document.getElementById('wpStatus');
-                const inputField = document.getElementById('adminWhitepaperPdf');
-
-                console.log('📌 Whitepaper URL from Supabase:', wpUrl);
-
-                if (wpUrl && wpUrl.trim() !== '' && wpUrl.trim() !== 'null' && wpUrl.trim() !== 'undefined') {
-                    status.innerHTML = `✅ Whitepaper: <a href="${wpUrl}" target="_blank">${wpUrl}</a>`;
-                    status.className = 'wp-status success';
-
-                    if (inputField) {
-                        inputField.value = wpUrl;
-                    }
-
-                    console.log('✅ Whitepaper loaded:', wpUrl);
-                } else {
-                    status.textContent = 'No whitepaper set';
-                    status.className = 'wp-status';
-                    console.log('ℹ️ No whitepaper set');
-                }
-            } catch (e) {
-                console.error('❌ Whitepaper load error:', e);
-                const status = document.getElementById('wpStatus');
-                status.textContent = 'Error loading whitepaper';
-                status.className = 'wp-status error';
-            }
-        }
-
         async function loadSettingsUI() {
             try {
                 const brandName = await getSetting('brand_name');
@@ -1712,7 +1626,6 @@
                 const usdtAddress = await getSetting('usdt_address');
                 const bonus = await getSetting('bonus_percent');
                 const ref = await getSetting('ref_percent');
-                const whitepaperPdf = await getSetting('whitepaper_pdf');
 
                 document.getElementById('adminBrandName').value = brandName || '';
                 document.getElementById('adminLogoUrl').value = logoImage || '';
@@ -1730,9 +1643,6 @@
                 if (ref) {
                     document.getElementById('adminRefPercent').value = ref;
                 }
-                if (whitepaperPdf) {
-                    document.getElementById('adminWhitepaperPdf').value = whitepaperPdf;
-                }
 
                 const settings = {
                     brandName: brandName || '',
@@ -1740,12 +1650,9 @@
                     contactTwitter: contactTwitter || '',
                     contactTelegram: contactTelegram || '',
                     contactDiscord: contactDiscord || '',
-                    contactEmail: contactEmail || '',
-                    whitepaperPdf: whitepaperPdf || ''
+                    contactEmail: contactEmail || ''
                 };
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-
-                await loadWhitepaperPreview();
 
             } catch (e) {
                 console.warn('Load settings error:', e);
@@ -1762,7 +1669,7 @@
         }
 
         // ============================================================
-        // 12. SAVE SETTINGS
+        // 11. SAVE SETTINGS (FIXED)
         // ============================================================
         document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
             const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
@@ -1790,6 +1697,7 @@
                 const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.brandName = name;
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                await loadSettingsUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
@@ -1809,6 +1717,7 @@
                 settings.logoImage = url;
                 settings.logoType = 'image';
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                await loadSettingsUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
@@ -1827,11 +1736,13 @@
                 settings.logoIcon = 'fas fa-coins';
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
                 document.getElementById('adminLogoUrl').value = '';
+                await loadSettingsUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
+        // ===== FIXED: SOCIAL MEDIA SAVE FUNCTIONS =====
         document.getElementById('saveTwitterBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminTwitter').value.trim();
             if (!value) {
@@ -1844,6 +1755,7 @@
                 const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.contactTwitter = value;
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                await loadSettingsUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
@@ -1861,6 +1773,7 @@
                 const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.contactTelegram = value;
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                await loadSettingsUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
@@ -1878,6 +1791,7 @@
                 const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.contactDiscord = value;
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                await loadSettingsUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
@@ -1895,37 +1809,13 @@
                 const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                 settings.contactEmail = value;
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                await loadSettingsUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // SAVE WHITEPAPER PDF
-        document.getElementById('saveWhitepaperBtn').addEventListener('click', async function() {
-            const value = document.getElementById('adminWhitepaperPdf').value.trim();
-            if (!value) {
-                showToast('❌ Please enter a whitepaper PDF URL.');
-                return;
-            }
-            if (!value.startsWith('http://') && !value.startsWith('https://')) {
-                showToast('❌ Please enter a valid URL (http:// or https://)');
-                return;
-            }
-            if (!value.toLowerCase().endsWith('.pdf')) {
-                showToast('⚠️ URL should end with .pdf');
-            }
-            try {
-                await saveSetting('whitepaper_pdf', value);
-                showToast('✅ Whitepaper PDF URL saved to database!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.whitepaperPdf = value;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                await loadWhitepaperPreview();
-            } catch (err) {
-                showToast('❌ Failed: ' + err.message);
-            }
-        });
-
+        // ===== USDT & QRIS =====
         document.getElementById('saveUsdtBtn').addEventListener('click', async function() {
             const address = document.getElementById('adminUsdtAddress').value.trim();
             if (!address || address.length < 10) {
@@ -1941,13 +1831,8 @@
             }
         });
 
-        // ============================================================
-        // SAVE QRIS URL
-        // ============================================================
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
             const url = document.getElementById('adminQrisUrl').value.trim();
-
-            console.log('📌 Saving QRIS URL:', url);
 
             if (!url) {
                 showToast('❌ Please enter a QRIS image URL.');
@@ -1975,7 +1860,7 @@
         });
 
         // ============================================================
-        // 13. LOGOUT
+        // 12. LOGOUT
         // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -1985,7 +1870,7 @@
         });
 
         // ============================================================
-        // 14. UPDATE UI
+        // 13. UPDATE UI
         // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
@@ -2030,7 +1915,6 @@
 
                 await loadQrisPreview();
                 await loadSettingsUI();
-                await loadWhitepaperPreview();
 
             } catch (error) {
                 console.error('❌ Update UI error:', error);
@@ -2039,7 +1923,7 @@
         }
 
         // ============================================================
-        // 15. INIT
+        // 14. INIT
         // ============================================================
         async function init() {
             console.log('🔄 Admin panel initializing...');
@@ -2072,7 +1956,6 @@
         console.log('🟢 SilverChain Admin Panel loaded.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
         console.log('📌 QRIS: gunakan direct image URL (i.imgur.com/xxxxx.png)');
-        console.log('📌 Whitepaper: gunakan direct PDF URL');
     </script>
 </body>
 </html>
