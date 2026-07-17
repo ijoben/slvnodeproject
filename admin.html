@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ===== SAME AS BEFORE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -1199,8 +1198,7 @@
                     .from('settings')
                     .select('value')
                     .eq('key', key)
-                    .single();
-                if (error && error.code === 'PGRST116') return null;
+                    .maybeSingle();
                 if (error) throw error;
                 return data ? data.value : null;
             } catch (error) {
@@ -1211,34 +1209,54 @@
 
         async function saveSetting(key, value) {
             try {
-                const { data: existing } = await supabaseClient
+                console.log(`💾 Saving setting: ${key} = ${value}`);
+                
+                // Cek apakah setting sudah ada
+                const { data: existing, error: checkError } = await supabaseClient
                     .from('settings')
                     .select('key')
                     .eq('key', key)
-                    .single();
-
+                    .maybeSingle();
+                
+                if (checkError && checkError.code !== 'PGRST116') {
+                    console.error('Check error:', checkError);
+                    throw checkError;
+                }
+                
+                let result;
                 if (existing) {
-                    const { error } = await supabaseClient
+                    // UPDATE
+                    console.log(`🔄 Updating existing setting: ${key}`);
+                    const { data, error } = await supabaseClient
                         .from('settings')
                         .update({
                             value: value,
                             updated_at: new Date().toISOString()
                         })
-                        .eq('key', key);
+                        .eq('key', key)
+                        .select();
+                    
                     if (error) throw error;
+                    result = data;
                     console.log('✅ Setting updated:', key, '=', value);
                 } else {
-                    const { error } = await supabaseClient
+                    // INSERT
+                    console.log(`➕ Inserting new setting: ${key}`);
+                    const { data, error } = await supabaseClient
                         .from('settings')
                         .insert({
                             key: key,
                             value: value,
                             updated_at: new Date().toISOString()
-                        });
+                        })
+                        .select();
+                    
                     if (error) throw error;
+                    result = data;
                     console.log('✅ Setting inserted:', key, '=', value);
                 }
-                return true;
+                
+                return result;
             } catch (error) {
                 console.error('❌ Save setting error:', error);
                 throw error;
@@ -1617,45 +1635,59 @@
 
         async function loadSettingsUI() {
             try {
-                const brandName = await getSetting('brand_name');
-                const logoImage = await getSetting('logo_image');
-                const contactTwitter = await getSetting('contact_twitter');
-                const contactTelegram = await getSetting('contact_telegram');
-                const contactDiscord = await getSetting('contact_discord');
-                const contactEmail = await getSetting('contact_email');
-                const usdtAddress = await getSetting('usdt_address');
-                const bonus = await getSetting('bonus_percent');
-                const ref = await getSetting('ref_percent');
-
-                document.getElementById('adminBrandName').value = brandName || '';
-                document.getElementById('adminLogoUrl').value = logoImage || '';
-                document.getElementById('adminTwitter').value = contactTwitter || '';
-                document.getElementById('adminTelegram').value = contactTelegram || '';
-                document.getElementById('adminDiscord').value = contactDiscord || '';
-                document.getElementById('adminContactEmail').value = contactEmail || '';
-
-                if (usdtAddress) {
-                    document.getElementById('adminUsdtAddress').value = usdtAddress;
+                console.log('🔄 Loading settings from Supabase...');
+                
+                // Ambil semua setting sekaligus
+                const { data: allSettings, error } = await supabaseClient
+                    .from('settings')
+                    .select('*');
+                
+                if (error) throw error;
+                
+                console.log('📌 All settings:', allSettings);
+                
+                // Convert to object for easy access
+                const settingsMap = {};
+                allSettings.forEach(s => {
+                    settingsMap[s.key] = s.value;
+                });
+                
+                console.log('📌 Settings map:', settingsMap);
+                
+                // Apply to UI
+                document.getElementById('adminBrandName').value = settingsMap.brand_name || '';
+                document.getElementById('adminLogoUrl').value = settingsMap.logo_image || '';
+                document.getElementById('adminTwitter').value = settingsMap.contact_twitter || '';
+                document.getElementById('adminTelegram').value = settingsMap.contact_telegram || '';
+                document.getElementById('adminDiscord').value = settingsMap.contact_discord || '';
+                document.getElementById('adminContactEmail').value = settingsMap.contact_email || '';
+                
+                if (settingsMap.usdt_address) {
+                    document.getElementById('adminUsdtAddress').value = settingsMap.usdt_address;
                 }
-                if (bonus) {
-                    document.getElementById('adminBonusPercent').value = bonus;
+                if (settingsMap.bonus_percent) {
+                    document.getElementById('adminBonusPercent').value = settingsMap.bonus_percent;
                 }
-                if (ref) {
-                    document.getElementById('adminRefPercent').value = ref;
+                if (settingsMap.ref_percent) {
+                    document.getElementById('adminRefPercent').value = settingsMap.ref_percent;
                 }
-
+                
+                // Save to localStorage
                 const settings = {
-                    brandName: brandName || '',
-                    logoImage: logoImage || '',
-                    contactTwitter: contactTwitter || '',
-                    contactTelegram: contactTelegram || '',
-                    contactDiscord: contactDiscord || '',
-                    contactEmail: contactEmail || ''
+                    brandName: settingsMap.brand_name || '',
+                    logoImage: settingsMap.logo_image || '',
+                    contactTwitter: settingsMap.contact_twitter || '',
+                    contactTelegram: settingsMap.contact_telegram || '',
+                    contactDiscord: settingsMap.contact_discord || '',
+                    contactEmail: settingsMap.contact_email || ''
                 };
                 localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-
+                
+                console.log('✅ Settings loaded successfully!');
+                
             } catch (e) {
-                console.warn('Load settings error:', e);
+                console.error('❌ Load settings error:', e);
+                // Fallback to localStorage
                 try {
                     const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                     document.getElementById('adminBrandName').value = settings.brandName || '';
@@ -1664,65 +1696,144 @@
                     document.getElementById('adminTelegram').value = settings.contactTelegram || '';
                     document.getElementById('adminDiscord').value = settings.contactDiscord || '';
                     document.getElementById('adminContactEmail').value = settings.contactEmail || '';
-                } catch (e2) {}
+                } catch (e2) {
+                    console.error('❌ Fallback error:', e2);
+                }
             }
         }
 
         // ============================================================
         // 11. SAVE SETTINGS (FIXED)
         // ============================================================
-        document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
-            const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
-            const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
 
+        // ===== SAVE TWITTER =====
+        document.getElementById('saveTwitterBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminTwitter').value.trim();
+            if (!value) {
+                showToast('❌ Please enter a Twitter URL.');
+                return;
+            }
+            
+            console.log('📌 Saving Twitter:', value);
+            
             try {
-                await saveSetting('bonus_percent', String(bonus));
-                await saveSetting('ref_percent', String(ref));
-                showToast('✅ Settings saved to database!');
+                await saveSetting('contact_twitter', value);
+                showToast('✅ Twitter URL saved to database!');
+                await loadSettingsUI();
                 await updateUI();
             } catch (err) {
+                console.error('❌ Save Twitter error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
+        // ===== SAVE TELEGRAM =====
+        document.getElementById('saveTelegramBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminTelegram').value.trim();
+            if (!value) {
+                showToast('❌ Please enter a Telegram URL.');
+                return;
+            }
+            
+            console.log('📌 Saving Telegram:', value);
+            
+            try {
+                await saveSetting('contact_telegram', value);
+                showToast('✅ Telegram URL saved to database!');
+                await loadSettingsUI();
+                await updateUI();
+            } catch (err) {
+                console.error('❌ Save Telegram error:', err);
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // ===== SAVE DISCORD =====
+        document.getElementById('saveDiscordBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminDiscord').value.trim();
+            if (!value) {
+                showToast('❌ Please enter a Discord URL.');
+                return;
+            }
+            
+            console.log('📌 Saving Discord:', value);
+            
+            try {
+                await saveSetting('contact_discord', value);
+                showToast('✅ Discord URL saved to database!');
+                await loadSettingsUI();
+                await updateUI();
+            } catch (err) {
+                console.error('❌ Save Discord error:', err);
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // ===== SAVE CONTACT EMAIL =====
+        document.getElementById('saveContactEmailBtn').addEventListener('click', async function() {
+            const value = document.getElementById('adminContactEmail').value.trim();
+            if (!value || !value.includes('@')) {
+                showToast('❌ Please enter a valid email.');
+                return;
+            }
+            
+            console.log('📌 Saving Contact Email:', value);
+            
+            try {
+                await saveSetting('contact_email', value);
+                showToast('✅ Contact email saved to database!');
+                await loadSettingsUI();
+                await updateUI();
+            } catch (err) {
+                console.error('❌ Save Contact Email error:', err);
+                showToast('❌ Failed: ' + err.message);
+            }
+        });
+
+        // ===== SAVE BRAND NAME =====
         document.getElementById('saveBrandBtn').addEventListener('click', async function() {
-            const name = document.getElementById('adminBrandName').value.trim();
-            if (!name) {
+            const value = document.getElementById('adminBrandName').value.trim();
+            if (!value) {
                 showToast('❌ Please enter a brand name.');
                 return;
             }
+            
+            console.log('📌 Saving Brand Name:', value);
+            
             try {
-                await saveSetting('brand_name', name);
+                await saveSetting('brand_name', value);
                 showToast('✅ Brand name saved to database!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.brandName = name;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
                 await loadSettingsUI();
+                await updateUI();
             } catch (err) {
+                console.error('❌ Save Brand error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
+        // ===== SAVE LOGO =====
         document.getElementById('saveLogoBtn').addEventListener('click', async function() {
-            const url = document.getElementById('adminLogoUrl').value.trim();
-            if (!url) {
+            const value = document.getElementById('adminLogoUrl').value.trim();
+            if (!value) {
                 showToast('❌ Please enter a logo URL.');
                 return;
             }
+            
+            console.log('📌 Saving Logo:', value);
+            
             try {
-                await saveSetting('logo_image', url);
+                await saveSetting('logo_image', value);
                 await saveSetting('logo_type', 'image');
                 showToast('✅ Logo saved to database!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.logoImage = url;
-                settings.logoType = 'image';
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
                 await loadSettingsUI();
+                await updateUI();
             } catch (err) {
+                console.error('❌ Save Logo error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
+        // ===== RESET LOGO =====
         document.getElementById('resetLogoBtn').addEventListener('click', async function() {
             if (!confirm('Reset logo to default icon?')) return;
             try {
@@ -1730,129 +1841,82 @@
                 await saveSetting('logo_type', 'icon');
                 await saveSetting('logo_icon', 'fas fa-coins');
                 showToast('✅ Logo reset to default!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.logoImage = '';
-                settings.logoType = 'icon';
-                settings.logoIcon = 'fas fa-coins';
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
                 document.getElementById('adminLogoUrl').value = '';
                 await loadSettingsUI();
+                await updateUI();
             } catch (err) {
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== FIXED: SOCIAL MEDIA SAVE FUNCTIONS =====
-        document.getElementById('saveTwitterBtn').addEventListener('click', async function() {
-            const value = document.getElementById('adminTwitter').value.trim();
-            if (!value) {
-                showToast('❌ Please enter a Twitter URL.');
-                return;
-            }
+        // ===== SAVE BONUS & REFERRAL =====
+        document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
+            const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
+            const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
+            
+            console.log('📌 Saving Bonus:', bonus, 'Ref:', ref);
+            
             try {
-                await saveSetting('contact_twitter', value);
-                showToast('✅ Twitter URL saved to database!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.contactTwitter = value;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
+                await saveSetting('bonus_percent', String(bonus));
+                await saveSetting('ref_percent', String(ref));
+                showToast('✅ Settings saved to database!');
                 await loadSettingsUI();
+                await updateUI();
             } catch (err) {
+                console.error('❌ Save Settings error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        document.getElementById('saveTelegramBtn').addEventListener('click', async function() {
-            const value = document.getElementById('adminTelegram').value.trim();
-            if (!value) {
-                showToast('❌ Please enter a Telegram URL.');
-                return;
-            }
-            try {
-                await saveSetting('contact_telegram', value);
-                showToast('✅ Telegram URL saved to database!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.contactTelegram = value;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                await loadSettingsUI();
-            } catch (err) {
-                showToast('❌ Failed: ' + err.message);
-            }
-        });
-
-        document.getElementById('saveDiscordBtn').addEventListener('click', async function() {
-            const value = document.getElementById('adminDiscord').value.trim();
-            if (!value) {
-                showToast('❌ Please enter a Discord URL.');
-                return;
-            }
-            try {
-                await saveSetting('contact_discord', value);
-                showToast('✅ Discord URL saved to database!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.contactDiscord = value;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                await loadSettingsUI();
-            } catch (err) {
-                showToast('❌ Failed: ' + err.message);
-            }
-        });
-
-        document.getElementById('saveContactEmailBtn').addEventListener('click', async function() {
-            const value = document.getElementById('adminContactEmail').value.trim();
-            if (!value || !value.includes('@')) {
-                showToast('❌ Please enter a valid email.');
-                return;
-            }
-            try {
-                await saveSetting('contact_email', value);
-                showToast('✅ Contact email saved to database!');
-                const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
-                settings.contactEmail = value;
-                localStorage.setItem('silverchain_settings', JSON.stringify(settings));
-                await loadSettingsUI();
-            } catch (err) {
-                showToast('❌ Failed: ' + err.message);
-            }
-        });
-
-        // ===== USDT & QRIS =====
+        // ===== SAVE USDT ADDRESS =====
         document.getElementById('saveUsdtBtn').addEventListener('click', async function() {
-            const address = document.getElementById('adminUsdtAddress').value.trim();
-            if (!address || address.length < 10) {
+            const value = document.getElementById('adminUsdtAddress').value.trim();
+            if (!value || value.length < 10) {
                 showToast('❌ Please enter a valid USDT address.');
                 return;
             }
+            
+            console.log('📌 Saving USDT Address:', value);
+            
             try {
-                await saveSetting('usdt_address', address);
-                localStorage.setItem('silverchain_usdt_address', address);
+                await saveSetting('usdt_address', value);
+                localStorage.setItem('silverchain_usdt_address', value);
                 showToast('✅ USDT address saved to database!');
+                await loadSettingsUI();
+                await updateUI();
             } catch (err) {
+                console.error('❌ Save USDT error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
+        // ===== SAVE QRIS =====
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
-            const url = document.getElementById('adminQrisUrl').value.trim();
-
-            if (!url) {
+            const value = document.getElementById('adminQrisUrl').value.trim();
+            
+            console.log('📌 Saving QRIS URL:', value);
+            
+            if (!value) {
                 showToast('❌ Please enter a QRIS image URL.');
                 return;
             }
-
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            
+            if (!value.startsWith('http://') && !value.startsWith('https://')) {
                 showToast('❌ Please enter a valid URL (http:// or https://)');
                 return;
             }
-
-            if (url.includes('imgur.com/a/') || url.includes('imgur.com/gallery/')) {
+            
+            if (value.includes('imgur.com/a/') || value.includes('imgur.com/gallery/')) {
                 showToast('❌ Gunakan direct image URL: i.imgur.com/xxxxx.png');
                 return;
             }
-
+            
             try {
-                await saveSetting('qris_image', url);
+                await saveSetting('qris_image', value);
                 showToast('✅ QRIS image URL saved to database!');
                 await loadQrisPreview();
+                await loadSettingsUI();
+                await updateUI();
             } catch (err) {
                 console.error('❌ Save QRIS error:', err);
                 showToast('❌ Failed: ' + err.message);
@@ -1955,7 +2019,6 @@
 
         console.log('🟢 SilverChain Admin Panel loaded.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
-        console.log('📌 QRIS: gunakan direct image URL (i.imgur.com/xxxxx.png)');
     </script>
 </body>
 </html>
