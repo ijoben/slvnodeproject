@@ -361,21 +361,6 @@
             transition: all 0.5s ease;
         }
 
-        .forgot-password {
-            text-align: right;
-            font-size: 0.7rem;
-            margin-top: -0.3rem;
-        }
-        .forgot-password a {
-            color: #60a5fa;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .forgot-password a:hover {
-            color: #93bbfc;
-            text-decoration: underline;
-        }
-
         @media (max-width: 480px) {
             .auth-card {
                 padding: 1.8rem 1.2rem 1.5rem;
@@ -443,9 +428,6 @@
                 font-size: 0.65rem;
                 min-width: 60px;
             }
-            .forgot-password {
-                font-size: 0.6rem;
-            }
         }
     </style>
 </head>
@@ -481,9 +463,6 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" id="loginPassword" placeholder="Enter your password" required />
                         <button type="button" class="toggle-pw" onclick="togglePassword('loginPassword', this)"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="#" id="forgotPasswordLink">Forgot password?</a>
                     </div>
                 </div>
                 <button type="submit" class="btn-submit" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
@@ -539,20 +518,6 @@
                 <button type="button" class="btn-back" onclick="window.location.href='/'"><i class="fas fa-arrow-left"></i> Back to Home</button>
             </form>
 
-            <!-- ===== FORGOT PASSWORD MODAL ===== -->
-            <div id="forgotPasswordModal" style="display:none; margin-top:1rem;">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="resetEmail" placeholder="Enter your email" />
-                    </div>
-                </div>
-                <button class="btn-submit" id="resetPasswordBtn"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
-                <button class="btn-back" id="cancelResetBtn" style="margin-top:0.3rem;"><i class="fas fa-arrow-left"></i> Back to Login</button>
-                <div class="result-msg" id="resetResult"></div>
-            </div>
-
             <div class="auth-footer">
                 <span>SilverChain DAO &copy; 2026</span>
             </div>
@@ -595,6 +560,10 @@
                 code += chars.charAt(Math.floor(Math.random() * chars.length));
             }
             return code;
+        }
+
+        function hashPassword(password) {
+            return btoa(password + 'silverchain_salt_2026');
         }
 
         function showResult(id, msg, type = 'info') {
@@ -660,7 +629,7 @@
         }
 
         // ============================================================
-        //  SUPABASE FUNCTIONS - GABUNGAN CUSTOM + AUTH
+        //  SUPABASE FUNCTIONS
         // ============================================================
         async function getUserByEmail(email) {
             try {
@@ -707,38 +676,18 @@
         }
 
         // ============================================================
-        //  REGISTER DENGAN SUPABASE AUTH + CUSTOM USERS
+        //  CREATE USER
         // ============================================================
-        async function createUserWithAuth(email, password, refCode = null) {
+        async function createUser(email, password, refCode = null) {
             try {
-                // 1. Cek email sudah terdaftar di custom users
                 const existing = await getUserByEmail(email);
                 if (existing) {
                     throw new Error('Email already registered. Please login.');
                 }
 
-                // 2. Register ke Supabase Auth
-                console.log('📝 Registering to Supabase Auth...');
-                const { data: authData, error: authError } = await supabaseClient.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        emailRedirectTo: window.location.origin + '/dashboard'
-                    }
-                });
+                const newRefCode = generateRefCode();
+                const hashedPassword = hashPassword(password);
 
-                if (authError) {
-                    console.error('❌ Auth error:', authError);
-                    throw new Error(authError.message);
-                }
-
-                if (!authData.user) {
-                    throw new Error('Failed to create auth user');
-                }
-
-                console.log('✅ Auth user created:', authData.user.id);
-
-                // 3. Proses referral code
                 let referredBy = null;
                 let referrerEmail = null;
                 const cleanRefCode = refCode ? refCode.trim().toUpperCase() : '';
@@ -752,28 +701,23 @@
                         console.log(`✅ Referral code ${cleanRefCode} valid!`);
                         console.log(`📌 Upline: ${referrerEmail} (ref_code: ${referredBy})`);
                     } else {
-                        // Jika referral code tidak valid, hapus user auth yang sudah dibuat
-                        await supabaseClient.auth.admin.deleteUser(authData.user.id);
                         throw new Error(`Invalid referral code: "${cleanRefCode}". Silahkan cek kembali.`);
                     }
                 } else {
                     console.log('ℹ️ No referral code provided. referred_by will be null.');
                 }
 
-                // 4. Buat record di tabel custom users
-                const newRefCode = generateRefCode();
                 const userRole = email === ADMIN_EMAIL ? 'admin' : 'user';
 
-                console.log(`📝 Creating custom user record...`);
+                console.log(`📝 Creating user: ${email}`);
                 console.log(`🔑 New ref_code: ${newRefCode}`);
                 console.log(`👥 Referred by: ${referredBy || 'none'}`);
-                console.log(`👤 Role: ${userRole}`);
 
-                const { data: userData, error: userError } = await supabaseClient
+                const { data, error } = await supabaseClient
                     .from('users')
                     .insert({
-                        id: authData.user.id, // ← link ke auth.users
                         email: email,
+                        password: hashedPassword,
                         ref_code: newRefCode,
                         referred_by: referredBy,
                         verified: false,
@@ -784,11 +728,12 @@
                     .select()
                     .single();
 
-                if (userError) {
-                    console.error('❌ Custom user error:', userError);
-                    // Hapus auth user jika custom insert gagal
-                    await supabaseClient.auth.admin.deleteUser(authData.user.id);
-                    throw new Error('Failed to create user profile: ' + userError.message);
+                if (error) {
+                    if (error.code === '23505') {
+                        throw new Error('Email already registered. Please login.');
+                    }
+                    console.error('Insert error:', error);
+                    throw new Error('Failed to create account: ' + error.message);
                 }
 
                 console.log(`✅ User created successfully!`);
@@ -796,7 +741,7 @@
                 console.log(`🔑 Ref Code: ${newRefCode}`);
                 console.log(`👥 Referred By: ${referredBy || 'none'}`);
 
-                return userData;
+                return data;
 
             } catch (error) {
                 console.error('Create user error:', error);
@@ -804,45 +749,19 @@
             }
         }
 
-        // ============================================================
-        //  LOGIN DENGAN SUPABASE AUTH
-        // ============================================================
-        async function loginWithAuth(email, password) {
+        async function loginUser(email, password) {
             try {
-                // 1. Login ke Supabase Auth
-                console.log('📝 Logging in with Supabase Auth...');
-                const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-
-                if (authError) {
-                    console.error('❌ Auth error:', authError);
-                    if (authError.message.includes('Invalid login credentials')) {
-                        throw new Error('Invalid email or password. Please try again.');
-                    }
-                    throw new Error(authError.message);
+                const user = await getUserByEmail(email);
+                if (!user) {
+                    throw new Error('Account not found. Please register first.');
                 }
 
-                if (!authData.user) {
-                    throw new Error('Login failed');
+                const hashed = hashPassword(password);
+                if (user.password !== hashed) {
+                    throw new Error('Invalid password. Please try again.');
                 }
 
-                console.log('✅ Auth login successful:', authData.user.id);
-
-                // 2. Ambil data dari custom users
-                const userData = await getUserByEmail(email);
-                if (!userData) {
-                    // Jika user ada di auth tapi tidak di custom users
-                    // Ini bisa terjadi jika register gagal di custom users
-                    throw new Error('User profile not found. Please contact support.');
-                }
-
-                console.log('✅ User data found:', userData.email);
-                console.log(`👤 Role: ${userData.role}`);
-
-                return userData;
-
+                return user;
             } catch (error) {
                 console.error('Login error:', error);
                 throw error;
@@ -850,32 +769,7 @@
         }
 
         // ============================================================
-        //  FORGOT PASSWORD - RESET VIA EMAIL
-        // ============================================================
-        async function sendPasswordReset(email) {
-            try {
-                console.log(`📝 Sending password reset to: ${email}`);
-                
-                const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/dashboard'
-                });
-
-                if (error) {
-                    console.error('❌ Reset error:', error);
-                    throw new Error(error.message);
-                }
-
-                console.log('✅ Password reset email sent!');
-                return true;
-
-            } catch (error) {
-                console.error('Send reset error:', error);
-                throw error;
-            }
-        }
-
-        // ============================================================
-        //  REFERRAL AUTO-FILL FROM URL
+        //  REFERRAL AUTO-FILL FROM URL - TANPA NOTIFIKASI DOBEL
         // ============================================================
         function autoFillReferralCode() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -897,12 +791,15 @@
                 return false;
             }
 
+            // Set value
             const cleanRef = ref.trim().toUpperCase();
             refInput.value = cleanRef;
             
+            // Tampilkan status validasi (tanpa notifikasi dobel)
             refStatus.className = 'ref-status checking';
             refStatus.textContent = '⏳ Checking...';
             
+            // Highlight wrapper
             refWrapper.classList.add('highlight');
             
             isReferralAutoFilled = true;
@@ -915,6 +812,7 @@
                 registerTab.click();
             }
             
+            // Validate after a moment
             setTimeout(() => {
                 validateReferralCode(cleanRef);
             }, 800);
@@ -952,13 +850,14 @@
         }
 
         // ============================================================
-        //  REAL-TIME REFERRAL CHECK
+        //  REAL-TIME REFERRAL CHECK (Manual input)
         // ============================================================
         const refInput = document.getElementById('registerRefCode');
         const refStatus = document.getElementById('refStatus');
 
         if (refInput) {
             refInput.addEventListener('input', function() {
+                // Remove highlight when user manually edits
                 const wrapper = document.getElementById('refInputWrapper');
                 wrapper.classList.remove('highlight');
                 
@@ -1007,7 +906,6 @@
         const tabs = document.querySelectorAll('.auth-tab');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
-        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
 
         tabs.forEach(tab => {
             tab.addEventListener('click', function() {
@@ -1015,84 +913,21 @@
                 this.classList.add('active');
 
                 if (this.dataset.tab === 'login') {
-                    loginForm.style.display = 'flex';
-                    registerForm.style.display = 'none';
-                    forgotPasswordModal.style.display = 'none';
+                    loginForm.classList.add('active');
+                    registerForm.classList.remove('active');
                     hideResult('loginResult');
                     hideResult('registerResult');
-                    hideResult('resetResult');
                 } else {
-                    registerForm.style.display = 'flex';
-                    loginForm.style.display = 'none';
-                    forgotPasswordModal.style.display = 'none';
+                    registerForm.classList.add('active');
+                    loginForm.classList.remove('active');
                     hideResult('loginResult');
                     hideResult('registerResult');
-                    hideResult('resetResult');
                 }
             });
         });
 
         // ============================================================
-        //  FORGOT PASSWORD
-        // ============================================================
-        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'none';
-            forgotPasswordModal.style.display = 'block';
-            hideResult('loginResult');
-            hideResult('registerResult');
-            hideResult('resetResult');
-            document.getElementById('resetEmail').value = '';
-        });
-
-        document.getElementById('cancelResetBtn').addEventListener('click', function() {
-            forgotPasswordModal.style.display = 'none';
-            loginForm.style.display = 'flex';
-            hideResult('resetResult');
-        });
-
-        document.getElementById('resetPasswordBtn').addEventListener('click', async function() {
-            const email = document.getElementById('resetEmail').value.trim();
-            const btn = this;
-            const result = document.getElementById('resetResult');
-
-            hideResult('resetResult');
-
-            if (!email) {
-                showResult('resetResult', 'Please enter your email address.', 'error');
-                return;
-            }
-
-            if (!email.includes('@')) {
-                showResult('resetResult', 'Please enter a valid email address.', 'error');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-            try {
-                await sendPasswordReset(email);
-                showResult('resetResult', '✅ Password reset link sent to your email!', 'success');
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
-                btn.disabled = false;
-                
-                setTimeout(() => {
-                    forgotPasswordModal.style.display = 'none';
-                    loginForm.style.display = 'flex';
-                    hideResult('resetResult');
-                }, 5000);
-
-            } catch (err) {
-                showResult('resetResult', '❌ ' + err.message, 'error');
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
-                btn.disabled = false;
-            }
-        });
-
-        // ============================================================
-        //  LOGIN - DENGAN SUPABASE AUTH
+        //  LOGIN
         // ============================================================
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1116,7 +951,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
             try {
-                const user = await loginWithAuth(email, password);
+                const user = await loginUser(email, password);
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
                 showResult('loginResult', '✅ Login successful! Redirecting...', 'success');
 
@@ -1132,7 +967,7 @@
         });
 
         // ============================================================
-        //  REGISTER - DENGAN SUPABASE AUTH + CUSTOM USERS
+        //  REGISTER
         // ============================================================
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1176,13 +1011,13 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
 
             try {
-                const user = await createUserWithAuth(email, password, refCode);
+                const user = await createUser(email, password, refCode);
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
-                showResult('registerResult', '✅ Account created successfully! Please check your email for verification. Redirecting...', 'success');
+                showResult('registerResult', '✅ Account created successfully! Redirecting...', 'success');
 
                 setTimeout(() => {
                     redirectUser(user);
-                }, 2000);
+                }, 800);
 
             } catch (err) {
                 showResult('registerResult', '❌ ' + err.message, 'error');
@@ -1206,38 +1041,18 @@
             }
         });
 
-        document.getElementById('resetEmail').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('resetPasswordBtn').click();
-            }
-        });
-
         // ============================================================
         //  CHECK ALREADY LOGGED IN
         // ============================================================
         async function checkAlreadyLoggedIn() {
             try {
-                // Cek session di Supabase Auth
-                const { data: sessionData } = await supabaseClient.auth.getSession();
-                
-                if (sessionData.session) {
-                    const userEmail = sessionData.session.user.email;
-                    const user = await getUserByEmail(userEmail);
-                    if (user) {
-                        console.log('👤 Already logged in as:', user.email);
-                        redirectUser(user);
-                        return true;
-                    }
-                }
-                
-                // Fallback ke localStorage
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
                     if (data && data.email) {
                         const user = await getUserByEmail(data.email);
                         if (user) {
-                            console.log('👤 Already logged in (localStorage):', user.email);
+                            console.log('👤 Already logged in as:', user.email);
                             redirectUser(user);
                             return true;
                         }
@@ -1264,11 +1079,13 @@
             const loggedIn = await checkAlreadyLoggedIn();
             if (loggedIn) return;
 
+            // Auto-fill referral code from URL
             autoFillReferralCode();
 
             console.log('🟢 Auth page ready!');
         }
 
+        // Run init when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
