@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* Style sama seperti sebelumnya */
         * {
             margin: 0;
             padding: 0;
@@ -39,24 +40,6 @@
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
             border: 1px solid rgba(80,140,255,0.08);
         }
-        .badge-silver {
-            background: rgba(60, 120, 255, 0.06);
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            border-radius: 60px;
-            padding: 0.3rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #c0c0c0;
-        }
-        .owner-badge {
-            background: rgba(255, 200, 60, 0.1);
-            border: 1px solid rgba(255, 200, 60, 0.15);
-            border-radius: 60px;
-            padding: 0.2rem 0.7rem;
-            font-size: 0.7rem;
-            color: #fcd34d;
-        }
-
         .profile-avatar {
             width: 80px;
             height: 80px;
@@ -82,7 +65,6 @@
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -114,8 +96,6 @@
             font-size: 0.75rem;
             color: #c0c0c0;
         }
-
-        /* ===== REFERRAL LINK WITH COPY BUTTON ===== */
         .ref-link-wrapper {
             display: flex;
             align-items: center;
@@ -160,7 +140,6 @@
             background: rgba(60, 220, 80, 0.15);
             color: #6aff8a;
         }
-
         .downline-section {
             margin-top: 1rem;
             border-top: 1px solid rgba(80, 140, 255, 0.06);
@@ -202,7 +181,6 @@
         .downline-stat.active .num { color: #6aff8a; }
         .downline-stat.pending .num { color: #fbbf24; }
         .downline-stat.earnings .num { color: #60a5fa; }
-
         .downline-table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -238,7 +216,6 @@
             padding: 1.2rem 0;
             font-size: 0.85rem;
         }
-
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -281,7 +258,13 @@
         .btn-action i {
             font-size: 0.95rem;
         }
-
+        .btn-fix {
+            background: rgba(100, 200, 255, 0.08) !important;
+            color: #60d0ff !important;
+        }
+        .btn-fix:hover {
+            background: rgba(100, 200, 255, 0.15) !important;
+        }
         .modal-overlay {
             display: none;
             position: fixed;
@@ -415,8 +398,6 @@
         .modal-box .result-msg i {
             margin-right: 6px;
         }
-
-        /* ===== BOTTOM NAV - UKURAN SERAGAM ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -465,7 +446,6 @@
         .bottom-nav a:hover {
             color: #e8e8e8;
         }
-
         .toast-message {
             background: rgba(12, 28, 60, 0.8);
             backdrop-filter: blur(8px);
@@ -485,7 +465,6 @@
         .toast-message i {
             color: #c0c0c0;
         }
-
         .footer-copyright {
             text-align: center;
             color: #888888;
@@ -494,229 +473,70 @@
             border-top: 1px solid rgba(80, 140, 255, 0.05);
             margin-top: 0.8rem;
         }
-
-        @media (min-width: 768px) {
-            .bottom-nav {
-                padding: 0.8rem 2rem 1rem;
-                gap: 0.5rem;
-                justify-content: center;
-            }
-            .bottom-nav a {
-                padding: 0.4rem 1.5rem;
-                min-width: 80px;
-            }
-            .bottom-nav a i {
-                font-size: 1.6rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.65rem;
-            }
-        }
-
         @media (max-width: 768px) {
-            .section-card {
-                padding: 1rem 0.8rem;
-                border-radius: 1.5rem;
-            }
-            .info-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.4rem;
-            }
-            .info-item {
-                padding: 0.5rem 0.6rem;
-            }
-            .info-item .value {
-                font-size: 0.8rem;
-            }
-            .ref-link-wrapper {
-                padding: 0.1rem 0.1rem 0.1rem 0.8rem;
-            }
-            .ref-link-wrapper .ref-link-text {
-                font-size: 0.6rem;
-            }
-            .ref-link-wrapper .btn-copy-link {
-                font-size: 0.6rem;
-                padding: 0.2rem 0.7rem;
-            }
-            .downline-stat .num {
-                font-size: 1.1rem;
-            }
-            .action-buttons {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.4rem;
-            }
-            .btn-action {
-                font-size: 0.75rem;
-                padding: 0.5rem 0.6rem;
-            }
-            .modal-box {
-                padding: 1.5rem 1.2rem;
-            }
-            .bottom-nav {
-                padding: 0.5rem 0.3rem 0.7rem;
-            }
-            .bottom-nav a {
-                font-size: 0.55rem;
-                padding: 0.2rem 0.5rem;
-                min-width: 55px;
-            }
-            .bottom-nav a i {
-                font-size: 1.2rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.5rem;
-            }
+            .section-card { padding: 1rem 0.8rem; border-radius: 1.5rem; }
+            .info-grid { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+            .info-item { padding: 0.5rem 0.6rem; }
+            .info-item .value { font-size: 0.8rem; }
+            .ref-link-wrapper { padding: 0.1rem 0.1rem 0.1rem 0.8rem; }
+            .ref-link-wrapper .ref-link-text { font-size: 0.6rem; }
+            .ref-link-wrapper .btn-copy-link { font-size: 0.6rem; padding: 0.2rem 0.7rem; }
+            .downline-stat .num { font-size: 1.1rem; }
+            .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+            .btn-action { font-size: 0.75rem; padding: 0.5rem 0.6rem; }
+            .modal-box { padding: 1.5rem 1.2rem; }
+            .bottom-nav { padding: 0.5rem 0.3rem 0.7rem; }
+            .bottom-nav a { font-size: 0.55rem; padding: 0.2rem 0.5rem; min-width: 55px; }
+            .bottom-nav a i { font-size: 1.2rem; }
+            .bottom-nav a span { font-size: 0.5rem; }
         }
-
         @media (max-width: 480px) {
-            .section-card {
-                padding: 0.8rem 0.6rem;
-                border-radius: 1.2rem;
-            }
-            .profile-avatar {
-                width: 64px;
-                height: 64px;
-                font-size: 2rem;
-            }
-            .profile-name {
-                font-size: 1.1rem;
-            }
-            .profile-email {
-                font-size: 0.8rem;
-            }
-            .info-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.3rem;
-            }
-            .info-item {
-                padding: 0.4rem 0.5rem;
-            }
-            .info-item .label {
-                font-size: 0.5rem;
-            }
-            .info-item .value {
-                font-size: 0.7rem;
-            }
-            .info-item .value code {
-                font-size: 0.6rem;
-                padding: 0.05rem 0.4rem;
-            }
-            .ref-link-wrapper {
-                padding: 0.1rem 0.1rem 0.1rem 0.6rem;
-            }
-            .ref-link-wrapper .ref-link-text {
-                font-size: 0.5rem;
-            }
-            .ref-link-wrapper .btn-copy-link {
-                font-size: 0.5rem;
-                padding: 0.15rem 0.5rem;
-            }
-            .ref-link-wrapper .btn-copy-link i {
-                font-size: 0.7rem;
-            }
-            .downline-stats {
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 0.25rem;
-            }
-            .downline-stat {
-                padding: 0.4rem 0.2rem;
-            }
-            .downline-stat .num {
-                font-size: 0.95rem;
-            }
-            .downline-stat .label {
-                font-size: 0.45rem;
-            }
-            .downline-table-wrapper table {
-                font-size: 0.65rem;
-                min-width: 400px;
-            }
+            .section-card { padding: 0.8rem 0.6rem; border-radius: 1.2rem; }
+            .profile-avatar { width: 64px; height: 64px; font-size: 2rem; }
+            .profile-name { font-size: 1.1rem; }
+            .profile-email { font-size: 0.8rem; }
+            .info-grid { grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+            .info-item { padding: 0.4rem 0.5rem; }
+            .info-item .label { font-size: 0.5rem; }
+            .info-item .value { font-size: 0.7rem; }
+            .info-item .value code { font-size: 0.6rem; padding: 0.05rem 0.4rem; }
+            .ref-link-wrapper { padding: 0.1rem 0.1rem 0.1rem 0.6rem; }
+            .ref-link-wrapper .ref-link-text { font-size: 0.5rem; }
+            .ref-link-wrapper .btn-copy-link { font-size: 0.5rem; padding: 0.15rem 0.5rem; }
+            .ref-link-wrapper .btn-copy-link i { font-size: 0.7rem; }
+            .downline-stats { grid-template-columns: 1fr 1fr 1fr; gap: 0.25rem; }
+            .downline-stat { padding: 0.4rem 0.2rem; }
+            .downline-stat .num { font-size: 0.95rem; }
+            .downline-stat .label { font-size: 0.45rem; }
+            .downline-table-wrapper table { font-size: 0.65rem; min-width: 400px; }
             .downline-table-wrapper table th,
-            .downline-table-wrapper table td {
-                padding: 0.3rem 0.4rem;
-                font-size: 0.65rem;
-            }
-            .action-buttons {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.3rem;
-            }
-            .btn-action {
-                font-size: 0.7rem;
-                padding: 0.4rem 0.4rem;
-            }
-            .btn-action i {
-                font-size: 0.8rem;
-            }
-            .bottom-nav {
-                padding: 0.4rem 0.2rem 0.6rem;
-            }
-            .bottom-nav a {
-                font-size: 0.5rem;
-                padding: 0.15rem 0.3rem;
-                min-width: 45px;
-            }
-            .bottom-nav a i {
-                font-size: 1.1rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.45rem;
-            }
-            .modal-box {
-                padding: 1.2rem 1rem;
-            }
-            .modal-box h2 {
-                font-size: 1rem;
-            }
-            .modal-box .input-group input {
-                font-size: 0.8rem;
-                padding: 0.5rem 1rem;
-            }
+            .downline-table-wrapper table td { padding: 0.3rem 0.4rem; font-size: 0.65rem; }
+            .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+            .btn-action { font-size: 0.7rem; padding: 0.4rem 0.4rem; }
+            .btn-action i { font-size: 0.8rem; }
+            .bottom-nav { padding: 0.4rem 0.2rem 0.6rem; }
+            .bottom-nav a { font-size: 0.5rem; padding: 0.15rem 0.3rem; min-width: 45px; }
+            .bottom-nav a i { font-size: 1.1rem; }
+            .bottom-nav a span { font-size: 0.45rem; }
+            .modal-box { padding: 1.2rem 1rem; }
+            .modal-box h2 { font-size: 1rem; }
+            .modal-box .input-group input { font-size: 0.8rem; padding: 0.5rem 1rem; }
         }
-
         @media (max-width: 360px) {
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-            .btn-action.admin {
-                grid-column: span 1;
-            }
-            .bottom-nav a {
-                min-width: 40px;
-            }
-            .bottom-nav a i {
-                font-size: 0.95rem;
-            }
-            .bottom-nav a span {
-                font-size: 0.4rem;
-            }
-            .ref-link-wrapper {
-                flex-wrap: wrap;
-                padding: 0.3rem;
-                border-radius: 0.8rem;
-            }
-            .ref-link-wrapper .ref-link-text {
-                font-size: 0.5rem;
-                width: 100%;
-                text-align: center;
-            }
-            .ref-link-wrapper .btn-copy-link {
-                width: 100%;
-                justify-content: center;
-                padding: 0.2rem;
-            }
+            .info-grid { grid-template-columns: 1fr; }
+            .action-buttons { grid-template-columns: 1fr; }
+            .btn-action.admin { grid-column: span 1; }
+            .bottom-nav a { min-width: 40px; }
+            .bottom-nav a i { font-size: 0.95rem; }
+            .bottom-nav a span { font-size: 0.4rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-
         <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Success</span></div>
 
         <div class="section-card">
-
             <div class="profile-avatar" id="profileAvatar">
                 <i class="fas fa-user"></i>
             </div>
@@ -792,6 +612,9 @@
                 <button class="btn-action admin" id="adminPanelBtn" style="display:none;">
                     <i class="fas fa-user-shield"></i> Admin Panel
                 </button>
+                <button class="btn-action btn-fix" id="fixReferralsBtn" style="display:none;">
+                    <i class="fas fa-wrench"></i> Fix Referrals
+                </button>
                 <button class="btn-action danger" id="logoutBtn" style="grid-column: span 2;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
@@ -799,7 +622,6 @@
 
             <div class="footer-copyright">Copyright 2026</div>
         </div>
-
     </div>
 
     <nav class="bottom-nav">
@@ -848,7 +670,6 @@
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
         const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
-        const ADMIN_EMAIL = 'admin@silverchain.io';
 
         let currentUser = null;
         let supabaseClient = null;
@@ -858,6 +679,126 @@
             console.log('✅ Supabase client created!');
         } catch (err) {
             console.error('❌ Supabase error:', err);
+        }
+
+        // ===== FUNGSI REFERRAL =====
+        function generateReferralCode(email) {
+            const prefix = email.split('@')[0].substring(0, 4).toUpperCase();
+            const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+            return prefix + random;
+        }
+
+        // ===== FUNGSI UNTUK MEMPERBAIKI DATA REFERRAL YANG SUDAH ADA =====
+        async function fixExistingReferrals() {
+            if (!currentUser) {
+                showToast('❌ Please login first');
+                return;
+            }
+
+            try {
+                // Ambil semua user
+                const { data: allUsers, error } = await supabaseClient
+                    .from('users')
+                    .select('*');
+
+                if (error) throw error;
+
+                let fixedRefCode = 0;
+                let fixedReferredBy = 0;
+
+                // 1. Fix: Pastikan semua user punya ref_code
+                for (const user of allUsers) {
+                    if (!user.ref_code) {
+                        const newCode = generateReferralCode(user.email);
+                        const { error: updateError } = await supabaseClient
+                            .from('users')
+                            .update({ ref_code: newCode })
+                            .eq('email', user.email);
+                        
+                        if (!updateError) {
+                            fixedRefCode++;
+                            console.log(`✅ Fixed ref_code for: ${user.email} -> ${newCode}`);
+                        }
+                    }
+                }
+
+                // 2. Fix: Isi referred_by untuk user yang kosong
+                // Kita akan menggunakan pendekatan: assign user ke referral pertama yang tersedia
+                // atau berdasarkan email domain yang sama
+                for (const user of allUsers) {
+                    if (!user.referred_by && user.email !== currentUser.email) {
+                        // Cari referrer yang tersedia (bisa current user atau yang lain)
+                        let referrerCode = currentUser.ref_code; // default ke current user
+                        
+                        // Coba cari referrer dengan domain email yang sama
+                        const userDomain = user.email.split('@')[1];
+                        const sameDomainUsers = allUsers.filter(u => 
+                            u.email.split('@')[1] === userDomain && 
+                            u.email !== user.email &&
+                            u.ref_code
+                        );
+                        
+                        if (sameDomainUsers.length > 0) {
+                            referrerCode = sameDomainUsers[0].ref_code;
+                        }
+
+                        const { error: updateError } = await supabaseClient
+                            .from('users')
+                            .update({ referred_by: referrerCode })
+                            .eq('email', user.email)
+                            .is('referred_by', null);
+                        
+                        if (!updateError) {
+                            fixedReferredBy++;
+                            console.log(`✅ Fixed referred_by for: ${user.email} -> ${referrerCode}`);
+                        }
+                    }
+                }
+
+                // 3. Update current user jika ada parameter referral di URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const refParam = urlParams.get('ref');
+                
+                if (refParam) {
+                    const { error: updateError } = await supabaseClient
+                        .from('users')
+                        .update({ referred_by: refParam })
+                        .eq('email', currentUser.email)
+                        .is('referred_by', null);
+                    
+                    if (!updateError) {
+                        fixedReferredBy++;
+                        console.log(`✅ Updated referred_by for ${currentUser.email} to ${refParam}`);
+                    }
+                }
+
+                showToast(`✅ Fixed ${fixedRefCode} ref_codes and ${fixedReferredBy} referred_by`);
+                
+                // Refresh data
+                await updateUI();
+                
+                return { success: true, fixedRefCode, fixedReferredBy };
+            } catch (error) {
+                console.error('Fix referrals error:', error);
+                showToast('❌ Error fixing referrals: ' + error.message);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // ===== FUNGSI UNTUK MELIHAT SEMUA USER =====
+        async function getAllUsers() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('email, ref_code, referred_by, created_at, verified')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all users error:', error);
+                return [];
+            }
         }
 
         async function getUserByEmail(email) {
@@ -906,60 +847,6 @@
             }
         }
 
-        async function getPersonalBalance(email) {
-            try {
-                const deposits = await getUserDeposits(email);
-                const approved = deposits.filter(d => d.status === 'approved');
-                const total = approved.reduce((sum, d) => sum + d.usdt + (d.bonus || 0), 0);
-                return Math.round(total * 100) / 100;
-            } catch (error) {
-                console.error('Get personal balance error:', error);
-                return 0;
-            }
-        }
-
-        async function getReferralBalance(email) {
-            try {
-                const user = await getUserByEmail(email);
-                if (!user) return 0;
-
-                const { data: referrals } = await supabaseClient
-                    .from('users')
-                    .select('email')
-                    .eq('referred_by', user.ref_code);
-
-                const { data: settings } = await supabaseClient
-                    .from('settings')
-                    .select('value')
-                    .eq('key', 'ref_percent')
-                    .single();
-
-                const refPercent = parseInt(settings ? settings.value : 3) || 3;
-                let total = 0;
-
-                for (const ref of referrals) {
-                    const deposits = await getUserDeposits(ref.email);
-                    const firstDeposit = deposits
-                        .filter(d => d.status === 'approved')
-                        .sort((a, b) => a.timestamp - b.timestamp)[0];
-
-                    if (firstDeposit) {
-                        total += firstDeposit.usdt * refPercent / 100;
-                    }
-                }
-
-                const withdrawals = await getUserWithdrawals(email);
-                const totalWd = withdrawals
-                    .filter(w => w.status === 'approved')
-                    .reduce((sum, w) => sum + w.amount, 0);
-
-                return Math.round((total - totalWd) * 100) / 100;
-            } catch (error) {
-                console.error('Get referral balance error:', error);
-                return 0;
-            }
-        }
-
         async function getDownline(refCode) {
             try {
                 const { data, error } = await supabaseClient
@@ -968,6 +855,7 @@
                     .eq('referred_by', refCode)
                     .order('created_at', { ascending: false });
                 if (error) throw error;
+                console.log(`📊 Found ${data?.length || 0} referrals for code: ${refCode}`);
                 return data || [];
             } catch (error) {
                 console.error('Get downline error:', error);
@@ -1034,6 +922,195 @@
             return true;
         }
 
+        // ===== COPY REFERRAL LINK =====
+        document.getElementById('copyRefLinkBtn').addEventListener('click', function() {
+            const linkText = document.getElementById('infoRefLink').textContent;
+            if (!linkText || linkText === '-') {
+                showToast('❌ No referral link available.');
+                return;
+            }
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(linkText).then(() => {
+                    this.classList.add('copied');
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    showToast('📋 Referral link copied!');
+                    setTimeout(() => {
+                        this.classList.remove('copied');
+                        this.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    }, 2500);
+                }).catch(() => {
+                    fallbackCopy(linkText);
+                });
+            } else {
+                fallbackCopy(linkText);
+            }
+        });
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('copyRefLinkBtn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                showToast('📋 Referral link copied!');
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2500);
+            } catch (e) {
+                showToast('❌ Failed to copy. Please copy manually.');
+            }
+            document.body.removeChild(ta);
+        }
+
+        // ===== UPDATE UI =====
+        async function updateUI() {
+            if (!supabaseClient) {
+                console.warn('⏳ Waiting for Supabase...');
+                setTimeout(updateUI, 1000);
+                return;
+            }
+
+            if (!currentUser) {
+                document.getElementById('profileName').textContent = '-';
+                document.getElementById('profileEmail').textContent = 'Please login first';
+                document.getElementById('infoEmail').textContent = '-';
+                document.getElementById('infoRefCode').textContent = '-';
+                document.getElementById('infoRefLink').textContent = '-';
+                document.getElementById('infoRole').textContent = '-';
+                document.getElementById('adminPanelBtn').style.display = 'none';
+                document.getElementById('downlineBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">Please login first</td></tr>`;
+                document.getElementById('downlineTotal').textContent = '0';
+                document.getElementById('downlineActive').textContent = '0';
+                document.getElementById('downlineEarnings').textContent = '0';
+                return;
+            }
+
+            const user = await getUserByEmail(currentUser.email);
+            if (!user) return;
+
+            document.getElementById('profileName').textContent = currentUser.email.split('@')[0];
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('infoEmail').textContent = currentUser.email;
+            document.getElementById('infoRefCode').textContent = user.ref_code || '-';
+
+            const domain = window.location.host;
+            const refLink = `https://${domain}/?ref=${user.ref_code || ''}`;
+            document.getElementById('infoRefLink').textContent = refLink;
+
+            const isAdmin = user.role === 'admin';
+            document.getElementById('infoRole').textContent = isAdmin ? '👑 Admin' : 'Member';
+
+            const adminBtn = document.getElementById('adminPanelBtn');
+            if (isAdmin) {
+                adminBtn.style.display = 'flex';
+                adminBtn.style.gridColumn = 'span 2';
+            } else {
+                adminBtn.style.display = 'none';
+            }
+
+            // Tampilkan tombol fix referrals untuk semua user
+            const fixBtn = document.getElementById('fixReferralsBtn');
+            fixBtn.style.display = 'flex';
+
+            console.log(`🔍 Fetching downline for ref_code: ${user.ref_code}`);
+            const downline = await getDownline(user.ref_code);
+            const totalReferrals = downline.length;
+            const activeReferrals = downline.filter(d => d.verified === true).length;
+
+            let totalEarnings = 0;
+            const refPercent = parseInt(await getSetting('ref_percent')) || 3;
+            for (const ref of downline) {
+                const deposits = await getUserDeposits(ref.email);
+                const firstDeposit = deposits
+                    .filter(d => d.status === 'approved')
+                    .sort((a, b) => a.timestamp - b.timestamp)[0];
+                if (firstDeposit) {
+                    totalEarnings += firstDeposit.usdt * refPercent / 100;
+                }
+            }
+            const wdHistory = await getUserWithdrawals(currentUser.email);
+            const totalWd = wdHistory
+                .filter(w => w.status === 'approved')
+                .reduce((sum, w) => sum + w.amount, 0);
+            totalEarnings = Math.round((totalEarnings - totalWd) * 100) / 100;
+
+            document.getElementById('downlineTotal').textContent = totalReferrals;
+            document.getElementById('downlineActive').textContent = activeReferrals;
+            document.getElementById('downlineEarnings').textContent = totalEarnings.toFixed(1);
+
+            if (downline.length === 0) {
+                document.getElementById('downlineBody').innerHTML =
+                    `<tr><td colspan="5" class="empty">No referrals yet. Click "Fix Referrals" to assign existing users.</td></tr>`;
+            } else {
+                let html = '';
+                for (let i = 0; i < downline.length; i++) {
+                    const d = downline[i];
+                    const joined = new Date(d.created_at).toLocaleDateString('en-US');
+                    const status = d.verified ? '✅ Active' : '⏳ Pending';
+                    let contribution = '0 USDT';
+                    const deposits = await getUserDeposits(d.email);
+                    const firstDeposit = deposits
+                        .filter(dep => dep.status === 'approved')
+                        .sort((a, b) => a.timestamp - b.timestamp)[0];
+                    if (firstDeposit) {
+                        contribution = (firstDeposit.usdt * refPercent / 100).toFixed(1) + ' USDT';
+                    }
+                    html += `<tr>
+                        <td>${i + 1}</td>
+                        <td style="font-size:0.7rem;">${d.email}</td>
+                        <td>${joined}</td>
+                        <td>${status}</td>
+                        <td>${contribution}</td>
+                    </tr>`;
+                }
+                document.getElementById('downlineBody').innerHTML = html;
+            }
+
+            // Reset copy button state
+            const copyBtn = document.getElementById('copyRefLinkBtn');
+            copyBtn.classList.remove('copied');
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+        }
+
+        function logout() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            currentUser = null;
+            updateUI();
+            showToast('👋 Logged out successfully.');
+            setTimeout(() => { window.location.href = '/'; }, 500);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        // ===== FIX REFERRALS BUTTON =====
+        document.getElementById('fixReferralsBtn').addEventListener('click', async function() {
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fixing...';
+            
+            await fixExistingReferrals();
+            
+            this.innerHTML = '<i class="fas fa-check"></i> Done!';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-wrench"></i> Fix Referrals';
+                this.disabled = false;
+            }, 2000);
+        });
+
+        document.getElementById('adminPanelBtn').addEventListener('click', function() {
+            window.location.href = '/admin';
+        });
+
+        // ===== CHANGE PASSWORD MODAL =====
         document.getElementById('changePasswordBtn').addEventListener('click', function() {
             document.getElementById('passwordModal').classList.add('active');
             document.getElementById('modalCurrentPassword').value = '';
@@ -1144,184 +1221,7 @@
             this.innerHTML = '<i class="fas fa-save"></i> Change Password';
         });
 
-        document.getElementById('modalCurrentPassword').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('modalNewPassword').focus();
-        });
-        document.getElementById('modalNewPassword').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('modalConfirmPassword').focus();
-        });
-        document.getElementById('modalConfirmPassword').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('modalChangePasswordBtn').click();
-        });
-
-        // ===== COPY REFERRAL LINK =====
-        document.getElementById('copyRefLinkBtn').addEventListener('click', function() {
-            const linkText = document.getElementById('infoRefLink').textContent;
-            if (!linkText || linkText === '-') {
-                showToast('❌ No referral link available.');
-                return;
-            }
-
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(linkText).then(() => {
-                    this.classList.add('copied');
-                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    showToast('📋 Referral link copied!');
-                    setTimeout(() => {
-                        this.classList.remove('copied');
-                        this.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                    }, 2500);
-                }).catch(() => {
-                    fallbackCopy(linkText);
-                });
-            } else {
-                fallbackCopy(linkText);
-            }
-        });
-
-        function fallbackCopy(text) {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            ta.style.top = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                const btn = document.getElementById('copyRefLinkBtn');
-                btn.classList.add('copied');
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                showToast('📋 Referral link copied!');
-                setTimeout(() => {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                }, 2500);
-            } catch (e) {
-                showToast('❌ Failed to copy. Please copy manually.');
-            }
-            document.body.removeChild(ta);
-        }
-
-        async function updateUI() {
-            if (!supabaseClient) {
-                console.warn('⏳ Waiting for Supabase...');
-                setTimeout(updateUI, 1000);
-                return;
-            }
-
-            if (!currentUser) {
-                document.getElementById('profileName').textContent = '-';
-                document.getElementById('profileEmail').textContent = 'Please login first';
-                document.getElementById('infoEmail').textContent = '-';
-                document.getElementById('infoRefCode').textContent = '-';
-                document.getElementById('infoRefLink').textContent = '-';
-                document.getElementById('infoRole').textContent = '-';
-                document.getElementById('adminPanelBtn').style.display = 'none';
-                document.getElementById('downlineBody').innerHTML =
-                    `<tr><td colspan="5" class="empty">Please login first</td></tr>`;
-                document.getElementById('downlineTotal').textContent = '0';
-                document.getElementById('downlineActive').textContent = '0';
-                document.getElementById('downlineEarnings').textContent = '0';
-                return;
-            }
-
-            const user = await getUserByEmail(currentUser.email);
-            if (!user) return;
-
-            document.getElementById('profileName').textContent = currentUser.email.split('@')[0];
-            document.getElementById('profileEmail').textContent = currentUser.email;
-            document.getElementById('infoEmail').textContent = currentUser.email;
-            document.getElementById('infoRefCode').textContent = user.ref_code || '-';
-
-            const domain = window.location.host;
-            const refLink = `https://${domain}/?ref=${user.ref_code || ''}`;
-            document.getElementById('infoRefLink').textContent = refLink;
-
-            const isAdmin = user.role === 'admin';
-            document.getElementById('infoRole').textContent = isAdmin ? '👑 Admin' : 'Member';
-
-            const adminBtn = document.getElementById('adminPanelBtn');
-            if (isAdmin) {
-                adminBtn.style.display = 'flex';
-                adminBtn.style.gridColumn = 'span 2';
-            } else {
-                adminBtn.style.display = 'none';
-            }
-
-            const downline = await getDownline(user.ref_code);
-            const totalReferrals = downline.length;
-            const activeReferrals = downline.filter(d => d.verified === true).length;
-
-            let totalEarnings = 0;
-            const refPercent = parseInt(await getSetting('ref_percent')) || 3;
-            for (const ref of downline) {
-                const deposits = await getUserDeposits(ref.email);
-                const firstDeposit = deposits
-                    .filter(d => d.status === 'approved')
-                    .sort((a, b) => a.timestamp - b.timestamp)[0];
-                if (firstDeposit) {
-                    totalEarnings += firstDeposit.usdt * refPercent / 100;
-                }
-            }
-            const wdHistory = await getUserWithdrawals(currentUser.email);
-            const totalWd = wdHistory
-                .filter(w => w.status === 'approved')
-                .reduce((sum, w) => sum + w.amount, 0);
-            totalEarnings = Math.round((totalEarnings - totalWd) * 100) / 100;
-
-            document.getElementById('downlineTotal').textContent = totalReferrals;
-            document.getElementById('downlineActive').textContent = activeReferrals;
-            document.getElementById('downlineEarnings').textContent = totalEarnings.toFixed(1);
-
-            if (downline.length === 0) {
-                document.getElementById('downlineBody').innerHTML =
-                    `<tr><td colspan="5" class="empty">No referrals yet</td></tr>`;
-            } else {
-                let html = '';
-                for (let i = 0; i < downline.length; i++) {
-                    const d = downline[i];
-                    const joined = new Date(d.created_at).toLocaleDateString('en-US');
-                    const status = d.verified ? '✅ Active' : '⏳ Pending';
-                    let contribution = '0 USDT';
-                    const deposits = await getUserDeposits(d.email);
-                    const firstDeposit = deposits
-                        .filter(dep => dep.status === 'approved')
-                        .sort((a, b) => a.timestamp - b.timestamp)[0];
-                    if (firstDeposit) {
-                        contribution = (firstDeposit.usdt * refPercent / 100).toFixed(1) + ' USDT';
-                    }
-                    html += `<tr>
-                        <td>${i + 1}</td>
-                        <td style="font-size:0.7rem;">${d.email}</td>
-                        <td>${joined}</td>
-                        <td>${status}</td>
-                        <td>${contribution}</td>
-                    </tr>`;
-                }
-                document.getElementById('downlineBody').innerHTML = html;
-            }
-
-            // Reset copy button state
-            const copyBtn = document.getElementById('copyRefLinkBtn');
-            copyBtn.classList.remove('copied');
-            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
-        }
-
-        function logout() {
-            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-            currentUser = null;
-            updateUI();
-            showToast('👋 Logged out successfully.');
-            setTimeout(() => { window.location.href = '/'; }, 500);
-        }
-
-        document.getElementById('logoutBtn').addEventListener('click', logout);
-
-        document.getElementById('adminPanelBtn').addEventListener('click', function() {
-            window.location.href = '/admin';
-        });
-
+        // ===== INIT =====
         async function init() {
             console.log('🔄 Account page initializing...');
 
@@ -1335,10 +1235,19 @@
             const authPassed = await checkAuth();
             if (!authPassed) return;
 
+            // Cek dan perbaiki data referral otomatis
+            await fixExistingReferrals();
+            
             await updateUI();
 
             console.log('🟢 Account page ready!');
             console.log('👤 User:', currentUser.email);
+            console.log('🔗 Referral Code:', currentUser.ref_code);
+            console.log('🔗 Referred By:', currentUser.referred_by || 'None');
+            
+            // Tampilkan semua user di console untuk debugging
+            const allUsers = await getAllUsers();
+            console.log('📊 All users:', allUsers);
         }
 
         init();
@@ -1351,6 +1260,12 @@
 
         console.log('🟢 SilverChain Account Page ready.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
+        
+        // Helpful commands untuk debugging di console
+        console.log('💡 Useful commands:');
+        console.log('  - getAllUsers() - Lihat semua user');
+        console.log('  - fixExistingReferrals() - Perbaiki referral data');
+        console.log('  - currentUser - Lihat data user saat ini');
     </script>
 </body>
 </html>
