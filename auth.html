@@ -249,12 +249,6 @@
             color: #60a5fa;
             border: 1px solid rgba(60, 120, 255, 0.15);
         }
-        .form-group .ref-input .ref-status.filled {
-            display: inline-block;
-            background: rgba(60, 120, 255, 0.08);
-            color: #60a5fa;
-            border: 1px solid rgba(60, 120, 255, 0.12);
-        }
 
         .info-banner {
             background: rgba(60, 120, 255, 0.05);
@@ -361,15 +355,10 @@
             font-size: 0.7rem;
         }
 
-        /* ===== REFERRAL CODE AUTO-FILL HIGHLIGHT ===== */
         .ref-input.highlight {
-            border-color: rgba(60, 120, 255, 0.3) !important;
-            background: rgba(60, 120, 255, 0.05) !important;
+            border-color: rgba(60, 120, 255, 0.2) !important;
+            background: rgba(60, 120, 255, 0.03) !important;
             transition: all 0.5s ease;
-        }
-        .ref-input.highlight input {
-            color: #60a5fa !important;
-            font-weight: 600;
         }
 
         @media (max-width: 480px) {
@@ -780,7 +769,7 @@
         }
 
         // ============================================================
-        //  REFERRAL AUTO-FILL FROM URL - FIXED!
+        //  REFERRAL AUTO-FILL FROM URL - TANPA NOTIFIKASI DOBEL
         // ============================================================
         function autoFillReferralCode() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -796,7 +785,6 @@
             const refInput = document.getElementById('registerRefCode');
             const refStatus = document.getElementById('refStatus');
             const refWrapper = document.getElementById('refInputWrapper');
-            const refInfoText = document.getElementById('refInfoText');
             
             if (!refInput) {
                 console.error('❌ Referral input not found!');
@@ -807,17 +795,12 @@
             const cleanRef = ref.trim().toUpperCase();
             refInput.value = cleanRef;
             
-            // Show status
-            refStatus.className = 'ref-status filled';
-            refStatus.textContent = '📎 Auto-filled from link';
+            // Tampilkan status validasi (tanpa notifikasi dobel)
+            refStatus.className = 'ref-status checking';
+            refStatus.textContent = '⏳ Checking...';
             
             // Highlight wrapper
             refWrapper.classList.add('highlight');
-            
-            // Update info banner
-            if (refInfoText) {
-                refInfoText.innerHTML = `✅ Referral code <strong>${cleanRef}</strong> auto-filled from link!`;
-            }
             
             isReferralAutoFilled = true;
             
@@ -877,12 +860,6 @@
                 // Remove highlight when user manually edits
                 const wrapper = document.getElementById('refInputWrapper');
                 wrapper.classList.remove('highlight');
-                
-                // Update info banner
-                const infoText = document.getElementById('refInfoText');
-                if (infoText) {
-                    infoText.innerHTML = 'Masukkan referral code dari upline Anda (opsional)';
-                }
                 
                 clearTimeout(refCheckTimeout);
                 const code = this.value.trim().toUpperCase();
