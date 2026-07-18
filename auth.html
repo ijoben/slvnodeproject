@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ===== SAME CSS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -308,7 +309,6 @@
             font-size: 0.7rem;
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .auth-card {
                 padding: 1.8rem 1.2rem 1.5rem;
@@ -391,7 +391,6 @@
                 <p>DAO Prelaunch</p>
             </div>
 
-            <!-- Tabs -->
             <div class="auth-tabs">
                 <button class="auth-tab active" data-tab="login">Login</button>
                 <button class="auth-tab" data-tab="register">Register</button>
@@ -445,7 +444,7 @@
                         <span class="ref-status" id="refStatus"></span>
                     </div>
                     <p style="font-size:0.65rem;color:#666666;margin-top:0.2rem;padding-left:0.3rem;">
-                        <i class="fas fa-info-circle"></i> Leave empty if no referral code
+                        <i class="fas fa-info-circle"></i> Masukkan referral code dari upline Anda
                     </p>
                 </div>
                 <button type="submit" class="btn-submit" id="registerBtn"><i class="fas fa-user-plus"></i> Create Account</button>
@@ -524,28 +523,23 @@
             }
         }
 
-        // ============================================================
-        //  REDIRECT BASED ON ROLE
-        // ============================================================
         function redirectUser(user) {
             if (!user) return;
             
             console.log(`👤 User role: ${user.role}`);
             
-            // Admin → admin.html
             if (user.role === 'admin') {
                 console.log('🔐 Admin detected, redirecting to /admin');
                 window.location.href = '/admin';
                 return;
             }
             
-            // User biasa → dashboard.html
             console.log('👤 Regular user, redirecting to /dashboard');
             window.location.href = '/dashboard';
         }
 
         // ============================================================
-        //  SUPABASE FUNCTIONS
+        //  SUPABASE FUNCTIONS - FIXED
         // ============================================================
         async function getUserByEmail(email) {
             try {
@@ -565,21 +559,24 @@
 
         async function checkReferralCode(refCode) {
             if (!refCode || refCode.trim() === '') {
-                return { valid: true, exists: false, code: null };
+                return { valid: false, exists: false, code: null };
             }
 
             const cleanCode = refCode.trim().toUpperCase();
             try {
                 const { data, error } = await supabaseClient
                     .from('users')
-                    .select('ref_code')
+                    .select('ref_code, email')
                     .eq('ref_code', cleanCode)
                     .maybeSingle();
 
                 if (error) throw error;
+                
                 if (data) {
-                    return { valid: true, exists: true, code: data.ref_code };
+                    console.log(`✅ Referral code ${cleanCode} found for user: ${data.email}`);
+                    return { valid: true, exists: true, code: data.ref_code, email: data.email };
                 } else {
+                    console.log(`❌ Referral code ${cleanCode} not found`);
                     return { valid: false, exists: false, code: null };
                 }
             } catch (error) {
@@ -588,8 +585,12 @@
             }
         }
 
+        // ============================================================
+        //  CREATE USER - FIXED: referred_by harus terisi
+        // ============================================================
         async function createUser(email, password, refCode = null) {
             try {
+                // Cek email sudah terdaftar
                 const existing = await getUserByEmail(email);
                 if (existing) {
                     throw new Error('Email already registered. Please login.');
@@ -598,35 +599,46 @@
                 const newRefCode = generateRefCode();
                 const hashedPassword = hashPassword(password);
 
-                // Proses referral code
+                // ============================================================
+                //  PROSES REFERRAL CODE - FIXED
+                // ============================================================
                 let referredBy = null;
+                let referrerEmail = null;
                 const cleanRefCode = refCode ? refCode.trim().toUpperCase() : '';
 
                 if (cleanRefCode !== '') {
                     const check = await checkReferralCode(cleanRefCode);
-                    if (!check.valid || !check.exists) {
-                        throw new Error(`Invalid referral code: "${cleanRefCode}". Please check and try again.`);
-                    }
-                    if (check.exists) {
-                        referredBy = check.code;
-                        console.log(`✅ Referral code ${cleanRefCode} is valid. Referred by: ${referredBy}`);
+                    
+                    if (check.valid && check.exists) {
+                        referredBy = check.code; // Simpan ref_code dari upline
+                        referrerEmail = check.email;
+                        console.log(`✅ Referral code ${cleanRefCode} valid!`);
+                        console.log(`📌 Upline: ${referrerEmail} (ref_code: ${referredBy})`);
+                    } else {
+                        throw new Error(`Invalid referral code: "${cleanRefCode}". Silahkan cek kembali.`);
                     }
                 } else {
                     console.log('ℹ️ No referral code provided. referred_by will be null.');
                 }
 
-                // Role: admin untuk admin@silverchain.io, selain itu user
+                // Role: admin atau user
                 const userRole = email === ADMIN_EMAIL ? 'admin' : 'user';
-                console.log(`📝 Creating user with role: ${userRole}`);
 
-                // Insert user
+                console.log(`📝 Creating user: ${email}`);
+                console.log(`🔑 New ref_code: ${newRefCode}`);
+                console.log(`👥 Referred by: ${referredBy || 'none'}`);
+                console.log(`👤 Role: ${userRole}`);
+
+                // ============================================================
+                //  INSERT USER
+                // ============================================================
                 const { data, error } = await supabaseClient
                     .from('users')
                     .insert({
                         email: email,
                         password: hashedPassword,
                         ref_code: newRefCode,
-                        referred_by: referredBy,
+                        referred_by: referredBy, // ← Ini yang penting!
                         verified: false,
                         role: userRole,
                         created_at: new Date().toISOString(),
@@ -643,7 +655,11 @@
                     throw new Error('Failed to create account: ' + error.message);
                 }
 
-                console.log(`✅ User created: ${email}, Ref: ${newRefCode}, Role: ${userRole}`);
+                console.log(`✅ User created successfully!`);
+                console.log(`📧 Email: ${email}`);
+                console.log(`🔑 Ref Code: ${newRefCode}`);
+                console.log(`👥 Referred By: ${referredBy || 'none'}`);
+
                 return data;
 
             } catch (error) {
@@ -703,13 +719,10 @@
                         const check = await checkReferralCode(code);
                         if (check.valid && check.exists) {
                             refStatus.className = 'ref-status valid';
-                            refStatus.textContent = '✅ Valid referral code!';
-                        } else if (check.valid && !check.exists) {
-                            refStatus.className = 'ref-status invalid';
-                            refStatus.textContent = '❌ Code not found';
+                            refStatus.textContent = `✅ Valid! Upline: ${check.email}`;
                         } else {
                             refStatus.className = 'ref-status invalid';
-                            refStatus.textContent = '❌ Invalid code';
+                            refStatus.textContent = '❌ Code not found';
                         }
                     } catch (error) {
                         refStatus.className = 'ref-status invalid';
@@ -760,7 +773,7 @@
         }
 
         // ============================================================
-        //  LOGIN - FIXED: Redirect admin to admin.html
+        //  LOGIN
         // ============================================================
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -788,7 +801,6 @@
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
                 showResult('loginResult', '✅ Login successful! Redirecting...', 'success');
 
-                // Redirect berdasarkan role
                 setTimeout(() => {
                     redirectUser(user);
                 }, 800);
@@ -801,7 +813,7 @@
         });
 
         // ============================================================
-        //  REGISTER - FIXED: Redirect admin to admin.html
+        //  REGISTER - FIXED
         // ============================================================
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -844,7 +856,6 @@
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
                 showResult('registerResult', '✅ Account created successfully! Redirecting...', 'success');
 
-                // Redirect berdasarkan role
                 setTimeout(() => {
                     redirectUser(user);
                 }, 800);
@@ -883,7 +894,6 @@
                         const user = await getUserByEmail(data.email);
                         if (user) {
                             console.log('👤 Already logged in as:', user.email);
-                            console.log('🔑 Role:', user.role);
                             redirectUser(user);
                             return true;
                         }
@@ -907,7 +917,6 @@
                 return;
             }
 
-            // Cek apakah sudah login
             const loggedIn = await checkAlreadyLoggedIn();
             if (loggedIn) return;
 
@@ -917,7 +926,6 @@
 
         init();
         console.log('🟢 SilverChain Auth page ready.');
-        console.log('📌 Supabase URL:', SUPABASE_URL);
     </script>
 
 </body>
