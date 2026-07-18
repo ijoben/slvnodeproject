@@ -126,7 +126,7 @@
         }
         .input-field.referral-input {
             background: rgba(8, 20, 48, 0.3);
-            border-color: rgba(255, 200, 60, 0.1);
+            border-color: rgba(255, 200, 60, 0.15);
             color: #fbbf24;
         }
         .input-field.referral-input:focus {
@@ -402,7 +402,7 @@
 
     <script>
         // ============================================================
-        // SUPABASE CONFIG - SIMPEL
+        // SUPABASE CONFIG
         // ============================================================
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
@@ -454,6 +454,18 @@
         }
 
         // ============================================================
+        // CHECK SUPABASE
+        // ============================================================
+        function checkSupabase() {
+            if (!supabase) {
+                console.error('❌ Supabase not loaded!');
+                showToast('❌ System error. Please refresh.');
+                return false;
+            }
+            return true;
+        }
+
+        // ============================================================
         // GET REFERRAL FROM URL
         // ============================================================
         function getReferralFromURL() {
@@ -496,11 +508,10 @@
         }
 
         // ============================================================
-        // REGISTER USER - FIXED!
+        // REGISTER USER
         // ============================================================
         async function registerUser(email, password, referredBy) {
             try {
-                // Generate referral code
                 const prefix = email.split('@')[0].substring(0, 4).toUpperCase();
                 const random = Math.random().toString(36).substring(2, 6).toUpperCase();
                 const refCode = prefix + random;
@@ -532,7 +543,6 @@
 
                 console.log('✅ Registered:', data);
 
-                // 🔍 VERIFIKASI
                 if (data && data[0]) {
                     const saved = data[0];
                     console.log('🔍 Saved:', {
@@ -541,7 +551,6 @@
                         referred_by: saved.referred_by || 'NULL'
                     });
 
-                    // Force update jika referral tidak tersimpan
                     if (referredBy && !saved.referred_by) {
                         console.warn('⚠️ Force update referred_by...');
                         await supabase
@@ -736,9 +745,13 @@
         }
 
         // ============================================================
-        // TABS NAVIGATION - SIMPEL
+        // SEMUA FUNGSI DI SATUKAN DI SINI - PAKAI WAYANG.JS STYLE
         // ============================================================
-        function initTabs() {
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ============================================================
+            // TABS
+            // ============================================================
             const tabs = document.querySelectorAll('.auth-tab');
             const panels = {
                 panelLogin: document.getElementById('panelLogin'),
@@ -746,61 +759,55 @@
                 panelForgot: document.getElementById('panelForgot')
             };
 
-            tabs.forEach(tab => {
+            tabs.forEach(function(tab) {
                 tab.addEventListener('click', function() {
-                    tabs.forEach(t => t.classList.remove('active'));
+                    tabs.forEach(function(t) { t.classList.remove('active'); });
                     this.classList.add('active');
 
-                    Object.keys(panels).forEach(key => {
+                    Object.keys(panels).forEach(function(key) {
                         panels[key].classList.remove('active');
                     });
 
-                    const target = panels[this.dataset.panel];
+                    var target = panels[this.dataset.panel];
                     if (target) target.classList.add('active');
 
-                    document.querySelectorAll('.error-msg, .success-msg').forEach(el => el.classList.remove('show'));
+                    document.querySelectorAll('.error-msg, .success-msg').forEach(function(el) {
+                        el.classList.remove('show');
+                    });
                 });
             });
 
-            // Navigation buttons
+            // Navigation
             document.getElementById('gotoRegisterBtn').addEventListener('click', function() {
                 document.querySelector('[data-panel="panelRegister"]').click();
             });
-
             document.getElementById('gotoLoginFromRegister').addEventListener('click', function() {
                 document.querySelector('[data-panel="panelLogin"]').click();
             });
-
             document.getElementById('gotoLoginFromForgot').addEventListener('click', function() {
                 document.querySelector('[data-panel="panelLogin"]').click();
             });
-
             document.getElementById('gotoForgotBtn').addEventListener('click', function() {
                 document.querySelector('[data-panel="panelForgot"]').click();
             });
-
             document.getElementById('gotoLoginFromReset').addEventListener('click', function() {
                 document.getElementById('panelReset').classList.remove('active');
                 document.getElementById('panelReset').style.display = 'none';
                 document.getElementById('authTabs').style.display = 'flex';
                 document.querySelector('[data-panel="panelLogin"]').click();
             });
-        }
 
-        // ============================================================
-        // LOGIN BUTTON
-        // ============================================================
-        function initLogin() {
-            const btn = document.getElementById('loginBtn');
-
-            btn.addEventListener('click', async function() {
-                const email = document.getElementById('loginEmail').value.trim();
-                const password = document.getElementById('loginPassword').value.trim();
+            // ============================================================
+            // LOGIN
+            // ============================================================
+            document.getElementById('loginBtn').addEventListener('click', async function() {
+                var email = document.getElementById('loginEmail').value.trim();
+                var password = document.getElementById('loginPassword').value.trim();
 
                 document.getElementById('loginError').classList.remove('show');
                 document.getElementById('loginSuccess').classList.remove('show');
 
-                if (!supabase) {
+                if (!checkSupabase()) {
                     document.getElementById('loginErrorText').textContent = 'System error. Please refresh.';
                     document.getElementById('loginError').classList.add('show');
                     return;
@@ -816,19 +823,19 @@
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
                 try {
-                    const user = await loginUser(email, password);
+                    var user = await loginUser(email, password);
                     console.log('✅ Login:', user);
 
                     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
 
-                    const admin = await isAdmin(email);
+                    var admin = await isAdmin(email);
 
                     document.getElementById('loginSuccessText').textContent = admin ?
                         '✅ Admin login successful! Redirecting...' :
                         '✅ Login successful! Redirecting...';
                     document.getElementById('loginSuccess').classList.add('show');
 
-                    setTimeout(() => {
+                    setTimeout(function() {
                         window.location.href = admin ? '/admin' : '/dashboard';
                     }, 800);
 
@@ -842,31 +849,26 @@
                 this.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
             });
 
-            // Enter key
-            document.getElementById('loginEmail').addEventListener('keydown', e => {
+            document.getElementById('loginEmail').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') document.getElementById('loginPassword').focus();
             });
-            document.getElementById('loginPassword').addEventListener('keydown', e => {
-                if (e.key === 'Enter') btn.click();
+            document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') document.getElementById('loginBtn').click();
             });
-        }
 
-        // ============================================================
-        // REGISTER BUTTON
-        // ============================================================
-        function initRegister() {
-            const btn = document.getElementById('registerBtn');
-
-            btn.addEventListener('click', async function() {
-                const email = document.getElementById('regEmail').value.trim();
-                const password = document.getElementById('regPassword').value.trim();
-                const confirm = document.getElementById('regPasswordConfirm').value.trim();
-                const referralCode = document.getElementById('regReferralCode').value.trim();
+            // ============================================================
+            // REGISTER
+            // ============================================================
+            document.getElementById('registerBtn').addEventListener('click', async function() {
+                var email = document.getElementById('regEmail').value.trim();
+                var password = document.getElementById('regPassword').value.trim();
+                var confirm = document.getElementById('regPasswordConfirm').value.trim();
+                var referralCode = document.getElementById('regReferralCode').value.trim();
 
                 document.getElementById('regError').classList.remove('show');
                 document.getElementById('regSuccess').classList.remove('show');
 
-                if (!supabase) {
+                if (!checkSupabase()) {
                     document.getElementById('regErrorText').textContent = 'System error. Please refresh.';
                     document.getElementById('regError').classList.add('show');
                     return;
@@ -888,11 +890,10 @@
                     return;
                 }
 
-                // VALIDASI REFERRAL
-                let referredBy = null;
+                var referredBy = null;
                 if (referralCode) {
                     console.log('🔍 Validating referral:', referralCode);
-                    const validation = await validateReferralCode(referralCode);
+                    var validation = await validateReferralCode(referralCode);
 
                     if (!validation.valid) {
                         document.getElementById('regErrorText').textContent = validation.error || 'Invalid referral code.';
@@ -914,11 +915,10 @@
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
 
                 try {
-                    const result = await registerUser(email, password, referredBy);
+                    var result = await registerUser(email, password, referredBy);
                     console.log('✅ Register result:', result);
 
-                    // Verifikasi
-                    const check = await getUserByEmail(email);
+                    var check = await getUserByEmail(email);
                     console.log('🔍 Final check:', {
                         email: check?.email,
                         ref_code: check?.ref_code,
@@ -936,7 +936,7 @@
                     document.getElementById('referralInfoBox').classList.remove('show');
                     localStorage.removeItem(STORAGE_KEYS.REFERRAL_CODE);
 
-                    setTimeout(() => {
+                    setTimeout(function() {
                         document.querySelector('[data-panel="panelLogin"]').click();
                         document.getElementById('loginEmail').value = email;
                         document.getElementById('loginPassword').value = password;
@@ -954,34 +954,29 @@
                 this.innerHTML = '<i class="fas fa-user-plus"></i> Register';
             });
 
-            // Enter key
-            document.getElementById('regEmail').addEventListener('keydown', e => {
+            document.getElementById('regEmail').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') document.getElementById('regPassword').focus();
             });
-            document.getElementById('regPassword').addEventListener('keydown', e => {
+            document.getElementById('regPassword').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') document.getElementById('regPasswordConfirm').focus();
             });
-            document.getElementById('regPasswordConfirm').addEventListener('keydown', e => {
+            document.getElementById('regPasswordConfirm').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') document.getElementById('regReferralCode').focus();
             });
-            document.getElementById('regReferralCode').addEventListener('keydown', e => {
-                if (e.key === 'Enter') btn.click();
+            document.getElementById('regReferralCode').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') document.getElementById('registerBtn').click();
             });
-        }
 
-        // ============================================================
-        // FORGOT PASSWORD
-        // ============================================================
-        function initForgot() {
-            const btn = document.getElementById('forgotBtn');
-
-            btn.addEventListener('click', async function() {
-                const email = document.getElementById('forgotEmail').value.trim();
+            // ============================================================
+            // FORGOT
+            // ============================================================
+            document.getElementById('forgotBtn').addEventListener('click', async function() {
+                var email = document.getElementById('forgotEmail').value.trim();
 
                 document.getElementById('forgotError').classList.remove('show');
                 document.getElementById('forgotSuccess').classList.remove('show');
 
-                if (!supabase) {
+                if (!checkSupabase()) {
                     document.getElementById('forgotErrorText').textContent = 'System error. Please refresh.';
                     document.getElementById('forgotError').classList.add('show');
                     return;
@@ -994,14 +989,14 @@
                 }
 
                 try {
-                    const user = await getUserByEmail(email);
+                    var user = await getUserByEmail(email);
                     if (!user) {
                         document.getElementById('forgotErrorText').textContent = 'Email not found.';
                         document.getElementById('forgotError').classList.add('show');
                         return;
                     }
 
-                    const token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                    var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
                     resetTokens[email] = {
                         token: token,
                         expires: Date.now() + 15 * 60 * 1000
@@ -1012,7 +1007,9 @@
                     document.getElementById('panelReset').style.display = 'block';
                     document.getElementById('panelReset').classList.add('active');
                     document.getElementById('authTabs').style.display = 'none';
-                    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll('.auth-panel').forEach(function(p) {
+                        p.classList.remove('active');
+                    });
                     document.getElementById('forgotEmail').value = '';
                     showToast('🔑 Please enter your new password');
 
@@ -1022,26 +1019,22 @@
                 }
             });
 
-            document.getElementById('forgotEmail').addEventListener('keydown', e => {
-                if (e.key === 'Enter') btn.click();
+            document.getElementById('forgotEmail').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') document.getElementById('forgotBtn').click();
             });
-        }
 
-        // ============================================================
-        // RESET PASSWORD
-        // ============================================================
-        function initReset() {
-            const btn = document.getElementById('resetPasswordBtn');
-
-            btn.addEventListener('click', async function() {
-                const email = document.getElementById('resetEmail').value;
-                const newPass = document.getElementById('resetNewPassword').value.trim();
-                const confirm = document.getElementById('resetConfirmPassword').value.trim();
+            // ============================================================
+            // RESET
+            // ============================================================
+            document.getElementById('resetPasswordBtn').addEventListener('click', async function() {
+                var email = document.getElementById('resetEmail').value;
+                var newPass = document.getElementById('resetNewPassword').value.trim();
+                var confirm = document.getElementById('resetConfirmPassword').value.trim();
 
                 document.getElementById('resetError').classList.remove('show');
                 document.getElementById('resetSuccess').classList.remove('show');
 
-                if (!supabase) {
+                if (!checkSupabase()) {
                     document.getElementById('resetErrorText').textContent = 'System error. Please refresh.';
                     document.getElementById('resetError').classList.add('show');
                     return;
@@ -1071,7 +1064,7 @@
                     document.getElementById('resetSuccessText').textContent = '✅ Password reset successful! Redirecting...';
                     document.getElementById('resetSuccess').classList.add('show');
 
-                    setTimeout(() => {
+                    setTimeout(function() {
                         document.getElementById('panelReset').classList.remove('active');
                         document.getElementById('panelReset').style.display = 'none';
                         document.getElementById('authTabs').style.display = 'flex';
@@ -1091,22 +1084,23 @@
                 this.innerHTML = '<i class="fas fa-check"></i> Reset Password';
             });
 
-            document.getElementById('resetNewPassword').addEventListener('keydown', e => {
+            document.getElementById('resetNewPassword').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') document.getElementById('resetConfirmPassword').focus();
             });
-            document.getElementById('resetConfirmPassword').addEventListener('keydown', e => {
-                if (e.key === 'Enter') btn.click();
+            document.getElementById('resetConfirmPassword').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') document.getElementById('resetPasswordBtn').click();
             });
-        }
+
+        }); // END DOMContentLoaded
 
         // ============================================================
         // LOAD SETTINGS
         // ============================================================
         function loadSettings() {
             try {
-                const data = localStorage.getItem('silverchain_settings');
+                var data = localStorage.getItem('silverchain_settings');
                 if (data) {
-                    const settings = JSON.parse(data);
+                    var settings = JSON.parse(data);
                     if (settings.brandName) {
                         document.getElementById('brandName').textContent = settings.brandName;
                     }
@@ -1115,7 +1109,7 @@
         }
 
         // ============================================================
-        // INIT - JALANKAN SEMUA
+        // INIT
         // ============================================================
         loadSettings();
         loadResetTokens();
@@ -1123,17 +1117,10 @@
         checkResetToken();
         checkReferralOnRegister();
 
-        // Init semua fungsi
-        initTabs();
-        initLogin();
-        initRegister();
-        initForgot();
-        initReset();
-
-        console.log('🟢 SilverChain Auth ready! (FIXED)');
-        console.log('📌 referred_by sekarang PASTI tersimpan!');
-        console.log('📌 Register dengan referral: ?ref=CODE');
-        console.log('📌 Cek console untuk debug log');
+        console.log('🟢 SilverChain Auth ready!');
+        console.log('📌 ALL-IN-ONE - No external config needed');
+        console.log('📌 Register with referral: ?ref=CODE');
+        console.log('📌 referred_by PASTI tersimpan!');
     </script>
 
 </body>
