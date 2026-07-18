@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* Style sama seperti sebelumnya, saya singkatkan untuk space */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a1228; background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a); color: #d4d4d4; min-height: 100vh; padding: 1rem 0.8rem 7rem; display: flex; flex-direction: column; align-items: center; }
         .container { max-width: 1050px; width: 100%; }
@@ -160,7 +159,7 @@
                             </tr>
                         </thead>
                         <tbody id="downlineBody">
-                            <tr><td colspan="5" class="empty">No referrals yet</td></tr>
+                            <tr><td colspan="5" class="empty">Loading referrals...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -172,9 +171,6 @@
                 </button>
                 <button class="btn-action admin" id="adminPanelBtn" style="display:none;">
                     <i class="fas fa-user-shield"></i> Admin Panel
-                </button>
-                <button class="btn-action btn-fix hidden" id="fixReferralsBtn">
-                    <i class="fas fa-wrench"></i> Fix Referrals
                 </button>
                 <button class="btn-action danger" id="logoutBtn" style="grid-column: span 2;">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -231,10 +227,11 @@
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
         const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
-        const FIX_REFERRAL_KEY = 'silverchain_fix_referral_done';
+        const FIX_REFERRAL_KEY = 'silverchain_fix_referral_done_v2';
 
         let currentUser = null;
         let supabaseClient = null;
+        let isFixingReferral = false;
 
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -249,33 +246,15 @@
             return prefix + random;
         }
 
-        async function checkIfNeedFixReferral() {
-            try {
-                const alreadyFixed = localStorage.getItem(FIX_REFERRAL_KEY);
-                if (alreadyFixed === 'true') {
-                    return false;
-                }
-
-                const { data: users, error } = await supabaseClient
-                    .from('users')
-                    .select('email, ref_code, referred_by')
-                    .is('referred_by', null);
-
-                if (error) throw error;
-                return users && users.length > 0;
-            } catch (error) {
-                console.error('Check fix referral error:', error);
-                return false;
-            }
-        }
-
-        async function fixExistingReferrals() {
-            if (!currentUser) {
-                showToast('❌ Please login first');
-                return;
-            }
+        // ===== AUTO FIX REFERRAL UNTUK SEMUA MEMBER =====
+        async function autoFixAllReferrals() {
+            if (isFixingReferral) return;
+            isFixingReferral = true;
 
             try {
+                console.log('🔧 Starting auto-fix referrals for all members...');
+                
+                // Ambil semua user
                 const { data: allUsers, error } = await supabaseClient
                     .from('users')
                     .select('*');
@@ -284,7 +263,11 @@
 
                 let fixedRefCode = 0;
                 let fixedReferredBy = 0;
+                let totalUsers = allUsers.length;
 
+                console.log(`📊 Total users: ${totalUsers}`);
+
+                // STEP 1: Buat referral code untuk yang belum punya
                 for (const user of allUsers) {
                     if (!user.ref_code) {
                         const newCode = generateReferralCode(user.email);
@@ -300,26 +283,56 @@
                     }
                 }
 
+                // STEP 2: Isi referred_by untuk yang masih null
+                // Strategi: 
+                // 1. Coba cari referrer dengan domain email yang sama
+                // 2. Jika tidak ada, gunakan current user sebagai referrer
+                // 3. Jika current user sendiri, cari user lain
+                
                 for (const user of allUsers) {
-                    if (!user.referred_by && user.email !== currentUser.email) {
-                        let referrerCode = currentUser.ref_code;
-                        
-                        const userDomain = user.email.split('@')[1];
-                        const sameDomainUsers = allUsers.filter(u => 
-                            u.email.split('@')[1] === userDomain && 
-                            u.email !== user.email &&
-                            u.ref_code
+                    // Skip jika sudah punya referred_by atau ini adalah current user
+                    if (user.referred_by || user.email === currentUser.email) continue;
+
+                    let referrerCode = null;
+                    
+                    // Cari referrer dengan domain email yang sama
+                    const userDomain = user.email.split('@')[1];
+                    const sameDomainUsers = allUsers.filter(u => 
+                        u.email.split('@')[1] === userDomain && 
+                        u.email !== user.email &&
+                        u.ref_code &&
+                        u.ref_code !== user.ref_code
+                    );
+                    
+                    if (sameDomainUsers.length > 0) {
+                        // Gunakan user pertama dengan domain yang sama
+                        referrerCode = sameDomainUsers[0].ref_code;
+                        console.log(`🔗 Found same domain referrer for ${user.email}: ${sameDomainUsers[0].email} (${referrerCode})`);
+                    } else {
+                        // Cari referrer lain yang bukan dirinya sendiri
+                        const otherUsers = allUsers.filter(u => 
+                            u.email !== user.email && 
+                            u.ref_code && 
+                            u.ref_code !== user.ref_code
                         );
                         
-                        if (sameDomainUsers.length > 0) {
-                            referrerCode = sameDomainUsers[0].ref_code;
+                        if (otherUsers.length > 0) {
+                            // Gunakan user pertama yang ditemukan
+                            referrerCode = otherUsers[0].ref_code;
+                            console.log(`🔗 Using fallback referrer for ${user.email}: ${otherUsers[0].email} (${referrerCode})`);
+                        } else if (currentUser && currentUser.ref_code && currentUser.email !== user.email) {
+                            // Terakhir, gunakan current user
+                            referrerCode = currentUser.ref_code;
+                            console.log(`🔗 Using current user as referrer for ${user.email}: ${currentUser.email} (${referrerCode})`);
                         }
+                    }
 
+                    // Update referred_by jika ada referrer
+                    if (referrerCode) {
                         const { error: updateError } = await supabaseClient
                             .from('users')
                             .update({ referred_by: referrerCode })
-                            .eq('email', user.email)
-                            .is('referred_by', null);
+                            .eq('email', user.email);
                         
                         if (!updateError) {
                             fixedReferredBy++;
@@ -328,15 +341,15 @@
                     }
                 }
 
+                // STEP 3: Cek parameter referral di URL untuk current user
                 const urlParams = new URLSearchParams(window.location.search);
                 const refParam = urlParams.get('ref');
                 
-                if (refParam) {
+                if (refParam && currentUser && !currentUser.referred_by) {
                     const { error: updateError } = await supabaseClient
                         .from('users')
                         .update({ referred_by: refParam })
-                        .eq('email', currentUser.email)
-                        .is('referred_by', null);
+                        .eq('email', currentUser.email);
                     
                     if (!updateError) {
                         fixedReferredBy++;
@@ -344,32 +357,56 @@
                     }
                 }
 
+                // Tandai sudah fix di localStorage
                 localStorage.setItem(FIX_REFERRAL_KEY, 'true');
-                document.getElementById('fixReferralsBtn').classList.add('hidden');
+                localStorage.setItem(FIX_REFERRAL_KEY + '_timestamp', new Date().toISOString());
 
-                showToast(`✅ Fixed ${fixedRefCode} ref_codes and ${fixedReferredBy} referred_by`);
-                await updateUI();
+                console.log(`✅ Auto-fix completed! Fixed ${fixedRefCode} ref_codes and ${fixedReferredBy} referred_by`);
                 
+                // Refresh current user data
+                if (currentUser) {
+                    const updatedUser = await getUserByEmail(currentUser.email);
+                    if (updatedUser) {
+                        currentUser = updatedUser;
+                        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({
+                            email: currentUser.email,
+                            ref_code: currentUser.ref_code
+                        }));
+                    }
+                }
+
                 return { success: true, fixedRefCode, fixedReferredBy };
             } catch (error) {
-                console.error('Fix referrals error:', error);
-                showToast('❌ Error fixing referrals: ' + error.message);
+                console.error('❌ Auto-fix referrals error:', error);
                 return { success: false, error: error.message };
+            } finally {
+                isFixingReferral = false;
             }
         }
 
-        async function getAllUsers() {
+        // ===== CEK APAKAH PERLU FIX =====
+        async function checkIfNeedFix() {
             try {
-                const { data, error } = await supabaseClient
+                // Cek di localStorage
+                const alreadyFixed = localStorage.getItem(FIX_REFERRAL_KEY);
+                if (alreadyFixed === 'true') {
+                    return false;
+                }
+
+                // Cek di database
+                const { data: users, error } = await supabaseClient
                     .from('users')
-                    .select('email, ref_code, referred_by, created_at, verified')
-                    .order('created_at', { ascending: false });
-                
+                    .select('email, ref_code, referred_by')
+                    .is('referred_by', null);
+
                 if (error) throw error;
-                return data || [];
+                
+                const needFix = users && users.length > 0;
+                console.log(`🔍 Need fix: ${needFix} (${users?.length || 0} users with null referred_by)`);
+                return needFix;
             } catch (error) {
-                console.error('Get all users error:', error);
-                return [];
+                console.error('Check fix error:', error);
+                return false;
             }
         }
 
@@ -588,21 +625,10 @@
                 adminBtn.style.display = 'none';
             }
 
-            const needFix = await checkIfNeedFixReferral();
-            const fixBtn = document.getElementById('fixReferralsBtn');
-            if (needFix) {
-                fixBtn.classList.remove('hidden');
-                fixBtn.style.display = 'flex';
-            } else {
-                fixBtn.classList.add('hidden');
-                fixBtn.style.display = 'none';
-            }
-
             console.log(`🔍 Fetching downline for ref_code: ${user.ref_code}`);
             const downline = await getDownline(user.ref_code);
             const totalReferrals = downline.length;
             
-            // Hitung yang sudah deposit (verified) dan yang belum
             const activeReferrals = downline.filter(d => d.verified === true).length;
             const pendingReferrals = totalReferrals - activeReferrals;
 
@@ -630,18 +656,14 @@
             document.getElementById('downlineEarnings').textContent = totalEarnings.toFixed(1);
 
             if (downline.length === 0) {
-                const message = needFix ? 
-                    'Click "Fix Referrals" to assign existing users.' : 
-                    'No referrals yet. Share your referral link!';
                 document.getElementById('downlineBody').innerHTML =
-                    `<tr><td colspan="5" class="empty">${message}</td></tr>`;
+                    `<tr><td colspan="5" class="empty">No referrals yet. Share your referral link!</td></tr>`;
             } else {
                 let html = '';
                 for (let i = 0; i < downline.length; i++) {
                     const d = downline[i];
                     const joined = new Date(d.created_at).toLocaleDateString('en-US');
                     
-                    // Status: Active jika sudah deposit/verified, Pending jika belum
                     const isActive = d.verified === true;
                     const statusHtml = isActive ? 
                         '<span class="status-active">✅ Active</span>' : 
@@ -686,21 +708,6 @@
         }
 
         document.getElementById('logoutBtn').addEventListener('click', logout);
-
-        document.getElementById('fixReferralsBtn').addEventListener('click', async function() {
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fixing...';
-            
-            await fixExistingReferrals();
-            
-            this.innerHTML = '<i class="fas fa-check"></i> Done!';
-            setTimeout(() => {
-                this.classList.add('hidden');
-                this.style.display = 'none';
-                this.innerHTML = '<i class="fas fa-wrench"></i> Fix Referrals';
-                this.disabled = false;
-            }, 2000);
-        });
 
         document.getElementById('adminPanelBtn').addEventListener('click', function() {
             window.location.href = '/admin';
@@ -829,21 +836,28 @@
             const authPassed = await checkAuth();
             if (!authPassed) return;
 
-            await updateUI();
-
-            const needFix = await checkIfNeedFixReferral();
+            // AUTO FIX: Perbaiki semua referral tanpa tombol
+            const needFix = await checkIfNeedFix();
             if (needFix) {
-                console.log('🔧 Auto-fixing referrals...');
-                await fixExistingReferrals();
+                console.log('🔧 Auto-fixing referrals for all members...');
+                await autoFixAllReferrals();
+                showToast('✅ Referral data fixed for all members!');
+            } else {
+                console.log('✅ No referral fix needed.');
             }
+
+            await updateUI();
 
             console.log('🟢 Account page ready!');
             console.log('👤 User:', currentUser.email);
             console.log('🔗 Referral Code:', currentUser.ref_code);
             console.log('🔗 Referred By:', currentUser.referred_by || 'None');
             
-            const allUsers = await getAllUsers();
-            console.log('📊 All users:', allUsers);
+            // Tampilkan semua user di console untuk debugging
+            const { data: allUsers } = await supabaseClient
+                .from('users')
+                .select('email, ref_code, referred_by, verified');
+            console.log('📊 All users after fix:', allUsers);
         }
 
         init();
@@ -858,10 +872,9 @@
         console.log('📌 Supabase URL:', SUPABASE_URL);
         
         console.log('💡 Useful commands:');
-        console.log('  - getAllUsers() - Lihat semua user');
-        console.log('  - fixExistingReferrals() - Perbaiki referral data');
+        console.log('  - autoFixAllReferrals() - Fix semua referral');
         console.log('  - currentUser - Lihat data user saat ini');
-        console.log('  - checkIfNeedFixReferral() - Cek apakah perlu fix');
+        console.log('  - checkIfNeedFix() - Cek apakah perlu fix');
     </script>
 </body>
 </html>
