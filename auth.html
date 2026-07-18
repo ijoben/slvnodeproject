@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* --- Styles (Sama seperti sebelumnya) --- */
         * {
             margin: 0;
             padding: 0;
@@ -277,7 +277,7 @@
         </div>
 
         <!-- TABS -->
-        <div class="auth-tabs">
+        <div class="auth-tabs" id="authTabs">
             <button class="auth-tab active" onclick="switchTab('panelLogin')"><i class="fas fa-sign-in-alt"></i> Login</button>
             <button class="auth-tab" onclick="switchTab('panelRegister')"><i class="fas fa-user-plus"></i> Register</button>
             <button class="auth-tab" onclick="switchTab('panelForgot')"><i class="fas fa-key"></i> Forgot</button>
@@ -362,7 +362,7 @@
         var resetTokens = {};
 
         // ============================================================
-        // INIT SUPABASE (AMAN - GAK BIKIN ERROR)
+        // INIT SUPABASE
         // ============================================================
         try {
             if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
@@ -416,10 +416,10 @@
         }
 
         // ============================================================
-        // SUPABASE FUNCTIONS (AMAN - PAKAI TRY CATCH)
+        // SUPABASE FUNCTIONS
         // ============================================================
         async function loginUser(email, password) {
-            if (!supabase) throw new Error('Supabase not connected');
+            if (!supabase) throw new Error('Supabase client is not available.');
             var result = await supabase.auth.signInWithPassword({ 
                 email: email, 
                 password: password 
@@ -429,7 +429,7 @@
         }
 
         async function registerUser(email, password) {
-            if (!supabase) throw new Error('Supabase not connected');
+            if (!supabase) throw new Error('Supabase client is not available.');
             var result = await supabase.auth.signUp({ 
                 email: email, 
                 password: password 
@@ -454,7 +454,7 @@
         }
 
         async function getUserByEmail(email) {
-            if (!supabase) return null;
+            if (!supabase) throw new Error('Supabase client is not available.');
             try {
                 var result = await supabase
                     .from('users')
@@ -467,7 +467,7 @@
         }
 
         // ============================================================
-        // HANDLE LOGIN (DENGAN SUPABASE)
+        // HANDLE LOGIN
         // ============================================================
         function handleLogin() {
             console.log('🔐 Login button clicked!');
@@ -483,6 +483,12 @@
             errorEl.classList.remove('show');
             successEl.classList.remove('show');
 
+            if (!supabase) {
+                errorText.textContent = 'Supabase is not connected. Please check your configuration.';
+                errorEl.classList.add('show');
+                return;
+            }
+
             if (!email || !email.includes('@')) {
                 errorText.textContent = 'Please enter a valid email.';
                 errorEl.classList.add('show');
@@ -494,19 +500,6 @@
                 return;
             }
 
-            // KALO SUPABASE GAK ADA, PAKE SIMULASI
-            if (!supabase) {
-                successText.textContent = '✅ Login successful! (Simulation)';
-                successEl.classList.add('show');
-                showToast('✅ Login successful!');
-                localStorage.setItem('silverchain_user', JSON.stringify({ email: email }));
-                setTimeout(function() {
-                    window.location.href = '/dashboard';
-                }, 1500);
-                return;
-            }
-
-            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
 
@@ -535,7 +528,7 @@
         }
 
         // ============================================================
-        // HANDLE REGISTER (DENGAN SUPABASE)
+        // HANDLE REGISTER
         // ============================================================
         function handleRegister() {
             console.log('📝 Register button clicked!');
@@ -551,6 +544,12 @@
 
             errorEl.classList.remove('show');
             successEl.classList.remove('show');
+
+            if (!supabase) {
+                errorText.textContent = 'Supabase is not connected. Please check your configuration.';
+                errorEl.classList.add('show');
+                return;
+            }
 
             if (!email || !email.includes('@')) {
                 errorText.textContent = 'Please enter a valid email.';
@@ -568,22 +567,6 @@
                 return;
             }
 
-            // KALO SUPABASE GAK ADA, PAKE SIMULASI
-            if (!supabase) {
-                successText.textContent = '✅ Account created! (Simulation)';
-                successEl.classList.add('show');
-                showToast('✅ Account created!');
-                document.getElementById('regEmail').value = '';
-                document.getElementById('regPassword').value = '';
-                document.getElementById('regPasswordConfirm').value = '';
-                setTimeout(function() {
-                    switchTab('panelLogin');
-                    document.getElementById('loginEmail').value = email;
-                }, 1500);
-                return;
-            }
-
-            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Registering...';
 
@@ -628,6 +611,12 @@
             errorEl.classList.remove('show');
             successEl.classList.remove('show');
 
+            if (!supabase) {
+                errorText.textContent = 'Supabase is not connected. Please check your configuration.';
+                errorEl.classList.add('show');
+                return;
+            }
+
             if (!email || !email.includes('@')) {
                 errorText.textContent = 'Please enter a valid email.';
                 errorEl.classList.add('show');
@@ -637,58 +626,45 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
-            // PAKE SUPABASE KALO ADA
-            if (supabase) {
-                getUserByEmail(email)
-                    .then(function(user) {
-                        if (!user) {
-                            errorText.textContent = 'Email not found.';
-                            errorEl.classList.add('show');
-                            return;
-                        }
-                        var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-                        resetTokens[email] = {
-                            token: token,
-                            expires: Date.now() + 15 * 60 * 1000
-                        };
-                        localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
-
-                        document.getElementById('resetEmail').value = email;
-                        document.getElementById('panelReset').style.display = 'block';
-                        document.getElementById('panelReset').classList.add('active');
-                        document.getElementById('authTabs').style.display = 'none';
-                        document.querySelectorAll('.auth-panel').forEach(function(p) {
-                            p.classList.remove('active');
-                        });
-                        document.getElementById('forgotEmail').value = '';
-                        
-                        successText.textContent = '✅ Reset token generated! Enter new password.';
-                        successEl.classList.add('show');
-                        showToast('🔑 Enter your new password');
-                    })
-                    .catch(function(err) {
-                        errorText.textContent = err.message || 'Error. Please try again.';
+            getUserByEmail(email)
+                .then(function(user) {
+                    if (!user) {
+                        errorText.textContent = 'Email not found.';
                         errorEl.classList.add('show');
-                    })
-                    .finally(function() {
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                        return;
+                    }
+                    var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                    resetTokens[email] = {
+                        token: token,
+                        expires: Date.now() + 15 * 60 * 1000
+                    };
+                    localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
+
+                    document.getElementById('resetEmail').value = email;
+                    document.getElementById('panelReset').style.display = 'block';
+                    document.getElementById('panelReset').classList.add('active');
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.querySelectorAll('.auth-panel').forEach(function(p) {
+                        p.classList.remove('active');
                     });
-            } else {
-                // SIMULASI
-                successText.textContent = '✅ Reset link sent! (Simulation)';
-                successEl.classList.add('show');
-                showToast('📧 Reset link sent!');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
-                setTimeout(function() {
-                    switchTab('panelLogin');
-                }, 2000);
-            }
+                    document.getElementById('forgotEmail').value = '';
+                    
+                    successText.textContent = '✅ Reset token generated! Enter new password.';
+                    successEl.classList.add('show');
+                    showToast('🔑 Enter your new password');
+                })
+                .catch(function(err) {
+                    errorText.textContent = err.message || 'Error. Please try again.';
+                    errorEl.classList.add('show');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                });
         }
 
         // ============================================================
-        // HANDLE RESET
+        // HANDLE RESET (REAL SUPABASE UPDATE)
         // ============================================================
         function handleReset() {
             console.log('🔄 Reset password clicked!');
@@ -704,6 +680,12 @@
             errorEl.classList.remove('show');
             successEl.classList.remove('show');
 
+            if (!supabase) {
+                errorText.textContent = 'Supabase is not connected. Please check your configuration.';
+                errorEl.classList.add('show');
+                return;
+            }
+
             if (newPass.length < 4) {
                 errorText.textContent = 'Password must be at least 4 characters.';
                 errorEl.classList.add('show');
@@ -715,18 +697,42 @@
                 return;
             }
 
-            // SIMULASI (karena reset pake Supabase butuh auth user)
-            successText.textContent = '✅ Password reset successful!';
-            successEl.classList.add('show');
-            showToast('✅ Password reset!');
-            
-            setTimeout(function() {
-                document.getElementById('panelReset').classList.remove('active');
-                document.getElementById('panelReset').style.display = 'none';
-                document.getElementById('authTabs').style.display = 'flex';
-                switchTab('panelLogin');
-                showToast('✅ Please login with your new password');
-            }, 1500);
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Updating...';
+
+            // Update user password using Supabase API
+            supabase.auth.updateUser({ password: newPass })
+                .then(function(response) {
+                    if (response.error) throw response.error;
+                    
+                    successText.textContent = '✅ Password updated successfully!';
+                    successEl.classList.add('show');
+                    showToast('✅ Password updated! Please login.');
+                    
+                    // Clear the reset tokens
+                    var resetEmail = document.getElementById('resetEmail').value;
+                    if (resetEmail && resetTokens[resetEmail]) {
+                        delete resetTokens[resetEmail];
+                        localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
+                    }
+
+                    setTimeout(function() {
+                        document.getElementById('panelReset').classList.remove('active');
+                        document.getElementById('panelReset').style.display = 'none';
+                        document.getElementById('authTabs').style.display = 'flex';
+                        switchTab('panelLogin');
+                        showToast('✅ Please login with your new password');
+                    }, 1500);
+                })
+                .catch(function(err) {
+                    errorText.textContent = err.message || 'Failed to update password.';
+                    errorEl.classList.add('show');
+                    showToast('❌ ' + err.message);
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+                });
         }
 
         // ============================================================
@@ -763,6 +769,7 @@
                     if (id === 'panelLogin') handleLogin();
                     else if (id === 'panelRegister') handleRegister();
                     else if (id === 'panelForgot') handleForgot();
+                    else if (id === 'panelReset') handleReset(); // Added support for reset panel
                 }
             }
         });
@@ -772,7 +779,7 @@
         // ============================================================
         checkLoggedIn();
         console.log('🟢 SilverChain Auth ready!');
-        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '⚠️ Not connected (simulation mode)');
+        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '⚠️ Not connected');
         console.log('📌 Click any button to test!');
     </script>
 
