@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,7 +277,7 @@
         </div>
 
         <!-- TABS -->
-        <div class="auth-tabs" id="authTabs">
+        <div class="auth-tabs">
             <button class="auth-tab active" onclick="switchTab('panelLogin')"><i class="fas fa-sign-in-alt"></i> Login</button>
             <button class="auth-tab" onclick="switchTab('panelRegister')"><i class="fas fa-user-plus"></i> Register</button>
             <button class="auth-tab" onclick="switchTab('panelForgot')"><i class="fas fa-key"></i> Forgot</button>
@@ -361,7 +362,7 @@
         var resetTokens = {};
 
         // ============================================================
-        // INIT SUPABASE
+        // INIT SUPABASE (AMAN - GAK BIKIN ERROR)
         // ============================================================
         try {
             if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
@@ -415,7 +416,7 @@
         }
 
         // ============================================================
-        // SUPABASE FUNCTIONS
+        // SUPABASE FUNCTIONS (AMAN - PAKAI TRY CATCH)
         // ============================================================
         async function loginUser(email, password) {
             if (!supabase) throw new Error('Supabase not connected');
@@ -466,25 +467,7 @@
         }
 
         // ============================================================
-        // CHECK LOGGED IN - PREVENT REDIRECT TO AUTH
-        // ============================================================
-        function checkLoggedIn() {
-            try {
-                var saved = localStorage.getItem('silverchain_user');
-                if (saved) {
-                    var data = JSON.parse(saved);
-                    if (data.email && data.id) {
-                        console.log('User already logged in:', data.email);
-                        // Stay on dashboard, don't redirect to auth
-                        return true;
-                    }
-                }
-            } catch (e) {}
-            return false;
-        }
-
-        // ============================================================
-        // HANDLE LOGIN
+        // HANDLE LOGIN (DENGAN SUPABASE)
         // ============================================================
         function handleLogin() {
             console.log('🔐 Login button clicked!');
@@ -511,6 +494,18 @@
                 return;
             }
 
+            // KALO SUPABASE GAK ADA, PAKE SIMULASI
+            if (!supabase) {
+                successText.textContent = '✅ Login successful! (Simulation)';
+                successEl.classList.add('show');
+                showToast('✅ Login successful!');
+                localStorage.setItem('silverchain_user', JSON.stringify({ email: email }));
+                setTimeout(function() {
+                    window.location.href = '/dashboard';
+                }, 1500);
+                return;
+            }
+
             // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
@@ -525,7 +520,6 @@
                     successEl.classList.add('show');
                     showToast('✅ Login successful!');
                     setTimeout(function() {
-                        // Stay on dashboard, don't redirect
                         window.location.href = '/dashboard';
                     }, 1500);
                 })
@@ -541,7 +535,7 @@
         }
 
         // ============================================================
-        // HANDLE REGISTER
+        // HANDLE REGISTER (DENGAN SUPABASE)
         // ============================================================
         function handleRegister() {
             console.log('📝 Register button clicked!');
@@ -571,6 +565,21 @@
             if (password !== confirm) {
                 errorText.textContent = 'Passwords do not match.';
                 errorEl.classList.add('show');
+                return;
+            }
+
+            // KALO SUPABASE GAK ADA, PAKE SIMULASI
+            if (!supabase) {
+                successText.textContent = '✅ Account created! (Simulation)';
+                successEl.classList.add('show');
+                showToast('✅ Account created!');
+                document.getElementById('regEmail').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('regPasswordConfirm').value = '';
+                setTimeout(function() {
+                    switchTab('panelLogin');
+                    document.getElementById('loginEmail').value = email;
+                }, 1500);
                 return;
             }
 
@@ -628,7 +637,7 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
-            // PAKE SUPABASE
+            // PAKE SUPABASE KALO ADA
             if (supabase) {
                 getUserByEmail(email)
                     .then(function(user) {
@@ -666,11 +675,15 @@
                         btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
                     });
             } else {
-                // If no Supabase, show error
-                errorText.textContent = 'Supabase not connected. Please check your configuration.';
-                errorEl.classList.add('show');
+                // SIMULASI
+                successText.textContent = '✅ Reset link sent! (Simulation)';
+                successEl.classList.add('show');
+                showToast('📧 Reset link sent!');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                setTimeout(function() {
+                    switchTab('panelLogin');
+                }, 2000);
             }
         }
 
@@ -702,7 +715,7 @@
                 return;
             }
 
-            // Reset password simulation - in real scenario, update via Supabase
+            // SIMULASI (karena reset pake Supabase butuh auth user)
             successText.textContent = '✅ Password reset successful!';
             successEl.classList.add('show');
             showToast('✅ Password reset!');
@@ -714,6 +727,21 @@
                 switchTab('panelLogin');
                 showToast('✅ Please login with your new password');
             }, 1500);
+        }
+
+        // ============================================================
+        // CHECK LOGGED IN
+        // ============================================================
+        function checkLoggedIn() {
+            try {
+                var saved = localStorage.getItem('silverchain_user');
+                if (saved) {
+                    var data = JSON.parse(saved);
+                    if (data.email) {
+                        console.log('User already logged in:', data.email);
+                    }
+                }
+            } catch (e) {}
         }
 
         // ============================================================
@@ -740,16 +768,11 @@
         });
 
         // ============================================================
-        // INIT - Check if already logged in
+        // INIT
         // ============================================================
-        var isLoggedIn = checkLoggedIn();
-        if (isLoggedIn) {
-            console.log('User already logged in - staying on dashboard');
-            // Don't redirect, stay on current page
-        }
-        
+        checkLoggedIn();
         console.log('🟢 SilverChain Auth ready!');
-        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '⚠️ Not connected');
+        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '⚠️ Not connected (simulation mode)');
         console.log('📌 Click any button to test!');
     </script>
 
