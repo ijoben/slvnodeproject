@@ -260,6 +260,9 @@
                 padding: 1.5rem 1rem;
             }
         }
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -360,6 +363,7 @@
         var supabase = null;
         var resetTokens = {};
         var isRedirecting = false;
+        var authChecked = false;
 
         // ============================================================
         // INIT SUPABASE
@@ -370,13 +374,9 @@
                 console.log('✅ Supabase initialized');
             } else {
                 console.error('❌ Supabase SDK not loaded!');
-                document.getElementById('toastText').textContent = '⚠️ Supabase SDK not loaded!';
-                document.getElementById('toastMessage').classList.add('show');
             }
         } catch (e) {
             console.error('❌ Supabase init failed:', e.message);
-            document.getElementById('toastText').textContent = '⚠️ Connection error!';
-            document.getElementById('toastMessage').classList.add('show');
         }
 
         // ============================================================
@@ -399,16 +399,20 @@
         }
 
         // ============================================================
-        // REDIRECT IF LOGGED IN - HANYA SEKALI
+        // REDIRECT IF LOGGED IN - PAKAI TIMEOUT UNTUK CEK
         // ============================================================
-        function redirectIfLoggedIn() {
-            if (isRedirecting) return true;
+        function checkAndRedirect() {
+            // Jangan redirect jika sudah di-redirect
+            if (isRedirecting) return;
             
+            // Cek apakah ada user di localStorage
             var user = checkLoggedIn();
             if (user) {
                 isRedirecting = true;
                 console.log('🔄 Redirecting to dashboard...');
-                window.location.href = '/dashboard';
+                setTimeout(function() {
+                    window.location.replace('/dashboard');
+                }, 100);
                 return true;
             }
             return false;
@@ -511,9 +515,9 @@
         // HANDLE LOGIN
         // ============================================================
         function handleLogin() {
-            // Cek lagi apakah sudah login
+            // Cek apakah sudah login
             if (checkLoggedIn()) {
-                redirectIfLoggedIn();
+                checkAndRedirect();
                 return;
             }
             
@@ -561,8 +565,13 @@
                     successText.textContent = '✅ Login berhasil!';
                     successEl.classList.add('show');
                     showToast('✅ Login berhasil!');
+                    
+                    // Redirect setelah delay
                     setTimeout(function() {
-                        window.location.href = '/dashboard';
+                        if (!isRedirecting) {
+                            isRedirecting = true;
+                            window.location.replace('/dashboard');
+                        }
                     }, 1500);
                 })
                 .catch(function(err) {
@@ -783,19 +792,17 @@
         });
 
         // ============================================================
-        // INIT - CEK LOGIN TAPI JANGAN REDIRECT TERUS
+        // INIT - CEK LOGIN TAPI PAKAI TIMEOUT
         // ============================================================
-        var user = checkLoggedIn();
-        if (user) {
-            console.log('👤 User already logged in, redirecting...');
-            // Redirect once
-            isRedirecting = true;
-            window.location.href = '/dashboard';
-        } else {
-            console.log('🟢 SilverChain Auth ready!');
-            console.log('📌 Supabase status:', supabase ? '✅ Connected' : '❌ Not connected');
-            console.log('📌 Silakan login atau register');
-        }
+        // Tunggu sebentar sebelum cek login
+        setTimeout(function() {
+            if (!isRedirecting) {
+                checkAndRedirect();
+            }
+        }, 500);
+
+        console.log('🟢 SilverChain Auth ready!');
+        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '❌ Not connected');
     </script>
 
 </body>
