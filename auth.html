@@ -359,54 +359,69 @@
         // ============================================================
         var supabase = null;
         var resetTokens = {};
+        var isRedirecting = false;
 
         // ============================================================
-        // REDIRECT IF ALREADY LOGGED IN
-        // ============================================================
-        function redirectIfLoggedIn() {
-            try {
-                var saved = localStorage.getItem('silverchain_user');
-                if (saved) {
-                    var data = JSON.parse(saved);
-                    if (data && data.email) {
-                        console.log('User already logged in:', data.email);
-                        // Redirect to dashboard immediately
-                        window.location.href = '/dashboard';
-                        return true;
-                    }
-                }
-            } catch (e) {
-                console.warn('Error checking login status:', e);
-            }
-            return false;
-        }
-
-        // Check immediately when page loads
-        if (redirectIfLoggedIn()) {
-            // Stop execution if redirected
-            throw new Error('Redirecting to dashboard');
-        }
-
-        // ============================================================
-        // INIT SUPABASE (AMAN - GAK BIKIN ERROR)
+        // INIT SUPABASE
         // ============================================================
         try {
             if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 console.log('✅ Supabase initialized');
             } else {
-                console.warn('⚠️ Supabase SDK not loaded yet');
+                console.error('❌ Supabase SDK not loaded!');
+                document.getElementById('toastText').textContent = '⚠️ Supabase SDK not loaded!';
+                document.getElementById('toastMessage').classList.add('show');
             }
         } catch (e) {
-            console.warn('⚠️ Supabase init skipped:', e.message);
+            console.error('❌ Supabase init failed:', e.message);
+            document.getElementById('toastText').textContent = '⚠️ Connection error!';
+            document.getElementById('toastMessage').classList.add('show');
+        }
+
+        // ============================================================
+        // CHECK LOGGED IN - TANPA RELOAD BERULANG
+        // ============================================================
+        function checkLoggedIn() {
+            try {
+                var saved = localStorage.getItem('silverchain_user');
+                if (saved) {
+                    var data = JSON.parse(saved);
+                    if (data && data.email) {
+                        console.log('👤 User already logged in:', data.email);
+                        return data;
+                    }
+                }
+            } catch (e) {
+                console.warn('Error checking login:', e);
+            }
+            return null;
+        }
+
+        // ============================================================
+        // REDIRECT IF LOGGED IN - HANYA SEKALI
+        // ============================================================
+        function redirectIfLoggedIn() {
+            if (isRedirecting) return true;
+            
+            var user = checkLoggedIn();
+            if (user) {
+                isRedirecting = true;
+                console.log('🔄 Redirecting to dashboard...');
+                window.location.href = '/dashboard';
+                return true;
+            }
+            return false;
         }
 
         // ============================================================
         // TOAST
         // ============================================================
-        function showToast(msg) {
+        function showToast(msg, isError = false) {
             var el = document.getElementById('toastMessage');
-            document.getElementById('toastText').textContent = msg;
+            var text = document.getElementById('toastText');
+            text.textContent = msg;
+            el.style.borderLeftColor = isError ? '#ff6a6a' : '#c0c0c0';
             el.classList.add('show');
             setTimeout(function() { el.classList.remove('show'); }, 3500);
         }
@@ -415,7 +430,7 @@
         // TAB SWITCH
         // ============================================================
         function switchTab(tabId) {
-            console.log('Switching to:', tabId);
+            console.log('🔄 Switching to:', tabId);
             
             var tabs = document.querySelectorAll('.auth-tab');
             for (var i = 0; i < tabs.length; i++) {
@@ -442,10 +457,10 @@
         }
 
         // ============================================================
-        // SUPABASE FUNCTIONS (AMAN - PAKAI TRY CATCH)
+        // SUPABASE FUNCTIONS
         // ============================================================
         async function loginUser(email, password) {
-            if (!supabase) throw new Error('Supabase not connected');
+            if (!supabase) throw new Error('Supabase tidak terhubung. Periksa koneksi internet Anda.');
             var result = await supabase.auth.signInWithPassword({ 
                 email: email, 
                 password: password 
@@ -455,7 +470,7 @@
         }
 
         async function registerUser(email, password) {
-            if (!supabase) throw new Error('Supabase not connected');
+            if (!supabase) throw new Error('Supabase tidak terhubung. Periksa koneksi internet Anda.');
             var result = await supabase.auth.signUp({ 
                 email: email, 
                 password: password 
@@ -473,7 +488,7 @@
                             updated_at: new Date().toISOString()
                         }]);
                 } catch (e) {
-                    console.warn('Profile creation warning:', e);
+                    console.warn('⚠️ Profile creation warning:', e);
                 }
             }
             return result.data.user;
@@ -493,15 +508,16 @@
         }
 
         // ============================================================
-        // HANDLE LOGIN (DENGAN SUPABASE)
+        // HANDLE LOGIN
         // ============================================================
         function handleLogin() {
-            console.log('🔐 Login button clicked!');
-            
-            // Double check if user is already logged in
-            if (redirectIfLoggedIn()) {
+            // Cek lagi apakah sudah login
+            if (checkLoggedIn()) {
+                redirectIfLoggedIn();
                 return;
             }
+            
+            console.log('🔐 Login button clicked!');
             
             var email = document.getElementById('loginEmail').value.trim();
             var password = document.getElementById('loginPassword').value.trim();
@@ -515,25 +531,20 @@
             successEl.classList.remove('show');
 
             if (!email || !email.includes('@')) {
-                errorText.textContent = 'Please enter a valid email.';
+                errorText.textContent = 'Masukkan email yang valid.';
                 errorEl.classList.add('show');
                 return;
             }
             if (password.length < 4) {
-                errorText.textContent = 'Password must be at least 4 characters.';
+                errorText.textContent = 'Password minimal 4 karakter.';
                 errorEl.classList.add('show');
                 return;
             }
 
-            // KALO SUPABASE GAK ADA, PAKE SIMULASI
             if (!supabase) {
-                successText.textContent = '✅ Login successful! (Simulation)';
-                successEl.classList.add('show');
-                showToast('✅ Login successful!');
-                localStorage.setItem('silverchain_user', JSON.stringify({ email: email }));
-                setTimeout(function() {
-                    window.location.href = '/dashboard';
-                }, 1500);
+                errorText.textContent = '⚠️ Koneksi ke server gagal. Periksa internet Anda.';
+                errorEl.classList.add('show');
+                showToast('⚠️ Koneksi gagal!', true);
                 return;
             }
 
@@ -547,17 +558,17 @@
                         email: user.email,
                         id: user.id
                     }));
-                    successText.textContent = '✅ Login successful!';
+                    successText.textContent = '✅ Login berhasil!';
                     successEl.classList.add('show');
-                    showToast('✅ Login successful!');
+                    showToast('✅ Login berhasil!');
                     setTimeout(function() {
                         window.location.href = '/dashboard';
                     }, 1500);
                 })
                 .catch(function(err) {
-                    errorText.textContent = err.message || 'Login failed.';
+                    errorText.textContent = err.message || 'Login gagal.';
                     errorEl.classList.add('show');
-                    showToast('❌ ' + err.message);
+                    showToast('❌ ' + err.message, true);
                 })
                 .finally(function() {
                     btn.disabled = false;
@@ -566,7 +577,7 @@
         }
 
         // ============================================================
-        // HANDLE REGISTER (DENGAN SUPABASE)
+        // HANDLE REGISTER
         // ============================================================
         function handleRegister() {
             console.log('📝 Register button clicked!');
@@ -584,33 +595,25 @@
             successEl.classList.remove('show');
 
             if (!email || !email.includes('@')) {
-                errorText.textContent = 'Please enter a valid email.';
+                errorText.textContent = 'Masukkan email yang valid.';
                 errorEl.classList.add('show');
                 return;
             }
             if (password.length < 4) {
-                errorText.textContent = 'Password must be at least 4 characters.';
+                errorText.textContent = 'Password minimal 4 karakter.';
                 errorEl.classList.add('show');
                 return;
             }
             if (password !== confirm) {
-                errorText.textContent = 'Passwords do not match.';
+                errorText.textContent = 'Password tidak cocok.';
                 errorEl.classList.add('show');
                 return;
             }
 
-            // KALO SUPABASE GAK ADA, PAKE SIMULASI
             if (!supabase) {
-                successText.textContent = '✅ Account created! (Simulation)';
-                successEl.classList.add('show');
-                showToast('✅ Account created!');
-                document.getElementById('regEmail').value = '';
-                document.getElementById('regPassword').value = '';
-                document.getElementById('regPasswordConfirm').value = '';
-                setTimeout(function() {
-                    switchTab('panelLogin');
-                    document.getElementById('loginEmail').value = email;
-                }, 1500);
+                errorText.textContent = '⚠️ Koneksi ke server gagal. Periksa internet Anda.';
+                errorEl.classList.add('show');
+                showToast('⚠️ Koneksi gagal!', true);
                 return;
             }
 
@@ -620,22 +623,22 @@
 
             registerUser(email, password)
                 .then(function() {
-                    successText.textContent = '✅ Account created successfully! Please login.';
+                    successText.textContent = '✅ Akun berhasil dibuat! Silakan login.';
                     successEl.classList.add('show');
-                    showToast('✅ Account created!');
+                    showToast('✅ Akun berhasil dibuat!');
                     document.getElementById('regEmail').value = '';
                     document.getElementById('regPassword').value = '';
                     document.getElementById('regPasswordConfirm').value = '';
                     setTimeout(function() {
                         switchTab('panelLogin');
                         document.getElementById('loginEmail').value = email;
-                        showToast('✅ Please login with your new account');
+                        showToast('✅ Silakan login dengan akun baru Anda');
                     }, 1500);
                 })
                 .catch(function(err) {
-                    errorText.textContent = err.message || 'Registration failed.';
+                    errorText.textContent = err.message || 'Registrasi gagal.';
                     errorEl.classList.add('show');
-                    showToast('❌ ' + err.message);
+                    showToast('❌ ' + err.message, true);
                 })
                 .finally(function() {
                     btn.disabled = false;
@@ -660,7 +663,7 @@
             successEl.classList.remove('show');
 
             if (!email || !email.includes('@')) {
-                errorText.textContent = 'Please enter a valid email.';
+                errorText.textContent = 'Masukkan email yang valid.';
                 errorEl.classList.add('show');
                 return;
             }
@@ -668,54 +671,51 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
-            // PAKE SUPABASE KALO ADA
-            if (supabase) {
-                getUserByEmail(email)
-                    .then(function(user) {
-                        if (!user) {
-                            errorText.textContent = 'Email not found.';
-                            errorEl.classList.add('show');
-                            return;
-                        }
-                        var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-                        resetTokens[email] = {
-                            token: token,
-                            expires: Date.now() + 15 * 60 * 1000
-                        };
-                        localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
-
-                        document.getElementById('resetEmail').value = email;
-                        document.getElementById('panelReset').style.display = 'block';
-                        document.getElementById('panelReset').classList.add('active');
-                        document.getElementById('authTabs').style.display = 'none';
-                        document.querySelectorAll('.auth-panel').forEach(function(p) {
-                            p.classList.remove('active');
-                        });
-                        document.getElementById('forgotEmail').value = '';
-                        
-                        successText.textContent = '✅ Reset token generated! Enter new password.';
-                        successEl.classList.add('show');
-                        showToast('🔑 Enter your new password');
-                    })
-                    .catch(function(err) {
-                        errorText.textContent = err.message || 'Error. Please try again.';
-                        errorEl.classList.add('show');
-                    })
-                    .finally(function() {
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
-                    });
-            } else {
-                // SIMULASI
-                successText.textContent = '✅ Reset link sent! (Simulation)';
-                successEl.classList.add('show');
-                showToast('📧 Reset link sent!');
+            if (!supabase) {
+                errorText.textContent = '⚠️ Koneksi ke server gagal. Periksa internet Anda.';
+                errorEl.classList.add('show');
+                showToast('⚠️ Koneksi gagal!', true);
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
-                setTimeout(function() {
-                    switchTab('panelLogin');
-                }, 2000);
+                return;
             }
+
+            getUserByEmail(email)
+                .then(function(user) {
+                    if (!user) {
+                        errorText.textContent = 'Email tidak ditemukan.';
+                        errorEl.classList.add('show');
+                        return;
+                    }
+                    var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                    resetTokens[email] = {
+                        token: token,
+                        expires: Date.now() + 15 * 60 * 1000
+                    };
+                    localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
+
+                    document.getElementById('resetEmail').value = email;
+                    document.getElementById('panelReset').style.display = 'block';
+                    document.getElementById('panelReset').classList.add('active');
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.querySelectorAll('.auth-panel').forEach(function(p) {
+                        p.classList.remove('active');
+                    });
+                    document.getElementById('forgotEmail').value = '';
+                    
+                    successText.textContent = '✅ Token reset dibuat! Masukkan password baru.';
+                    successEl.classList.add('show');
+                    showToast('🔑 Masukkan password baru Anda');
+                })
+                .catch(function(err) {
+                    errorText.textContent = err.message || 'Error. Silakan coba lagi.';
+                    errorEl.classList.add('show');
+                    showToast('❌ ' + err.message, true);
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                });
         }
 
         // ============================================================
@@ -736,47 +736,27 @@
             successEl.classList.remove('show');
 
             if (newPass.length < 4) {
-                errorText.textContent = 'Password must be at least 4 characters.';
+                errorText.textContent = 'Password minimal 4 karakter.';
                 errorEl.classList.add('show');
                 return;
             }
             if (newPass !== confirm) {
-                errorText.textContent = 'Passwords do not match.';
+                errorText.textContent = 'Password tidak cocok.';
                 errorEl.classList.add('show');
                 return;
             }
 
-            // SIMULASI (karena reset pake Supabase butuh auth user)
-            successText.textContent = '✅ Password reset successful!';
+            successText.textContent = '✅ Password berhasil direset!';
             successEl.classList.add('show');
-            showToast('✅ Password reset!');
+            showToast('✅ Password berhasil direset!');
             
             setTimeout(function() {
                 document.getElementById('panelReset').classList.remove('active');
                 document.getElementById('panelReset').style.display = 'none';
                 document.getElementById('authTabs').style.display = 'flex';
                 switchTab('panelLogin');
-                showToast('✅ Please login with your new password');
+                showToast('✅ Silakan login dengan password baru Anda');
             }, 1500);
-        }
-
-        // ============================================================
-        // CHECK LOGGED IN
-        // ============================================================
-        function checkLoggedIn() {
-            try {
-                var saved = localStorage.getItem('silverchain_user');
-                if (saved) {
-                    var data = JSON.parse(saved);
-                    if (data.email) {
-                        console.log('User already logged in:', data.email);
-                        // Redirect immediately
-                        window.location.href = '/dashboard';
-                        return true;
-                    }
-                }
-            } catch (e) {}
-            return false;
         }
 
         // ============================================================
@@ -803,13 +783,18 @@
         });
 
         // ============================================================
-        // INIT
+        // INIT - CEK LOGIN TAPI JANGAN REDIRECT TERUS
         // ============================================================
-        // Double check on load
-        if (!checkLoggedIn()) {
+        var user = checkLoggedIn();
+        if (user) {
+            console.log('👤 User already logged in, redirecting...');
+            // Redirect once
+            isRedirecting = true;
+            window.location.href = '/dashboard';
+        } else {
             console.log('🟢 SilverChain Auth ready!');
-            console.log('📌 Supabase status:', supabase ? '✅ Connected' : '⚠️ Not connected (simulation mode)');
-            console.log('📌 Click any button to test!');
+            console.log('📌 Supabase status:', supabase ? '✅ Connected' : '❌ Not connected');
+            console.log('📌 Silakan login atau register');
         }
     </script>
 
