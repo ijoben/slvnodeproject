@@ -6,7 +6,6 @@
     <title>SilverChain · Auth</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
@@ -255,13 +254,22 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        .referral-field {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.7rem;
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            border: 1px solid rgba(80, 140, 255, 0.1);
+        }
+        .referral-field i {
+            margin-right: 0.5rem;
+        }
         @media (max-width: 480px) {
             .auth-container {
                 padding: 1.5rem 1rem;
             }
-        }
-        .hidden {
-            display: none !important;
         }
     </style>
 </head>
@@ -307,8 +315,15 @@
         <div id="panelRegister" class="auth-panel">
             <div class="auth-title">📝 Create Account</div>
             <div class="auth-sub">Join SilverChain community</div>
+            
+            <!-- Referral Field -->
+            <div class="referral-field" id="referralField">
+                <i class="fas fa-link"></i> Referral: <span id="referralDisplay">None</span>
+            </div>
+            <input type="hidden" id="refCode" value="" />
+            
             <input type="email" class="input-field" id="regEmail" placeholder="Email" />
-            <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
+            <input type="password" class="input-field" id="regPassword" placeholder="Password (min 6)" />
             <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Confirm Password" />
             <button class="btn-primary" id="registerBtn" onclick="handleRegister()"><i class="fas fa-user-plus"></i> Register</button>
             <div id="regError" class="error-msg"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText"></span></div>
@@ -338,7 +353,7 @@
             <div class="auth-title">🔑 Reset Password</div>
             <div class="auth-sub">Enter your new password</div>
             <input type="hidden" id="resetEmail" />
-            <input type="password" class="input-field" id="resetNewPassword" placeholder="New Password (min 4)" />
+            <input type="password" class="input-field" id="resetNewPassword" placeholder="New Password (min 6)" />
             <input type="password" class="input-field" id="resetConfirmPassword" placeholder="Confirm New Password" />
             <button class="btn-primary" id="resetBtn" onclick="handleReset()"><i class="fas fa-check"></i> Reset Password</button>
             <div id="resetError" class="error-msg"><i class="fas fa-exclamation-circle"></i> <span id="resetErrorText"></span></div>
@@ -352,7 +367,7 @@
 
     <script>
         // ============================================================
-        // 🔥 GANTI DENGAN CREDENTIAL SUPABASE ANDA 🔥
+        // 🔥 SUPABASE CREDENTIALS
         // ============================================================
         var SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyYnJpYXNnbXhqenZidWtzbGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMzAxODMsImV4cCI6MjA5OTYwNjE4M30.fhcSgXY-D-AvgDyg86v7eA_ltAU_UC0LFrCDnsJufgg';
@@ -362,8 +377,7 @@
         // ============================================================
         var supabase = null;
         var resetTokens = {};
-        var isRedirecting = false;
-        var authChecked = false;
+        var currentReferral = null;
 
         // ============================================================
         // INIT SUPABASE
@@ -374,58 +388,38 @@
                 console.log('✅ Supabase initialized');
             } else {
                 console.error('❌ Supabase SDK not loaded!');
+                showToast('❌ Supabase SDK failed to load');
             }
         } catch (e) {
-            console.error('❌ Supabase init failed:', e.message);
+            console.error('❌ Supabase init error:', e.message);
+            showToast('❌ Supabase initialization failed');
         }
 
         // ============================================================
-        // CHECK LOGGED IN - TANPA RELOAD BERULANG
+        // CHECK REFERRAL FROM URL
         // ============================================================
-        function checkLoggedIn() {
-            try {
-                var saved = localStorage.getItem('silverchain_user');
-                if (saved) {
-                    var data = JSON.parse(saved);
-                    if (data && data.email) {
-                        console.log('👤 User already logged in:', data.email);
-                        return data;
-                    }
-                }
-            } catch (e) {
-                console.warn('Error checking login:', e);
-            }
-            return null;
-        }
-
-        // ============================================================
-        // REDIRECT IF LOGGED IN - PAKAI TIMEOUT UNTUK CEK
-        // ============================================================
-        function checkAndRedirect() {
-            // Jangan redirect jika sudah di-redirect
-            if (isRedirecting) return;
+        function checkReferral() {
+            var params = new URLSearchParams(window.location.search);
+            var ref = params.get('ref');
             
-            // Cek apakah ada user di localStorage
-            var user = checkLoggedIn();
-            if (user) {
-                isRedirecting = true;
-                console.log('🔄 Redirecting to dashboard...');
-                setTimeout(function() {
-                    window.location.replace('/dashboard');
-                }, 100);
-                return true;
+            if (ref && ref.length > 0) {
+                currentReferral = ref;
+                document.getElementById('refCode').value = ref;
+                document.getElementById('referralDisplay').textContent = ref;
+                document.getElementById('referralField').style.display = 'block';
+                showToast('📎 Referral code: ' + ref);
+                console.log('📎 Referral detected:', ref);
+            } else {
+                document.getElementById('referralField').style.display = 'none';
             }
-            return false;
         }
 
         // ============================================================
         // TOAST
         // ============================================================
-        function showToast(msg, isError = false) {
+        function showToast(msg) {
             var el = document.getElementById('toastMessage');
-            var text = document.getElementById('toastText');
-            text.textContent = msg;
-            el.style.borderLeftColor = isError ? '#ff6a6a' : '#c0c0c0';
+            document.getElementById('toastText').textContent = msg;
             el.classList.add('show');
             setTimeout(function() { el.classList.remove('show'); }, 3500);
         }
@@ -434,7 +428,7 @@
         // TAB SWITCH
         // ============================================================
         function switchTab(tabId) {
-            console.log('🔄 Switching to:', tabId);
+            console.log('Switching to:', tabId);
             
             var tabs = document.querySelectorAll('.auth-tab');
             for (var i = 0; i < tabs.length; i++) {
@@ -461,10 +455,44 @@
         }
 
         // ============================================================
+        // VALIDATE REFERRAL
+        // ============================================================
+        async function validateReferral(refCode) {
+            if (!supabase) throw new Error('Supabase not connected');
+            
+            try {
+                var result = await supabase
+                    .from('users')
+                    .select('id, email')
+                    .eq('referral_code', refCode)
+                    .single();
+                
+                if (result.error) {
+                    console.log('Referral validation error:', result.error);
+                    return null;
+                }
+                
+                return result.data;
+            } catch (e) {
+                console.error('Error validating referral:', e);
+                return null;
+            }
+        }
+
+        // ============================================================
+        // GENERATE REFERRAL CODE
+        // ============================================================
+        function generateReferralCode(email) {
+            var prefix = email.split('@')[0].substring(0, 4).toUpperCase();
+            var random = Math.random().toString(36).substring(2, 6).toUpperCase();
+            return prefix + random;
+        }
+
+        // ============================================================
         // SUPABASE FUNCTIONS
         // ============================================================
         async function loginUser(email, password) {
-            if (!supabase) throw new Error('Supabase tidak terhubung. Periksa koneksi internet Anda.');
+            if (!supabase) throw new Error('Supabase not connected');
             var result = await supabase.auth.signInWithPassword({ 
                 email: email, 
                 password: password 
@@ -473,54 +501,85 @@
             return result.data.user;
         }
 
-        async function registerUser(email, password) {
-            if (!supabase) throw new Error('Supabase tidak terhubung. Periksa koneksi internet Anda.');
+        async function registerUser(email, password, referralCode) {
+            if (!supabase) throw new Error('Supabase not connected');
+            
+            // Generate referral code for new user
+            var newRefCode = generateReferralCode(email);
+            
+            // Validate referral if exists
+            var referrerId = null;
+            if (referralCode && referralCode.length > 0) {
+                var referrer = await validateReferral(referralCode);
+                if (referrer) {
+                    referrerId = referrer.id;
+                    console.log('✅ Valid referral from:', referrer.email);
+                } else {
+                    console.log('⚠️ Invalid referral code, ignoring');
+                }
+            }
+            
+            // Register user
             var result = await supabase.auth.signUp({ 
                 email: email, 
-                password: password 
+                password: password,
+                options: {
+                    data: {
+                        referral_code: newRefCode,
+                        referred_by: referrerId || null
+                    }
+                }
             });
+            
             if (result.error) throw result.error;
             
             if (result.data.user) {
+                // Insert user profile
+                var userData = {
+                    id: result.data.user.id,
+                    email: email,
+                    referral_code: newRefCode,
+                    referred_by: referrerId || null,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+                
                 try {
-                    await supabase
+                    var insertResult = await supabase
                         .from('users')
-                        .insert([{
-                            id: result.data.user.id,
-                            email: email,
-                            created_at: new Date().toISOString(),
-                            updated_at: new Date().toISOString()
-                        }]);
+                        .insert([userData]);
+                    
+                    if (insertResult.error) {
+                        console.error('User insert error:', insertResult.error);
+                    } else {
+                        console.log('✅ User profile created with referral:', newRefCode);
+                    }
+                    
+                    // If there's a referrer, update their referral count
+                    if (referrerId) {
+                        try {
+                            var referrerResult = await supabase
+                                .rpc('increment_referral_count', {
+                                    user_id: referrerId
+                                });
+                            console.log('✅ Referral count updated:', referrerResult);
+                        } catch (e) {
+                            console.warn('⚠️ Referral count update failed:', e);
+                        }
+                    }
+                    
                 } catch (e) {
                     console.warn('⚠️ Profile creation warning:', e);
                 }
             }
+            
             return result.data.user;
-        }
-
-        async function getUserByEmail(email) {
-            if (!supabase) return null;
-            try {
-                var result = await supabase
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-                if (result.error) return null;
-                return result.data;
-            } catch (e) { return null; }
         }
 
         // ============================================================
         // HANDLE LOGIN
         // ============================================================
         function handleLogin() {
-            // Cek apakah sudah login
-            if (checkLoggedIn()) {
-                checkAndRedirect();
-                return;
-            }
-            
             console.log('🔐 Login button clicked!');
             
             var email = document.getElementById('loginEmail').value.trim();
@@ -535,24 +594,16 @@
             successEl.classList.remove('show');
 
             if (!email || !email.includes('@')) {
-                errorText.textContent = 'Masukkan email yang valid.';
+                errorText.textContent = 'Please enter a valid email.';
                 errorEl.classList.add('show');
                 return;
             }
-            if (password.length < 4) {
-                errorText.textContent = 'Password minimal 4 karakter.';
+            if (password.length < 6) {
+                errorText.textContent = 'Password must be at least 6 characters.';
                 errorEl.classList.add('show');
                 return;
             }
 
-            if (!supabase) {
-                errorText.textContent = '⚠️ Koneksi ke server gagal. Periksa internet Anda.';
-                errorEl.classList.add('show');
-                showToast('⚠️ Koneksi gagal!', true);
-                return;
-            }
-
-            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
 
@@ -562,22 +613,17 @@
                         email: user.email,
                         id: user.id
                     }));
-                    successText.textContent = '✅ Login berhasil!';
+                    successText.textContent = '✅ Login successful!';
                     successEl.classList.add('show');
-                    showToast('✅ Login berhasil!');
-                    
-                    // Redirect setelah delay
+                    showToast('✅ Login successful!');
                     setTimeout(function() {
-                        if (!isRedirecting) {
-                            isRedirecting = true;
-                            window.location.replace('/dashboard');
-                        }
+                        window.location.href = '/dashboard';
                     }, 1500);
                 })
                 .catch(function(err) {
-                    errorText.textContent = err.message || 'Login gagal.';
+                    errorText.textContent = err.message || 'Login failed. Please check your credentials.';
                     errorEl.classList.add('show');
-                    showToast('❌ ' + err.message, true);
+                    showToast('❌ ' + (err.message || 'Login failed'));
                 })
                 .finally(function() {
                     btn.disabled = false;
@@ -594,6 +640,7 @@
             var email = document.getElementById('regEmail').value.trim();
             var password = document.getElementById('regPassword').value.trim();
             var confirm = document.getElementById('regPasswordConfirm').value.trim();
+            var referralCode = document.getElementById('refCode').value.trim();
             var errorEl = document.getElementById('regError');
             var errorText = document.getElementById('regErrorText');
             var successEl = document.getElementById('regSuccess');
@@ -604,50 +651,42 @@
             successEl.classList.remove('show');
 
             if (!email || !email.includes('@')) {
-                errorText.textContent = 'Masukkan email yang valid.';
+                errorText.textContent = 'Please enter a valid email.';
                 errorEl.classList.add('show');
                 return;
             }
-            if (password.length < 4) {
-                errorText.textContent = 'Password minimal 4 karakter.';
+            if (password.length < 6) {
+                errorText.textContent = 'Password must be at least 6 characters.';
                 errorEl.classList.add('show');
                 return;
             }
             if (password !== confirm) {
-                errorText.textContent = 'Password tidak cocok.';
+                errorText.textContent = 'Passwords do not match.';
                 errorEl.classList.add('show');
                 return;
             }
 
-            if (!supabase) {
-                errorText.textContent = '⚠️ Koneksi ke server gagal. Periksa internet Anda.';
-                errorEl.classList.add('show');
-                showToast('⚠️ Koneksi gagal!', true);
-                return;
-            }
-
-            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Registering...';
 
-            registerUser(email, password)
+            registerUser(email, password, referralCode)
                 .then(function() {
-                    successText.textContent = '✅ Akun berhasil dibuat! Silakan login.';
+                    successText.textContent = '✅ Account created successfully! Please login.';
                     successEl.classList.add('show');
-                    showToast('✅ Akun berhasil dibuat!');
+                    showToast('✅ Account created successfully!');
                     document.getElementById('regEmail').value = '';
                     document.getElementById('regPassword').value = '';
                     document.getElementById('regPasswordConfirm').value = '';
                     setTimeout(function() {
                         switchTab('panelLogin');
                         document.getElementById('loginEmail').value = email;
-                        showToast('✅ Silakan login dengan akun baru Anda');
+                        showToast('✅ Please login with your new account');
                     }, 1500);
                 })
                 .catch(function(err) {
-                    errorText.textContent = err.message || 'Registrasi gagal.';
+                    errorText.textContent = err.message || 'Registration failed. Please try again.';
                     errorEl.classList.add('show');
-                    showToast('❌ ' + err.message, true);
+                    showToast('❌ ' + (err.message || 'Registration failed'));
                 })
                 .finally(function() {
                     btn.disabled = false;
@@ -672,7 +711,7 @@
             successEl.classList.remove('show');
 
             if (!email || !email.includes('@')) {
-                errorText.textContent = 'Masukkan email yang valid.';
+                errorText.textContent = 'Please enter a valid email.';
                 errorEl.classList.add('show');
                 return;
             }
@@ -680,51 +719,33 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
-            if (!supabase) {
-                errorText.textContent = '⚠️ Koneksi ke server gagal. Periksa internet Anda.';
-                errorEl.classList.add('show');
-                showToast('⚠️ Koneksi gagal!', true);
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
-                return;
-            }
-
-            getUserByEmail(email)
-                .then(function(user) {
-                    if (!user) {
-                        errorText.textContent = 'Email tidak ditemukan.';
-                        errorEl.classList.add('show');
-                        return;
-                    }
-                    var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-                    resetTokens[email] = {
-                        token: token,
-                        expires: Date.now() + 15 * 60 * 1000
-                    };
-                    localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
-
-                    document.getElementById('resetEmail').value = email;
-                    document.getElementById('panelReset').style.display = 'block';
-                    document.getElementById('panelReset').classList.add('active');
-                    document.getElementById('authTabs').style.display = 'none';
-                    document.querySelectorAll('.auth-panel').forEach(function(p) {
-                        p.classList.remove('active');
-                    });
-                    document.getElementById('forgotEmail').value = '';
+            // Send password reset email via Supabase
+            if (supabase) {
+                supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/auth.html'
+                })
+                .then(function(result) {
+                    if (result.error) throw result.error;
                     
-                    successText.textContent = '✅ Token reset dibuat! Masukkan password baru.';
+                    successText.textContent = '✅ Password reset email sent! Check your inbox.';
                     successEl.classList.add('show');
-                    showToast('🔑 Masukkan password baru Anda');
+                    showToast('📧 Password reset email sent!');
+                    document.getElementById('forgotEmail').value = '';
                 })
                 .catch(function(err) {
-                    errorText.textContent = err.message || 'Error. Silakan coba lagi.';
+                    errorText.textContent = err.message || 'Failed to send reset email.';
                     errorEl.classList.add('show');
-                    showToast('❌ ' + err.message, true);
+                    showToast('❌ ' + (err.message || 'Failed to send reset email'));
                 })
                 .finally(function() {
                     btn.disabled = false;
                     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
                 });
+            } else {
+                showToast('❌ Supabase not connected');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+            }
         }
 
         // ============================================================
@@ -744,28 +765,69 @@
             errorEl.classList.remove('show');
             successEl.classList.remove('show');
 
-            if (newPass.length < 4) {
-                errorText.textContent = 'Password minimal 4 karakter.';
+            if (newPass.length < 6) {
+                errorText.textContent = 'Password must be at least 6 characters.';
                 errorEl.classList.add('show');
                 return;
             }
             if (newPass !== confirm) {
-                errorText.textContent = 'Password tidak cocok.';
+                errorText.textContent = 'Passwords do not match.';
                 errorEl.classList.add('show');
                 return;
             }
 
-            successText.textContent = '✅ Password berhasil direset!';
-            successEl.classList.add('show');
-            showToast('✅ Password berhasil direset!');
-            
-            setTimeout(function() {
-                document.getElementById('panelReset').classList.remove('active');
-                document.getElementById('panelReset').style.display = 'none';
-                document.getElementById('authTabs').style.display = 'flex';
-                switchTab('panelLogin');
-                showToast('✅ Silakan login dengan password baru Anda');
-            }, 1500);
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Updating...';
+
+            // Update password via Supabase
+            if (supabase) {
+                supabase.auth.updateUser({
+                    password: newPass
+                })
+                .then(function(result) {
+                    if (result.error) throw result.error;
+                    
+                    successText.textContent = '✅ Password updated successfully!';
+                    successEl.classList.add('show');
+                    showToast('✅ Password updated!');
+                    
+                    setTimeout(function() {
+                        document.getElementById('panelReset').classList.remove('active');
+                        document.getElementById('panelReset').style.display = 'none';
+                        document.getElementById('authTabs').style.display = 'flex';
+                        switchTab('panelLogin');
+                        showToast('✅ Please login with your new password');
+                    }, 1500);
+                })
+                .catch(function(err) {
+                    errorText.textContent = err.message || 'Failed to update password.';
+                    errorEl.classList.add('show');
+                    showToast('❌ ' + (err.message || 'Failed to update password'));
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+                });
+            } else {
+                showToast('❌ Supabase not connected');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+            }
+        }
+
+        // ============================================================
+        // CHECK LOGGED IN
+        // ============================================================
+        function checkLoggedIn() {
+            try {
+                var saved = localStorage.getItem('silverchain_user');
+                if (saved) {
+                    var data = JSON.parse(saved);
+                    if (data.email) {
+                        console.log('User already logged in:', data.email);
+                    }
+                }
+            } catch (e) {}
         }
 
         // ============================================================
@@ -792,15 +854,10 @@
         });
 
         // ============================================================
-        // INIT - CEK LOGIN TAPI PAKAI TIMEOUT
+        // INIT
         // ============================================================
-        // Tunggu sebentar sebelum cek login
-        setTimeout(function() {
-            if (!isRedirecting) {
-                checkAndRedirect();
-            }
-        }, 500);
-
+        checkReferral();
+        checkLoggedIn();
         console.log('🟢 SilverChain Auth ready!');
         console.log('📌 Supabase status:', supabase ? '✅ Connected' : '❌ Not connected');
     </script>
