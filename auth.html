@@ -251,9 +251,26 @@
         }
         .form-group .ref-input .ref-status.filled {
             display: inline-block;
+            background: rgba(60, 120, 255, 0.08);
+            color: #60a5fa;
+            border: 1px solid rgba(60, 120, 255, 0.12);
+        }
+
+        .info-banner {
             background: rgba(60, 120, 255, 0.05);
+            border: 1px solid rgba(80, 140, 255, 0.08);
+            border-radius: 0.8rem;
+            padding: 0.5rem 0.8rem;
+            font-size: 0.75rem;
             color: #a0a0a0;
-            border: 1px solid rgba(80, 140, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: -0.3rem;
+        }
+        .info-banner i {
+            color: #60a5fa;
+            font-size: 0.9rem;
         }
 
         .btn-submit {
@@ -344,21 +361,15 @@
             font-size: 0.7rem;
         }
 
-        .info-banner {
-            background: rgba(60, 120, 255, 0.05);
-            border: 1px solid rgba(80, 140, 255, 0.08);
-            border-radius: 0.8rem;
-            padding: 0.5rem 0.8rem;
-            font-size: 0.75rem;
-            color: #a0a0a0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: -0.3rem;
+        /* ===== REFERRAL CODE AUTO-FILL HIGHLIGHT ===== */
+        .ref-input.highlight {
+            border-color: rgba(60, 120, 255, 0.3) !important;
+            background: rgba(60, 120, 255, 0.05) !important;
+            transition: all 0.5s ease;
         }
-        .info-banner i {
-            color: #60a5fa;
-            font-size: 0.9rem;
+        .ref-input.highlight input {
+            color: #60a5fa !important;
+            font-weight: 600;
         }
 
         @media (max-width: 480px) {
@@ -502,15 +513,15 @@
                 </div>
                 <div class="form-group">
                     <label>Referral Code</label>
-                    <div class="ref-input">
+                    <div class="ref-input" id="refInputWrapper">
                         <i class="fas fa-link"></i>
                         <span class="ref-label">Code:</span>
                         <input type="text" id="registerRefCode" placeholder="ABC123" maxlength="8" spellcheck="false" />
                         <span class="ref-status" id="refStatus"></span>
                     </div>
-                    <div class="info-banner">
+                    <div class="info-banner" id="refInfoBanner">
                         <i class="fas fa-user-plus"></i>
-                        <span>Masukkan referral code dari upline Anda (opsional)</span>
+                        <span id="refInfoText">Masukkan referral code dari upline Anda (opsional)</span>
                     </div>
                 </div>
                 <button type="submit" class="btn-submit" id="registerBtn"><i class="fas fa-user-plus"></i> Create Account</button>
@@ -538,6 +549,7 @@
 
         let supabaseClient = null;
         let refCheckTimeout = null;
+        let isReferralAutoFilled = false;
 
         // ============================================================
         //  INIT SUPABASE
@@ -679,7 +691,6 @@
         // ============================================================
         async function createUser(email, password, refCode = null) {
             try {
-                // Cek email sudah terdaftar
                 const existing = await getUserByEmail(email);
                 if (existing) {
                     throw new Error('Email already registered. Please login.');
@@ -688,7 +699,6 @@
                 const newRefCode = generateRefCode();
                 const hashedPassword = hashPassword(password);
 
-                // Proses referral code
                 let referredBy = null;
                 let referrerEmail = null;
                 const cleanRefCode = refCode ? refCode.trim().toUpperCase() : '';
@@ -708,15 +718,12 @@
                     console.log('ℹ️ No referral code provided. referred_by will be null.');
                 }
 
-                // Role: admin atau user
                 const userRole = email === ADMIN_EMAIL ? 'admin' : 'user';
 
                 console.log(`📝 Creating user: ${email}`);
                 console.log(`🔑 New ref_code: ${newRefCode}`);
                 console.log(`👥 Referred by: ${referredBy || 'none'}`);
-                console.log(`👤 Role: ${userRole}`);
 
-                // Insert user
                 const { data, error } = await supabaseClient
                     .from('users')
                     .insert({
@@ -773,13 +780,110 @@
         }
 
         // ============================================================
-        //  REAL-TIME REFERRAL CHECK
+        //  REFERRAL AUTO-FILL FROM URL - FIXED!
+        // ============================================================
+        function autoFillReferralCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref');
+            
+            console.log(`🔍 Checking URL for referral code: ${ref}`);
+            
+            if (!ref) {
+                console.log('ℹ️ No referral code found in URL');
+                return false;
+            }
+
+            const refInput = document.getElementById('registerRefCode');
+            const refStatus = document.getElementById('refStatus');
+            const refWrapper = document.getElementById('refInputWrapper');
+            const refInfoText = document.getElementById('refInfoText');
+            
+            if (!refInput) {
+                console.error('❌ Referral input not found!');
+                return false;
+            }
+
+            // Set value
+            const cleanRef = ref.trim().toUpperCase();
+            refInput.value = cleanRef;
+            
+            // Show status
+            refStatus.className = 'ref-status filled';
+            refStatus.textContent = '📎 Auto-filled from link';
+            
+            // Highlight wrapper
+            refWrapper.classList.add('highlight');
+            
+            // Update info banner
+            if (refInfoText) {
+                refInfoText.innerHTML = `✅ Referral code <strong>${cleanRef}</strong> auto-filled from link!`;
+            }
+            
+            isReferralAutoFilled = true;
+            
+            console.log(`✅ Referral code auto-filled: ${cleanRef}`);
+            
+            // Switch to register tab
+            const registerTab = document.querySelector('.auth-tab[data-tab="register"]');
+            if (registerTab) {
+                registerTab.click();
+            }
+            
+            // Validate after a moment
+            setTimeout(() => {
+                validateReferralCode(cleanRef);
+            }, 800);
+            
+            return true;
+        }
+
+        // ============================================================
+        //  VALIDATE REFERRAL CODE
+        // ============================================================
+        async function validateReferralCode(code) {
+            if (!code || code.length < 3) return;
+            
+            const refStatus = document.getElementById('refStatus');
+            
+            refStatus.className = 'ref-status checking';
+            refStatus.textContent = '⏳ Checking...';
+            
+            try {
+                const check = await checkReferralCode(code);
+                if (check.valid && check.exists) {
+                    refStatus.className = 'ref-status valid';
+                    refStatus.textContent = `✅ Valid! Upline: ${check.email}`;
+                    console.log(`✅ Referral code ${code} is valid!`);
+                } else {
+                    refStatus.className = 'ref-status invalid';
+                    refStatus.textContent = '❌ Code not found';
+                    console.log(`❌ Referral code ${code} not found`);
+                }
+            } catch (error) {
+                refStatus.className = 'ref-status invalid';
+                refStatus.textContent = '❌ Error checking';
+                console.error('Validation error:', error);
+            }
+        }
+
+        // ============================================================
+        //  REAL-TIME REFERRAL CHECK (Manual input)
         // ============================================================
         const refInput = document.getElementById('registerRefCode');
         const refStatus = document.getElementById('refStatus');
 
         if (refInput) {
             refInput.addEventListener('input', function() {
+                // Remove highlight when user manually edits
+                const wrapper = document.getElementById('refInputWrapper');
+                wrapper.classList.remove('highlight');
+                
+                // Update info banner
+                const infoText = document.getElementById('refInfoText');
+                if (infoText) {
+                    infoText.innerHTML = 'Masukkan referral code dari upline Anda (opsional)';
+                }
+                
                 clearTimeout(refCheckTimeout);
                 const code = this.value.trim().toUpperCase();
                 this.value = code;
@@ -800,19 +904,7 @@
                 refStatus.textContent = '⏳ Checking...';
 
                 refCheckTimeout = setTimeout(async () => {
-                    try {
-                        const check = await checkReferralCode(code);
-                        if (check.valid && check.exists) {
-                            refStatus.className = 'ref-status valid';
-                            refStatus.textContent = `✅ Valid! Upline: ${check.email}`;
-                        } else {
-                            refStatus.className = 'ref-status invalid';
-                            refStatus.textContent = '❌ Code not found';
-                        }
-                    } catch (error) {
-                        refStatus.className = 'ref-status invalid';
-                        refStatus.textContent = '❌ Error checking';
-                    }
+                    await validateReferralCode(code);
                 }, 500);
             });
         }
@@ -858,32 +950,6 @@
         });
 
         // ============================================================
-        //  HANDLE REFERRAL CODE FROM URL - AUTO INPUT
-        // ============================================================
-        function handleReferralFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const ref = urlParams.get('ref');
-            
-            if (ref && refInput) {
-                // Auto input referral code
-                refInput.value = ref.toUpperCase();
-                
-                // Trigger validation
-                const event = new Event('input');
-                refInput.dispatchEvent(event);
-                
-                // Show status
-                refStatus.className = 'ref-status filled';
-                refStatus.textContent = '📎 Auto-filled from link';
-                
-                // Switch to register tab
-                document.querySelector('.auth-tab[data-tab="register"]')?.click();
-                
-                console.log(`📌 Referral code auto-filled from URL: ${ref}`);
-            }
-        }
-
-        // ============================================================
         //  LOGIN
         // ============================================================
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
@@ -924,7 +990,7 @@
         });
 
         // ============================================================
-        //  REGISTER - FIXED: Password confirmation & min 6 chars
+        //  REGISTER
         // ============================================================
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -936,7 +1002,6 @@
 
             hideResult('registerResult');
 
-            // Validasi email
             if (!email || !password || !confirmPassword) {
                 showResult('registerResult', 'Please fill in all fields.', 'error');
                 return;
@@ -947,19 +1012,16 @@
                 return;
             }
 
-            // Validasi password minimal 6 karakter
             if (password.length < MIN_PASSWORD_LENGTH) {
                 showResult('registerResult', `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`, 'error');
                 return;
             }
 
-            // Validasi konfirmasi password
             if (password !== confirmPassword) {
                 showResult('registerResult', 'Passwords do not match. Please re-enter.', 'error');
                 return;
             }
 
-            // Validate referral code if provided
             if (refCode !== '') {
                 const check = await checkReferralCode(refCode);
                 if (!check.valid || !check.exists) {
@@ -1040,12 +1102,21 @@
             const loggedIn = await checkAlreadyLoggedIn();
             if (loggedIn) return;
 
-            handleReferralFromURL();
+            // Auto-fill referral code from URL
+            autoFillReferralCode();
+
             console.log('🟢 Auth page ready!');
         }
 
-        init();
+        // Run init when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
         console.log('🟢 SilverChain Auth page ready.');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
     </script>
 
 </body>
