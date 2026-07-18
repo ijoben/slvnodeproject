@@ -525,6 +525,26 @@
         }
 
         // ============================================================
+        //  REDIRECT BASED ON ROLE
+        // ============================================================
+        function redirectUser(user) {
+            if (!user) return;
+            
+            console.log(`👤 User role: ${user.role}`);
+            
+            // Admin → admin.html
+            if (user.role === 'admin') {
+                console.log('🔐 Admin detected, redirecting to /admin');
+                window.location.href = '/admin';
+                return;
+            }
+            
+            // User biasa → dashboard.html
+            console.log('👤 Regular user, redirecting to /dashboard');
+            window.location.href = '/dashboard';
+        }
+
+        // ============================================================
         //  SUPABASE FUNCTIONS
         // ============================================================
         async function getUserByEmail(email) {
@@ -595,13 +615,8 @@
                     console.log('ℹ️ No referral code provided. referred_by will be null.');
                 }
 
-                // ============================================================
-                //  FIX: ROLE harus sesuai dengan enum di database
-                //  Database constraint: users_role_check 
-                //  Nilai yang valid: 'admin', 'member', 'user'
-                // ============================================================
+                // Role: admin untuk admin@silverchain.io, selain itu user
                 const userRole = email === ADMIN_EMAIL ? 'admin' : 'user';
-
                 console.log(`📝 Creating user with role: ${userRole}`);
 
                 // Insert user
@@ -613,7 +628,7 @@
                         ref_code: newRefCode,
                         referred_by: referredBy,
                         verified: false,
-                        role: userRole, // ← FIX: menggunakan 'user' bukan 'member'
+                        role: userRole,
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString()
                     })
@@ -628,7 +643,7 @@
                     throw new Error('Failed to create account: ' + error.message);
                 }
 
-                console.log(`✅ User created: ${email}, Ref: ${newRefCode}, Role: ${userRole}, Referred By: ${referredBy || 'none'}`);
+                console.log(`✅ User created: ${email}, Ref: ${newRefCode}, Role: ${userRole}`);
                 return data;
 
             } catch (error) {
@@ -738,16 +753,14 @@
             const ref = urlParams.get('ref');
             if (ref && refInput) {
                 refInput.value = ref.toUpperCase();
-                // Trigger validation
                 const event = new Event('input');
                 refInput.dispatchEvent(event);
-                // Switch to register tab
                 document.querySelector('.auth-tab[data-tab="register"]')?.click();
             }
         }
 
         // ============================================================
-        //  LOGIN
+        //  LOGIN - FIXED: Redirect admin to admin.html
         // ============================================================
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -775,8 +788,9 @@
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
                 showResult('loginResult', '✅ Login successful! Redirecting...', 'success');
 
+                // Redirect berdasarkan role
                 setTimeout(() => {
-                    window.location.href = '/dashboard';
+                    redirectUser(user);
                 }, 800);
 
             } catch (err) {
@@ -787,7 +801,7 @@
         });
 
         // ============================================================
-        //  REGISTER
+        //  REGISTER - FIXED: Redirect admin to admin.html
         // ============================================================
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -830,8 +844,9 @@
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
                 showResult('registerResult', '✅ Account created successfully! Redirecting...', 'success');
 
+                // Redirect berdasarkan role
                 setTimeout(() => {
-                    window.location.href = '/dashboard';
+                    redirectUser(user);
                 }, 800);
 
             } catch (err) {
@@ -857,30 +872,44 @@
         });
 
         // ============================================================
-        //  INIT
+        //  CHECK ALREADY LOGGED IN
         // ============================================================
-        function init() {
-            console.log('🔄 Auth page initializing...');
-
-            if (!supabaseClient) {
-                console.error('❌ Supabase not ready!');
-                // Still allow form submission, but will fail gracefully
-            }
-
-            // Check if already logged in
+        async function checkAlreadyLoggedIn() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
                     if (data && data.email) {
-                        console.log('👤 Already logged in as:', data.email);
-                        window.location.href = '/dashboard';
-                        return;
+                        const user = await getUserByEmail(data.email);
+                        if (user) {
+                            console.log('👤 Already logged in as:', user.email);
+                            console.log('🔑 Role:', user.role);
+                            redirectUser(user);
+                            return true;
+                        }
                     }
                 }
+                return false;
             } catch (e) {
                 console.error('Check login error:', e);
+                return false;
             }
+        }
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        async function init() {
+            console.log('🔄 Auth page initializing...');
+
+            if (!supabaseClient) {
+                console.error('❌ Supabase not ready!');
+                return;
+            }
+
+            // Cek apakah sudah login
+            const loggedIn = await checkAlreadyLoggedIn();
+            if (loggedIn) return;
 
             handleReferralFromURL();
             console.log('🟢 Auth page ready!');
