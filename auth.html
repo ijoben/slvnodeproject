@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ... (sama seperti sebelumnya, tidak berubah) ... */
         * {
             margin: 0;
             padding: 0;
@@ -308,13 +307,6 @@
             color: #888888;
             font-size: 0.7rem;
         }
-        .auth-footer a {
-            color: #a0a0a0;
-            text-decoration: none;
-        }
-        .auth-footer a:hover {
-            color: #c0c0c0;
-        }
 
         /* Responsive */
         @media (max-width: 480px) {
@@ -481,6 +473,9 @@
         let supabaseClient = null;
         let refCheckTimeout = null;
 
+        // ============================================================
+        //  INIT SUPABASE
+        // ============================================================
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('✅ Supabase client created!');
@@ -589,19 +584,25 @@
 
                 if (cleanRefCode !== '') {
                     const check = await checkReferralCode(cleanRefCode);
-                    if (!check.valid) {
+                    if (!check.valid || !check.exists) {
                         throw new Error(`Invalid referral code: "${cleanRefCode}". Please check and try again.`);
                     }
                     if (check.exists) {
                         referredBy = check.code;
                         console.log(`✅ Referral code ${cleanRefCode} is valid. Referred by: ${referredBy}`);
-                    } else {
-                        // This shouldn't happen if valid is true, but just in case
-                        throw new Error(`Referral code "${cleanRefCode}" not found.`);
                     }
                 } else {
                     console.log('ℹ️ No referral code provided. referred_by will be null.');
                 }
+
+                // ============================================================
+                //  FIX: ROLE harus sesuai dengan enum di database
+                //  Database constraint: users_role_check 
+                //  Nilai yang valid: 'admin', 'member', 'user'
+                // ============================================================
+                const userRole = email === ADMIN_EMAIL ? 'admin' : 'user';
+
+                console.log(`📝 Creating user with role: ${userRole}`);
 
                 // Insert user
                 const { data, error } = await supabaseClient
@@ -610,9 +611,9 @@
                         email: email,
                         password: hashedPassword,
                         ref_code: newRefCode,
-                        referred_by: referredBy, // Bisa null jika tidak ada referral
+                        referred_by: referredBy,
                         verified: false,
-                        role: email === ADMIN_EMAIL ? 'admin' : 'member',
+                        role: userRole, // ← FIX: menggunakan 'user' bukan 'member'
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString()
                     })
@@ -627,7 +628,7 @@
                     throw new Error('Failed to create account: ' + error.message);
                 }
 
-                console.log(`✅ User created: ${email}, Ref: ${newRefCode}, Referred By: ${referredBy || 'none'}`);
+                console.log(`✅ User created: ${email}, Ref: ${newRefCode}, Role: ${userRole}, Referred By: ${referredBy || 'none'}`);
                 return data;
 
             } catch (error) {
@@ -661,45 +662,47 @@
         const refInput = document.getElementById('registerRefCode');
         const refStatus = document.getElementById('refStatus');
 
-        refInput.addEventListener('input', function() {
-            clearTimeout(refCheckTimeout);
-            const code = this.value.trim().toUpperCase();
-            this.value = code; // Force uppercase
+        if (refInput) {
+            refInput.addEventListener('input', function() {
+                clearTimeout(refCheckTimeout);
+                const code = this.value.trim().toUpperCase();
+                this.value = code;
 
-            if (code === '') {
-                refStatus.className = 'ref-status';
-                refStatus.textContent = '';
-                return;
-            }
-
-            if (code.length < 3) {
-                refStatus.className = 'ref-status checking';
-                refStatus.textContent = '⏳ Type more...';
-                return;
-            }
-
-            refStatus.className = 'ref-status checking';
-            refStatus.textContent = '⏳ Checking...';
-
-            refCheckTimeout = setTimeout(async () => {
-                try {
-                    const check = await checkReferralCode(code);
-                    if (check.valid && check.exists) {
-                        refStatus.className = 'ref-status valid';
-                        refStatus.textContent = '✅ Valid referral code!';
-                    } else if (check.valid && !check.exists) {
-                        refStatus.className = 'ref-status invalid';
-                        refStatus.textContent = '❌ Code not found';
-                    } else {
-                        refStatus.className = 'ref-status invalid';
-                        refStatus.textContent = '❌ Invalid code';
-                    }
-                } catch (error) {
-                    refStatus.className = 'ref-status invalid';
-                    refStatus.textContent = '❌ Error checking';
+                if (code === '') {
+                    refStatus.className = 'ref-status';
+                    refStatus.textContent = '';
+                    return;
                 }
-            }, 500);
-        });
+
+                if (code.length < 3) {
+                    refStatus.className = 'ref-status checking';
+                    refStatus.textContent = '⏳ Type more...';
+                    return;
+                }
+
+                refStatus.className = 'ref-status checking';
+                refStatus.textContent = '⏳ Checking...';
+
+                refCheckTimeout = setTimeout(async () => {
+                    try {
+                        const check = await checkReferralCode(code);
+                        if (check.valid && check.exists) {
+                            refStatus.className = 'ref-status valid';
+                            refStatus.textContent = '✅ Valid referral code!';
+                        } else if (check.valid && !check.exists) {
+                            refStatus.className = 'ref-status invalid';
+                            refStatus.textContent = '❌ Code not found';
+                        } else {
+                            refStatus.className = 'ref-status invalid';
+                            refStatus.textContent = '❌ Invalid code';
+                        }
+                    } catch (error) {
+                        refStatus.className = 'ref-status invalid';
+                        refStatus.textContent = '❌ Error checking';
+                    }
+                }, 500);
+            });
+        }
 
         // ============================================================
         //  TABS
@@ -733,13 +736,13 @@
         function handleReferralFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             const ref = urlParams.get('ref');
-            if (ref) {
-                document.getElementById('registerRefCode').value = ref.toUpperCase();
+            if (ref && refInput) {
+                refInput.value = ref.toUpperCase();
                 // Trigger validation
                 const event = new Event('input');
                 refInput.dispatchEvent(event);
                 // Switch to register tab
-                document.querySelector('.auth-tab[data-tab="register"]').click();
+                document.querySelector('.auth-tab[data-tab="register"]')?.click();
             }
         }
 
@@ -870,7 +873,6 @@
                 if (saved) {
                     const data = JSON.parse(saved);
                     if (data && data.email) {
-                        // Already logged in, redirect to dashboard
                         console.log('👤 Already logged in as:', data.email);
                         window.location.href = '/dashboard';
                         return;
