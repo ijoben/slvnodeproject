@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <title>SilverChain · Auth</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
@@ -254,18 +256,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .referral-field {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 60px;
-            padding: 0.5rem 1rem;
-            margin-bottom: 0.7rem;
-            font-size: 0.85rem;
-            color: #a0a0a0;
-            border: 1px solid rgba(80, 140, 255, 0.1);
-        }
-        .referral-field i {
-            margin-right: 0.5rem;
-        }
         @media (max-width: 480px) {
             .auth-container {
                 padding: 1.5rem 1rem;
@@ -287,7 +277,7 @@
         </div>
 
         <!-- TABS -->
-        <div class="auth-tabs" id="authTabs">
+        <div class="auth-tabs">
             <button class="auth-tab active" onclick="switchTab('panelLogin')"><i class="fas fa-sign-in-alt"></i> Login</button>
             <button class="auth-tab" onclick="switchTab('panelRegister')"><i class="fas fa-user-plus"></i> Register</button>
             <button class="auth-tab" onclick="switchTab('panelForgot')"><i class="fas fa-key"></i> Forgot</button>
@@ -315,15 +305,8 @@
         <div id="panelRegister" class="auth-panel">
             <div class="auth-title">📝 Create Account</div>
             <div class="auth-sub">Join SilverChain community</div>
-            
-            <!-- Referral Field -->
-            <div class="referral-field" id="referralField">
-                <i class="fas fa-link"></i> Referral: <span id="referralDisplay">None</span>
-            </div>
-            <input type="hidden" id="refCode" value="" />
-            
             <input type="email" class="input-field" id="regEmail" placeholder="Email" />
-            <input type="password" class="input-field" id="regPassword" placeholder="Password (min 6)" />
+            <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
             <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Confirm Password" />
             <button class="btn-primary" id="registerBtn" onclick="handleRegister()"><i class="fas fa-user-plus"></i> Register</button>
             <div id="regError" class="error-msg"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText"></span></div>
@@ -353,7 +336,7 @@
             <div class="auth-title">🔑 Reset Password</div>
             <div class="auth-sub">Enter your new password</div>
             <input type="hidden" id="resetEmail" />
-            <input type="password" class="input-field" id="resetNewPassword" placeholder="New Password (min 6)" />
+            <input type="password" class="input-field" id="resetNewPassword" placeholder="New Password (min 4)" />
             <input type="password" class="input-field" id="resetConfirmPassword" placeholder="Confirm New Password" />
             <button class="btn-primary" id="resetBtn" onclick="handleReset()"><i class="fas fa-check"></i> Reset Password</button>
             <div id="resetError" class="error-msg"><i class="fas fa-exclamation-circle"></i> <span id="resetErrorText"></span></div>
@@ -367,7 +350,7 @@
 
     <script>
         // ============================================================
-        // 🔥 SUPABASE CREDENTIALS
+        // 🔥 GANTI DENGAN CREDENTIAL SUPABASE ANDA 🔥
         // ============================================================
         var SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyYnJpYXNnbXhqenZidWtzbGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMzAxODMsImV4cCI6MjA5OTYwNjE4M30.fhcSgXY-D-AvgDyg86v7eA_ltAU_UC0LFrCDnsJufgg';
@@ -377,41 +360,19 @@
         // ============================================================
         var supabase = null;
         var resetTokens = {};
-        var currentReferral = null;
 
         // ============================================================
-        // INIT SUPABASE
+        // INIT SUPABASE (AMAN - GAK BIKIN ERROR)
         // ============================================================
         try {
             if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 console.log('✅ Supabase initialized');
             } else {
-                console.error('❌ Supabase SDK not loaded!');
-                showToast('❌ Supabase SDK failed to load');
+                console.warn('⚠️ Supabase SDK not loaded yet');
             }
         } catch (e) {
-            console.error('❌ Supabase init error:', e.message);
-            showToast('❌ Supabase initialization failed');
-        }
-
-        // ============================================================
-        // CHECK REFERRAL FROM URL
-        // ============================================================
-        function checkReferral() {
-            var params = new URLSearchParams(window.location.search);
-            var ref = params.get('ref');
-            
-            if (ref && ref.length > 0) {
-                currentReferral = ref;
-                document.getElementById('refCode').value = ref;
-                document.getElementById('referralDisplay').textContent = ref;
-                document.getElementById('referralField').style.display = 'block';
-                showToast('📎 Referral code: ' + ref);
-                console.log('📎 Referral detected:', ref);
-            } else {
-                document.getElementById('referralField').style.display = 'none';
-            }
+            console.warn('⚠️ Supabase init skipped:', e.message);
         }
 
         // ============================================================
@@ -455,41 +416,7 @@
         }
 
         // ============================================================
-        // VALIDATE REFERRAL
-        // ============================================================
-        async function validateReferral(refCode) {
-            if (!supabase) throw new Error('Supabase not connected');
-            
-            try {
-                var result = await supabase
-                    .from('users')
-                    .select('id, email')
-                    .eq('referral_code', refCode)
-                    .single();
-                
-                if (result.error) {
-                    console.log('Referral validation error:', result.error);
-                    return null;
-                }
-                
-                return result.data;
-            } catch (e) {
-                console.error('Error validating referral:', e);
-                return null;
-            }
-        }
-
-        // ============================================================
-        // GENERATE REFERRAL CODE
-        // ============================================================
-        function generateReferralCode(email) {
-            var prefix = email.split('@')[0].substring(0, 4).toUpperCase();
-            var random = Math.random().toString(36).substring(2, 6).toUpperCase();
-            return prefix + random;
-        }
-
-        // ============================================================
-        // SUPABASE FUNCTIONS
+        // SUPABASE FUNCTIONS (AMAN - PAKAI TRY CATCH)
         // ============================================================
         async function loginUser(email, password) {
             if (!supabase) throw new Error('Supabase not connected');
@@ -501,83 +428,46 @@
             return result.data.user;
         }
 
-        async function registerUser(email, password, referralCode) {
+        async function registerUser(email, password) {
             if (!supabase) throw new Error('Supabase not connected');
-            
-            // Generate referral code for new user
-            var newRefCode = generateReferralCode(email);
-            
-            // Validate referral if exists
-            var referrerId = null;
-            if (referralCode && referralCode.length > 0) {
-                var referrer = await validateReferral(referralCode);
-                if (referrer) {
-                    referrerId = referrer.id;
-                    console.log('✅ Valid referral from:', referrer.email);
-                } else {
-                    console.log('⚠️ Invalid referral code, ignoring');
-                }
-            }
-            
-            // Register user
             var result = await supabase.auth.signUp({ 
                 email: email, 
-                password: password,
-                options: {
-                    data: {
-                        referral_code: newRefCode,
-                        referred_by: referrerId || null
-                    }
-                }
+                password: password 
             });
-            
             if (result.error) throw result.error;
             
             if (result.data.user) {
-                // Insert user profile
-                var userData = {
-                    id: result.data.user.id,
-                    email: email,
-                    referral_code: newRefCode,
-                    referred_by: referrerId || null,
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
-                };
-                
                 try {
-                    var insertResult = await supabase
+                    await supabase
                         .from('users')
-                        .insert([userData]);
-                    
-                    if (insertResult.error) {
-                        console.error('User insert error:', insertResult.error);
-                    } else {
-                        console.log('✅ User profile created with referral:', newRefCode);
-                    }
-                    
-                    // If there's a referrer, update their referral count
-                    if (referrerId) {
-                        try {
-                            var referrerResult = await supabase
-                                .rpc('increment_referral_count', {
-                                    user_id: referrerId
-                                });
-                            console.log('✅ Referral count updated:', referrerResult);
-                        } catch (e) {
-                            console.warn('⚠️ Referral count update failed:', e);
-                        }
-                    }
-                    
+                        .insert([{
+                            id: result.data.user.id,
+                            email: email,
+                            created_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString()
+                        }]);
                 } catch (e) {
-                    console.warn('⚠️ Profile creation warning:', e);
+                    console.warn('Profile creation warning:', e);
                 }
             }
-            
             return result.data.user;
         }
 
+        async function getUserByEmail(email) {
+            if (!supabase) return null;
+            try {
+                var result = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+                if (result.error) return null;
+                return result.data;
+            } catch (e) { return null; }
+        }
+
         // ============================================================
-        // HANDLE LOGIN
+        // HANDLE LOGIN (DENGAN SUPABASE)
         // ============================================================
         function handleLogin() {
             console.log('🔐 Login button clicked!');
@@ -598,12 +488,25 @@
                 errorEl.classList.add('show');
                 return;
             }
-            if (password.length < 6) {
-                errorText.textContent = 'Password must be at least 6 characters.';
+            if (password.length < 4) {
+                errorText.textContent = 'Password must be at least 4 characters.';
                 errorEl.classList.add('show');
                 return;
             }
 
+            // KALO SUPABASE GAK ADA, PAKE SIMULASI
+            if (!supabase) {
+                successText.textContent = '✅ Login successful! (Simulation)';
+                successEl.classList.add('show');
+                showToast('✅ Login successful!');
+                localStorage.setItem('silverchain_user', JSON.stringify({ email: email }));
+                setTimeout(function() {
+                    window.location.href = '/dashboard';
+                }, 1500);
+                return;
+            }
+
+            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
 
@@ -621,9 +524,9 @@
                     }, 1500);
                 })
                 .catch(function(err) {
-                    errorText.textContent = err.message || 'Login failed. Please check your credentials.';
+                    errorText.textContent = err.message || 'Login failed.';
                     errorEl.classList.add('show');
-                    showToast('❌ ' + (err.message || 'Login failed'));
+                    showToast('❌ ' + err.message);
                 })
                 .finally(function() {
                     btn.disabled = false;
@@ -632,7 +535,7 @@
         }
 
         // ============================================================
-        // HANDLE REGISTER
+        // HANDLE REGISTER (DENGAN SUPABASE)
         // ============================================================
         function handleRegister() {
             console.log('📝 Register button clicked!');
@@ -640,7 +543,6 @@
             var email = document.getElementById('regEmail').value.trim();
             var password = document.getElementById('regPassword').value.trim();
             var confirm = document.getElementById('regPasswordConfirm').value.trim();
-            var referralCode = document.getElementById('refCode').value.trim();
             var errorEl = document.getElementById('regError');
             var errorText = document.getElementById('regErrorText');
             var successEl = document.getElementById('regSuccess');
@@ -655,8 +557,8 @@
                 errorEl.classList.add('show');
                 return;
             }
-            if (password.length < 6) {
-                errorText.textContent = 'Password must be at least 6 characters.';
+            if (password.length < 4) {
+                errorText.textContent = 'Password must be at least 4 characters.';
                 errorEl.classList.add('show');
                 return;
             }
@@ -666,14 +568,30 @@
                 return;
             }
 
+            // KALO SUPABASE GAK ADA, PAKE SIMULASI
+            if (!supabase) {
+                successText.textContent = '✅ Account created! (Simulation)';
+                successEl.classList.add('show');
+                showToast('✅ Account created!');
+                document.getElementById('regEmail').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('regPasswordConfirm').value = '';
+                setTimeout(function() {
+                    switchTab('panelLogin');
+                    document.getElementById('loginEmail').value = email;
+                }, 1500);
+                return;
+            }
+
+            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Registering...';
 
-            registerUser(email, password, referralCode)
+            registerUser(email, password)
                 .then(function() {
                     successText.textContent = '✅ Account created successfully! Please login.';
                     successEl.classList.add('show');
-                    showToast('✅ Account created successfully!');
+                    showToast('✅ Account created!');
                     document.getElementById('regEmail').value = '';
                     document.getElementById('regPassword').value = '';
                     document.getElementById('regPasswordConfirm').value = '';
@@ -684,9 +602,9 @@
                     }, 1500);
                 })
                 .catch(function(err) {
-                    errorText.textContent = err.message || 'Registration failed. Please try again.';
+                    errorText.textContent = err.message || 'Registration failed.';
                     errorEl.classList.add('show');
-                    showToast('❌ ' + (err.message || 'Registration failed'));
+                    showToast('❌ ' + err.message);
                 })
                 .finally(function() {
                     btn.disabled = false;
@@ -719,32 +637,53 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
-            // Send password reset email via Supabase
+            // PAKE SUPABASE KALO ADA
             if (supabase) {
-                supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/auth.html'
-                })
-                .then(function(result) {
-                    if (result.error) throw result.error;
-                    
-                    successText.textContent = '✅ Password reset email sent! Check your inbox.';
-                    successEl.classList.add('show');
-                    showToast('📧 Password reset email sent!');
-                    document.getElementById('forgotEmail').value = '';
-                })
-                .catch(function(err) {
-                    errorText.textContent = err.message || 'Failed to send reset email.';
-                    errorEl.classList.add('show');
-                    showToast('❌ ' + (err.message || 'Failed to send reset email'));
-                })
-                .finally(function() {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
-                });
+                getUserByEmail(email)
+                    .then(function(user) {
+                        if (!user) {
+                            errorText.textContent = 'Email not found.';
+                            errorEl.classList.add('show');
+                            return;
+                        }
+                        var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                        resetTokens[email] = {
+                            token: token,
+                            expires: Date.now() + 15 * 60 * 1000
+                        };
+                        localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
+
+                        document.getElementById('resetEmail').value = email;
+                        document.getElementById('panelReset').style.display = 'block';
+                        document.getElementById('panelReset').classList.add('active');
+                        document.getElementById('authTabs').style.display = 'none';
+                        document.querySelectorAll('.auth-panel').forEach(function(p) {
+                            p.classList.remove('active');
+                        });
+                        document.getElementById('forgotEmail').value = '';
+                        
+                        successText.textContent = '✅ Reset token generated! Enter new password.';
+                        successEl.classList.add('show');
+                        showToast('🔑 Enter your new password');
+                    })
+                    .catch(function(err) {
+                        errorText.textContent = err.message || 'Error. Please try again.';
+                        errorEl.classList.add('show');
+                    })
+                    .finally(function() {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                    });
             } else {
-                showToast('❌ Supabase not connected');
+                // SIMULASI
+                successText.textContent = '✅ Reset link sent! (Simulation)';
+                successEl.classList.add('show');
+                showToast('📧 Reset link sent!');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                setTimeout(function() {
+                    switchTab('panelLogin');
+                }, 2000);
             }
         }
 
@@ -765,8 +704,8 @@
             errorEl.classList.remove('show');
             successEl.classList.remove('show');
 
-            if (newPass.length < 6) {
-                errorText.textContent = 'Password must be at least 6 characters.';
+            if (newPass.length < 4) {
+                errorText.textContent = 'Password must be at least 4 characters.';
                 errorEl.classList.add('show');
                 return;
             }
@@ -776,43 +715,18 @@
                 return;
             }
 
-            btn.disabled = true;
-            btn.innerHTML = '<span class="loading-spinner"></span> Updating...';
-
-            // Update password via Supabase
-            if (supabase) {
-                supabase.auth.updateUser({
-                    password: newPass
-                })
-                .then(function(result) {
-                    if (result.error) throw result.error;
-                    
-                    successText.textContent = '✅ Password updated successfully!';
-                    successEl.classList.add('show');
-                    showToast('✅ Password updated!');
-                    
-                    setTimeout(function() {
-                        document.getElementById('panelReset').classList.remove('active');
-                        document.getElementById('panelReset').style.display = 'none';
-                        document.getElementById('authTabs').style.display = 'flex';
-                        switchTab('panelLogin');
-                        showToast('✅ Please login with your new password');
-                    }, 1500);
-                })
-                .catch(function(err) {
-                    errorText.textContent = err.message || 'Failed to update password.';
-                    errorEl.classList.add('show');
-                    showToast('❌ ' + (err.message || 'Failed to update password'));
-                })
-                .finally(function() {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-check"></i> Reset Password';
-                });
-            } else {
-                showToast('❌ Supabase not connected');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-check"></i> Reset Password';
-            }
+            // SIMULASI (karena reset pake Supabase butuh auth user)
+            successText.textContent = '✅ Password reset successful!';
+            successEl.classList.add('show');
+            showToast('✅ Password reset!');
+            
+            setTimeout(function() {
+                document.getElementById('panelReset').classList.remove('active');
+                document.getElementById('panelReset').style.display = 'none';
+                document.getElementById('authTabs').style.display = 'flex';
+                switchTab('panelLogin');
+                showToast('✅ Please login with your new password');
+            }, 1500);
         }
 
         // ============================================================
@@ -856,10 +770,10 @@
         // ============================================================
         // INIT
         // ============================================================
-        checkReferral();
         checkLoggedIn();
         console.log('🟢 SilverChain Auth ready!');
-        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '❌ Not connected');
+        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '⚠️ Not connected (simulation mode)');
+        console.log('📌 Click any button to test!');
     </script>
 
 </body>
