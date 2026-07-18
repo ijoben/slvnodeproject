@@ -6,208 +6,22 @@
     <title>Fix Referrals</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background: #0a1228;
-            color: #d4d4d4;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: rgba(18, 34, 72, 0.95);
-            border-radius: 16px;
-            padding: 20px;
-        }
-        h1 {
-            color: #fbbf24;
-            margin-bottom: 10px;
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 5px;
-            color: #fff;
-        }
-        .btn-blue {
-            background: #3b82f6;
-        }
-        .btn-green {
-            background: #22c55e;
-        }
-        .btn-yellow {
-            background: #d97706;
-        }
-        .btn-red {
-            background: #ef4444;
-        }
-        .btn:hover {
-            opacity: 0.8;
-        }
-        .log-box {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            padding: 10px;
-            margin: 10px 0;
-            max-height: 300px;
-            overflow-y: auto;
-            font-size: 12px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .log-entry {
-            padding: 2px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .log-entry.success {
-            color: #22c55e;
-        }
-        .log-entry.error {
-            color: #ef4444;
-        }
-        .log-entry.info {
-            color: #60a5fa;
-        }
-        .log-entry.warning {
-            color: #fbbf24;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            margin-top: 10px;
-        }
-        table th {
-            text-align: left;
-            color: #888;
-            padding: 8px;
-            border-bottom: 2px solid rgba(80, 140, 255, 0.1);
-        }
-        table td {
-            padding: 8px;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.05);
-            font-family: monospace;
-        }
-        .badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        .badge.green {
-            background: rgba(34, 197, 94, 0.2);
-            color: #22c55e;
-        }
-        .badge.red {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
-        .badge.yellow {
-            background: rgba(251, 191, 36, 0.2);
-            color: #fbbf24;
-        }
-        .flex {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .input-field {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: #fff;
-            font-family: monospace;
-            flex: 1;
-            min-width: 150px;
-        }
-        .input-field:focus {
-            outline: none;
-            border-color: #fbbf24;
-        }
-        .status-bar {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 10px 15px;
-            margin: 10px 0;
-            border-left: 4px solid #fbbf24;
-        }
-        .status-bar .label {
-            color: #888;
-            font-size: 11px;
-            text-transform: uppercase;
-        }
-        .status-bar .value {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .footer {
-            text-align: center;
-            color: #555;
-            font-size: 11px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(80, 140, 255, 0.05);
-        }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <h1>🔧 Fix Referrals</h1>
-        <p style="color:#888;margin-bottom:15px;">Perbaiki data referral yang NULL</p>
-
-        <div class="status-bar">
-            <div class="label">STATUS</div>
-            <div class="value" id="statusValue">⏳ Ready</div>
-        </div>
-
-        <div class="flex">
-            <button class="btn btn-blue" onclick="testConnection()">🔌 Test</button>
-            <button class="btn btn-blue" onclick="scanUsers()">🔍 Scan</button>
-            <button class="btn btn-green" onclick="fixAll()">✅ Fix All</button>
-            <button class="btn btn-yellow" onclick="forceFix()">⚡ Force Fix</button>
-            <button class="btn btn-red" onclick="clearLog()">🗑️ Clear</button>
-        </div>
-
-        <div class="flex">
-            <input type="text" class="input-field" id="manualEmail" placeholder="Email user" />
-            <input type="text" class="input-field" id="manualRefCode" placeholder="Referral Code" />
-            <button class="btn btn-green" onclick="manualFix()">✏️ Fix Manual</button>
-        </div>
-
-        <div class="log-box" id="logBox">
-            <div class="log-entry info">Click "Test" to check connection</div>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Email</th>
-                    <th>Ref Code</th>
-                    <th>Referred By</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="userTable">
-                <tr><td colspan="5" style="text-align:center;color:#666;padding:20px;">Click "Scan" to load users</td></tr>
-            </tbody>
-        </table>
-
-        <div class="footer">SilverChain · Fix Tool</div>
+<body style="background:#0a1228;color:#fff;font-family:Arial;padding:20px;">
+    <h1 style="color:#fbbf24;">🔧 Fix Referrals</h1>
+    
+    <div style="margin:10px 0;">
+        <button onclick="testConnection()" style="padding:10px 20px;background:#3b82f6;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Test Connection</button>
+        <button onclick="scanUsers()" style="padding:10px 20px;background:#22c55e;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Scan Users</button>
+        <button onclick="fixAll()" style="padding:10px 20px;background:#d97706;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Fix All</button>
+        <button onclick="forceFix()" style="padding:10px 20px;background:#ef4444;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Force Fix</button>
     </div>
+
+    <div style="background:rgba(0,0,0,0.5);border-radius:8px;padding:10px;margin:10px 0;max-height:300px;overflow-y:auto;font-family:monospace;font-size:12px;" id="logBox">
+        <div style="color:#60a5fa;">Ready. Click "Test Connection"</div>
+    </div>
+
+    <div id="resultBox" style="margin:10px 0;"></div>
 
     <script>
         // ============================================================
@@ -220,53 +34,26 @@
         let allUsers = [];
 
         // ============================================================
-        // DOM REFS
-        // ============================================================
-        const logBox = document.getElementById('logBox');
-        const userTable = document.getElementById('userTable');
-        const statusValue = document.getElementById('statusValue');
-
-        // ============================================================
-        // FUNCTIONS
+        // LOG FUNCTION
         // ============================================================
         function log(msg, type = 'info') {
+            const logBox = document.getElementById('logBox');
             const entry = document.createElement('div');
-            entry.className = `log-entry ${type}`;
-            const time = new Date().toLocaleTimeString();
-            entry.textContent = `[${time}] ${msg}`;
+            const colors = {
+                success: '#22c55e',
+                error: '#ef4444',
+                info: '#60a5fa',
+                warning: '#fbbf24'
+            };
+            entry.style.color = colors[type] || '#fff';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
             logBox.appendChild(entry);
             logBox.scrollTop = logBox.scrollHeight;
             console.log(`[${type}]`, msg);
         }
 
-        function setStatus(msg, color = '#60a5fa') {
-            statusValue.textContent = msg;
-            statusValue.style.color = color;
-        }
-
-        function renderTable() {
-            if (!allUsers || allUsers.length === 0) {
-                userTable.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#666;padding:20px;">No users found</td></tr>`;
-                return;
-            }
-
-            let html = '';
-            for (let i = 0; i < allUsers.length; i++) {
-                const u = allUsers[i];
-                const hasRef = u.referred_by && u.referred_by !== '' && u.referred_by !== 'null';
-                const status = hasRef ?
-                    `<span class="badge green">✅ OK</span>` :
-                    `<span class="badge red">❌ NULL</span>`;
-
-                html += `<tr>
-                    <td>${i + 1}</td>
-                    <td style="font-size:11px;">${u.email || '-'}</td>
-                    <td><span class="badge yellow">${u.ref_code || '-'}</span></td>
-                    <td>${u.referred_by && u.referred_by !== '' && u.referred_by !== 'null' ? u.referred_by : '<span style="color:#ef4444;">null</span>'}</td>
-                    <td>${status}</td>
-                </tr>`;
-            }
-            userTable.innerHTML = html;
+        function showResult(html) {
+            document.getElementById('resultBox').innerHTML = html;
         }
 
         // ============================================================
@@ -274,16 +61,18 @@
         // ============================================================
         async function testConnection() {
             log('Testing connection...', 'info');
-            setStatus('Testing...', '#60a5fa');
 
             try {
+                // Cek apakah Supabase SDK terload
                 if (typeof window.supabase === 'undefined') {
-                    throw new Error('Supabase SDK not loaded!');
+                    throw new Error('Supabase SDK not loaded! Check internet.');
                 }
 
+                // Buat client
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                log('✅ Supabase client created!', 'success');
+                log('✅ Client created', 'success');
 
+                // Test query
                 const { data, error } = await supabase
                     .from('users')
                     .select('count')
@@ -291,12 +80,31 @@
 
                 if (error) throw error;
 
-                log('✅ Connection successful!', 'success');
-                setStatus('✅ Connected to Supabase', '#22c55e');
+                log('✅ Connected to Supabase!', 'success');
+
+                // Tampilkan data sample
+                const { data: sample, error: sampleError } = await supabase
+                    .from('users')
+                    .select('email, ref_code, referred_by')
+                    .limit(5);
+
+                if (!sampleError && sample) {
+                    log(`📊 Sample data: ${sample.length} users`, 'info');
+                    let html = '<h3>Sample Users:</h3><table style="width:100%;border-collapse:collapse;font-size:12px;">';
+                    html += '<tr><th style="text-align:left;padding:5px;border-bottom:1px solid #333;">Email</th><th style="text-align:left;padding:5px;border-bottom:1px solid #333;">Ref Code</th><th style="text-align:left;padding:5px;border-bottom:1px solid #333;">Referred By</th></tr>';
+                    sample.forEach(u => {
+                        html += `<tr>
+                            <td style="padding:5px;border-bottom:1px solid #222;">${u.email}</td>
+                            <td style="padding:5px;border-bottom:1px solid #222;">${u.ref_code || '-'}</td>
+                            <td style="padding:5px;border-bottom:1px solid #222;">${u.referred_by || 'NULL'}</td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                    showResult(html);
+                }
 
             } catch (err) {
                 log('❌ Error: ' + err.message, 'error');
-                setStatus('❌ ' + err.message, '#ef4444');
                 console.error(err);
             }
         }
@@ -306,13 +114,11 @@
         // ============================================================
         async function scanUsers() {
             if (!supabase) {
-                log('⚠️ Click "Test" first!', 'warning');
-                setStatus('⚠️ Test connection first', '#fbbf24');
+                log('⚠️ Click "Test Connection" first!', 'warning');
                 return;
             }
 
-            log('Scanning users...', 'info');
-            setStatus('Scanning...', '#60a5fa');
+            log('Scanning all users...', 'info');
 
             try {
                 const { data, error } = await supabase
@@ -328,12 +134,35 @@
                 const nullRef = allUsers.filter(u => !u.referred_by || u.referred_by === '' || u.referred_by === 'null');
                 log(`📊 ${nullRef.length} users have NULL referred_by`, 'warning');
 
-                renderTable();
-                setStatus(`✅ ${allUsers.length} users, ${nullRef.length} need fix`, '#22c55e');
+                // Tampilkan semua user
+                let html = `<h3>All Users (${allUsers.length}):</h3>`;
+                html += `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+                    <tr>
+                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">#</th>
+                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Email</th>
+                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Ref Code</th>
+                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Referred By</th>
+                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Status</th>
+                    </tr>`;
+
+                allUsers.forEach((u, i) => {
+                    const hasRef = u.referred_by && u.referred_by !== '' && u.referred_by !== 'null';
+                    const status = hasRef ? '✅ OK' : '❌ NULL';
+                    const color = hasRef ? '#22c55e' : '#ef4444';
+                    html += `<tr>
+                        <td style="padding:5px;border-bottom:1px solid #222;">${i + 1}</td>
+                        <td style="padding:5px;border-bottom:1px solid #222;font-size:11px;">${u.email}</td>
+                        <td style="padding:5px;border-bottom:1px solid #222;color:#fbbf24;">${u.ref_code || '-'}</td>
+                        <td style="padding:5px;border-bottom:1px solid #222;">${u.referred_by || 'NULL'}</td>
+                        <td style="padding:5px;border-bottom:1px solid #222;color:${color};">${status}</td>
+                    </tr>`;
+                });
+
+                html += '</table>';
+                showResult(html);
 
             } catch (err) {
                 log('❌ Error: ' + err.message, 'error');
-                setStatus('❌ ' + err.message, '#ef4444');
                 console.error(err);
             }
         }
@@ -353,10 +182,10 @@
                 return;
             }
 
-            log(`Fixing ${nullUsers.length} users...`, 'info');
-            setStatus(`Fixing ${nullUsers.length} users...`, '#fbbf24');
+            log(`🔧 Fixing ${nullUsers.length} users...`, 'info');
 
             let fixed = 0;
+            let failed = 0;
 
             for (const user of nullUsers) {
                 try {
@@ -386,6 +215,7 @@
 
                     if (!referrerCode) {
                         log(`❌ No referrer for ${user.email}`, 'error');
+                        failed++;
                         continue;
                     }
 
@@ -402,12 +232,12 @@
 
                 } catch (err) {
                     log(`❌ ${user.email}: ${err.message}`, 'error');
+                    failed++;
                 }
             }
 
-            renderTable();
-            setStatus(`✅ Fixed: ${fixed} users`, '#22c55e');
-            log(`✅ Done! Fixed ${fixed} users`, 'success');
+            log(`✅ Done! Fixed: ${fixed}, Failed: ${failed}`, 'success');
+            scanUsers(); // Refresh
         }
 
         // ============================================================
@@ -432,10 +262,10 @@
             }
 
             const refCode = mainReferrer.ref_code;
-            log(`⚡ Force fixing with: ${refCode} (${mainReferrer.email})`, 'warning');
-            setStatus(`Force fixing...`, '#fbbf24');
+            log(`⚡ Force fixing all with: ${refCode}`, 'warning');
 
             let fixed = 0;
+            let failed = 0;
 
             for (const user of nullUsers) {
                 try {
@@ -452,91 +282,19 @@
 
                 } catch (err) {
                     log(`❌ ${user.email}: ${err.message}`, 'error');
+                    failed++;
                 }
             }
 
-            renderTable();
-            setStatus(`✅ Force fixed: ${fixed} users`, '#22c55e');
-            log(`✅ Done! Force fixed ${fixed} users`, 'success');
+            log(`✅ Done! Fixed: ${fixed}, Failed: ${failed}`, 'success');
+            scanUsers();
         }
 
         // ============================================================
-        // MANUAL FIX
+        // AUTO RUN
         // ============================================================
-        async function manualFix() {
-            const email = document.getElementById('manualEmail').value.trim();
-            const refCode = document.getElementById('manualRefCode').value.trim();
-
-            if (!email || !refCode) {
-                log('⚠️ Enter both Email and Referral Code', 'warning');
-                return;
-            }
-
-            if (!supabase) {
-                log('⚠️ Test connection first!', 'warning');
-                return;
-            }
-
-            log(`✏️ Manual fix: ${email} -> ${refCode}`, 'info');
-
-            try {
-                const { data: referrer, error: refError } = await supabase
-                    .from('users')
-                    .select('email, ref_code')
-                    .eq('ref_code', refCode)
-                    .single();
-
-                if (refError) {
-                    log(`❌ Referral code not found: ${refCode}`, 'error');
-                    return;
-                }
-
-                const { error: updateError } = await supabase
-                    .from('users')
-                    .update({ referred_by: refCode })
-                    .eq('email', email);
-
-                if (updateError) throw updateError;
-
-                const idx = allUsers.findIndex(u => u.email === email);
-                if (idx !== -1) {
-                    allUsers[idx].referred_by = refCode;
-                }
-
-                log(`✅ ${email} -> ${refCode} (${referrer.email})`, 'success');
-                renderTable();
-
-                document.getElementById('manualEmail').value = '';
-                document.getElementById('manualRefCode').value = '';
-
-            } catch (err) {
-                log(`❌ Error: ${err.message}`, 'error');
-            }
-        }
-
-        // ============================================================
-        // CLEAR LOG
-        // ============================================================
-        function clearLog() {
-            logBox.innerHTML = '';
-            log('Log cleared', 'info');
-        }
-
-        // ============================================================
-        // ENTER KEY
-        // ============================================================
-        document.getElementById('manualRefCode').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') manualFix();
-        });
-
-        // ============================================================
-        // INIT
-        // ============================================================
-        log('🚀 Tool ready! Click "Test" to start.', 'info');
-        setStatus('⏳ Click "Test" to check connection', '#60a5fa');
-
-        console.log('🔧 Fix Tool ready!');
-        console.log('Commands: testConnection(), scanUsers(), fixAll(), forceFix()');
+        log('🚀 Tool loaded! Click "Test Connection" to start.', 'info');
+        console.log('✅ Fix Tool ready!');
     </script>
 </body>
 </html>
