@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* --- STYLE SAMA --- */
         * {
             margin: 0;
             padding: 0;
@@ -403,7 +402,7 @@
 
     <script>
         // ============================================================
-        // SUPABASE CONFIG
+        // SUPABASE CONFIG - SIMPEL
         // ============================================================
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
@@ -429,45 +428,6 @@
         let resetTokens = {};
 
         // ============================================================
-        // DOM ELEMENTS
-        // ============================================================
-        const loginEmail = document.getElementById('loginEmail');
-        const loginPassword = document.getElementById('loginPassword');
-        const loginBtn = document.getElementById('loginBtn');
-        const loginError = document.getElementById('loginError');
-        const loginSuccess = document.getElementById('loginSuccess');
-        const loginErrorText = document.getElementById('loginErrorText');
-        const loginSuccessText = document.getElementById('loginSuccessText');
-
-        const regEmail = document.getElementById('regEmail');
-        const regPassword = document.getElementById('regPassword');
-        const regPasswordConfirm = document.getElementById('regPasswordConfirm');
-        const regReferralCode = document.getElementById('regReferralCode');
-        const registerBtn = document.getElementById('registerBtn');
-        const regError = document.getElementById('regError');
-        const regErrorText = document.getElementById('regErrorText');
-        const regSuccess = document.getElementById('regSuccess');
-        const regSuccessText = document.getElementById('regSuccessText');
-        const referralInfoBox = document.getElementById('referralInfoBox');
-        const referralCodeDisplay = document.getElementById('referralCodeDisplay');
-
-        const forgotEmail = document.getElementById('forgotEmail');
-        const forgotBtn = document.getElementById('forgotBtn');
-        const forgotError = document.getElementById('forgotError');
-        const forgotSuccess = document.getElementById('forgotSuccess');
-        const forgotErrorText = document.getElementById('forgotErrorText');
-        const forgotSuccessText = document.getElementById('forgotSuccessText');
-
-        const resetEmail = document.getElementById('resetEmail');
-        const resetNewPassword = document.getElementById('resetNewPassword');
-        const resetConfirmPassword = document.getElementById('resetConfirmPassword');
-        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
-        const resetError = document.getElementById('resetError');
-        const resetSuccess = document.getElementById('resetSuccess');
-        const resetErrorText = document.getElementById('resetErrorText');
-        const resetSuccessText = document.getElementById('resetSuccessText');
-
-        // ============================================================
         // TOAST
         // ============================================================
         function showToast(msg) {
@@ -491,18 +451,6 @@
 
         function saveResetTokens() {
             localStorage.setItem(STORAGE_KEYS.RESET_TOKENS, JSON.stringify(resetTokens));
-        }
-
-        // ============================================================
-        // CHECK SUPABASE
-        // ============================================================
-        function checkSupabase() {
-            if (!supabase) {
-                console.error('❌ Supabase not loaded!');
-                showToast('❌ System error. Please refresh.');
-                return false;
-            }
-            return true;
         }
 
         // ============================================================
@@ -548,8 +496,7 @@
         }
 
         // ============================================================
-        // ============================================================
-        // REGISTER FUNCTION - FIXED! 
+        // REGISTER USER - FIXED!
         // ============================================================
         async function registerUser(email, password, referredBy) {
             try {
@@ -560,23 +507,18 @@
 
                 const hashedPassword = btoa(password + 'silverchain_salt_2026');
 
-                // 🔥 PASTIKAN referred_by TERSIMPAN
                 const userData = {
                     email: email,
                     password: hashedPassword,
                     ref_code: refCode,
-                    referred_by: referredBy || null, // <-- INI YANG PENTING!
+                    referred_by: referredBy || null,
                     verified: false,
                     role: 'user',
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 };
 
-                console.log('📝 Registering user:', { 
-                    email, 
-                    refCode, 
-                    referredBy: referredBy || 'NONE (will be NULL)' 
-                });
+                console.log('📝 Register:', { email, refCode, referredBy: referredBy || 'NONE' });
 
                 const { data, error } = await supabase
                     .from('users')
@@ -588,34 +530,29 @@
                     throw new Error(error.message || 'Registration failed');
                 }
 
-                console.log('✅ User registered:', data);
-                
-                // 🔍 VERIFIKASI - Cek apakah referred_by tersimpan
+                console.log('✅ Registered:', data);
+
+                // 🔍 VERIFIKASI
                 if (data && data[0]) {
-                    const savedUser = data[0];
-                    console.log('🔍 Saved data:', {
-                        email: savedUser.email,
-                        ref_code: savedUser.ref_code,
-                        referred_by: savedUser.referred_by || 'NULL'
+                    const saved = data[0];
+                    console.log('🔍 Saved:', {
+                        email: saved.email,
+                        ref_code: saved.ref_code,
+                        referred_by: saved.referred_by || 'NULL'
                     });
-                    
-                    // Jika seharusnya ada referral tapi ternyata NULL, FORCE UPDATE
-                    if (referredBy && !savedUser.referred_by) {
-                        console.warn('⚠️ referred_by masih NULL! Mencoba force update...');
-                        const { error: updateError } = await supabase
+
+                    // Force update jika referral tidak tersimpan
+                    if (referredBy && !saved.referred_by) {
+                        console.warn('⚠️ Force update referred_by...');
+                        await supabase
                             .from('users')
                             .update({ referred_by: referredBy })
                             .eq('email', email);
-                        
-                        if (updateError) {
-                            console.error('❌ Force update failed:', updateError);
-                        } else {
-                            console.log('✅ Force update successful!');
-                            savedUser.referred_by = referredBy;
-                        }
+                        saved.referred_by = referredBy;
+                        console.log('✅ Force update done!');
                     }
-                    
-                    return savedUser;
+
+                    return saved;
                 }
 
                 return { email, ref_code: refCode, referred_by: referredBy };
@@ -627,7 +564,7 @@
         }
 
         // ============================================================
-        // LOGIN FUNCTION
+        // LOGIN USER
         // ============================================================
         async function loginUser(email, password) {
             try {
@@ -651,7 +588,6 @@
                     throw new Error('Invalid password');
                 }
 
-                console.log('✅ User logged in:', data.email);
                 return data;
 
             } catch (error) {
@@ -688,7 +624,6 @@
                 const user = await getUserByEmail(email);
                 return user && user.role === 'admin';
             } catch (error) {
-                console.error('❌ IsAdmin error:', error);
                 return false;
             }
         }
@@ -718,403 +653,37 @@
         }
 
         // ============================================================
-        // TABS
-        // ============================================================
-        const tabs = document.querySelectorAll('.auth-tab');
-        const panels = {
-            panelLogin: document.getElementById('panelLogin'),
-            panelRegister: document.getElementById('panelRegister'),
-            panelForgot: document.getElementById('panelForgot')
-        };
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                tabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                Object.keys(panels).forEach(key => {
-                    panels[key].classList.remove('active');
-                });
-                const target = panels[this.dataset.panel];
-                if (target) target.classList.add('active');
-                document.querySelectorAll('.error-msg, .success-msg').forEach(el => el.classList.remove('show'));
-            });
-        });
-
-        function switchTab(tabId) {
-            tabs.forEach(t => t.classList.remove('active'));
-            document.querySelector(`[data-panel="${tabId}"]`).classList.add('active');
-            Object.keys(panels).forEach(key => {
-                panels[key].classList.remove('active');
-            });
-            panels[tabId].classList.add('active');
-        }
-
-        document.getElementById('gotoRegisterBtn').addEventListener('click', () => switchTab('panelRegister'));
-        document.getElementById('gotoLoginFromRegister').addEventListener('click', () => switchTab('panelLogin'));
-        document.getElementById('gotoLoginFromForgot').addEventListener('click', () => switchTab('panelLogin'));
-        document.getElementById('gotoForgotBtn').addEventListener('click', () => switchTab('panelForgot'));
-        document.getElementById('gotoLoginFromReset').addEventListener('click', () => {
-            document.getElementById('panelReset').classList.remove('active');
-            document.getElementById('panelReset').style.display = 'none';
-            document.getElementById('authTabs').style.display = 'flex';
-            switchTab('panelLogin');
-        });
-
-        // ============================================================
         // CHECK REFERRAL ON REGISTER
         // ============================================================
         async function checkReferralOnRegister() {
             const refCode = getReferralFromURL();
             if (refCode) {
-                regReferralCode.value = refCode;
+                document.getElementById('regReferralCode').value = refCode;
                 const result = await validateReferralCode(refCode);
                 if (result.valid && result.referrer) {
-                    referralInfoBox.classList.add('show');
-                    referralCodeDisplay.textContent = refCode + ' (' + result.referrer.email + ')';
+                    document.getElementById('referralInfoBox').classList.add('show');
+                    document.getElementById('referralCodeDisplay').textContent = refCode + ' (' + result.referrer.email + ')';
                     showToast('🔗 Referral code detected: ' + refCode);
                 } else {
-                    referralInfoBox.classList.remove('show');
-                    regReferralCode.value = '';
-                    showToast('❌ Invalid referral code');
+                    document.getElementById('referralInfoBox').classList.remove('show');
+                    document.getElementById('regReferralCode').value = '';
                 }
             }
 
-            regReferralCode.addEventListener('input', async function() {
+            document.getElementById('regReferralCode').addEventListener('input', async function() {
                 const code = this.value.trim();
                 if (code.length >= 4) {
                     const result = await validateReferralCode(code);
                     if (result.valid && result.referrer) {
-                        referralInfoBox.classList.add('show');
-                        referralCodeDisplay.textContent = code + ' (' + result.referrer.email + ')';
+                        document.getElementById('referralInfoBox').classList.add('show');
+                        document.getElementById('referralCodeDisplay').textContent = code + ' (' + result.referrer.email + ')';
                     } else {
-                        referralInfoBox.classList.remove('show');
+                        document.getElementById('referralInfoBox').classList.remove('show');
                     }
                 } else {
-                    referralInfoBox.classList.remove('show');
+                    document.getElementById('referralInfoBox').classList.remove('show');
                 }
             });
-        }
-
-        // ============================================================
-        // LOGIN
-        // ============================================================
-        loginBtn.addEventListener('click', async function() {
-            const email = loginEmail.value.trim();
-            const password = loginPassword.value.trim();
-
-            loginError.classList.remove('show');
-            loginSuccess.classList.remove('show');
-
-            if (!checkSupabase()) {
-                loginErrorText.textContent = 'System error. Please refresh.';
-                loginError.classList.add('show');
-                return;
-            }
-
-            if (!email || !email.includes('@') || password.length < 4) {
-                loginErrorText.textContent = 'Invalid email or password.';
-                loginError.classList.add('show');
-                return;
-            }
-
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-
-            try {
-                const user = await loginUser(email, password);
-                console.log('✅ Login result:', user);
-
-                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
-
-                const admin = await isAdmin(email);
-
-                loginSuccessText.textContent = admin ?
-                    '✅ Admin login successful! Redirecting to Admin Panel...' :
-                    '✅ Login successful! Redirecting...';
-                loginSuccess.classList.add('show');
-
-                setTimeout(() => {
-                    if (admin) {
-                        window.location.href = '/admin';
-                    } else {
-                        window.location.href = '/dashboard';
-                    }
-                }, 800);
-
-            } catch (err) {
-                console.error('❌ Login error:', err);
-                loginErrorText.textContent = err.message || 'Login failed.';
-                loginError.classList.add('show');
-            }
-
-            this.disabled = false;
-            this.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-        });
-
-        loginEmail.addEventListener('keydown', e => { if (e.key === 'Enter') loginPassword.focus(); });
-        loginPassword.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
-
-        // ============================================================
-        // REGISTER - FIXED!
-        // ============================================================
-        registerBtn.addEventListener('click', async function() {
-            const email = regEmail.value.trim();
-            const password = regPassword.value.trim();
-            const confirm = regPasswordConfirm.value.trim();
-            const referralCode = regReferralCode.value.trim();
-
-            regError.classList.remove('show');
-            regSuccess.classList.remove('show');
-
-            if (!checkSupabase()) {
-                regErrorText.textContent = 'System error. Please refresh.';
-                regError.classList.add('show');
-                return;
-            }
-
-            if (!email || !email.includes('@')) {
-                regErrorText.textContent = 'Please enter a valid email.';
-                regError.classList.add('show');
-                return;
-            }
-            if (password.length < 4) {
-                regErrorText.textContent = 'Password must be at least 4 characters.';
-                regError.classList.add('show');
-                return;
-            }
-            if (password !== confirm) {
-                regErrorText.textContent = 'Passwords do not match.';
-                regError.classList.add('show');
-                return;
-            }
-
-            // 🔥 VALIDASI REFERRAL
-            let referredBy = null;
-            if (referralCode) {
-                console.log('🔍 Validating referral code:', referralCode);
-                const validation = await validateReferralCode(referralCode);
-                
-                if (!validation.valid) {
-                    regErrorText.textContent = validation.error || 'Invalid referral code.';
-                    regError.classList.add('show');
-                    return;
-                }
-                
-                if (validation.referrer) {
-                    referredBy = referralCode;
-                    console.log('✅ Referral code VALID:', referralCode, 'from:', validation.referrer.email);
-                } else {
-                    regErrorText.textContent = 'Referral code not found.';
-                    regError.classList.add('show');
-                    return;
-                }
-            }
-
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
-
-            try {
-                // 🔥 REGISTER DENGAN REFERRED_BY
-                const result = await registerUser(email, password, referredBy);
-                console.log('✅ Registration result:', result);
-
-                // 🔍 VERIFIKASI DI DATABASE
-                const checkUser = await getUserByEmail(email);
-                console.log('🔍 Final database check:', {
-                    email: checkUser?.email,
-                    ref_code: checkUser?.ref_code,
-                    referred_by: checkUser?.referred_by || 'NULL'
-                });
-
-                regSuccessText.textContent = '✅ Account created successfully! Please login.';
-                regSuccess.classList.add('show');
-                showToast('✅ Account created! Please login.');
-
-                regEmail.value = '';
-                regPassword.value = '';
-                regPasswordConfirm.value = '';
-                regReferralCode.value = '';
-                referralInfoBox.classList.remove('show');
-                localStorage.removeItem(STORAGE_KEYS.REFERRAL_CODE);
-
-                setTimeout(() => {
-                    switchTab('panelLogin');
-                    loginEmail.value = email;
-                    loginPassword.value = password;
-                    showToast('✅ Account created! Please login.');
-                }, 1500);
-
-            } catch (err) {
-                console.error('❌ Registration error:', err);
-                regErrorText.textContent = err.message || 'Registration failed.';
-                regError.classList.add('show');
-                showToast('❌ ' + (err.message || 'Registration failed'));
-            }
-
-            this.disabled = false;
-            this.innerHTML = '<i class="fas fa-user-plus"></i> Register';
-        });
-
-        regEmail.addEventListener('keydown', e => { if (e.key === 'Enter') regPassword.focus(); });
-        regPassword.addEventListener('keydown', e => { if (e.key === 'Enter') regPasswordConfirm.focus(); });
-        regPasswordConfirm.addEventListener('keydown', e => { if (e.key === 'Enter') regReferralCode.focus(); });
-        regReferralCode.addEventListener('keydown', e => { if (e.key === 'Enter') registerBtn.click(); });
-
-        // ============================================================
-        // FORGOT PASSWORD
-        // ============================================================
-        forgotBtn.addEventListener('click', async function() {
-            const email = forgotEmail.value.trim();
-
-            forgotError.classList.remove('show');
-            forgotSuccess.classList.remove('show');
-
-            if (!checkSupabase()) {
-                forgotErrorText.textContent = 'System error. Please refresh.';
-                forgotError.classList.add('show');
-                return;
-            }
-
-            if (!email || !email.includes('@')) {
-                forgotErrorText.textContent = 'Please enter a valid email.';
-                forgotError.classList.add('show');
-                return;
-            }
-
-            try {
-                const user = await getUserByEmail(email);
-                if (!user) {
-                    forgotErrorText.textContent = 'Email not found.';
-                    forgotError.classList.add('show');
-                    return;
-                }
-
-                const token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-                resetTokens[email] = {
-                    token: token,
-                    expires: Date.now() + 15 * 60 * 1000
-                };
-                saveResetTokens();
-
-                resetEmail.value = email;
-                document.getElementById('panelReset').style.display = 'block';
-                document.getElementById('panelReset').classList.add('active');
-                document.getElementById('authTabs').style.display = 'none';
-                document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
-                forgotEmail.value = '';
-                showToast('🔑 Please enter your new password');
-
-            } catch (err) {
-                forgotErrorText.textContent = 'Error. Please try again.';
-                forgotError.classList.add('show');
-            }
-        });
-
-        forgotEmail.addEventListener('keydown', e => { if (e.key === 'Enter') forgotBtn.click(); });
-
-        // ============================================================
-        // CHECK RESET TOKEN
-        // ============================================================
-        function checkResetToken() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('reset');
-            const email = urlParams.get('email');
-
-            if (token && email) {
-                const stored = resetTokens[decodeURIComponent(email)];
-                if (stored && stored.token === token && stored.expires > Date.now()) {
-                    resetEmail.value = decodeURIComponent(email);
-                    document.getElementById('panelReset').style.display = 'block';
-                    document.getElementById('panelReset').classList.add('active');
-                    document.getElementById('authTabs').style.display = 'none';
-                    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
-                    if (window.history && window.history.replaceState) {
-                        window.history.replaceState({}, '', window.location.pathname);
-                    }
-                    showToast('🔑 Please enter your new password');
-                } else {
-                    showToast('❌ Invalid or expired reset link.');
-                }
-            }
-        }
-
-        // ============================================================
-        // RESET PASSWORD
-        // ============================================================
-        resetPasswordBtn.addEventListener('click', async function() {
-            const email = resetEmail.value;
-            const newPass = resetNewPassword.value.trim();
-            const confirm = resetConfirmPassword.value.trim();
-
-            resetError.classList.remove('show');
-            resetSuccess.classList.remove('show');
-
-            if (!checkSupabase()) {
-                resetErrorText.textContent = 'System error. Please refresh.';
-                resetError.classList.add('show');
-                return;
-            }
-
-            if (newPass.length < 4) {
-                resetErrorText.textContent = 'Password must be at least 4 characters.';
-                resetError.classList.add('show');
-                return;
-            }
-
-            if (newPass !== confirm) {
-                resetErrorText.textContent = 'Passwords do not match.';
-                resetError.classList.add('show');
-                return;
-            }
-
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
-
-            try {
-                await updatePassword(email, newPass);
-
-                delete resetTokens[email];
-                saveResetTokens();
-
-                resetSuccessText.textContent = '✅ Password reset successful! Redirecting to Login...';
-                resetSuccess.classList.add('show');
-
-                setTimeout(() => {
-                    document.getElementById('panelReset').classList.remove('active');
-                    document.getElementById('panelReset').style.display = 'none';
-                    document.getElementById('authTabs').style.display = 'flex';
-                    switchTab('panelLogin');
-                    loginEmail.value = email;
-                    loginPassword.value = newPass;
-                    showToast('✅ Password reset successful! Please login.');
-                }, 1500);
-
-            } catch (err) {
-                console.error('Reset password error:', err);
-                resetErrorText.textContent = err.message || 'Reset failed.';
-                resetError.classList.add('show');
-            }
-
-            this.disabled = false;
-            this.innerHTML = '<i class="fas fa-check"></i> Reset Password';
-        });
-
-        resetNewPassword.addEventListener('keydown', e => { if (e.key === 'Enter') resetConfirmPassword.focus(); });
-        resetConfirmPassword.addEventListener('keydown', e => { if (e.key === 'Enter') resetPasswordBtn.click(); });
-
-        // ============================================================
-        // LOAD SETTINGS
-        // ============================================================
-        function loadSettings() {
-            try {
-                const data = localStorage.getItem('silverchain_settings');
-                if (data) {
-                    const settings = JSON.parse(data);
-                    if (settings.brandName) {
-                        document.getElementById('brandName').textContent = settings.brandName;
-                    }
-                }
-            } catch (e) {}
         }
 
         // ============================================================
@@ -1141,7 +710,412 @@
         }
 
         // ============================================================
-        // INIT
+        // CHECK RESET TOKEN
+        // ============================================================
+        function checkResetToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('reset');
+            const email = urlParams.get('email');
+
+            if (token && email) {
+                const stored = resetTokens[decodeURIComponent(email)];
+                if (stored && stored.token === token && stored.expires > Date.now()) {
+                    document.getElementById('resetEmail').value = decodeURIComponent(email);
+                    document.getElementById('panelReset').style.display = 'block';
+                    document.getElementById('panelReset').classList.add('active');
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState({}, '', window.location.pathname);
+                    }
+                    showToast('🔑 Please enter your new password');
+                } else {
+                    showToast('❌ Invalid or expired reset link.');
+                }
+            }
+        }
+
+        // ============================================================
+        // TABS NAVIGATION - SIMPEL
+        // ============================================================
+        function initTabs() {
+            const tabs = document.querySelectorAll('.auth-tab');
+            const panels = {
+                panelLogin: document.getElementById('panelLogin'),
+                panelRegister: document.getElementById('panelRegister'),
+                panelForgot: document.getElementById('panelForgot')
+            };
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    Object.keys(panels).forEach(key => {
+                        panels[key].classList.remove('active');
+                    });
+
+                    const target = panels[this.dataset.panel];
+                    if (target) target.classList.add('active');
+
+                    document.querySelectorAll('.error-msg, .success-msg').forEach(el => el.classList.remove('show'));
+                });
+            });
+
+            // Navigation buttons
+            document.getElementById('gotoRegisterBtn').addEventListener('click', function() {
+                document.querySelector('[data-panel="panelRegister"]').click();
+            });
+
+            document.getElementById('gotoLoginFromRegister').addEventListener('click', function() {
+                document.querySelector('[data-panel="panelLogin"]').click();
+            });
+
+            document.getElementById('gotoLoginFromForgot').addEventListener('click', function() {
+                document.querySelector('[data-panel="panelLogin"]').click();
+            });
+
+            document.getElementById('gotoForgotBtn').addEventListener('click', function() {
+                document.querySelector('[data-panel="panelForgot"]').click();
+            });
+
+            document.getElementById('gotoLoginFromReset').addEventListener('click', function() {
+                document.getElementById('panelReset').classList.remove('active');
+                document.getElementById('panelReset').style.display = 'none';
+                document.getElementById('authTabs').style.display = 'flex';
+                document.querySelector('[data-panel="panelLogin"]').click();
+            });
+        }
+
+        // ============================================================
+        // LOGIN BUTTON
+        // ============================================================
+        function initLogin() {
+            const btn = document.getElementById('loginBtn');
+
+            btn.addEventListener('click', async function() {
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+
+                document.getElementById('loginError').classList.remove('show');
+                document.getElementById('loginSuccess').classList.remove('show');
+
+                if (!supabase) {
+                    document.getElementById('loginErrorText').textContent = 'System error. Please refresh.';
+                    document.getElementById('loginError').classList.add('show');
+                    return;
+                }
+
+                if (!email || !email.includes('@') || password.length < 4) {
+                    document.getElementById('loginErrorText').textContent = 'Invalid email or password.';
+                    document.getElementById('loginError').classList.add('show');
+                    return;
+                }
+
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+                try {
+                    const user = await loginUser(email, password);
+                    console.log('✅ Login:', user);
+
+                    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+
+                    const admin = await isAdmin(email);
+
+                    document.getElementById('loginSuccessText').textContent = admin ?
+                        '✅ Admin login successful! Redirecting...' :
+                        '✅ Login successful! Redirecting...';
+                    document.getElementById('loginSuccess').classList.add('show');
+
+                    setTimeout(() => {
+                        window.location.href = admin ? '/admin' : '/dashboard';
+                    }, 800);
+
+                } catch (err) {
+                    console.error('❌ Login error:', err);
+                    document.getElementById('loginErrorText').textContent = err.message || 'Login failed.';
+                    document.getElementById('loginError').classList.add('show');
+                }
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+            });
+
+            // Enter key
+            document.getElementById('loginEmail').addEventListener('keydown', e => {
+                if (e.key === 'Enter') document.getElementById('loginPassword').focus();
+            });
+            document.getElementById('loginPassword').addEventListener('keydown', e => {
+                if (e.key === 'Enter') btn.click();
+            });
+        }
+
+        // ============================================================
+        // REGISTER BUTTON
+        // ============================================================
+        function initRegister() {
+            const btn = document.getElementById('registerBtn');
+
+            btn.addEventListener('click', async function() {
+                const email = document.getElementById('regEmail').value.trim();
+                const password = document.getElementById('regPassword').value.trim();
+                const confirm = document.getElementById('regPasswordConfirm').value.trim();
+                const referralCode = document.getElementById('regReferralCode').value.trim();
+
+                document.getElementById('regError').classList.remove('show');
+                document.getElementById('regSuccess').classList.remove('show');
+
+                if (!supabase) {
+                    document.getElementById('regErrorText').textContent = 'System error. Please refresh.';
+                    document.getElementById('regError').classList.add('show');
+                    return;
+                }
+
+                if (!email || !email.includes('@')) {
+                    document.getElementById('regErrorText').textContent = 'Please enter a valid email.';
+                    document.getElementById('regError').classList.add('show');
+                    return;
+                }
+                if (password.length < 4) {
+                    document.getElementById('regErrorText').textContent = 'Password must be at least 4 characters.';
+                    document.getElementById('regError').classList.add('show');
+                    return;
+                }
+                if (password !== confirm) {
+                    document.getElementById('regErrorText').textContent = 'Passwords do not match.';
+                    document.getElementById('regError').classList.add('show');
+                    return;
+                }
+
+                // VALIDASI REFERRAL
+                let referredBy = null;
+                if (referralCode) {
+                    console.log('🔍 Validating referral:', referralCode);
+                    const validation = await validateReferralCode(referralCode);
+
+                    if (!validation.valid) {
+                        document.getElementById('regErrorText').textContent = validation.error || 'Invalid referral code.';
+                        document.getElementById('regError').classList.add('show');
+                        return;
+                    }
+
+                    if (validation.referrer) {
+                        referredBy = referralCode;
+                        console.log('✅ Referral valid:', referralCode, 'from:', validation.referrer.email);
+                    } else {
+                        document.getElementById('regErrorText').textContent = 'Referral code not found.';
+                        document.getElementById('regError').classList.add('show');
+                        return;
+                    }
+                }
+
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+
+                try {
+                    const result = await registerUser(email, password, referredBy);
+                    console.log('✅ Register result:', result);
+
+                    // Verifikasi
+                    const check = await getUserByEmail(email);
+                    console.log('🔍 Final check:', {
+                        email: check?.email,
+                        ref_code: check?.ref_code,
+                        referred_by: check?.referred_by || 'NULL'
+                    });
+
+                    document.getElementById('regSuccessText').textContent = '✅ Account created successfully! Please login.';
+                    document.getElementById('regSuccess').classList.add('show');
+                    showToast('✅ Account created! Please login.');
+
+                    document.getElementById('regEmail').value = '';
+                    document.getElementById('regPassword').value = '';
+                    document.getElementById('regPasswordConfirm').value = '';
+                    document.getElementById('regReferralCode').value = '';
+                    document.getElementById('referralInfoBox').classList.remove('show');
+                    localStorage.removeItem(STORAGE_KEYS.REFERRAL_CODE);
+
+                    setTimeout(() => {
+                        document.querySelector('[data-panel="panelLogin"]').click();
+                        document.getElementById('loginEmail').value = email;
+                        document.getElementById('loginPassword').value = password;
+                        showToast('✅ Account created! Please login.');
+                    }, 1500);
+
+                } catch (err) {
+                    console.error('❌ Register error:', err);
+                    document.getElementById('regErrorText').textContent = err.message || 'Registration failed.';
+                    document.getElementById('regError').classList.add('show');
+                    showToast('❌ ' + (err.message || 'Registration failed'));
+                }
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+            });
+
+            // Enter key
+            document.getElementById('regEmail').addEventListener('keydown', e => {
+                if (e.key === 'Enter') document.getElementById('regPassword').focus();
+            });
+            document.getElementById('regPassword').addEventListener('keydown', e => {
+                if (e.key === 'Enter') document.getElementById('regPasswordConfirm').focus();
+            });
+            document.getElementById('regPasswordConfirm').addEventListener('keydown', e => {
+                if (e.key === 'Enter') document.getElementById('regReferralCode').focus();
+            });
+            document.getElementById('regReferralCode').addEventListener('keydown', e => {
+                if (e.key === 'Enter') btn.click();
+            });
+        }
+
+        // ============================================================
+        // FORGOT PASSWORD
+        // ============================================================
+        function initForgot() {
+            const btn = document.getElementById('forgotBtn');
+
+            btn.addEventListener('click', async function() {
+                const email = document.getElementById('forgotEmail').value.trim();
+
+                document.getElementById('forgotError').classList.remove('show');
+                document.getElementById('forgotSuccess').classList.remove('show');
+
+                if (!supabase) {
+                    document.getElementById('forgotErrorText').textContent = 'System error. Please refresh.';
+                    document.getElementById('forgotError').classList.add('show');
+                    return;
+                }
+
+                if (!email || !email.includes('@')) {
+                    document.getElementById('forgotErrorText').textContent = 'Please enter a valid email.';
+                    document.getElementById('forgotError').classList.add('show');
+                    return;
+                }
+
+                try {
+                    const user = await getUserByEmail(email);
+                    if (!user) {
+                        document.getElementById('forgotErrorText').textContent = 'Email not found.';
+                        document.getElementById('forgotError').classList.add('show');
+                        return;
+                    }
+
+                    const token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                    resetTokens[email] = {
+                        token: token,
+                        expires: Date.now() + 15 * 60 * 1000
+                    };
+                    saveResetTokens();
+
+                    document.getElementById('resetEmail').value = email;
+                    document.getElementById('panelReset').style.display = 'block';
+                    document.getElementById('panelReset').classList.add('active');
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+                    document.getElementById('forgotEmail').value = '';
+                    showToast('🔑 Please enter your new password');
+
+                } catch (err) {
+                    document.getElementById('forgotErrorText').textContent = 'Error. Please try again.';
+                    document.getElementById('forgotError').classList.add('show');
+                }
+            });
+
+            document.getElementById('forgotEmail').addEventListener('keydown', e => {
+                if (e.key === 'Enter') btn.click();
+            });
+        }
+
+        // ============================================================
+        // RESET PASSWORD
+        // ============================================================
+        function initReset() {
+            const btn = document.getElementById('resetPasswordBtn');
+
+            btn.addEventListener('click', async function() {
+                const email = document.getElementById('resetEmail').value;
+                const newPass = document.getElementById('resetNewPassword').value.trim();
+                const confirm = document.getElementById('resetConfirmPassword').value.trim();
+
+                document.getElementById('resetError').classList.remove('show');
+                document.getElementById('resetSuccess').classList.remove('show');
+
+                if (!supabase) {
+                    document.getElementById('resetErrorText').textContent = 'System error. Please refresh.';
+                    document.getElementById('resetError').classList.add('show');
+                    return;
+                }
+
+                if (newPass.length < 4) {
+                    document.getElementById('resetErrorText').textContent = 'Password must be at least 4 characters.';
+                    document.getElementById('resetError').classList.add('show');
+                    return;
+                }
+
+                if (newPass !== confirm) {
+                    document.getElementById('resetErrorText').textContent = 'Passwords do not match.';
+                    document.getElementById('resetError').classList.add('show');
+                    return;
+                }
+
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
+
+                try {
+                    await updatePassword(email, newPass);
+
+                    delete resetTokens[email];
+                    saveResetTokens();
+
+                    document.getElementById('resetSuccessText').textContent = '✅ Password reset successful! Redirecting...';
+                    document.getElementById('resetSuccess').classList.add('show');
+
+                    setTimeout(() => {
+                        document.getElementById('panelReset').classList.remove('active');
+                        document.getElementById('panelReset').style.display = 'none';
+                        document.getElementById('authTabs').style.display = 'flex';
+                        document.querySelector('[data-panel="panelLogin"]').click();
+                        document.getElementById('loginEmail').value = email;
+                        document.getElementById('loginPassword').value = newPass;
+                        showToast('✅ Password reset successful! Please login.');
+                    }, 1500);
+
+                } catch (err) {
+                    console.error('Reset error:', err);
+                    document.getElementById('resetErrorText').textContent = err.message || 'Reset failed.';
+                    document.getElementById('resetError').classList.add('show');
+                }
+
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+            });
+
+            document.getElementById('resetNewPassword').addEventListener('keydown', e => {
+                if (e.key === 'Enter') document.getElementById('resetConfirmPassword').focus();
+            });
+            document.getElementById('resetConfirmPassword').addEventListener('keydown', e => {
+                if (e.key === 'Enter') btn.click();
+            });
+        }
+
+        // ============================================================
+        // LOAD SETTINGS
+        // ============================================================
+        function loadSettings() {
+            try {
+                const data = localStorage.getItem('silverchain_settings');
+                if (data) {
+                    const settings = JSON.parse(data);
+                    if (settings.brandName) {
+                        document.getElementById('brandName').textContent = settings.brandName;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // INIT - JALANKAN SEMUA
         // ============================================================
         loadSettings();
         loadResetTokens();
@@ -1149,9 +1123,17 @@
         checkResetToken();
         checkReferralOnRegister();
 
-        console.log('🟢 SilverChain Auth Page ready! (FIXED)');
-        console.log('📌 referred_by NOW SAVES PROPERLY!');
-        console.log('📌 Register with referral: ?ref=CODE');
+        // Init semua fungsi
+        initTabs();
+        initLogin();
+        initRegister();
+        initForgot();
+        initReset();
+
+        console.log('🟢 SilverChain Auth ready! (FIXED)');
+        console.log('📌 referred_by sekarang PASTI tersimpan!');
+        console.log('📌 Register dengan referral: ?ref=CODE');
+        console.log('📌 Cek console untuk debug log');
     </script>
 
 </body>
