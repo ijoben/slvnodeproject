@@ -658,7 +658,7 @@
             </div>
         </div>
 
-        <!-- ===== WHITEPAPER (Dynamic from Settings) ===== -->
+        <!-- ===== WHITEPAPER ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-file-alt"></i> Whitepaper</div>
             <p style="color:#c0c0c0; font-size:0.85rem; margin-bottom:0.5rem;">Complete SilverChain whitepaper available.</p>
@@ -688,7 +688,7 @@
             </div>
         </div>
 
-        <!-- ===== CONTACT (Dynamic from Settings) ===== -->
+        <!-- ===== CONTACT ===== -->
         <div class="section-card">
             <div class="section-title"><i class="fas fa-address-card"></i> Contact</div>
             <div class="contact-grid" id="contactGrid">
@@ -724,7 +724,7 @@
         //  SUPABASE CONFIGURATION
         // ============================================================
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyYnJpYXNnbXhqenZidWtzbGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMzAxODMsImV4cCI6MjA5OTYwNjE4M30.fhcSgXY-D-AvgDyg86v7eA_ltAU_UC0LFrCDnsJufgg';
         const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
         const TARGET_USDT = 1000000;
 
@@ -834,7 +834,6 @@
                 if (el) {
                     const value = settingsData[key] || contactMap[key].default;
                     const icon = contactMap[key].icon;
-                    // Update href
                     if (key === 'contact_email') {
                         el.href = `mailto:${value}`;
                     } else if (key === 'contact_twitter') {
@@ -844,12 +843,10 @@
                     } else if (key === 'contact_discord') {
                         el.href = `https://discord.gg/${value.replace('discord.gg/', '')}`;
                     }
-                    // Update text
                     const span = el.querySelector('span');
                     if (span) {
                         span.textContent = value;
                     }
-                    // Ensure icon is correct
                     const iconEl = el.querySelector('i');
                     if (iconEl) {
                         iconEl.className = icon;
@@ -881,6 +878,22 @@
                 html = `<span style="color:#888888; font-size:0.85rem;">No whitepaper links configured yet.</span>`;
             }
             wpContainer.innerHTML = html;
+        }
+
+        // ============================================================
+        //  REDIRECT TO AUTH WITH REFERRAL
+        // ============================================================
+        function redirectToAuthWithRef() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref');
+            
+            if (ref) {
+                console.log(`🔍 Found referral code in URL: ${ref}`);
+                console.log(`🔄 Redirecting to /auth?ref=${ref}`);
+                window.location.href = `/auth?ref=${ref}`;
+                return true;
+            }
+            return false;
         }
 
         // ============================================================
@@ -969,7 +982,16 @@
                 return;
             }
 
-            // Load user from localStorage
+            // ============================================================
+            //  CEK REFERRAL CODE DI URL - REDIRECT KE AUTH
+            // ============================================================
+            const hasRef = redirectToAuthWithRef();
+            if (hasRef) {
+                console.log('🔄 Redirecting to auth with referral code...');
+                return; // Stop execution, redirect already happening
+            }
+
+            // Load user dari localStorage
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
