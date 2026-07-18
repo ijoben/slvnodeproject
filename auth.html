@@ -6,10 +6,7 @@
     <title>SilverChain · Authentication</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK & Config -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
-    <script src="supabase-config.js">
     </script>
     <style>
         * {
@@ -59,7 +56,6 @@
             color: transparent;
             margin-top: 0.2rem;
         }
-
         .auth-tabs {
             display: flex;
             gap: 0.3rem;
@@ -90,14 +86,12 @@
         .auth-tab:hover:not(.active) {
             color: #c0c0c0;
         }
-
         .auth-panel {
             display: none;
         }
         .auth-panel.active {
             display: block;
         }
-
         .auth-title {
             font-size: 1.2rem;
             font-weight: 700;
@@ -109,7 +103,6 @@
             font-size: 0.85rem;
             margin-bottom: 1.2rem;
         }
-
         .input-field {
             width: 100%;
             padding: 0.85rem 1.2rem;
@@ -131,7 +124,17 @@
         .input-field:disabled {
             opacity: 0.5;
         }
-
+        .input-field.referral-input {
+            background: rgba(8, 20, 48, 0.3);
+            border-color: rgba(255, 200, 60, 0.1);
+            color: #fbbf24;
+        }
+        .input-field.referral-input:focus {
+            border-color: rgba(255, 200, 60, 0.3);
+        }
+        .input-field.referral-input::placeholder {
+            color: #886633;
+        }
         .btn-primary {
             width: 100%;
             padding: 0.85rem;
@@ -157,24 +160,6 @@
             cursor: not-allowed;
             transform: none !important;
         }
-
-        .btn-secondary {
-            width: 100%;
-            padding: 0.7rem;
-            border-radius: 60px;
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            background: transparent;
-            color: #c0c0c0;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: 0.15s;
-            margin-top: 0.4rem;
-        }
-        .btn-secondary:hover {
-            background: rgba(60, 120, 255, 0.05);
-        }
-
         .error-msg {
             color: #ff6a6a;
             font-size: 0.8rem;
@@ -189,7 +174,6 @@
         .error-msg i {
             font-size: 0.9rem;
         }
-
         .success-msg {
             color: #6aff8a;
             font-size: 0.8rem;
@@ -204,7 +188,6 @@
         .success-msg i {
             font-size: 0.9rem;
         }
-
         .divider {
             text-align: center;
             color: #666666;
@@ -227,7 +210,6 @@
         .divider::after {
             right: 0;
         }
-
         .forgot-link {
             text-align: right;
             margin: -0.2rem 0 0.8rem;
@@ -242,7 +224,6 @@
         .forgot-link button:hover {
             color: #c0c0c0;
         }
-
         .toast-message {
             background: rgba(12, 28, 60, 0.9);
             backdrop-filter: blur(8px);
@@ -262,7 +243,6 @@
         .toast-message i {
             color: #c0c0c0;
         }
-
         .back-link {
             text-align: center;
             margin-top: 0.8rem;
@@ -280,14 +260,35 @@
         .back-link button i {
             margin-right: 0.4rem;
         }
-
         .reset-panel {
             display: none;
         }
         .reset-panel.active {
             display: block;
         }
-
+        .referral-info-box {
+            background: rgba(255, 200, 60, 0.05);
+            border: 1px solid rgba(255, 200, 60, 0.08);
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
+            margin: 0.5rem 0 0.8rem;
+            font-size: 0.8rem;
+            color: #c0c0c0;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .referral-info-box.show {
+            display: flex;
+        }
+        .referral-info-box i {
+            color: #fbbf24;
+            font-size: 1rem;
+        }
+        .referral-info-box .highlight {
+            color: #fbbf24;
+            font-weight: 600;
+        }
         @media (max-width: 480px) {
             .auth-container {
                 padding: 1.5rem 1rem;
@@ -312,18 +313,15 @@
 
     <div class="auth-container">
 
-        <!-- Logo -->
         <div class="auth-logo">
             <i class="fas fa-coins"></i>
             <h1 id="brandName">SilverChain</h1>
         </div>
 
-        <!-- Toast -->
         <div id="toastMessage" class="toast-message">
             <i class="fas fa-check-circle"></i> <span id="toastText">Success</span>
         </div>
 
-        <!-- Tabs -->
         <div class="auth-tabs" id="authTabs">
             <button class="auth-tab active" data-panel="panelLogin"><i class="fas fa-sign-in-alt"></i> Login</button>
             <button class="auth-tab" data-panel="panelRegister"><i class="fas fa-user-plus"></i> Register</button>
@@ -334,21 +332,15 @@
         <div class="auth-panel active" id="panelLogin">
             <div class="auth-title">🔐 Login</div>
             <div class="auth-sub">Sign in to your account</div>
-
             <input type="email" class="input-field" id="loginEmail" placeholder="Email" />
             <input type="password" class="input-field" id="loginPassword" placeholder="Password" />
-
             <div class="forgot-link">
                 <button id="gotoForgotBtn">Forgot password?</button>
             </div>
-
             <button class="btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
-
             <div class="error-msg" id="loginError"><i class="fas fa-exclamation-circle"></i> <span id="loginErrorText">Error</span></div>
             <div class="success-msg" id="loginSuccess"><i class="fas fa-check-circle"></i> <span id="loginSuccessText">Success</span></div>
-
             <div class="divider">or</div>
-
             <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
                 Don't have an account? <button id="gotoRegisterBtn" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Register Now</button>
             </div>
@@ -359,18 +351,18 @@
             <div id="registerForm">
                 <div class="auth-title">📝 Create Account</div>
                 <div class="auth-sub">Join SilverChain community</div>
-
                 <input type="email" class="input-field" id="regEmail" placeholder="Email" />
                 <input type="password" class="input-field" id="regPassword" placeholder="Password (min 4)" />
                 <input type="password" class="input-field" id="regPasswordConfirm" placeholder="Confirm Password" />
-
+                <input type="text" class="input-field referral-input" id="regReferralCode" placeholder="Referral Code (optional)" />
+                <div class="referral-info-box" id="referralInfoBox">
+                    <i class="fas fa-user-check"></i>
+                    <span>Registered with referral: <span class="highlight" id="referralCodeDisplay">-</span></span>
+                </div>
                 <button class="btn-primary" id="registerBtn"><i class="fas fa-user-plus"></i> Register</button>
-
                 <div class="error-msg" id="regError"><i class="fas fa-exclamation-circle"></i> <span id="regErrorText">Error</span></div>
                 <div class="success-msg" id="regSuccess"><i class="fas fa-check-circle"></i> <span id="regSuccessText">Success</span></div>
-
                 <div class="divider">or</div>
-
                 <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
                     Already have an account? <button id="gotoLoginFromRegister" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
                 </div>
@@ -381,16 +373,11 @@
         <div class="auth-panel" id="panelForgot">
             <div class="auth-title">🔑 Forgot Password</div>
             <div class="auth-sub">Enter your email to reset password</div>
-
             <input type="email" class="input-field" id="forgotEmail" placeholder="Email" />
-
             <button class="btn-primary" id="forgotBtn"><i class="fas fa-paper-plane"></i> Reset Password</button>
-
             <div class="error-msg" id="forgotError"><i class="fas fa-exclamation-circle"></i> <span id="forgotErrorText">Error</span></div>
             <div class="success-msg" id="forgotSuccess"><i class="fas fa-check-circle"></i> <span id="forgotSuccessText">Success</span></div>
-
             <div class="divider">or</div>
-
             <div style="text-align:center; color:#a0a0a0; font-size:0.8rem;">
                 Remember your password? <button id="gotoLoginFromForgot" style="background:none;border:none;color:#c0c0c0;font-weight:600;cursor:pointer;">Login</button>
             </div>
@@ -400,16 +387,12 @@
         <div class="reset-panel" id="panelReset">
             <div class="auth-title">🔑 Reset Password</div>
             <div class="auth-sub">Enter your new password</div>
-
             <input type="hidden" id="resetEmail" />
             <input type="password" class="input-field" id="resetNewPassword" placeholder="New Password (min 4)" />
             <input type="password" class="input-field" id="resetConfirmPassword" placeholder="Confirm New Password" />
-
             <button class="btn-primary" id="resetPasswordBtn"><i class="fas fa-check"></i> Reset Password</button>
-
             <div class="error-msg" id="resetError"><i class="fas fa-exclamation-circle"></i> <span id="resetErrorText">Error</span></div>
             <div class="success-msg" id="resetSuccess"><i class="fas fa-check-circle"></i> <span id="resetSuccessText">Success</span></div>
-
             <div class="back-link">
                 <button id="gotoLoginFromReset"><i class="fas fa-arrow-left"></i> Back to Login</button>
             </div>
@@ -419,11 +402,188 @@
 
     <script>
         // ============================================================
+        // SUPABASE CONFIG (LANGSUNG DI SINI)
+        // ============================================================
+        const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+
+        // ============================================================
+        // SUPABASE CLIENT
+        // ============================================================
+        let supabaseClient = null;
+
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client created!');
+        } catch (err) {
+            console.error('❌ Supabase error:', err);
+        }
+
+        // ============================================================
+        // FUNGSI-FUNGSI SUPABASE
+        // ============================================================
+        async function supabaseRegisterUser(email, password, referredBy = null) {
+            try {
+                // Generate referral code
+                const prefix = email.split('@')[0].substring(0, 4).toUpperCase();
+                const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+                const refCode = prefix + random;
+
+                const hashedPassword = btoa(password + 'silverchain_salt_2026');
+
+                // Cek user existing
+                const { data: existing, error: checkError } = await supabaseClient
+                    .from('users')
+                    .select('email')
+                    .eq('email', email)
+                    .single();
+
+                if (existing) {
+                    throw new Error('User already exists');
+                }
+
+                const userData = {
+                    email: email,
+                    password: hashedPassword,
+                    ref_code: refCode,
+                    referred_by: referredBy,
+                    verified: false,
+                    role: 'user',
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+
+                console.log('📝 Registering user:', { email, refCode, referredBy });
+
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .insert([userData])
+                    .select();
+
+                if (error) {
+                    console.error('❌ Insert error:', error);
+                    throw new Error(error.message || 'Registration failed');
+                }
+
+                console.log('✅ User registered:', data);
+                return data[0] || { email, ref_code: refCode };
+
+            } catch (error) {
+                console.error('❌ Register error:', error);
+                throw error;
+            }
+        }
+
+        async function supabaseLoginUser(email, password) {
+            try {
+                const hashedPassword = btoa(password + 'silverchain_salt_2026');
+
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+
+                if (error) {
+                    throw new Error('User not found');
+                }
+
+                if (!data) {
+                    throw new Error('User not found');
+                }
+
+                if (data.password !== hashedPassword) {
+                    throw new Error('Invalid password');
+                }
+
+                console.log('✅ User logged in:', data.email);
+                return data;
+
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                throw error;
+            }
+        }
+
+        async function supabaseGetUserByEmail(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('❌ Get user error:', error);
+                return null;
+            }
+        }
+
+        async function supabaseIsAdmin(email) {
+            try {
+                const user = await supabaseGetUserByEmail(email);
+                return user && user.role === 'admin';
+            } catch (error) {
+                console.error('❌ IsAdmin error:', error);
+                return false;
+            }
+        }
+
+        async function supabaseUpdatePassword(email, newPassword) {
+            try {
+                const hashedPassword = btoa(newPassword + 'silverchain_salt_2026');
+
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .update({
+                        password: hashedPassword,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('email', email)
+                    .select();
+
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('❌ Update password error:', error);
+                throw error;
+            }
+        }
+
+        async function supabaseValidateReferral(code) {
+            if (!code || code.trim() === '') return { valid: true, referrer: null };
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('email, ref_code')
+                    .eq('ref_code', code.trim())
+                    .single();
+
+                if (error) {
+                    if (error.code === 'PGRST116') {
+                        return { valid: false, error: 'Invalid referral code' };
+                    }
+                    throw error;
+                }
+
+                return { valid: true, referrer: data };
+            } catch (err) {
+                console.error('Validate referral error:', err);
+                return { valid: false, error: 'Error validating referral code' };
+            }
+        }
+
+        // ============================================================
         // STORAGE KEYS
         // ============================================================
         const STORAGE_KEYS = {
             CURRENT_USER: 'silverchain_current_user',
-            RESET_TOKENS: 'silverchain_reset_tokens'
+            RESET_TOKENS: 'silverchain_reset_tokens',
+            REFERRAL_CODE: 'silverchain_ref_code'
         };
 
         let resetTokens = {};
@@ -442,11 +602,14 @@
         const regEmail = document.getElementById('regEmail');
         const regPassword = document.getElementById('regPassword');
         const regPasswordConfirm = document.getElementById('regPasswordConfirm');
+        const regReferralCode = document.getElementById('regReferralCode');
         const registerBtn = document.getElementById('registerBtn');
         const regError = document.getElementById('regError');
         const regErrorText = document.getElementById('regErrorText');
         const regSuccess = document.getElementById('regSuccess');
         const regSuccessText = document.getElementById('regSuccessText');
+        const referralInfoBox = document.getElementById('referralInfoBox');
+        const referralCodeDisplay = document.getElementById('referralCodeDisplay');
 
         const forgotEmail = document.getElementById('forgotEmail');
         const forgotBtn = document.getElementById('forgotBtn');
@@ -465,7 +628,7 @@
         const resetSuccessText = document.getElementById('resetSuccessText');
 
         // ============================================================
-        // TOAST FUNCTION
+        // TOAST
         // ============================================================
         function showToast(msg) {
             const toast = document.getElementById('toastMessage');
@@ -491,10 +654,10 @@
         }
 
         // ============================================================
-        // CHECK SUPABASE LOADED
+        // CHECK SUPABASE
         // ============================================================
         function checkSupabase() {
-            if (typeof Supabase === 'undefined') {
+            if (!supabaseClient) {
                 console.error('❌ Supabase not loaded!');
                 showToast('❌ System error. Please refresh.');
                 return false;
@@ -503,7 +666,56 @@
         }
 
         // ============================================================
-        // TABS NAVIGATION
+        // GET REFERRAL FROM URL
+        // ============================================================
+        function getReferralFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref');
+            if (ref) {
+                localStorage.setItem(STORAGE_KEYS.REFERRAL_CODE, ref);
+                return ref;
+            }
+            return localStorage.getItem(STORAGE_KEYS.REFERRAL_CODE) || '';
+        }
+
+        // ============================================================
+        // CHECK REFERRAL ON REGISTER
+        // ============================================================
+        async function checkReferralOnRegister() {
+            const refCode = getReferralFromURL();
+            if (refCode) {
+                regReferralCode.value = refCode;
+                const result = await supabaseValidateReferral(refCode);
+                if (result.valid && result.referrer) {
+                    referralInfoBox.classList.add('show');
+                    referralCodeDisplay.textContent = refCode + ' (' + result.referrer.email + ')';
+                    showToast('🔗 Referral code detected: ' + refCode);
+                } else {
+                    referralInfoBox.classList.remove('show');
+                    regReferralCode.value = '';
+                    showToast('❌ Invalid referral code');
+                }
+            }
+
+            // Event listener untuk manual input
+            regReferralCode.addEventListener('input', async function() {
+                const code = this.value.trim();
+                if (code.length >= 4) {
+                    const result = await supabaseValidateReferral(code);
+                    if (result.valid && result.referrer) {
+                        referralInfoBox.classList.add('show');
+                        referralCodeDisplay.textContent = code + ' (' + result.referrer.email + ')';
+                    } else {
+                        referralInfoBox.classList.remove('show');
+                    }
+                } else {
+                    referralInfoBox.classList.remove('show');
+                }
+            });
+        }
+
+        // ============================================================
+        // TABS
         // ============================================================
         const tabs = document.querySelectorAll('.auth-tab');
         const panels = {
@@ -534,7 +746,6 @@
             panels[tabId].classList.add('active');
         }
 
-        // Navigation buttons
         document.getElementById('gotoRegisterBtn').addEventListener('click', () => switchTab('panelRegister'));
         document.getElementById('gotoLoginFromRegister').addEventListener('click', () => switchTab('panelLogin'));
         document.getElementById('gotoLoginFromForgot').addEventListener('click', () => switchTab('panelLogin'));
@@ -572,12 +783,12 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
             try {
-                const user = await Supabase.loginUser(email, password);
+                const user = await supabaseLoginUser(email, password);
                 console.log('✅ Login result:', user);
 
                 localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
 
-                const isAdmin = await Supabase.isAdmin(email);
+                const isAdmin = await supabaseIsAdmin(email);
 
                 loginSuccessText.textContent = isAdmin ?
                     '✅ Admin login successful! Redirecting to Admin Panel...' :
@@ -602,13 +813,8 @@
             this.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
         });
 
-        // Enter key support for login
-        loginEmail.addEventListener('keydown', e => {
-            if (e.key === 'Enter') loginPassword.focus();
-        });
-        loginPassword.addEventListener('keydown', e => {
-            if (e.key === 'Enter') loginBtn.click();
-        });
+        loginEmail.addEventListener('keydown', e => { if (e.key === 'Enter') loginPassword.focus(); });
+        loginPassword.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
 
         // ============================================================
         // REGISTER
@@ -617,6 +823,7 @@
             const email = regEmail.value.trim();
             const password = regPassword.value.trim();
             const confirm = regPasswordConfirm.value.trim();
+            const referralCode = regReferralCode.value.trim();
 
             regError.classList.remove('show');
             regSuccess.classList.remove('show');
@@ -643,11 +850,30 @@
                 return;
             }
 
+            // VALIDASI REFERRAL
+            let referredBy = null;
+            if (referralCode) {
+                const validation = await supabaseValidateReferral(referralCode);
+                if (!validation.valid) {
+                    regErrorText.textContent = validation.error || 'Invalid referral code.';
+                    regError.classList.add('show');
+                    return;
+                }
+                if (validation.referrer) {
+                    referredBy = referralCode;
+                    console.log('🔗 Referral code valid:', referralCode, 'from:', validation.referrer.email);
+                } else {
+                    regErrorText.textContent = 'Referral code not found.';
+                    regError.classList.add('show');
+                    return;
+                }
+            }
+
             this.disabled = true;
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
 
             try {
-                const result = await Supabase.registerUser(email, password, null);
+                const result = await supabaseRegisterUser(email, password, referredBy);
                 console.log('✅ Registration result:', result);
 
                 regSuccessText.textContent = '✅ Account created successfully! Please login.';
@@ -657,6 +883,9 @@
                 regEmail.value = '';
                 regPassword.value = '';
                 regPasswordConfirm.value = '';
+                regReferralCode.value = '';
+                referralInfoBox.classList.remove('show');
+                localStorage.removeItem(STORAGE_KEYS.REFERRAL_CODE);
 
                 setTimeout(() => {
                     switchTab('panelLogin');
@@ -676,16 +905,10 @@
             this.innerHTML = '<i class="fas fa-user-plus"></i> Register';
         });
 
-        // Enter key support for register
-        regEmail.addEventListener('keydown', e => {
-            if (e.key === 'Enter') regPassword.focus();
-        });
-        regPassword.addEventListener('keydown', e => {
-            if (e.key === 'Enter') regPasswordConfirm.focus();
-        });
-        regPasswordConfirm.addEventListener('keydown', e => {
-            if (e.key === 'Enter') registerBtn.click();
-        });
+        regEmail.addEventListener('keydown', e => { if (e.key === 'Enter') regPassword.focus(); });
+        regPassword.addEventListener('keydown', e => { if (e.key === 'Enter') regPasswordConfirm.focus(); });
+        regPasswordConfirm.addEventListener('keydown', e => { if (e.key === 'Enter') regReferralCode.focus(); });
+        regReferralCode.addEventListener('keydown', e => { if (e.key === 'Enter') registerBtn.click(); });
 
         // ============================================================
         // FORGOT PASSWORD
@@ -709,7 +932,7 @@
             }
 
             try {
-                const user = await Supabase.getUserByEmail(email);
+                const user = await supabaseGetUserByEmail(email);
                 if (!user) {
                     forgotErrorText.textContent = 'Email not found.';
                     forgotError.classList.add('show');
@@ -737,13 +960,10 @@
             }
         });
 
-        // Enter key support for forgot
-        forgotEmail.addEventListener('keydown', e => {
-            if (e.key === 'Enter') forgotBtn.click();
-        });
+        forgotEmail.addEventListener('keydown', e => { if (e.key === 'Enter') forgotBtn.click(); });
 
         // ============================================================
-        // CHECK RESET TOKEN FROM URL
+        // CHECK RESET TOKEN
         // ============================================================
         function checkResetToken() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -801,7 +1021,7 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
 
             try {
-                await Supabase.updatePassword(email, newPass);
+                await supabaseUpdatePassword(email, newPass);
 
                 delete resetTokens[email];
                 saveResetTokens();
@@ -829,13 +1049,8 @@
             this.innerHTML = '<i class="fas fa-check"></i> Reset Password';
         });
 
-        // Enter key support for reset
-        resetNewPassword.addEventListener('keydown', e => {
-            if (e.key === 'Enter') resetConfirmPassword.focus();
-        });
-        resetConfirmPassword.addEventListener('keydown', e => {
-            if (e.key === 'Enter') resetPasswordBtn.click();
-        });
+        resetNewPassword.addEventListener('keydown', e => { if (e.key === 'Enter') resetConfirmPassword.focus(); });
+        resetConfirmPassword.addEventListener('keydown', e => { if (e.key === 'Enter') resetPasswordBtn.click(); });
 
         // ============================================================
         // LOAD SETTINGS
@@ -853,7 +1068,7 @@
         }
 
         // ============================================================
-        // CHECK IF USER ALREADY LOGGED IN
+        // CHECK LOGGED IN
         // ============================================================
         function checkLoggedIn() {
             const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
@@ -861,7 +1076,7 @@
                 try {
                     const data = JSON.parse(savedUser);
                     if (data.email) {
-                        Supabase.isAdmin(data.email).then(isAdmin => {
+                        supabaseIsAdmin(data.email).then(isAdmin => {
                             if (isAdmin) {
                                 window.location.href = '/admin';
                             } else {
@@ -876,31 +1091,17 @@
         }
 
         // ============================================================
-        // CHECK SUPABASE CONFIG ON LOAD
-        // ============================================================
-        function checkConfigOnLoad() {
-            setTimeout(() => {
-                if (typeof Supabase === 'undefined') {
-                    console.error('❌ Supabase config not loaded!');
-                    showToast('⚠️ Config not loaded. Please refresh.');
-                } else {
-                    console.log('✅ Supabase config loaded!');
-                }
-            }, 1000);
-        }
-
-        // ============================================================
         // INIT
         // ============================================================
         loadSettings();
         loadResetTokens();
         checkLoggedIn();
         checkResetToken();
-        checkConfigOnLoad();
+        checkReferralOnRegister();
 
-        console.log('🟢 SilverChain Auth Page ready!');
-        console.log('📌 Supabase connected via supabase-config.js');
-        console.log('📌 Admin email hidden (not in HTML)');
+        console.log('🟢 SilverChain Auth Page ready! (All-in-One)');
+        console.log('📌 Supabase connected directly');
+        console.log('📌 Referral system: AUTO DETECT from URL or manual input');
     </script>
 
 </body>
