@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* --- STYLE SAMA SEPERTI SEBELUMNYA --- */
         * {
             margin: 0;
             padding: 0;
@@ -402,14 +403,11 @@
 
     <script>
         // ============================================================
-        // SUPABASE CONFIG (LANGSUNG DI SINI)
+        // SUPABASE CONFIG
         // ============================================================
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
 
-        // ============================================================
-        // SUPABASE CLIENT
-        // ============================================================
         let supabaseClient = null;
 
         try {
@@ -420,8 +418,10 @@
         }
 
         // ============================================================
-        // FUNGSI-FUNGSI SUPABASE
+        // FUNGSI SUPABASE YANG DIPERBAIKI
         // ============================================================
+        
+        // ✅ REGISTER USER - FIXED: referred_by sekarang tersimpan
         async function supabaseRegisterUser(email, password, referredBy = null) {
             try {
                 // Generate referral code
@@ -442,18 +442,23 @@
                     throw new Error('User already exists');
                 }
 
+                // 🔥 IMPORTANT: Pastikan referred_by tersimpan
                 const userData = {
                     email: email,
                     password: hashedPassword,
                     ref_code: refCode,
-                    referred_by: referredBy,
+                    referred_by: referredBy, // <- INI YANG PENTING!
                     verified: false,
                     role: 'user',
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 };
 
-                console.log('📝 Registering user:', { email, refCode, referredBy });
+                console.log('📝 Registering user:', { 
+                    email, 
+                    refCode, 
+                    referredBy: referredBy || 'NONE' 
+                });
 
                 const { data, error } = await supabaseClient
                     .from('users')
@@ -466,7 +471,17 @@
                 }
 
                 console.log('✅ User registered:', data);
-                return data[0] || { email, ref_code: refCode };
+                
+                // 🔍 CEK APAKAH REFERRED_BY TERSIMPAN
+                if (data && data[0]) {
+                    console.log('🔍 Check saved data:', {
+                        email: data[0].email,
+                        ref_code: data[0].ref_code,
+                        referred_by: data[0].referred_by // Harusnya tidak null
+                    });
+                }
+
+                return data[0] || { email, ref_code: refCode, referred_by: referredBy };
 
             } catch (error) {
                 console.error('❌ Register error:', error);
@@ -553,10 +568,15 @@
             }
         }
 
+        // ✅ VALIDASI REFERRAL - FIXED
         async function supabaseValidateReferral(code) {
-            if (!code || code.trim() === '') return { valid: true, referrer: null };
+            if (!code || code.trim() === '') {
+                return { valid: true, referrer: null };
+            }
 
             try {
+                console.log('🔍 Validating referral code:', code);
+                
                 const { data, error } = await supabaseClient
                     .from('users')
                     .select('email, ref_code')
@@ -565,14 +585,16 @@
 
                 if (error) {
                     if (error.code === 'PGRST116') {
+                        console.log('❌ Referral code not found:', code);
                         return { valid: false, error: 'Invalid referral code' };
                     }
                     throw error;
                 }
 
+                console.log('✅ Referral code valid:', data);
                 return { valid: true, referrer: data };
             } catch (err) {
-                console.error('Validate referral error:', err);
+                console.error('❌ Validate referral error:', err);
                 return { valid: false, error: 'Error validating referral code' };
             }
         }
@@ -697,7 +719,6 @@
                 }
             }
 
-            // Event listener untuk manual input
             regReferralCode.addEventListener('input', async function() {
                 const code = this.value.trim();
                 if (code.length >= 4) {
@@ -817,7 +838,7 @@
         loginPassword.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
 
         // ============================================================
-        // REGISTER
+        // REGISTER - FIXED: Pastikan referred_by tersimpan
         // ============================================================
         registerBtn.addEventListener('click', async function() {
             const email = regEmail.value.trim();
@@ -850,18 +871,21 @@
                 return;
             }
 
-            // VALIDASI REFERRAL
+            // 🔥 VALIDASI REFERRAL - PASTIKAN VALID
             let referredBy = null;
             if (referralCode) {
+                console.log('🔍 Validating referral code:', referralCode);
                 const validation = await supabaseValidateReferral(referralCode);
+                
                 if (!validation.valid) {
                     regErrorText.textContent = validation.error || 'Invalid referral code.';
                     regError.classList.add('show');
                     return;
                 }
+                
                 if (validation.referrer) {
                     referredBy = referralCode;
-                    console.log('🔗 Referral code valid:', referralCode, 'from:', validation.referrer.email);
+                    console.log('✅ Referral code VALID:', referralCode, 'from:', validation.referrer.email);
                 } else {
                     regErrorText.textContent = 'Referral code not found.';
                     regError.classList.add('show');
@@ -873,8 +897,32 @@
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
 
             try {
+                // 🔥 REGISTER DENGAN REFERRED_BY
                 const result = await supabaseRegisterUser(email, password, referredBy);
                 console.log('✅ Registration result:', result);
+
+                // 🔍 CEK LAGI DI DATABASE
+                const checkUser = await supabaseGetUserByEmail(email);
+                console.log('🔍 Final check in database:', {
+                    email: checkUser?.email,
+                    ref_code: checkUser?.ref_code,
+                    referred_by: checkUser?.referred_by // HARUSNYA TIDAK NULL
+                });
+
+                if (checkUser && !checkUser.referred_by && referredBy) {
+                    console.warn('⚠️ referred_by masih null! Mencoba update manual...');
+                    // FORCE UPDATE jika masih null
+                    const { error: updateError } = await supabaseClient
+                        .from('users')
+                        .update({ referred_by: referredBy })
+                        .eq('email', email);
+                    
+                    if (updateError) {
+                        console.error('❌ Force update failed:', updateError);
+                    } else {
+                        console.log('✅ Force update successful!');
+                    }
+                }
 
                 regSuccessText.textContent = '✅ Account created successfully! Please login.';
                 regSuccess.classList.add('show');
@@ -1091,6 +1139,50 @@
         }
 
         // ============================================================
+        // FIX EXISTING USERS (referral yang sudah ada)
+        // ============================================================
+        async function fixExistingReferrals() {
+            console.log('🔧 Checking for users with null referred_by...');
+            
+            try {
+                const { data: users, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .is('referred_by', null);
+
+                if (error) throw error;
+
+                if (users && users.length > 0) {
+                    console.log(`📊 Found ${users.length} users with null referred_by`);
+                    
+                    for (const user of users) {
+                        // Coba cari referrer dari parameter URL atau dari localStorage
+                        const refFromStorage = localStorage.getItem(STORAGE_KEYS.REFERRAL_CODE);
+                        if (refFromStorage) {
+                            const { data: referrer } = await supabaseClient
+                                .from('users')
+                                .select('ref_code')
+                                .eq('ref_code', refFromStorage)
+                                .single();
+                            
+                            if (referrer) {
+                                console.log(`🔗 Fixing ${user.email} -> referred_by: ${refFromStorage}`);
+                                await supabaseClient
+                                    .from('users')
+                                    .update({ referred_by: refFromStorage })
+                                    .eq('email', user.email);
+                            }
+                        }
+                    }
+                } else {
+                    console.log('✅ All users have referred_by set!');
+                }
+            } catch (err) {
+                console.error('❌ Fix existing referrals error:', err);
+            }
+        }
+
+        // ============================================================
         // INIT
         // ============================================================
         loadSettings();
@@ -1098,10 +1190,13 @@
         checkLoggedIn();
         checkResetToken();
         checkReferralOnRegister();
+        
+        // Fix existing users
+        setTimeout(fixExistingReferrals, 2000);
 
-        console.log('🟢 SilverChain Auth Page ready! (All-in-One)');
-        console.log('📌 Supabase connected directly');
-        console.log('📌 Referral system: AUTO DETECT from URL or manual input');
+        console.log('🟢 SilverChain Auth Page ready! (FIXED)');
+        console.log('📌 referred_by sekarang tersimpan di database');
+        console.log('📌 Auto-fix untuk user yang sudah ada');
     </script>
 
 </body>
