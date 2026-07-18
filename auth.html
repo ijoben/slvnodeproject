@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ... (sama seperti sebelumnya, tidak berubah) ... */
         * {
             margin: 0;
             padding: 0;
@@ -170,16 +171,54 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
         .form-group .ref-input i {
             color: #666666;
         }
-        .form-group .ref-input code {
-            color: #c0c0c0;
-            background: rgba(8, 20, 48, 0.3);
-            padding: 0.1rem 0.6rem;
+        .form-group .ref-input .ref-label {
+            color: #a0a0a0;
+            font-size: 0.8rem;
+        }
+        .form-group .ref-input input {
+            background: transparent;
+            border: none;
+            color: #d4d4d4;
+            padding: 0.2rem 0.4rem;
+            outline: none;
+            font-size: 0.85rem;
+            flex: 1;
+            min-width: 80px;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+        .form-group .ref-input input::placeholder {
+            color: #555555;
+            text-transform: none;
+        }
+        .form-group .ref-input .ref-status {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.6rem;
             border-radius: 60px;
-            font-size: 0.75rem;
+            display: none;
+        }
+        .form-group .ref-input .ref-status.valid {
+            display: inline-block;
+            background: rgba(60, 220, 80, 0.1);
+            color: #6aff8a;
+            border: 1px solid rgba(60, 220, 80, 0.15);
+        }
+        .form-group .ref-input .ref-status.invalid {
+            display: inline-block;
+            background: rgba(255, 60, 60, 0.1);
+            color: #ff6a6a;
+            border: 1px solid rgba(255, 60, 60, 0.15);
+        }
+        .form-group .ref-input .ref-status.checking {
+            display: inline-block;
+            background: rgba(60, 120, 255, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(60, 120, 255, 0.15);
         }
 
         .btn-submit {
@@ -277,7 +316,7 @@
             color: #c0c0c0;
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* Responsive */
         @media (max-width: 480px) {
             .auth-card {
                 padding: 1.8rem 1.2rem 1.5rem;
@@ -304,6 +343,13 @@
                 font-size: 0.9rem;
                 padding: 0.7rem;
             }
+            .form-group .ref-input {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            .form-group .ref-input input {
+                font-size: 0.75rem;
+            }
         }
 
         @media (max-width: 360px) {
@@ -329,6 +375,14 @@
             .btn-submit {
                 font-size: 0.8rem;
                 padding: 0.6rem;
+            }
+            .form-group .ref-input {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.65rem;
+            }
+            .form-group .ref-input input {
+                font-size: 0.65rem;
+                min-width: 60px;
             }
         }
     </style>
@@ -394,9 +448,13 @@
                     <label>Referral Code (optional)</label>
                     <div class="ref-input">
                         <i class="fas fa-link"></i>
-                        <span>Enter referral code:</span>
-                        <input type="text" id="registerRefCode" placeholder="e.g. ABC123" style="background:transparent;border:none;color:#d4d4d4;padding:0.2rem 0.4rem;outline:none;font-size:0.85rem;flex:1;min-width:80px;font-family:monospace;" />
+                        <span class="ref-label">Code:</span>
+                        <input type="text" id="registerRefCode" placeholder="ABC123" maxlength="8" spellcheck="false" />
+                        <span class="ref-status" id="refStatus"></span>
                     </div>
+                    <p style="font-size:0.65rem;color:#666666;margin-top:0.2rem;padding-left:0.3rem;">
+                        <i class="fas fa-info-circle"></i> Leave empty if no referral code
+                    </p>
                 </div>
                 <button type="submit" class="btn-submit" id="registerBtn"><i class="fas fa-user-plus"></i> Create Account</button>
                 <div class="result-msg" id="registerResult"></div>
@@ -421,6 +479,7 @@
         const ADMIN_EMAIL = 'admin@silverchain.io';
 
         let supabaseClient = null;
+        let refCheckTimeout = null;
 
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -489,6 +548,31 @@
             }
         }
 
+        async function checkReferralCode(refCode) {
+            if (!refCode || refCode.trim() === '') {
+                return { valid: true, exists: false, code: null };
+            }
+
+            const cleanCode = refCode.trim().toUpperCase();
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('ref_code')
+                    .eq('ref_code', cleanCode)
+                    .maybeSingle();
+
+                if (error) throw error;
+                if (data) {
+                    return { valid: true, exists: true, code: data.ref_code };
+                } else {
+                    return { valid: false, exists: false, code: null };
+                }
+            } catch (error) {
+                console.error('Check referral error:', error);
+                return { valid: false, exists: false, code: null, error: error.message };
+            }
+        }
+
         async function createUser(email, password, refCode = null) {
             try {
                 const existing = await getUserByEmail(email);
@@ -499,29 +583,34 @@
                 const newRefCode = generateRefCode();
                 const hashedPassword = hashPassword(password);
 
-                // Verify referral code exists if provided
+                // Proses referral code
                 let referredBy = null;
-                if (refCode && refCode.trim() !== '') {
-                    const referrer = await supabaseClient
-                        .from('users')
-                        .select('ref_code')
-                        .eq('ref_code', refCode.trim().toUpperCase())
-                        .maybeSingle();
+                const cleanRefCode = refCode ? refCode.trim().toUpperCase() : '';
 
-                    if (referrer.data) {
-                        referredBy = referrer.data.ref_code;
-                    } else {
-                        throw new Error('Invalid referral code. Please check and try again.');
+                if (cleanRefCode !== '') {
+                    const check = await checkReferralCode(cleanRefCode);
+                    if (!check.valid) {
+                        throw new Error(`Invalid referral code: "${cleanRefCode}". Please check and try again.`);
                     }
+                    if (check.exists) {
+                        referredBy = check.code;
+                        console.log(`✅ Referral code ${cleanRefCode} is valid. Referred by: ${referredBy}`);
+                    } else {
+                        // This shouldn't happen if valid is true, but just in case
+                        throw new Error(`Referral code "${cleanRefCode}" not found.`);
+                    }
+                } else {
+                    console.log('ℹ️ No referral code provided. referred_by will be null.');
                 }
 
+                // Insert user
                 const { data, error } = await supabaseClient
                     .from('users')
                     .insert({
                         email: email,
                         password: hashedPassword,
                         ref_code: newRefCode,
-                        referred_by: referredBy,
+                        referred_by: referredBy, // Bisa null jika tidak ada referral
                         verified: false,
                         role: email === ADMIN_EMAIL ? 'admin' : 'member',
                         created_at: new Date().toISOString(),
@@ -534,10 +623,13 @@
                     if (error.code === '23505') {
                         throw new Error('Email already registered. Please login.');
                     }
-                    throw error;
+                    console.error('Insert error:', error);
+                    throw new Error('Failed to create account: ' + error.message);
                 }
 
+                console.log(`✅ User created: ${email}, Ref: ${newRefCode}, Referred By: ${referredBy || 'none'}`);
                 return data;
+
             } catch (error) {
                 console.error('Create user error:', error);
                 throw error;
@@ -562,6 +654,52 @@
                 throw error;
             }
         }
+
+        // ============================================================
+        //  REAL-TIME REFERRAL CHECK
+        // ============================================================
+        const refInput = document.getElementById('registerRefCode');
+        const refStatus = document.getElementById('refStatus');
+
+        refInput.addEventListener('input', function() {
+            clearTimeout(refCheckTimeout);
+            const code = this.value.trim().toUpperCase();
+            this.value = code; // Force uppercase
+
+            if (code === '') {
+                refStatus.className = 'ref-status';
+                refStatus.textContent = '';
+                return;
+            }
+
+            if (code.length < 3) {
+                refStatus.className = 'ref-status checking';
+                refStatus.textContent = '⏳ Type more...';
+                return;
+            }
+
+            refStatus.className = 'ref-status checking';
+            refStatus.textContent = '⏳ Checking...';
+
+            refCheckTimeout = setTimeout(async () => {
+                try {
+                    const check = await checkReferralCode(code);
+                    if (check.valid && check.exists) {
+                        refStatus.className = 'ref-status valid';
+                        refStatus.textContent = '✅ Valid referral code!';
+                    } else if (check.valid && !check.exists) {
+                        refStatus.className = 'ref-status invalid';
+                        refStatus.textContent = '❌ Code not found';
+                    } else {
+                        refStatus.className = 'ref-status invalid';
+                        refStatus.textContent = '❌ Invalid code';
+                    }
+                } catch (error) {
+                    refStatus.className = 'ref-status invalid';
+                    refStatus.textContent = '❌ Error checking';
+                }
+            }, 500);
+        });
 
         // ============================================================
         //  TABS
@@ -597,6 +735,9 @@
             const ref = urlParams.get('ref');
             if (ref) {
                 document.getElementById('registerRefCode').value = ref.toUpperCase();
+                // Trigger validation
+                const event = new Event('input');
+                refInput.dispatchEvent(event);
                 // Switch to register tab
                 document.querySelector('.auth-tab[data-tab="register"]').click();
             }
@@ -667,6 +808,15 @@
             if (password.length < 4) {
                 showResult('registerResult', 'Password must be at least 4 characters.', 'error');
                 return;
+            }
+
+            // Validate referral code if provided
+            if (refCode !== '') {
+                const check = await checkReferralCode(refCode);
+                if (!check.valid || !check.exists) {
+                    showResult('registerResult', `❌ Invalid referral code: "${refCode}". Please check and try again.`, 'error');
+                    return;
+                }
             }
 
             btn.disabled = true;
