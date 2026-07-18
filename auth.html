@@ -6,7 +6,6 @@
     <title>SilverChain · Auth</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
@@ -255,6 +254,22 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        .status-bar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 0.7rem;
+            color: #888;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .status-bar .connected {
+            color: #4caf50;
+        }
+        .status-bar .disconnected {
+            color: #ff6a6a;
+        }
         @media (max-width: 480px) {
             .auth-container {
                 padding: 1.5rem 1rem;
@@ -269,6 +284,12 @@
         <div class="auth-logo">
             <i class="fas fa-coins"></i>
             <h1>SilverChain</h1>
+        </div>
+
+        <!-- STATUS BAR -->
+        <div class="status-bar" id="statusBar">
+            <i class="fas fa-circle"></i> 
+            <span id="statusText">Checking connection...</span>
         </div>
 
         <div id="toastMessage" class="toast-message">
@@ -349,29 +370,53 @@
 
     <script>
         // ============================================================
-        // 🔥 GANTI DENGAN CREDENTIAL SUPABASE ANDA 🔥
+        // 🔥 GANTI DENGAN CREDENTIAL SUPABASE BARU KAMU 🔥
         // ============================================================
         var SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
-        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyYnJpYXNnbXhqenZidWtzbGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMzAxODMsImV4cCI6MjA5OTYwNjE4M30.fhcSgXY-D-AvgDyg86v7eA_ltAU_UC0LFrCDnsJufgg';
+        var SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
 
         // ============================================================
         // GLOBAL VARIABLES
         // ============================================================
         var supabase = null;
         var resetTokens = {};
+        var isSupabaseConnected = false;
 
         // ============================================================
-        // INIT SUPABASE (AMAN - GAK BIKIN ERROR)
+        // INIT SUPABASE
         // ============================================================
-        try {
-            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase initialized');
-            } else {
-                console.warn('⚠️ Supabase SDK not loaded yet');
+        function initSupabase() {
+            var statusText = document.getElementById('statusText');
+            var statusBar = document.getElementById('statusBar');
+            
+            try {
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    console.log('✅ Supabase initialized');
+                    
+                    // Test connection
+                    supabase.from('users').select('count').limit(1)
+                        .then(function() {
+                            isSupabaseConnected = true;
+                            statusText.innerHTML = '<span class="connected">✅ Connected to Supabase</span>';
+                            statusBar.style.borderColor = 'rgba(76, 175, 80, 0.3)';
+                            console.log('✅ Supabase connection verified!');
+                        })
+                        .catch(function(err) {
+                            isSupabaseConnected = false;
+                            statusText.innerHTML = '<span class="disconnected">⚠️ Supabase connected but table "users" not found. Please create the table.</span>';
+                            console.warn('⚠️ Table "users" not found:', err.message);
+                        });
+                } else {
+                    isSupabaseConnected = false;
+                    statusText.innerHTML = '<span class="disconnected">❌ Supabase SDK not loaded</span>';
+                    console.warn('⚠️ Supabase SDK not loaded');
+                }
+            } catch (e) {
+                isSupabaseConnected = false;
+                statusText.innerHTML = '<span class="disconnected">❌ Connection error: ' + e.message + '</span>';
+                console.error('❌ Supabase init error:', e);
             }
-        } catch (e) {
-            console.warn('⚠️ Supabase init skipped:', e.message);
         }
 
         // ============================================================
@@ -415,7 +460,7 @@
         }
 
         // ============================================================
-        // SUPABASE FUNCTIONS (AMAN - PAKAI TRY CATCH)
+        // SUPABASE FUNCTIONS
         // ============================================================
         async function loginUser(email, password) {
             if (!supabase) throw new Error('Supabase not connected');
@@ -452,21 +497,8 @@
             return result.data.user;
         }
 
-        async function getUserByEmail(email) {
-            if (!supabase) return null;
-            try {
-                var result = await supabase
-                    .from('users')
-                    .select('*')
-                    .eq('email', email)
-                    .single();
-                if (result.error) return null;
-                return result.data;
-            } catch (e) { return null; }
-        }
-
         // ============================================================
-        // HANDLE LOGIN (DENGAN SUPABASE)
+        // HANDLE LOGIN (REAL SUPABASE)
         // ============================================================
         function handleLogin() {
             console.log('🔐 Login button clicked!');
@@ -493,19 +525,13 @@
                 return;
             }
 
-            // KALO SUPABASE GAK ADA, PAKE SIMULASI
-            if (!supabase) {
-                successText.textContent = '✅ Login successful! (Simulation)';
-                successEl.classList.add('show');
-                showToast('✅ Login successful!');
-                localStorage.setItem('silverchain_user', JSON.stringify({ email: email }));
-                setTimeout(function() {
-                    window.location.href = '/dashboard';
-                }, 1500);
+            if (!supabase || !isSupabaseConnected) {
+                errorText.textContent = '⚠️ Supabase not connected. Please check your credentials and try again.';
+                errorEl.classList.add('show');
+                showToast('❌ Supabase not connected');
                 return;
             }
 
-            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
 
@@ -534,7 +560,7 @@
         }
 
         // ============================================================
-        // HANDLE REGISTER (DENGAN SUPABASE)
+        // HANDLE REGISTER (REAL SUPABASE)
         // ============================================================
         function handleRegister() {
             console.log('📝 Register button clicked!');
@@ -567,22 +593,13 @@
                 return;
             }
 
-            // KALO SUPABASE GAK ADA, PAKE SIMULASI
-            if (!supabase) {
-                successText.textContent = '✅ Account created! (Simulation)';
-                successEl.classList.add('show');
-                showToast('✅ Account created!');
-                document.getElementById('regEmail').value = '';
-                document.getElementById('regPassword').value = '';
-                document.getElementById('regPasswordConfirm').value = '';
-                setTimeout(function() {
-                    switchTab('panelLogin');
-                    document.getElementById('loginEmail').value = email;
-                }, 1500);
+            if (!supabase || !isSupabaseConnected) {
+                errorText.textContent = '⚠️ Supabase not connected. Please check your credentials.';
+                errorEl.classList.add('show');
+                showToast('❌ Supabase not connected');
                 return;
             }
 
-            // PAKE SUPABASE
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Registering...';
 
@@ -633,57 +650,52 @@
                 return;
             }
 
+            if (!supabase || !isSupabaseConnected) {
+                errorText.textContent = '⚠️ Supabase not connected.';
+                errorEl.classList.add('show');
+                return;
+            }
+
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
-            // PAKE SUPABASE KALO ADA
-            if (supabase) {
-                getUserByEmail(email)
-                    .then(function(user) {
-                        if (!user) {
-                            errorText.textContent = 'Email not found.';
-                            errorEl.classList.add('show');
-                            return;
-                        }
-                        var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-                        resetTokens[email] = {
-                            token: token,
-                            expires: Date.now() + 15 * 60 * 1000
-                        };
-                        localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
-
-                        document.getElementById('resetEmail').value = email;
-                        document.getElementById('panelReset').style.display = 'block';
-                        document.getElementById('panelReset').classList.add('active');
-                        document.getElementById('authTabs').style.display = 'none';
-                        document.querySelectorAll('.auth-panel').forEach(function(p) {
-                            p.classList.remove('active');
-                        });
-                        document.getElementById('forgotEmail').value = '';
-                        
-                        successText.textContent = '✅ Reset token generated! Enter new password.';
-                        successEl.classList.add('show');
-                        showToast('🔑 Enter your new password');
-                    })
-                    .catch(function(err) {
-                        errorText.textContent = err.message || 'Error. Please try again.';
+            // Cek email di database
+            supabase.from('users').select('email').eq('email', email).single()
+                .then(function(result) {
+                    if (result.error || !result.data) {
+                        errorText.textContent = 'Email not found.';
                         errorEl.classList.add('show');
-                    })
-                    .finally(function() {
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                        return;
+                    }
+                    
+                    var token = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                    resetTokens[email] = {
+                        token: token,
+                        expires: Date.now() + 15 * 60 * 1000
+                    };
+                    localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
+
+                    document.getElementById('resetEmail').value = email;
+                    document.getElementById('panelReset').style.display = 'block';
+                    document.getElementById('panelReset').classList.add('active');
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.querySelectorAll('.auth-panel').forEach(function(p) {
+                        p.classList.remove('active');
                     });
-            } else {
-                // SIMULASI
-                successText.textContent = '✅ Reset link sent! (Simulation)';
-                successEl.classList.add('show');
-                showToast('📧 Reset link sent!');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
-                setTimeout(function() {
-                    switchTab('panelLogin');
-                }, 2000);
-            }
+                    document.getElementById('forgotEmail').value = '';
+                    
+                    successText.textContent = '✅ Reset token generated! Enter new password.';
+                    successEl.classList.add('show');
+                    showToast('🔑 Enter your new password');
+                })
+                .catch(function(err) {
+                    errorText.textContent = err.message || 'Error. Please try again.';
+                    errorEl.classList.add('show');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Reset Password';
+                });
         }
 
         // ============================================================
@@ -699,6 +711,7 @@
             var successEl = document.getElementById('resetSuccess');
             var successText = document.getElementById('resetSuccessText');
             var btn = document.getElementById('resetBtn');
+            var email = document.getElementById('resetEmail').value;
 
             errorEl.classList.remove('show');
             successEl.classList.remove('show');
@@ -714,18 +727,44 @@
                 return;
             }
 
-            // SIMULASI (karena reset pake Supabase butuh auth user)
-            successText.textContent = '✅ Password reset successful!';
-            successEl.classList.add('show');
-            showToast('✅ Password reset!');
-            
-            setTimeout(function() {
-                document.getElementById('panelReset').classList.remove('active');
-                document.getElementById('panelReset').style.display = 'none';
-                document.getElementById('authTabs').style.display = 'flex';
-                switchTab('panelLogin');
-                showToast('✅ Please login with your new password');
-            }, 1500);
+            if (!supabase || !isSupabaseConnected) {
+                errorText.textContent = '⚠️ Supabase not connected.';
+                errorEl.classList.add('show');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Resetting...';
+
+            // Update password via Supabase Auth
+            supabase.auth.updateUser({ password: newPass })
+                .then(function() {
+                    delete resetTokens[email];
+                    localStorage.setItem('silverchain_reset_tokens', JSON.stringify(resetTokens));
+
+                    successText.textContent = '✅ Password reset successful!';
+                    successEl.classList.add('show');
+                    showToast('✅ Password reset!');
+                    
+                    setTimeout(function() {
+                        document.getElementById('panelReset').classList.remove('active');
+                        document.getElementById('panelReset').style.display = 'none';
+                        document.getElementById('authTabs').style.display = 'flex';
+                        switchTab('panelLogin');
+                        document.getElementById('loginEmail').value = email;
+                        document.getElementById('loginPassword').value = newPass;
+                        showToast('✅ Please login with your new password');
+                    }, 1500);
+                })
+                .catch(function(err) {
+                    errorText.textContent = err.message || 'Reset failed. Please login and try again.';
+                    errorEl.classList.add('show');
+                    showToast('❌ ' + err.message);
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+                });
         }
 
         // ============================================================
@@ -738,6 +777,8 @@
                     var data = JSON.parse(saved);
                     if (data.email) {
                         console.log('User already logged in:', data.email);
+                        // Uncomment untuk auto redirect
+                        // window.location.href = '/dashboard';
                     }
                 }
             } catch (e) {}
@@ -770,9 +811,10 @@
         // INIT
         // ============================================================
         checkLoggedIn();
+        initSupabase();
         console.log('🟢 SilverChain Auth ready!');
-        console.log('📌 Supabase status:', supabase ? '✅ Connected' : '⚠️ Not connected (simulation mode)');
-        console.log('📌 Click any button to test!');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
+        console.log('📌 Status: Waiting for connection...');
     </script>
 
 </body>
