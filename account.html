@@ -9,529 +9,88 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0a1228;
-            background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
-            color: #d4d4d4;
-            min-height: 100vh;
-            padding: 1rem 0.8rem 7rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container {
-            max-width: 1050px;
-            width: 100%;
-        }
-        .section-card {
-            background: rgba(18, 34, 72, 0.7);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-radius: 2rem;
-            padding: 1.5rem 1.2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
-            border: 1px solid rgba(80,140,255,0.08);
-        }
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #c0c0c0, #888888);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: #fff;
-            margin: 0 auto 0.8rem;
-            box-shadow: 0 8px 30px rgba(192,192,192,0.15);
-        }
-        .profile-name {
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #e0e0e0;
-        }
-        .profile-email {
-            text-align: center;
-            color: #c0c0c0;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.6rem;
-            margin: 0.5rem 0 1rem;
-        }
-        .info-item {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 1rem;
-            padding: 0.7rem 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-        }
-        .info-item .label {
-            font-size: 0.6rem;
-            color: #a0a0a0;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .info-item .value {
-            font-size: 0.9rem;
-            color: #e0e0e0;
-            font-weight: 600;
-            word-break: break-all;
-        }
-        .info-item .value code {
-            background: rgba(8, 20, 48, 0.3);
-            padding: 0.1rem 0.6rem;
-            border-radius: 60px;
-            font-size: 0.75rem;
-            color: #c0c0c0;
-        }
-        .ref-link-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 60px;
-            padding: 0.15rem 0.15rem 0.15rem 1rem;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            flex: 1;
-            min-width: 0;
-        }
-        .ref-link-wrapper .ref-link-text {
-            font-size: 0.7rem;
-            font-family: monospace;
-            color: #c0c0c0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex: 1;
-            min-width: 0;
-        }
-        .ref-link-wrapper .btn-copy-link {
-            background: rgba(60, 120, 255, 0.1);
-            border: none;
-            color: #c0c0c0;
-            padding: 0.3rem 0.9rem;
-            border-radius: 60px;
-            cursor: pointer;
-            font-size: 0.7rem;
-            white-space: nowrap;
-            transition: 0.15s;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            flex-shrink: 0;
-        }
-        .ref-link-wrapper .btn-copy-link:hover {
-            background: rgba(60, 120, 255, 0.2);
-            color: #e0e0e0;
-        }
-        .ref-link-wrapper .btn-copy-link.copied {
-            background: rgba(60, 220, 80, 0.15);
-            color: #6aff8a;
-        }
-        .downline-section {
-            margin-top: 1rem;
-            border-top: 1px solid rgba(80, 140, 255, 0.06);
-            padding-top: 1rem;
-        }
-        .downline-section h4 {
-            color: #e0e0e0;
-            font-size: 1.05rem;
-            margin-bottom: 0.6rem;
-        }
-        .downline-section h4 i {
-            color: #c0c0c0;
-            margin-right: 6px;
-        }
-        .downline-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 0.6rem;
-        }
-        .downline-stat {
-            background: rgba(8, 20, 48, 0.3);
-            border-radius: 0.8rem;
-            padding: 0.6rem 0.4rem;
-            text-align: center;
-            border: 1px solid rgba(80, 140, 255, 0.06);
-        }
-        .downline-stat .num {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #e0e0e0;
-        }
-        .downline-stat .label {
-            font-size: 0.55rem;
-            color: #a0a0a0;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
+        /* Style sama seperti sebelumnya, saya singkatkan untuk space */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a1228; background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a); color: #d4d4d4; min-height: 100vh; padding: 1rem 0.8rem 7rem; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 1050px; width: 100%; }
+        .section-card { background: rgba(18, 34, 72, 0.7); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 2rem; padding: 1.5rem 1.2rem; margin-bottom: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15); border: 1px solid rgba(80,140,255,0.08); }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(145deg, #c0c0c0, #888888); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; margin: 0 auto 0.8rem; box-shadow: 0 8px 30px rgba(192,192,192,0.15); }
+        .profile-name { text-align: center; font-size: 1.3rem; font-weight: 700; color: #e0e0e0; }
+        .profile-email { text-align: center; color: #c0c0c0; font-size: 0.9rem; margin-bottom: 1rem; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+        .info-item { background: rgba(8, 20, 48, 0.3); border-radius: 1rem; padding: 0.7rem 0.8rem; border: 1px solid rgba(80, 140, 255, 0.04); }
+        .info-item .label { font-size: 0.6rem; color: #a0a0a0; text-transform: uppercase; letter-spacing: 0.3px; }
+        .info-item .value { font-size: 0.9rem; color: #e0e0e0; font-weight: 600; word-break: break-all; }
+        .info-item .value code { background: rgba(8, 20, 48, 0.3); padding: 0.1rem 0.6rem; border-radius: 60px; font-size: 0.75rem; color: #c0c0c0; }
+        .ref-link-wrapper { display: flex; align-items: center; gap: 0.5rem; background: rgba(8, 20, 48, 0.3); border-radius: 60px; padding: 0.15rem 0.15rem 0.15rem 1rem; border: 1px solid rgba(80, 140, 255, 0.06); flex: 1; min-width: 0; }
+        .ref-link-wrapper .ref-link-text { font-size: 0.7rem; font-family: monospace; color: #c0c0c0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+        .ref-link-wrapper .btn-copy-link { background: rgba(60, 120, 255, 0.1); border: none; color: #c0c0c0; padding: 0.3rem 0.9rem; border-radius: 60px; cursor: pointer; font-size: 0.7rem; white-space: nowrap; transition: 0.15s; display: flex; align-items: center; gap: 0.3rem; flex-shrink: 0; }
+        .ref-link-wrapper .btn-copy-link:hover { background: rgba(60, 120, 255, 0.2); color: #e0e0e0; }
+        .ref-link-wrapper .btn-copy-link.copied { background: rgba(60, 220, 80, 0.15); color: #6aff8a; }
+        .downline-section { margin-top: 1rem; border-top: 1px solid rgba(80, 140, 255, 0.06); padding-top: 1rem; }
+        .downline-section h4 { color: #e0e0e0; font-size: 1.05rem; margin-bottom: 0.6rem; }
+        .downline-section h4 i { color: #c0c0c0; margin-right: 6px; }
+        .downline-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.6rem; }
+        .downline-stat { background: rgba(8, 20, 48, 0.3); border-radius: 0.8rem; padding: 0.6rem 0.4rem; text-align: center; border: 1px solid rgba(80, 140, 255, 0.06); }
+        .downline-stat .num { font-size: 1.3rem; font-weight: 700; color: #e0e0e0; }
+        .downline-stat .label { font-size: 0.55rem; color: #a0a0a0; text-transform: uppercase; letter-spacing: 0.3px; }
         .downline-stat.active .num { color: #6aff8a; }
         .downline-stat.pending .num { color: #fbbf24; }
         .downline-stat.earnings .num { color: #60a5fa; }
-        .downline-table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 0.8rem;
-            border: 1px solid rgba(80, 140, 255, 0.04);
-        }
-        .downline-table-wrapper table {
-            width: 100%;
-            min-width: 500px;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-        .downline-table-wrapper table th {
-            text-align: left;
-            color: #a0a0a0;
-            font-weight: 600;
-            padding: 0.4rem 0.7rem;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
-            white-space: nowrap;
-            font-size: 0.75rem;
-        }
-        .downline-table-wrapper table td {
-            padding: 0.4rem 0.7rem;
-            color: #c0c0c0;
-            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
-            white-space: nowrap;
-            font-size: 0.75rem;
-        }
-        .downline-table-wrapper table .empty {
-            color: #a0a0a0;
-            text-align: center;
-            padding: 1.2rem 0;
-            font-size: 0.85rem;
-        }
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        .btn-action {
-            background: rgba(60, 120, 255, 0.08);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            border-radius: 60px;
-            padding: 0.65rem 0.8rem;
-            color: #c0c0c0;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            border: none;
-        }
-        .btn-action:hover {
-            background: rgba(60, 120, 255, 0.15);
-        }
-        .btn-action.danger {
-            background: rgba(255, 60, 60, 0.08);
-            color: #ff6a6a;
-        }
-        .btn-action.danger:hover {
-            background: rgba(255, 60, 60, 0.15);
-        }
-        .btn-action.admin {
-            background: rgba(255, 200, 60, 0.08);
-            color: #fcd34d;
-        }
-        .btn-action.admin:hover {
-            background: rgba(255, 200, 60, 0.15);
-        }
-        .btn-action i {
-            font-size: 0.95rem;
-        }
-        .btn-fix {
-            background: rgba(100, 200, 255, 0.08) !important;
-            color: #60d0ff !important;
-        }
-        .btn-fix:hover {
-            background: rgba(100, 200, 255, 0.15) !important;
-        }
-        .btn-fix.hidden {
-            display: none !important;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-box {
-            background: #0e1e40;
-            background: linear-gradient(145deg, #122a5a, #081a38);
-            border-radius: 2rem;
-            padding: 2rem 1.8rem;
-            max-width: 420px;
-            width: 100%;
-            border: 1px solid rgba(80, 140, 255, 0.1);
-            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
-            position: relative;
-        }
-        .modal-box .close-btn {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: #a0a0a0;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .modal-box .close-btn:hover {
-            color: #e0e0e0;
-        }
-        .modal-box h2 {
-            color: #e0e0e0;
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-        }
-        .modal-box h2 i {
-            color: #c0c0c0;
-            margin-right: 8px;
-        }
-        .modal-box p {
-            color: #c0c0c0;
-            font-size: 0.85rem;
-            margin-bottom: 1.2rem;
-        }
-        .modal-box .input-group {
-            margin-bottom: 0.8rem;
-        }
-        .modal-box .input-group label {
-            display: block;
-            color: #a0a0a0;
-            font-size: 0.7rem;
-            margin-bottom: 0.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .modal-box .input-group input {
-            width: 100%;
-            background: rgba(8, 20, 48, 0.5);
-            border: 1px solid rgba(80, 140, 255, 0.06);
-            border-radius: 60px;
-            padding: 0.6rem 1.2rem;
-            color: #d4d4d4;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .modal-box .input-group input:focus {
-            border-color: rgba(80, 140, 255, 0.2);
-        }
-        .modal-box .input-group input::placeholder {
-            color: #666666;
-        }
-        .modal-box .btn-submit {
-            width: 100%;
-            padding: 0.7rem;
-            border-radius: 60px;
-            border: none;
-            background: linear-gradient(145deg, #c0c0c0, #888888);
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: 0.15s;
-            margin-top: 0.3rem;
-        }
-        .modal-box .btn-submit:hover {
-            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.2);
-            transform: translateY(-2px);
-        }
-        .modal-box .btn-submit:active {
-            transform: scale(0.97);
-        }
-        .modal-box .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        .modal-box .result-msg {
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            display: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 60px;
-            text-align: center;
-        }
-        .modal-box .result-msg.success {
-            display: block;
-            background: rgba(60, 220, 80, 0.1);
-            border: 1px solid rgba(60, 220, 80, 0.15);
-            color: #6aff8a;
-        }
-        .modal-box .result-msg.error {
-            display: block;
-            background: rgba(255, 60, 60, 0.1);
-            border: 1px solid rgba(255, 60, 60, 0.15);
-            color: #ff6a6a;
-        }
-        .modal-box .result-msg i {
-            margin-right: 6px;
-        }
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(12, 28, 60, 0.97);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid rgba(80, 140, 255, 0.08);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0.7rem 0.5rem 0.9rem;
-            z-index: 100;
-            box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
-        }
-        .bottom-nav a {
-            color: #a0a0a0;
-            text-decoration: none;
-            font-size: 0.65rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: 0.2s;
-            padding: 0.3rem 1rem;
-            border-radius: 60px;
-            min-width: 70px;
-            position: relative;
-        }
-        .bottom-nav a i {
-            font-size: 1.5rem;
-        }
-        .bottom-nav a span {
-            font-size: 0.6rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-        }
-        .bottom-nav a.active {
-            color: #e0e0e0;
-        }
-        .bottom-nav a.active i {
-            color: #c0c0c0;
-            text-shadow: 0 0 25px rgba(192,192,192,0.15);
-        }
-        .bottom-nav a:hover {
-            color: #e8e8e8;
-        }
-        .toast-message {
-            background: rgba(12, 28, 60, 0.8);
-            backdrop-filter: blur(8px);
-            border-left: 4px solid #c0c0c0;
-            border-radius: 40px;
-            padding: 0.6rem 1.4rem;
-            font-size: 0.9rem;
-            color: #e0e0e0;
-            margin-bottom: 0.6rem;
-            display: none;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .toast-message.show {
-            display: flex;
-        }
-        .toast-message i {
-            color: #c0c0c0;
-        }
-        .footer-copyright {
-            text-align: center;
-            color: #888888;
-            font-size: 0.7rem;
-            padding: 0.8rem 0 0.3rem;
-            border-top: 1px solid rgba(80, 140, 255, 0.05);
-            margin-top: 0.8rem;
-        }
-        @media (max-width: 768px) {
-            .section-card { padding: 1rem 0.8rem; border-radius: 1.5rem; }
-            .info-grid { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
-            .info-item { padding: 0.5rem 0.6rem; }
-            .info-item .value { font-size: 0.8rem; }
-            .ref-link-wrapper { padding: 0.1rem 0.1rem 0.1rem 0.8rem; }
-            .ref-link-wrapper .ref-link-text { font-size: 0.6rem; }
-            .ref-link-wrapper .btn-copy-link { font-size: 0.6rem; padding: 0.2rem 0.7rem; }
-            .downline-stat .num { font-size: 1.1rem; }
-            .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
-            .btn-action { font-size: 0.75rem; padding: 0.5rem 0.6rem; }
-            .modal-box { padding: 1.5rem 1.2rem; }
-            .bottom-nav { padding: 0.5rem 0.3rem 0.7rem; }
-            .bottom-nav a { font-size: 0.55rem; padding: 0.2rem 0.5rem; min-width: 55px; }
-            .bottom-nav a i { font-size: 1.2rem; }
-            .bottom-nav a span { font-size: 0.5rem; }
-        }
-        @media (max-width: 480px) {
-            .section-card { padding: 0.8rem 0.6rem; border-radius: 1.2rem; }
-            .profile-avatar { width: 64px; height: 64px; font-size: 2rem; }
-            .profile-name { font-size: 1.1rem; }
-            .profile-email { font-size: 0.8rem; }
-            .info-grid { grid-template-columns: 1fr 1fr; gap: 0.3rem; }
-            .info-item { padding: 0.4rem 0.5rem; }
-            .info-item .label { font-size: 0.5rem; }
-            .info-item .value { font-size: 0.7rem; }
-            .info-item .value code { font-size: 0.6rem; padding: 0.05rem 0.4rem; }
-            .ref-link-wrapper { padding: 0.1rem 0.1rem 0.1rem 0.6rem; }
-            .ref-link-wrapper .ref-link-text { font-size: 0.5rem; }
-            .ref-link-wrapper .btn-copy-link { font-size: 0.5rem; padding: 0.15rem 0.5rem; }
-            .ref-link-wrapper .btn-copy-link i { font-size: 0.7rem; }
-            .downline-stats { grid-template-columns: 1fr 1fr 1fr; gap: 0.25rem; }
-            .downline-stat { padding: 0.4rem 0.2rem; }
-            .downline-stat .num { font-size: 0.95rem; }
-            .downline-stat .label { font-size: 0.45rem; }
-            .downline-table-wrapper table { font-size: 0.65rem; min-width: 400px; }
-            .downline-table-wrapper table th,
-            .downline-table-wrapper table td { padding: 0.3rem 0.4rem; font-size: 0.65rem; }
-            .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.3rem; }
-            .btn-action { font-size: 0.7rem; padding: 0.4rem 0.4rem; }
-            .btn-action i { font-size: 0.8rem; }
-            .bottom-nav { padding: 0.4rem 0.2rem 0.6rem; }
-            .bottom-nav a { font-size: 0.5rem; padding: 0.15rem 0.3rem; min-width: 45px; }
-            .bottom-nav a i { font-size: 1.1rem; }
-            .bottom-nav a span { font-size: 0.45rem; }
-            .modal-box { padding: 1.2rem 1rem; }
-            .modal-box h2 { font-size: 1rem; }
-            .modal-box .input-group input { font-size: 0.8rem; padding: 0.5rem 1rem; }
-        }
-        @media (max-width: 360px) {
-            .info-grid { grid-template-columns: 1fr; }
-            .action-buttons { grid-template-columns: 1fr; }
-            .btn-action.admin { grid-column: span 1; }
-            .bottom-nav a { min-width: 40px; }
-            .bottom-nav a i { font-size: 0.95rem; }
-            .bottom-nav a span { font-size: 0.4rem; }
-        }
+        .downline-table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 0.8rem; border: 1px solid rgba(80, 140, 255, 0.04); }
+        .downline-table-wrapper table { width: 100%; min-width: 500px; border-collapse: collapse; font-size: 0.8rem; }
+        .downline-table-wrapper table th { text-align: left; color: #a0a0a0; font-weight: 600; padding: 0.4rem 0.7rem; border-bottom: 1px solid rgba(80, 140, 255, 0.06); white-space: nowrap; font-size: 0.75rem; }
+        .downline-table-wrapper table td { padding: 0.4rem 0.7rem; color: #c0c0c0; border-bottom: 1px solid rgba(80, 140, 255, 0.03); white-space: nowrap; font-size: 0.75rem; }
+        .downline-table-wrapper table .empty { color: #a0a0a0; text-align: center; padding: 1.2rem 0; font-size: 0.85rem; }
+        .status-pending { color: #fbbf24; }
+        .status-active { color: #6aff8a; }
+        .contribution-zero { color: #666666; }
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+        .btn-action { background: rgba(60, 120, 255, 0.08); border: 1px solid rgba(80, 140, 255, 0.06); border-radius: 60px; padding: 0.65rem 0.8rem; color: #c0c0c0; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.15s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border: none; }
+        .btn-action:hover { background: rgba(60, 120, 255, 0.15); }
+        .btn-action.danger { background: rgba(255, 60, 60, 0.08); color: #ff6a6a; }
+        .btn-action.danger:hover { background: rgba(255, 60, 60, 0.15); }
+        .btn-action.admin { background: rgba(255, 200, 60, 0.08); color: #fcd34d; }
+        .btn-action.admin:hover { background: rgba(255, 200, 60, 0.15); }
+        .btn-action i { font-size: 0.95rem; }
+        .btn-fix { background: rgba(100, 200, 255, 0.08) !important; color: #60d0ff !important; }
+        .btn-fix:hover { background: rgba(100, 200, 255, 0.15) !important; }
+        .btn-fix.hidden { display: none !important; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 999; justify-content: center; align-items: center; padding: 1rem; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #0e1e40; background: linear-gradient(145deg, #122a5a, #081a38); border-radius: 2rem; padding: 2rem 1.8rem; max-width: 420px; width: 100%; border: 1px solid rgba(80, 140, 255, 0.1); box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9); position: relative; }
+        .modal-box .close-btn { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #a0a0a0; font-size: 1.3rem; cursor: pointer; transition: 0.2s; }
+        .modal-box .close-btn:hover { color: #e0e0e0; }
+        .modal-box h2 { color: #e0e0e0; font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .modal-box h2 i { color: #c0c0c0; margin-right: 8px; }
+        .modal-box p { color: #c0c0c0; font-size: 0.85rem; margin-bottom: 1.2rem; }
+        .modal-box .input-group { margin-bottom: 0.8rem; }
+        .modal-box .input-group label { display: block; color: #a0a0a0; font-size: 0.7rem; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .modal-box .input-group input { width: 100%; background: rgba(8, 20, 48, 0.5); border: 1px solid rgba(80, 140, 255, 0.06); border-radius: 60px; padding: 0.6rem 1.2rem; color: #d4d4d4; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+        .modal-box .input-group input:focus { border-color: rgba(80, 140, 255, 0.2); }
+        .modal-box .input-group input::placeholder { color: #666666; }
+        .modal-box .btn-submit { width: 100%; padding: 0.7rem; border-radius: 60px; border: none; background: linear-gradient(145deg, #c0c0c0, #888888); color: #fff; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.15s; margin-top: 0.3rem; }
+        .modal-box .btn-submit:hover { box-shadow: 0 12px 40px -6px rgba(192,192,192,0.2); transform: translateY(-2px); }
+        .modal-box .btn-submit:active { transform: scale(0.97); }
+        .modal-box .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+        .modal-box .result-msg { margin-top: 0.5rem; font-size: 0.85rem; display: none; padding: 0.4rem 0.8rem; border-radius: 60px; text-align: center; }
+        .modal-box .result-msg.success { display: block; background: rgba(60, 220, 80, 0.1); border: 1px solid rgba(60, 220, 80, 0.15); color: #6aff8a; }
+        .modal-box .result-msg.error { display: block; background: rgba(255, 60, 60, 0.1); border: 1px solid rgba(255, 60, 60, 0.15); color: #ff6a6a; }
+        .modal-box .result-msg i { margin-right: 6px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(12, 28, 60, 0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(80, 140, 255, 0.08); display: flex; justify-content: space-around; align-items: center; padding: 0.7rem 0.5rem 0.9rem; z-index: 100; box-shadow: 0 -8px 30px rgba(0,0,0,0.5); }
+        .bottom-nav a { color: #a0a0a0; text-decoration: none; font-size: 0.65rem; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; padding: 0.3rem 1rem; border-radius: 60px; min-width: 70px; position: relative; }
+        .bottom-nav a i { font-size: 1.5rem; }
+        .bottom-nav a span { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.3px; }
+        .bottom-nav a.active { color: #e0e0e0; }
+        .bottom-nav a.active i { color: #c0c0c0; text-shadow: 0 0 25px rgba(192,192,192,0.15); }
+        .bottom-nav a:hover { color: #e8e8e8; }
+        .toast-message { background: rgba(12, 28, 60, 0.8); backdrop-filter: blur(8px); border-left: 4px solid #c0c0c0; border-radius: 40px; padding: 0.6rem 1.4rem; font-size: 0.9rem; color: #e0e0e0; margin-bottom: 0.6rem; display: none; align-items: center; gap: 0.6rem; }
+        .toast-message.show { display: flex; }
+        .toast-message i { color: #c0c0c0; }
+        .footer-copyright { text-align: center; color: #888888; font-size: 0.7rem; padding: 0.8rem 0 0.3rem; border-top: 1px solid rgba(80, 140, 255, 0.05); margin-top: 0.8rem; }
+        @media (max-width: 768px) { .section-card { padding: 1rem 0.8rem; border-radius: 1.5rem; } .info-grid { grid-template-columns: 1fr 1fr; gap: 0.4rem; } .info-item { padding: 0.5rem 0.6rem; } .info-item .value { font-size: 0.8rem; } .ref-link-wrapper { padding: 0.1rem 0.1rem 0.1rem 0.8rem; } .ref-link-wrapper .ref-link-text { font-size: 0.6rem; } .ref-link-wrapper .btn-copy-link { font-size: 0.6rem; padding: 0.2rem 0.7rem; } .downline-stat .num { font-size: 1.1rem; } .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.4rem; } .btn-action { font-size: 0.75rem; padding: 0.5rem 0.6rem; } .modal-box { padding: 1.5rem 1.2rem; } .bottom-nav { padding: 0.5rem 0.3rem 0.7rem; } .bottom-nav a { font-size: 0.55rem; padding: 0.2rem 0.5rem; min-width: 55px; } .bottom-nav a i { font-size: 1.2rem; } .bottom-nav a span { font-size: 0.5rem; } }
+        @media (max-width: 480px) { .section-card { padding: 0.8rem 0.6rem; border-radius: 1.2rem; } .profile-avatar { width: 64px; height: 64px; font-size: 2rem; } .profile-name { font-size: 1.1rem; } .profile-email { font-size: 0.8rem; } .info-grid { grid-template-columns: 1fr 1fr; gap: 0.3rem; } .info-item { padding: 0.4rem 0.5rem; } .info-item .label { font-size: 0.5rem; } .info-item .value { font-size: 0.7rem; } .info-item .value code { font-size: 0.6rem; padding: 0.05rem 0.4rem; } .ref-link-wrapper { padding: 0.1rem 0.1rem 0.1rem 0.6rem; } .ref-link-wrapper .ref-link-text { font-size: 0.5rem; } .ref-link-wrapper .btn-copy-link { font-size: 0.5rem; padding: 0.15rem 0.5rem; } .ref-link-wrapper .btn-copy-link i { font-size: 0.7rem; } .downline-stats { grid-template-columns: 1fr 1fr 1fr; gap: 0.25rem; } .downline-stat { padding: 0.4rem 0.2rem; } .downline-stat .num { font-size: 0.95rem; } .downline-stat .label { font-size: 0.45rem; } .downline-table-wrapper table { font-size: 0.65rem; min-width: 400px; } .downline-table-wrapper table th, .downline-table-wrapper table td { padding: 0.3rem 0.4rem; font-size: 0.65rem; } .action-buttons { grid-template-columns: 1fr 1fr; gap: 0.3rem; } .btn-action { font-size: 0.7rem; padding: 0.4rem 0.4rem; } .btn-action i { font-size: 0.8rem; } .bottom-nav { padding: 0.4rem 0.2rem 0.6rem; } .bottom-nav a { font-size: 0.5rem; padding: 0.15rem 0.3rem; min-width: 45px; } .bottom-nav a i { font-size: 1.1rem; } .bottom-nav a span { font-size: 0.45rem; } .modal-box { padding: 1.2rem 1rem; } .modal-box h2 { font-size: 1rem; } .modal-box .input-group input { font-size: 0.8rem; padding: 0.5rem 1rem; } }
+        @media (max-width: 360px) { .info-grid { grid-template-columns: 1fr; } .action-buttons { grid-template-columns: 1fr; } .btn-action.admin { grid-column: span 1; } .bottom-nav a { min-width: 40px; } .bottom-nav a i { font-size: 0.95rem; } .bottom-nav a span { font-size: 0.4rem; } }
     </style>
 </head>
 <body>
@@ -577,11 +136,11 @@
                 <div class="downline-stats">
                     <div class="downline-stat active">
                         <div class="num" id="downlineTotal">0</div>
-                        <div class="label">Total</div>
+                        <div class="label">Total Referrals</div>
                     </div>
                     <div class="downline-stat pending">
-                        <div class="num" id="downlineActive">0</div>
-                        <div class="label">Active</div>
+                        <div class="num" id="downlinePending">0</div>
+                        <div class="label">Pending (No Deposit)</div>
                     </div>
                     <div class="downline-stat earnings">
                         <div class="num" id="downlineEarnings">0</div>
@@ -684,42 +243,32 @@
             console.error('❌ Supabase error:', err);
         }
 
-        // ===== FUNGSI REFERRAL =====
         function generateReferralCode(email) {
             const prefix = email.split('@')[0].substring(0, 4).toUpperCase();
             const random = Math.random().toString(36).substring(2, 6).toUpperCase();
             return prefix + random;
         }
 
-        // ===== CEK APAKAH PERLU FIX REFERRAL =====
         async function checkIfNeedFixReferral() {
             try {
-                // Cek di localStorage apakah sudah pernah fix
                 const alreadyFixed = localStorage.getItem(FIX_REFERRAL_KEY);
                 if (alreadyFixed === 'true') {
-                    console.log('✅ Referral already fixed before');
                     return false;
                 }
 
-                // Cek di database apakah ada user dengan referred_by kosong
                 const { data: users, error } = await supabaseClient
                     .from('users')
                     .select('email, ref_code, referred_by')
                     .is('referred_by', null);
 
                 if (error) throw error;
-
-                // Jika ada user dengan referred_by null, perlu fix
-                const needFix = users && users.length > 0;
-                console.log(`🔍 Need fix referral: ${needFix} (${users?.length || 0} users with null referred_by)`);
-                return needFix;
+                return users && users.length > 0;
             } catch (error) {
                 console.error('Check fix referral error:', error);
                 return false;
             }
         }
 
-        // ===== FUNGSI UNTUK MEMPERBAIKI DATA REFERRAL =====
         async function fixExistingReferrals() {
             if (!currentUser) {
                 showToast('❌ Please login first');
@@ -727,7 +276,6 @@
             }
 
             try {
-                // Ambil semua user
                 const { data: allUsers, error } = await supabaseClient
                     .from('users')
                     .select('*');
@@ -737,7 +285,6 @@
                 let fixedRefCode = 0;
                 let fixedReferredBy = 0;
 
-                // 1. Fix: Pastikan semua user punya ref_code
                 for (const user of allUsers) {
                     if (!user.ref_code) {
                         const newCode = generateReferralCode(user.email);
@@ -753,12 +300,10 @@
                     }
                 }
 
-                // 2. Fix: Isi referred_by untuk user yang kosong
                 for (const user of allUsers) {
                     if (!user.referred_by && user.email !== currentUser.email) {
                         let referrerCode = currentUser.ref_code;
                         
-                        // Coba cari referrer dengan domain email yang sama
                         const userDomain = user.email.split('@')[1];
                         const sameDomainUsers = allUsers.filter(u => 
                             u.email.split('@')[1] === userDomain && 
@@ -783,7 +328,6 @@
                     }
                 }
 
-                // 3. Update current user jika ada parameter referral di URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const refParam = urlParams.get('ref');
                 
@@ -800,15 +344,10 @@
                     }
                 }
 
-                // Tandai sudah fix di localStorage
                 localStorage.setItem(FIX_REFERRAL_KEY, 'true');
-                
-                // Sembunyikan tombol fix
                 document.getElementById('fixReferralsBtn').classList.add('hidden');
 
                 showToast(`✅ Fixed ${fixedRefCode} ref_codes and ${fixedReferredBy} referred_by`);
-                
-                // Refresh data
                 await updateUI();
                 
                 return { success: true, fixedRefCode, fixedReferredBy };
@@ -819,7 +358,6 @@
             }
         }
 
-        // ===== FUNGSI UNTUK MELIHAT SEMUA USER =====
         async function getAllUsers() {
             try {
                 const { data, error } = await supabaseClient
@@ -956,7 +494,6 @@
             return true;
         }
 
-        // ===== COPY REFERRAL LINK =====
         document.getElementById('copyRefLinkBtn').addEventListener('click', function() {
             const linkText = document.getElementById('infoRefLink').textContent;
             if (!linkText || linkText === '-') {
@@ -1005,7 +542,6 @@
             document.body.removeChild(ta);
         }
 
-        // ===== UPDATE UI =====
         async function updateUI() {
             if (!supabaseClient) {
                 console.warn('⏳ Waiting for Supabase...');
@@ -1024,7 +560,7 @@
                 document.getElementById('downlineBody').innerHTML =
                     `<tr><td colspan="5" class="empty">Please login first</td></tr>`;
                 document.getElementById('downlineTotal').textContent = '0';
-                document.getElementById('downlineActive').textContent = '0';
+                document.getElementById('downlinePending').textContent = '0';
                 document.getElementById('downlineEarnings').textContent = '0';
                 return;
             }
@@ -1052,7 +588,6 @@
                 adminBtn.style.display = 'none';
             }
 
-            // Cek apakah perlu menampilkan tombol fix
             const needFix = await checkIfNeedFixReferral();
             const fixBtn = document.getElementById('fixReferralsBtn');
             if (needFix) {
@@ -1066,10 +601,14 @@
             console.log(`🔍 Fetching downline for ref_code: ${user.ref_code}`);
             const downline = await getDownline(user.ref_code);
             const totalReferrals = downline.length;
+            
+            // Hitung yang sudah deposit (verified) dan yang belum
             const activeReferrals = downline.filter(d => d.verified === true).length;
+            const pendingReferrals = totalReferrals - activeReferrals;
 
             let totalEarnings = 0;
             const refPercent = parseInt(await getSetting('ref_percent')) || 3;
+            
             for (const ref of downline) {
                 const deposits = await getUserDeposits(ref.email);
                 const firstDeposit = deposits
@@ -1079,6 +618,7 @@
                     totalEarnings += firstDeposit.usdt * refPercent / 100;
                 }
             }
+            
             const wdHistory = await getUserWithdrawals(currentUser.email);
             const totalWd = wdHistory
                 .filter(w => w.status === 'approved')
@@ -1086,7 +626,7 @@
             totalEarnings = Math.round((totalEarnings - totalWd) * 100) / 100;
 
             document.getElementById('downlineTotal').textContent = totalReferrals;
-            document.getElementById('downlineActive').textContent = activeReferrals;
+            document.getElementById('downlinePending').textContent = pendingReferrals;
             document.getElementById('downlineEarnings').textContent = totalEarnings.toFixed(1);
 
             if (downline.length === 0) {
@@ -1100,27 +640,38 @@
                 for (let i = 0; i < downline.length; i++) {
                     const d = downline[i];
                     const joined = new Date(d.created_at).toLocaleDateString('en-US');
-                    const status = d.verified ? '✅ Active' : '⏳ Pending';
+                    
+                    // Status: Active jika sudah deposit/verified, Pending jika belum
+                    const isActive = d.verified === true;
+                    const statusHtml = isActive ? 
+                        '<span class="status-active">✅ Active</span>' : 
+                        '<span class="status-pending">⏳ Pending</span>';
+                    
                     let contribution = '0 USDT';
+                    let contributionClass = 'contribution-zero';
+                    
                     const deposits = await getUserDeposits(d.email);
                     const firstDeposit = deposits
                         .filter(dep => dep.status === 'approved')
                         .sort((a, b) => a.timestamp - b.timestamp)[0];
+                    
                     if (firstDeposit) {
-                        contribution = (firstDeposit.usdt * refPercent / 100).toFixed(1) + ' USDT';
+                        const amount = (firstDeposit.usdt * refPercent / 100).toFixed(1);
+                        contribution = amount + ' USDT';
+                        contributionClass = '';
                     }
+                    
                     html += `<tr>
                         <td>${i + 1}</td>
                         <td style="font-size:0.7rem;">${d.email}</td>
                         <td>${joined}</td>
-                        <td>${status}</td>
-                        <td>${contribution}</td>
+                        <td>${statusHtml}</td>
+                        <td class="${contributionClass}">${contribution}</td>
                     </tr>`;
                 }
                 document.getElementById('downlineBody').innerHTML = html;
             }
 
-            // Reset copy button state
             const copyBtn = document.getElementById('copyRefLinkBtn');
             copyBtn.classList.remove('copied');
             copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
@@ -1136,7 +687,6 @@
 
         document.getElementById('logoutBtn').addEventListener('click', logout);
 
-        // ===== FIX REFERRALS BUTTON =====
         document.getElementById('fixReferralsBtn').addEventListener('click', async function() {
             this.disabled = true;
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fixing...';
@@ -1156,7 +706,6 @@
             window.location.href = '/admin';
         });
 
-        // ===== CHANGE PASSWORD MODAL =====
         document.getElementById('changePasswordBtn').addEventListener('click', function() {
             document.getElementById('passwordModal').classList.add('active');
             document.getElementById('modalCurrentPassword').value = '';
@@ -1267,7 +816,6 @@
             this.innerHTML = '<i class="fas fa-save"></i> Change Password';
         });
 
-        // ===== INIT =====
         async function init() {
             console.log('🔄 Account page initializing...');
 
@@ -1283,7 +831,6 @@
 
             await updateUI();
 
-            // Cek dan fix referral otomatis jika diperlukan
             const needFix = await checkIfNeedFixReferral();
             if (needFix) {
                 console.log('🔧 Auto-fixing referrals...');
@@ -1295,7 +842,6 @@
             console.log('🔗 Referral Code:', currentUser.ref_code);
             console.log('🔗 Referred By:', currentUser.referred_by || 'None');
             
-            // Tampilkan semua user di console untuk debugging
             const allUsers = await getAllUsers();
             console.log('📊 All users:', allUsers);
         }
@@ -1311,7 +857,6 @@
         console.log('🟢 SilverChain Account Page ready.');
         console.log('📌 Supabase URL:', SUPABASE_URL);
         
-        // Helpful commands untuk debugging di console
         console.log('💡 Useful commands:');
         console.log('  - getAllUsers() - Lihat semua user');
         console.log('  - fixExistingReferrals() - Perbaiki referral data');
