@@ -226,31 +226,50 @@
         }
         .table-wrapper table {
             width: 100%;
-            min-width: 650px;
+            min-width: 900px;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         .table-wrapper table th {
             text-align: left;
             color: #a0a0a0;
             font-weight: 600;
-            padding: 0.6rem 0.8rem;
+            padding: 0.5rem 0.6rem;
             border-bottom: 1px solid rgba(80, 140, 255, 0.06);
             white-space: nowrap;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
         .table-wrapper table td {
-            padding: 0.6rem 0.8rem;
+            padding: 0.5rem 0.6rem;
             color: #c0c0c0;
             border-bottom: 1px solid rgba(80, 140, 255, 0.03);
             white-space: nowrap;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
         .table-wrapper table .empty {
             color: #a0a0a0;
             text-align: center;
             padding: 1.5rem 0;
             font-size: 0.9rem;
+        }
+        .table-wrapper table td .num-col {
+            font-weight: 600;
+        }
+        .table-wrapper table td .deposit-col {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+        .table-wrapper table td .bonus-col {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+        .table-wrapper table td .ref-col {
+            color: #c0c0c0;
+            font-weight: 600;
+        }
+        .table-wrapper table td .omset-col {
+            color: #6aff8a;
+            font-weight: 600;
         }
 
         .btn-approve {
@@ -283,7 +302,6 @@
             background: rgba(255, 60, 60, 0.25);
         }
 
-        /* ===== COPY ADDRESS BUTTON ===== */
         .btn-copy-address {
             background: rgba(60, 120, 255, 0.1);
             border: 1px solid rgba(80, 140, 255, 0.1);
@@ -616,25 +634,25 @@
                 font-size: 1rem;
             }
             .table-wrapper table {
-                font-size: 0.75rem;
-                min-width: 500px;
+                font-size: 0.7rem;
+                min-width: 700px;
             }
             .table-wrapper table th,
             .table-wrapper table td {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
+                padding: 0.3rem 0.4rem;
+                font-size: 0.7rem;
             }
             .btn-approve,
             .btn-reject {
-                font-size: 0.65rem;
-                padding: 0.18rem 0.6rem;
-            }
-            .btn-copy-address {
-                font-size: 0.55rem;
+                font-size: 0.6rem;
                 padding: 0.15rem 0.5rem;
             }
+            .btn-copy-address {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.4rem;
+            }
             .address-cell .address-text {
-                max-width: 80px;
+                max-width: 60px;
             }
             .pagination button {
                 padding: 0.25rem 0.6rem;
@@ -742,26 +760,26 @@
                 font-size: 0.9rem;
             }
             .table-wrapper table {
-                font-size: 0.65rem;
-                min-width: 400px;
+                font-size: 0.6rem;
+                min-width: 600px;
             }
             .table-wrapper table th,
             .table-wrapper table td {
-                padding: 0.3rem 0.4rem;
-                font-size: 0.65rem;
+                padding: 0.25rem 0.3rem;
+                font-size: 0.6rem;
             }
             .btn-approve,
             .btn-reject {
-                font-size: 0.55rem;
-                padding: 0.15rem 0.5rem;
-            }
-            .btn-copy-address {
                 font-size: 0.5rem;
                 padding: 0.1rem 0.4rem;
             }
+            .btn-copy-address {
+                font-size: 0.45rem;
+                padding: 0.08rem 0.3rem;
+            }
             .address-cell .address-text {
-                max-width: 60px;
-                font-size: 0.6rem;
+                max-width: 40px;
+                font-size: 0.5rem;
             }
             .pagination button {
                 padding: 0.2rem 0.45rem;
@@ -830,12 +848,12 @@
                 font-size: 1.1rem;
             }
             .table-wrapper table {
-                font-size: 0.55rem;
-                min-width: 340px;
+                font-size: 0.5rem;
+                min-width: 500px;
             }
             .address-cell .address-text {
-                max-width: 40px;
-                font-size: 0.5rem;
+                max-width: 30px;
+                font-size: 0.45rem;
             }
             .bottom-nav a {
                 min-width: 28px;
@@ -941,10 +959,14 @@
                                 <th>Referred By</th>
                                 <th>Role</th>
                                 <th>Status</th>
+                                <th style="color:#60a5fa;">Deposit</th>
+                                <th style="color:#fbbf24;">Bonus</th>
+                                <th style="color:#c0c0c0;">Ref Earn</th>
+                                <th style="color:#6aff8a;">Omset</th>
                             </tr>
                         </thead>
                         <tbody id="adminUserBody">
-                            <tr><td colspan="6" class="empty">Loading...</td></tr>
+                            <tr><td colspan="10" class="empty">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -979,7 +1001,7 @@
                 </div>
             </div>
 
-            <!-- TAB WITHDRAW - DENGAN COPY ADDRESS -->
+            <!-- TAB WITHDRAW -->
             <div class="tab-content" id="tabWithdraw">
                 <div class="section-title"><i class="fas fa-arrow-up"></i> Pending Withdrawals</div>
                 <div class="table-wrapper">
@@ -1056,7 +1078,7 @@
                 </div>
             </div>
 
-            <!-- TAB PAYMENT - QRIS URL -->
+            <!-- TAB PAYMENT -->
             <div class="tab-content" id="tabPayment">
                 <div class="settings-group">
                     <h5><i class="fas fa-credit-card"></i> Payment</h5>
@@ -1192,10 +1214,6 @@
         // ============================================================
         async function hashPassword(password) {
             return btoa(password + 'silverchain_salt_2026');
-        }
-
-        async function verifyPassword(password, hashed) {
-            return hashed === btoa(password + 'silverchain_salt_2026');
         }
 
         // ============================================================
@@ -1469,7 +1487,6 @@
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
-                    // 🔥 CEK SESSION TIMEOUT
                     if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
                         localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
                         return false;
@@ -1487,9 +1504,6 @@
             }
         }
 
-        // ============================================================
-        // 🔥 ADMIN CHECK LEBIH AMAN (SERVER-SIDE)
-        // ============================================================
         async function verifyAdminServerSide(email) {
             try {
                 const user = await getUserByEmail(email);
@@ -1512,9 +1526,6 @@
             }
         }
 
-        // ============================================================
-        // 🔥 CHECK AUTH DENGAN SERVER-SIDE VERIFICATION
-        // ============================================================
         async function checkAuth() {
             if (!supabaseClient) {
                 console.error('❌ Supabase not initialized!');
@@ -1530,7 +1541,6 @@
                 return false;
             }
 
-            // 🔥 SERVER-SIDE ADMIN CHECK
             const adminCheck = await verifyAdminServerSide(currentUser.email);
             if (!adminCheck) {
                 console.log('🔒 Not admin, redirecting to /dashboard');
@@ -1585,11 +1595,11 @@
         // ============================================================
         // 13. RENDER FUNCTIONS
         // ============================================================
-        function renderUsersTable() {
+        async function renderUsersTable() {
             const tbody = document.getElementById('adminUserBody');
 
             if (!usersData || usersData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="empty">No users registered</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" class="empty">No users registered</td></tr>`;
                 document.getElementById('userPagination').style.display = 'none';
                 return;
             }
@@ -1606,11 +1616,53 @@
             const end = Math.min(start + ROWS_PER_PAGE, totalUsers);
             const pageUsers = usersData.slice(start, end);
 
+            // 🔥 Ambil semua deposit untuk perhitungan
+            const allDeposits = depositsData;
+            const allWithdrawals = withdrawalsData;
+            const refPercent = parseInt(await getSetting('ref_percent')) || 3;
+
             let html = '';
-            pageUsers.forEach((u, index) => {
+            for (let i = 0; i < pageUsers.length; i++) {
+                const u = pageUsers[i];
                 const isOwner = u.email === ADMIN_EMAIL;
                 const verifiedStatus = u.verified ? '✅ Verified' : '⏳ Pending';
-                const num = start + index + 1;
+                const num = start + i + 1;
+
+                // 🔥 HITUNG TOTAL DEPOSIT USER
+                const userDeposits = allDeposits.filter(d => d.email === u.email && d.status === 'approved');
+                let totalDeposit = 0;
+                let totalBonus = 0;
+                for (const dep of userDeposits) {
+                    totalDeposit += dep.usdt;
+                    totalBonus += dep.bonus || 0;
+                }
+
+                // 🔥 HITUNG OMSET (Total deposit + bonus dari semua downline)
+                let totalOmset = 0;
+                const downlineUsers = usersData.filter(d => d.referred_by === u.ref_code);
+                for (const down of downlineUsers) {
+                    const downDeposits = allDeposits.filter(d => d.email === down.email && d.status === 'approved');
+                    for (const dep of downDeposits) {
+                        totalOmset += dep.usdt + (dep.bonus || 0);
+                    }
+                }
+
+                // 🔥 HITUNG REFERRAL EARNINGS (3% dari deposit pertama setiap downline)
+                let refEarnings = 0;
+                for (const down of downlineUsers) {
+                    const downDeposits = allDeposits
+                        .filter(d => d.email === down.email && d.status === 'approved')
+                        .sort((a, b) => a.timestamp - b.timestamp);
+                    if (downDeposits.length > 0) {
+                        refEarnings += downDeposits[0].usdt * refPercent / 100;
+                    }
+                }
+
+                // Kurangi dengan withdrawal
+                const userWd = allWithdrawals.filter(w => w.email === u.email && w.status === 'approved');
+                const totalWd = userWd.reduce((sum, w) => sum + w.amount, 0);
+                refEarnings = Math.round((refEarnings - totalWd) * 100) / 100;
+
                 html += `<tr>
                     <td>${num}</td>
                     <td>${u.email} ${isOwner ? '<span class="owner-badge">👑 Owner</span>' : ''}</td>
@@ -1618,8 +1670,12 @@
                     <td>${u.referred_by || '-'}</td>
                     <td>${u.role || 'user'}</td>
                     <td>${verifiedStatus}</td>
+                    <td class="deposit-col">${totalDeposit.toFixed(1)}</td>
+                    <td class="bonus-col">${totalBonus.toFixed(1)}</td>
+                    <td class="ref-col">${refEarnings.toFixed(1)}</td>
+                    <td class="omset-col">${totalOmset.toFixed(1)}</td>
                 </tr>`;
-            });
+            }
             tbody.innerHTML = html;
 
             updatePaginationControls();
@@ -1738,9 +1794,6 @@
             });
         }
 
-        // ============================================================
-        // 14. RENDER PENDING WITHDRAWALS - DENGAN COPY ADDRESS
-        // ============================================================
         function renderPendingWithdrawals() {
             const tbody = document.getElementById('adminWdBody');
             const pending = withdrawalsData.filter(w => w.status === 'pending');
@@ -1755,7 +1808,6 @@
                 const date = new Date(w.timestamp).toLocaleDateString('en-US') + ' ' + new Date(w.timestamp)
                     .toLocaleTimeString('en-US');
                 
-                // 🔥 Address dengan tombol copy
                 const address = w.address || '-';
                 const addressDisplay = address !== '-' ? 
                     `<div class="address-cell">
@@ -1779,7 +1831,6 @@
             });
             tbody.innerHTML = html;
 
-            // 🔥 EVENT LISTENER UNTUK COPY ADDRESS
             document.querySelectorAll('.copy-wd-address').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1788,7 +1839,6 @@
                 });
             });
 
-            // 🔥 EVENT LISTENER UNTUK APPROVE / REJECT WD
             document.querySelectorAll('.wd-approve').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
@@ -1817,7 +1867,7 @@
         }
 
         // ============================================================
-        // 15. LOAD QRIS & SETTINGS
+        // 14. LOAD QRIS & SETTINGS
         // ============================================================
         async function loadQrisPreview() {
             try {
@@ -1935,7 +1985,7 @@
         }
 
         // ============================================================
-        // 16. SAVE SETTINGS
+        // 15. SAVE SETTINGS
         // ============================================================
 
         document.getElementById('saveTwitterBtn').addEventListener('click', async function() {
@@ -2107,7 +2157,7 @@
         });
 
         // ============================================================
-        // 17. LOGOUT
+        // 16. LOGOUT
         // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -2121,7 +2171,7 @@
         });
 
         // ============================================================
-        // 18. UPDATE UI
+        // 17. UPDATE UI
         // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
@@ -2160,7 +2210,7 @@
 
                 currentPage = 1;
 
-                renderUsersTable();
+                await renderUsersTable();
                 renderPendingDeposits();
                 renderPendingWithdrawals();
 
@@ -2174,7 +2224,7 @@
         }
 
         // ============================================================
-        // 19. SESSION CHECK INTERVAL
+        // 18. SESSION CHECK INTERVAL
         // ============================================================
         function initSessionCheck() {
             if (sessionCheckInterval) {
@@ -2193,7 +2243,7 @@
         }
 
         // ============================================================
-        // 20. INIT
+        // 19. INIT
         // ============================================================
         async function init() {
             console.log('🔄 Admin panel initializing...');
@@ -2211,7 +2261,6 @@
             showTab('tabUsers');
             await updateUI();
             
-            // 🔥 START SESSION CHECK
             initSessionCheck();
 
             console.log('🟢 Admin panel ready!');
@@ -2219,7 +2268,7 @@
         }
 
         // ============================================================
-        // 21. CLEANUP
+        // 20. CLEANUP
         // ============================================================
         window.addEventListener('beforeunload', function() {
             if (sessionCheckInterval) {
