@@ -1164,13 +1164,49 @@
             }
         }
 
+        // ============================================================
+        // 🔥 PERUBAHAN: updateDepositStatus dengan verifikasi user
+        // ============================================================
         async function updateDepositStatus(id, status) {
             try {
+                // Ambil data deposit dulu
+                const { data: deposit, error: getError } = await supabaseClient
+                    .from('deposits')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+                
+                if (getError) throw getError;
+                
+                // Update status deposit
                 const { error } = await supabaseClient
                     .from('deposits')
-                    .update({ status: status })
+                    .update({ 
+                        status: status,
+                        updated_at: new Date().toISOString()
+                    })
                     .eq('id', id);
+                
                 if (error) throw error;
+                
+                // 🔥 Jika status approved, verifikasi user
+                if (status === 'approved' && deposit) {
+                    const { error: userError } = await supabaseClient
+                        .from('users')
+                        .update({ 
+                            verified: true,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('email', deposit.email);
+                    
+                    if (userError) {
+                        console.error('❌ Failed to verify user:', userError);
+                        // Jangan throw, biarkan deposit tetap approved
+                    } else {
+                        console.log(`✅ User ${deposit.email} verified!`);
+                    }
+                }
+                
                 return true;
             } catch (error) {
                 console.error('Update deposit error:', error);
@@ -1182,7 +1218,10 @@
             try {
                 const { error } = await supabaseClient
                     .from('withdrawals')
-                    .update({ status: status })
+                    .update({ 
+                        status: status,
+                        updated_at: new Date().toISOString()
+                    })
                     .eq('id', id);
                 if (error) throw error;
                 return true;
@@ -1503,7 +1542,7 @@
                     const id = parseInt(this.dataset.id);
                     try {
                         await updateDepositStatus(id, 'approved');
-                        showToast('✅ Deposit approved!');
+                        showToast('✅ Deposit approved! User verified!');
                         await updateUI();
                     } catch (err) {
                         showToast('❌ Failed: ' + err.message);
@@ -1703,10 +1742,9 @@
         }
 
         // ============================================================
-        // 11. SAVE SETTINGS (FIXED)
+        // 11. SAVE SETTINGS
         // ============================================================
 
-        // ===== SAVE TWITTER =====
         document.getElementById('saveTwitterBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminTwitter').value.trim();
             if (!value) {
@@ -1714,20 +1752,16 @@
                 return;
             }
             
-            console.log('📌 Saving Twitter:', value);
-            
             try {
                 await saveSetting('contact_twitter', value);
                 showToast('✅ Twitter URL saved to database!');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save Twitter error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== SAVE TELEGRAM =====
         document.getElementById('saveTelegramBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminTelegram').value.trim();
             if (!value) {
@@ -1735,20 +1769,16 @@
                 return;
             }
             
-            console.log('📌 Saving Telegram:', value);
-            
             try {
                 await saveSetting('contact_telegram', value);
                 showToast('✅ Telegram URL saved to database!');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save Telegram error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== SAVE DISCORD =====
         document.getElementById('saveDiscordBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminDiscord').value.trim();
             if (!value) {
@@ -1756,20 +1786,16 @@
                 return;
             }
             
-            console.log('📌 Saving Discord:', value);
-            
             try {
                 await saveSetting('contact_discord', value);
                 showToast('✅ Discord URL saved to database!');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save Discord error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== SAVE CONTACT EMAIL =====
         document.getElementById('saveContactEmailBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminContactEmail').value.trim();
             if (!value || !value.includes('@')) {
@@ -1777,20 +1803,16 @@
                 return;
             }
             
-            console.log('📌 Saving Contact Email:', value);
-            
             try {
                 await saveSetting('contact_email', value);
                 showToast('✅ Contact email saved to database!');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save Contact Email error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== SAVE BRAND NAME =====
         document.getElementById('saveBrandBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminBrandName').value.trim();
             if (!value) {
@@ -1798,28 +1820,22 @@
                 return;
             }
             
-            console.log('📌 Saving Brand Name:', value);
-            
             try {
                 await saveSetting('brand_name', value);
                 showToast('✅ Brand name saved to database!');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save Brand error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== SAVE LOGO =====
         document.getElementById('saveLogoBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminLogoUrl').value.trim();
             if (!value) {
                 showToast('❌ Please enter a logo URL.');
                 return;
             }
-            
-            console.log('📌 Saving Logo:', value);
             
             try {
                 await saveSetting('logo_image', value);
@@ -1828,12 +1844,10 @@
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save Logo error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== RESET LOGO =====
         document.getElementById('resetLogoBtn').addEventListener('click', async function() {
             if (!confirm('Reset logo to default icon?')) return;
             try {
@@ -1849,12 +1863,9 @@
             }
         });
 
-        // ===== SAVE BONUS & REFERRAL =====
         document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
             const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
             const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
-            
-            console.log('📌 Saving Bonus:', bonus, 'Ref:', ref);
             
             try {
                 await saveSetting('bonus_percent', String(bonus));
@@ -1863,20 +1874,16 @@
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save Settings error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== SAVE USDT ADDRESS =====
         document.getElementById('saveUsdtBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminUsdtAddress').value.trim();
             if (!value || value.length < 10) {
                 showToast('❌ Please enter a valid USDT address.');
                 return;
             }
-            
-            console.log('📌 Saving USDT Address:', value);
             
             try {
                 await saveSetting('usdt_address', value);
@@ -1885,16 +1892,12 @@
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save USDT error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
 
-        // ===== SAVE QRIS =====
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminQrisUrl').value.trim();
-            
-            console.log('📌 Saving QRIS URL:', value);
             
             if (!value) {
                 showToast('❌ Please enter a QRIS image URL.');
@@ -1918,7 +1921,6 @@
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                console.error('❌ Save QRIS error:', err);
                 showToast('❌ Failed: ' + err.message);
             }
         });
