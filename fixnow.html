@@ -2,299 +2,849 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fix Referrals</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>SilverChain · Fix Verified Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1228;
+            background-image: radial-gradient(ellipse at 30% 20%, #1a2a5a, #060c1a);
+            color: #d4d4d4;
+            min-height: 100vh;
+            padding: 1.5rem 1rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+        .section-card {
+            background: rgba(18, 34, 72, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2.8rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(100,140,220,0.15);
+            border: 1px solid rgba(80,140,255,0.08);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .header .logo-icon {
+            font-size: 3.5rem;
+            background: linear-gradient(145deg, #e8e8e8, #c0c0c0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+        .header h1 {
+            color: #e0e0e0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .header p {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-success {
+            background: rgba(60, 220, 80, 0.15);
+            color: #6aff8a;
+            border: 1px solid rgba(60, 220, 80, 0.15);
+        }
+        .badge-warning {
+            background: rgba(255, 200, 60, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(255, 200, 60, 0.15);
+        }
+        .badge-danger {
+            background: rgba(255, 60, 60, 0.15);
+            color: #ff6a6a;
+            border: 1px solid rgba(255, 60, 60, 0.15);
+        }
+        .badge-info {
+            background: rgba(60, 120, 255, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(60, 120, 255, 0.15);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-box {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 1.2rem;
+            padding: 1rem 0.8rem;
+            text-align: center;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+        }
+        .stat-box .num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        .stat-box .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: #a0a0a0;
+            letter-spacing: 0.5px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(80, 140, 255, 0.04);
+        }
+        .table-wrapper table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .table-wrapper table th {
+            text-align: left;
+            color: #a0a0a0;
+            font-weight: 600;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.06);
+            white-space: nowrap;
+            font-size: 0.75rem;
+        }
+        .table-wrapper table td {
+            padding: 0.6rem 0.8rem;
+            color: #c0c0c0;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+            white-space: nowrap;
+            font-size: 0.8rem;
+        }
+        .table-wrapper table .empty {
+            color: #a0a0a0;
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.9rem;
+        }
+
+        .btn-fix {
+            background: rgba(60, 220, 80, 0.15);
+            border: 1px solid rgba(60, 220, 80, 0.2);
+            border-radius: 60px;
+            padding: 0.25rem 1rem;
+            color: #6aff8a;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.1s;
+            border: none;
+        }
+        .btn-fix:hover {
+            background: rgba(60, 220, 80, 0.25);
+        }
+        .btn-fix:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-fix-all {
+            background: linear-gradient(145deg, #c0c0c0, #888888);
+            border: none;
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0a1228;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        .btn-fix-all:hover {
+            box-shadow: 0 12px 40px -6px rgba(192,192,192,0.2);
+            transform: translateY(-2px);
+        }
+        .btn-fix-all:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-back {
+            background: rgba(60, 120, 255, 0.06);
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            border-radius: 60px;
+            padding: 0.5rem 1.5rem;
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            margin-top: 1rem;
+        }
+        .btn-back:hover {
+            background: rgba(60, 120, 255, 0.12);
+            color: #c0c0c0;
+        }
+
+        .toast-message {
+            background: rgba(12, 28, 60, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #c0c0c0;
+            border-radius: 40px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            color: #e0e0e0;
+            margin-bottom: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .toast-message.show {
+            display: flex;
+        }
+        .toast-message.success {
+            border-left-color: #6aff8a;
+        }
+        .toast-message.error {
+            border-left-color: #ff6a6a;
+        }
+        .toast-message.info {
+            border-left-color: #60a5fa;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 60px;
+            height: 8px;
+            margin: 0.8rem 0;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-container.show {
+            display: block;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #c0c0c0, #e8e8e8);
+            border-radius: 60px;
+            transition: width 0.5s ease;
+        }
+
+        .result-log {
+            background: rgba(8, 20, 48, 0.3);
+            border-radius: 0.8rem;
+            padding: 0.8rem 1rem;
+            margin-top: 0.8rem;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #c0c0c0;
+            border: 1px solid rgba(80, 140, 255, 0.06);
+            display: none;
+        }
+        .result-log.show {
+            display: block;
+        }
+        .result-log .log-entry {
+            padding: 0.15rem 0;
+            border-bottom: 1px solid rgba(80, 140, 255, 0.03);
+        }
+        .result-log .log-entry.success {
+            color: #6aff8a;
+        }
+        .result-log .log-entry.error {
+            color: #ff6a6a;
+        }
+        .result-log .log-entry.info {
+            color: #60a5fa;
+        }
+
+        @media (max-width: 768px) {
+            .section-card {
+                padding: 1.5rem 1rem;
+                border-radius: 2rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+            .stat-box .num {
+                font-size: 1.3rem;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-card {
+                padding: 1rem 0.8rem;
+                border-radius: 1.5rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.3rem;
+            }
+            .stat-box {
+                padding: 0.6rem 0.3rem;
+                border-radius: 0.8rem;
+            }
+            .stat-box .num {
+                font-size: 1rem;
+            }
+            .stat-box .label {
+                font-size: 0.5rem;
+            }
+            .table-wrapper table {
+                font-size: 0.7rem;
+                min-width: 500px;
+            }
+            .table-wrapper table th,
+            .table-wrapper table td {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.7rem;
+            }
+            .btn-fix {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.7rem;
+            }
+            .btn-fix-all {
+                font-size: 0.85rem;
+                padding: 0.6rem 1.5rem;
+            }
+        }
+    </style>
 </head>
-<body style="background:#0a1228;color:#fff;font-family:Arial;padding:20px;">
-    <h1 style="color:#fbbf24;">🔧 Fix Referrals</h1>
-    
-    <div style="margin:10px 0;">
-        <button onclick="testConnection()" style="padding:10px 20px;background:#3b82f6;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Test Connection</button>
-        <button onclick="scanUsers()" style="padding:10px 20px;background:#22c55e;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Scan Users</button>
-        <button onclick="fixAll()" style="padding:10px 20px;background:#d97706;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Fix All</button>
-        <button onclick="forceFix()" style="padding:10px 20px;background:#ef4444;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;">Force Fix</button>
-    </div>
+<body>
 
-    <div style="background:rgba(0,0,0,0.5);border-radius:8px;padding:10px;margin:10px 0;max-height:300px;overflow-y:auto;font-family:monospace;font-size:12px;" id="logBox">
-        <div style="color:#60a5fa;">Ready. Click "Test Connection"</div>
-    </div>
+    <div class="container">
 
-    <div id="resultBox" style="margin:10px 0;"></div>
+        <div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i> <span id="toastText">Success</span></div>
+
+        <div class="section-card">
+
+            <div class="header">
+                <span class="logo-icon"><i class="fas fa-tools"></i></span>
+                <h1>Fix Verified Users</h1>
+                <p>Perbaiki user yang sudah deposit approved tapi masih pending (verified: false)</p>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-box">
+                    <div class="num" id="statTotalUsers">0</div>
+                    <div class="label">Total Users</div>
+                </div>
+                <div class="stat-box">
+                    <div class="num" id="statApprovedDeposits">0</div>
+                    <div class="label">Approved Deposits</div>
+                </div>
+                <div class="stat-box" style="border-color: rgba(255,200,60,0.15);">
+                    <div class="num" id="statNeedFix" style="color: #fbbf24;">0</div>
+                    <div class="label">Need Fix</div>
+                </div>
+                <div class="stat-box" style="border-color: rgba(60,220,80,0.15);">
+                    <div class="num" id="statFixed" style="color: #6aff8a;">0</div>
+                    <div class="label">Fixed</div>
+                </div>
+            </div>
+
+            <!-- PROGRESS -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>Ref Code</th>
+                            <th>Verified</th>
+                            <th>Deposits</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <tr><td colspan="6" class="empty">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- BUTTONS -->
+            <button class="btn-fix-all" id="fixAllBtn"><i class="fas fa-magic"></i> Fix All</button>
+
+            <!-- RESULT LOG -->
+            <div class="result-log" id="resultLog"></div>
+
+            <button class="btn-back" onclick="window.location.href='/admin'">
+                <i class="fas fa-arrow-left"></i> Back to Admin Panel
+            </button>
+
+            <div style="text-align:center; color:#888888; font-size:0.7rem; margin-top:1.5rem; padding-top:1rem; border-top:1px solid rgba(80,140,255,0.05);">
+                SilverChain DAO &copy; 2026
+            </div>
+        </div>
+
+    </div>
 
     <script>
         // ============================================================
         // CONFIG
         // ============================================================
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_gSWYSM5dC7BQllHs9AkAGg_aX00RVRI';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyYnJpYXNnbXhqenZidWtzbGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMzAxODMsImV4cCI6MjA5OTYwNjE4M30.fhcSgXY-D-AvgDyg86v7eA_ltAU_UC0LFrCDnsJufgg';
+        const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
 
-        let supabase = null;
-        let allUsers = [];
+        let supabaseClient = null;
+        let usersData = [];
+        let depositsData = [];
+        let fixedCount = 0;
+        let isProcessing = false;
 
         // ============================================================
-        // LOG FUNCTION
+        // INIT SUPABASE
         // ============================================================
-        function log(msg, type = 'info') {
-            const logBox = document.getElementById('logBox');
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client created!');
+        } catch (err) {
+            console.error('❌ Supabase error:', err);
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.className = 'toast-message show ' + type;
+            toast.style.display = 'flex';
+            setTimeout(() => { 
+                toast.style.display = 'none'; 
+                toast.className = 'toast-message';
+            }, 3500);
+        }
+
+        // ============================================================
+        // LOG
+        // ============================================================
+        function addLog(msg, type = 'info') {
+            const log = document.getElementById('resultLog');
+            log.classList.add('show');
             const entry = document.createElement('div');
-            const colors = {
-                success: '#22c55e',
-                error: '#ef4444',
-                info: '#60a5fa',
-                warning: '#fbbf24'
-            };
-            entry.style.color = colors[type] || '#fff';
-            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-            logBox.appendChild(entry);
-            logBox.scrollTop = logBox.scrollHeight;
-            console.log(`[${type}]`, msg);
+            entry.className = 'log-entry ' + type;
+            const time = new Date().toLocaleTimeString();
+            entry.textContent = `[${time}] ${msg}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
         }
 
-        function showResult(html) {
-            document.getElementById('resultBox').innerHTML = html;
+        function clearLog() {
+            const log = document.getElementById('resultLog');
+            log.innerHTML = '';
+            log.classList.remove('show');
         }
 
         // ============================================================
-        // TEST CONNECTION
+        // SUPABASE FUNCTIONS
         // ============================================================
-        async function testConnection() {
-            log('Testing connection...', 'info');
-
+        async function getAllUsers() {
             try {
-                // Cek apakah Supabase SDK terload
-                if (typeof window.supabase === 'undefined') {
-                    throw new Error('Supabase SDK not loaded! Check internet.');
-                }
-
-                // Buat client
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                log('✅ Client created', 'success');
-
-                // Test query
-                const { data, error } = await supabase
-                    .from('users')
-                    .select('count')
-                    .limit(1);
-
-                if (error) throw error;
-
-                log('✅ Connected to Supabase!', 'success');
-
-                // Tampilkan data sample
-                const { data: sample, error: sampleError } = await supabase
-                    .from('users')
-                    .select('email, ref_code, referred_by')
-                    .limit(5);
-
-                if (!sampleError && sample) {
-                    log(`📊 Sample data: ${sample.length} users`, 'info');
-                    let html = '<h3>Sample Users:</h3><table style="width:100%;border-collapse:collapse;font-size:12px;">';
-                    html += '<tr><th style="text-align:left;padding:5px;border-bottom:1px solid #333;">Email</th><th style="text-align:left;padding:5px;border-bottom:1px solid #333;">Ref Code</th><th style="text-align:left;padding:5px;border-bottom:1px solid #333;">Referred By</th></tr>';
-                    sample.forEach(u => {
-                        html += `<tr>
-                            <td style="padding:5px;border-bottom:1px solid #222;">${u.email}</td>
-                            <td style="padding:5px;border-bottom:1px solid #222;">${u.ref_code || '-'}</td>
-                            <td style="padding:5px;border-bottom:1px solid #222;">${u.referred_by || 'NULL'}</td>
-                        </tr>`;
-                    });
-                    html += '</table>';
-                    showResult(html);
-                }
-
-            } catch (err) {
-                log('❌ Error: ' + err.message, 'error');
-                console.error(err);
-            }
-        }
-
-        // ============================================================
-        // SCAN USERS
-        // ============================================================
-        async function scanUsers() {
-            if (!supabase) {
-                log('⚠️ Click "Test Connection" first!', 'warning');
-                return;
-            }
-
-            log('Scanning all users...', 'info');
-
-            try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('users')
                     .select('*')
-                    .order('email');
-
+                    .order('created_at', { ascending: true });
                 if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all users error:', error);
+                return [];
+            }
+        }
 
-                allUsers = data || [];
-                log(`✅ Found ${allUsers.length} users`, 'success');
+        async function getAllDeposits() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('deposits')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get all deposits error:', error);
+                return [];
+            }
+        }
 
-                const nullRef = allUsers.filter(u => !u.referred_by || u.referred_by === '' || u.referred_by === 'null');
-                log(`📊 ${nullRef.length} users have NULL referred_by`, 'warning');
+        async function fixUserVerification(email) {
+            try {
+                const { error } = await supabaseClient
+                    .from('users')
+                    .update({ 
+                        verified: true,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('email', email);
+                
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error(`❌ Failed to fix ${email}:`, error);
+                return false;
+            }
+        }
 
-                // Tampilkan semua user
-                let html = `<h3>All Users (${allUsers.length}):</h3>`;
-                html += `<table style="width:100%;border-collapse:collapse;font-size:12px;">
-                    <tr>
-                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">#</th>
-                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Email</th>
-                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Ref Code</th>
-                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Referred By</th>
-                        <th style="text-align:left;padding:5px;border-bottom:2px solid #333;">Status</th>
-                    </tr>`;
+        // ============================================================
+        // CHECK AUTH (Admin only)
+        // ============================================================
+        async function getUserByEmail(email) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+                if (error && error.code === 'PGRST116') return null;
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Get user error:', error);
+                return null;
+            }
+        }
 
-                allUsers.forEach((u, i) => {
-                    const hasRef = u.referred_by && u.referred_by !== '' && u.referred_by !== 'null';
-                    const status = hasRef ? '✅ OK' : '❌ NULL';
-                    const color = hasRef ? '#22c55e' : '#ef4444';
-                    html += `<tr>
-                        <td style="padding:5px;border-bottom:1px solid #222;">${i + 1}</td>
-                        <td style="padding:5px;border-bottom:1px solid #222;font-size:11px;">${u.email}</td>
-                        <td style="padding:5px;border-bottom:1px solid #222;color:#fbbf24;">${u.ref_code || '-'}</td>
-                        <td style="padding:5px;border-bottom:1px solid #222;">${u.referred_by || 'NULL'}</td>
-                        <td style="padding:5px;border-bottom:1px solid #222;color:${color};">${status}</td>
-                    </tr>`;
+        async function checkAuth() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+                if (!saved) {
+                    window.location.href = '/auth';
+                    return false;
+                }
+                
+                const data = JSON.parse(saved);
+                const user = await getUserByEmail(data.email);
+                
+                if (!user || user.role !== 'admin') {
+                    window.location.href = '/dashboard';
+                    return false;
+                }
+                
+                console.log('✅ Admin authenticated:', user.email);
+                return true;
+            } catch (e) {
+                console.error('Auth error:', e);
+                window.location.href = '/auth';
+                return false;
+            }
+        }
+
+        // ============================================================
+        // RENDER TABLE
+        // ============================================================
+        function renderUsers(users, deposits) {
+            const tbody = document.getElementById('userTableBody');
+            
+            if (!users || users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty">No users found</td></tr>`;
+                return;
+            }
+
+            // Cari user yang perlu difix: user yang memiliki deposit approved tapi verified false
+            const needFix = [];
+            const approvedDeposits = deposits.filter(d => d.status === 'approved');
+            
+            // Group deposits by email
+            const depositMap = {};
+            approvedDeposits.forEach(d => {
+                if (!depositMap[d.email]) depositMap[d.email] = [];
+                depositMap[d.email].push(d);
+            });
+
+            users.forEach(user => {
+                const hasApproved = depositMap[user.email] && depositMap[user.email].length > 0;
+                if (hasApproved && user.verified !== true) {
+                    needFix.push(user);
+                }
+            });
+
+            let html = '';
+            users.forEach((user, index) => {
+                const hasApproved = depositMap[user.email] && depositMap[user.email].length > 0;
+                const isVerified = user.verified === true;
+                const needsFix = hasApproved && !isVerified;
+                const depositCount = depositMap[user.email] ? depositMap[user.email].length : 0;
+
+                let statusBadge = '';
+                if (isVerified) {
+                    statusBadge = '<span class="badge badge-success">✅ Verified</span>';
+                } else if (needsFix) {
+                    statusBadge = '<span class="badge badge-warning">⚠️ Need Fix</span>';
+                } else {
+                    statusBadge = '<span class="badge badge-danger">⏳ Pending</span>';
+                }
+
+                let actionBtn = '';
+                if (needsFix && !isProcessing) {
+                    actionBtn = `<button class="btn-fix fix-user" data-email="${user.email}">🔧 Fix</button>`;
+                } else if (needsFix && isProcessing) {
+                    actionBtn = `<button class="btn-fix" disabled>⏳ Processing...</button>`;
+                } else {
+                    actionBtn = `<span style="color:#666; font-size:0.7rem;">—</span>`;
+                }
+
+                html += `<tr>
+                    <td>${index + 1}</td>
+                    <td style="font-size:0.75rem;">${user.email}</td>
+                    <td><code style="background:rgba(8,20,48,0.3); padding:0.1rem 0.5rem; border-radius:60px; font-size:0.7rem;">${user.ref_code || '-'}</code></td>
+                    <td>${statusBadge}</td>
+                    <td style="text-align:center;">${depositCount}</td>
+                    <td>${actionBtn}</td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+
+            // Event listeners untuk tombol Fix
+            document.querySelectorAll('.fix-user').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const email = this.dataset.email;
+                    await fixSingleUser(email);
+                });
+            });
+
+            // Update stats
+            document.getElementById('statTotalUsers').textContent = users.length;
+            document.getElementById('statApprovedDeposits').textContent = approvedDeposits.length;
+            document.getElementById('statNeedFix').textContent = needFix.length;
+            document.getElementById('statFixed').textContent = fixedCount;
+
+            return { needFix };
+        }
+
+        // ============================================================
+        // FIX SINGLE USER
+        // ============================================================
+        async function fixSingleUser(email) {
+            if (isProcessing) return;
+            isProcessing = true;
+
+            try {
+                const success = await fixUserVerification(email);
+                if (success) {
+                    fixedCount++;
+                    addLog(`✅ ${email} verified successfully!`, 'success');
+                    showToast(`✅ ${email} verified!`, 'success');
+                } else {
+                    addLog(`❌ Failed to verify ${email}`, 'error');
+                    showToast(`❌ Failed to verify ${email}`, 'error');
+                }
+            } catch (err) {
+                addLog(`❌ Error verifying ${email}: ${err.message}`, 'error');
+                showToast(`❌ Error: ${err.message}`, 'error');
+            }
+
+            isProcessing = false;
+            await loadData();
+        }
+
+        // ============================================================
+        // FIX ALL USERS
+        // ============================================================
+        async function fixAllUsers() {
+            if (isProcessing) return;
+            if (!usersData || usersData.length === 0) {
+                showToast('❌ No users to fix', 'error');
+                return;
+            }
+
+            // Cari user yang perlu difix
+            const approvedDeposits = depositsData.filter(d => d.status === 'approved');
+            const depositMap = {};
+            approvedDeposits.forEach(d => {
+                if (!depositMap[d.email]) depositMap[d.email] = [];
+                depositMap[d.email].push(d);
+            });
+
+            const needFix = usersData.filter(user => {
+                const hasApproved = depositMap[user.email] && depositMap[user.email].length > 0;
+                return hasApproved && user.verified !== true;
+            });
+
+            if (needFix.length === 0) {
+                showToast('✅ No users need fixing!', 'success');
+                return;
+            }
+
+            if (!confirm(`Fix ${needFix.length} users?`)) return;
+
+            isProcessing = true;
+            fixedCount = 0;
+            clearLog();
+            document.getElementById('fixAllBtn').disabled = true;
+            document.getElementById('fixAllBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            progressContainer.classList.add('show');
+
+            let successCount = 0;
+            let failCount = 0;
+
+            for (let i = 0; i < needFix.length; i++) {
+                const user = needFix[i];
+                const progress = ((i + 1) / needFix.length) * 100;
+                progressBar.style.width = progress + '%';
+
+                try {
+                    const success = await fixUserVerification(user.email);
+                    if (success) {
+                        successCount++;
+                        fixedCount++;
+                        addLog(`✅ ${user.email} verified successfully!`, 'success');
+                    } else {
+                        failCount++;
+                        addLog(`❌ Failed to verify ${user.email}`, 'error');
+                    }
+                } catch (err) {
+                    failCount++;
+                    addLog(`❌ Error verifying ${user.email}: ${err.message}`, 'error');
+                }
+
+                // Update stats real-time
+                document.getElementById('statFixed').textContent = fixedCount;
+            }
+
+            progressBar.style.width = '100%';
+
+            addLog(`📊 Summary: ${successCount} fixed, ${failCount} failed`, 'info');
+            showToast(`✅ ${successCount} users fixed! ${failCount} failed.`, successCount > 0 ? 'success' : 'error');
+
+            document.getElementById('fixAllBtn').disabled = false;
+            document.getElementById('fixAllBtn').innerHTML = '<i class="fas fa-magic"></i> Fix All';
+
+            setTimeout(() => {
+                progressContainer.classList.remove('show');
+                progressBar.style.width = '0%';
+            }, 2000);
+
+            isProcessing = false;
+            await loadData();
+        }
+
+        // ============================================================
+        // LOAD DATA
+        // ============================================================
+        async function loadData() {
+            if (!supabaseClient) {
+                console.warn('⏳ Waiting for Supabase...');
+                setTimeout(loadData, 1000);
+                return;
+            }
+
+            try {
+                const [users, deposits] = await Promise.all([
+                    getAllUsers(),
+                    getAllDeposits()
+                ]);
+
+                usersData = users;
+                depositsData = deposits;
+
+                renderUsers(users, deposits);
+
+                // Update total fixed count
+                const approvedDeposits = deposits.filter(d => d.status === 'approved');
+                const depositMap = {};
+                approvedDeposits.forEach(d => {
+                    if (!depositMap[d.email]) depositMap[d.email] = [];
+                    depositMap[d.email].push(d);
                 });
 
-                html += '</table>';
-                showResult(html);
+                const alreadyVerified = users.filter(user => {
+                    const hasApproved = depositMap[user.email] && depositMap[user.email].length > 0;
+                    return hasApproved && user.verified === true;
+                });
 
-            } catch (err) {
-                log('❌ Error: ' + err.message, 'error');
-                console.error(err);
+                fixedCount = alreadyVerified.length;
+                document.getElementById('statFixed').textContent = fixedCount;
+
+                console.log(`📊 Users: ${users.length}, Need fix: ${document.getElementById('statNeedFix').textContent}`);
+
+            } catch (error) {
+                console.error('❌ Load data error:', error);
+                showToast('❌ Failed to load data: ' + error.message, 'error');
+                document.getElementById('userTableBody').innerHTML = 
+                    `<tr><td colspan="6" class="empty">❌ Error loading data</td></tr>`;
             }
         }
 
         // ============================================================
-        // FIX ALL
+        // INIT
         // ============================================================
-        async function fixAll() {
-            if (!supabase || allUsers.length === 0) {
-                log('⚠️ Scan first!', 'warning');
+        document.getElementById('fixAllBtn').addEventListener('click', fixAllUsers);
+
+        async function init() {
+            console.log('🔄 Fix Verified Users page initializing...');
+
+            if (!supabaseClient) {
+                console.error('❌ Supabase not ready!');
+                showToast('❌ System not ready. Please refresh.', 'error');
+                setTimeout(init, 2000);
                 return;
             }
 
-            const nullUsers = allUsers.filter(u => !u.referred_by || u.referred_by === '' || u.referred_by === 'null');
-            if (nullUsers.length === 0) {
-                log('✅ All users already have referral!', 'success');
-                return;
-            }
+            const authPassed = await checkAuth();
+            if (!authPassed) return;
 
-            log(`🔧 Fixing ${nullUsers.length} users...`, 'info');
+            await loadData();
 
-            let fixed = 0;
-            let failed = 0;
-
-            for (const user of nullUsers) {
-                try {
-                    let referrerCode = null;
-
-                    // Cari referrer
-                    const domain = user.email.split('@')[1];
-                    const sameDomain = allUsers.filter(u =>
-                        u.email !== user.email &&
-                        u.email.split('@')[1] === domain &&
-                        u.ref_code &&
-                        u.ref_code !== ''
-                    );
-
-                    if (sameDomain.length > 0) {
-                        referrerCode = sameDomain[0].ref_code;
-                    } else {
-                        const otherUsers = allUsers.filter(u =>
-                            u.email !== user.email &&
-                            u.ref_code &&
-                            u.ref_code !== ''
-                        );
-                        if (otherUsers.length > 0) {
-                            referrerCode = otherUsers[0].ref_code;
-                        }
-                    }
-
-                    if (!referrerCode) {
-                        log(`❌ No referrer for ${user.email}`, 'error');
-                        failed++;
-                        continue;
-                    }
-
-                    const { error: updateError } = await supabase
-                        .from('users')
-                        .update({ referred_by: referrerCode })
-                        .eq('email', user.email);
-
-                    if (updateError) throw updateError;
-
-                    user.referred_by = referrerCode;
-                    fixed++;
-                    log(`✅ ${user.email} -> ${referrerCode}`, 'success');
-
-                } catch (err) {
-                    log(`❌ ${user.email}: ${err.message}`, 'error');
-                    failed++;
-                }
-            }
-
-            log(`✅ Done! Fixed: ${fixed}, Failed: ${failed}`, 'success');
-            scanUsers(); // Refresh
+            console.log('🟢 Fix Verified Users page ready!');
         }
 
-        // ============================================================
-        // FORCE FIX
-        // ============================================================
-        async function forceFix() {
-            if (!supabase || allUsers.length === 0) {
-                log('⚠️ Scan first!', 'warning');
-                return;
+        init();
+
+        // Auto refresh every 10 seconds
+        setInterval(async () => {
+            if (!isProcessing) {
+                await loadData();
             }
+        }, 10000);
 
-            const nullUsers = allUsers.filter(u => !u.referred_by || u.referred_by === '' || u.referred_by === 'null');
-            if (nullUsers.length === 0) {
-                log('✅ All users already have referral!', 'success');
-                return;
-            }
-
-            const mainReferrer = allUsers.find(u => u.ref_code && u.ref_code !== '');
-            if (!mainReferrer) {
-                log('❌ No user with ref_code found!', 'error');
-                return;
-            }
-
-            const refCode = mainReferrer.ref_code;
-            log(`⚡ Force fixing all with: ${refCode}`, 'warning');
-
-            let fixed = 0;
-            let failed = 0;
-
-            for (const user of nullUsers) {
-                try {
-                    const { error: updateError } = await supabase
-                        .from('users')
-                        .update({ referred_by: refCode })
-                        .eq('email', user.email);
-
-                    if (updateError) throw updateError;
-
-                    user.referred_by = refCode;
-                    fixed++;
-                    log(`✅ ${user.email} -> ${refCode}`, 'success');
-
-                } catch (err) {
-                    log(`❌ ${user.email}: ${err.message}`, 'error');
-                    failed++;
-                }
-            }
-
-            log(`✅ Done! Fixed: ${fixed}, Failed: ${failed}`, 'success');
-            scanUsers();
-        }
-
-        // ============================================================
-        // AUTO RUN
-        // ============================================================
-        log('🚀 Tool loaded! Click "Test Connection" to start.', 'info');
-        console.log('✅ Fix Tool ready!');
+        console.log('🟢 SilverChain Fix Verified Users loaded.');
+        console.log('📌 Supabase URL:', SUPABASE_URL);
     </script>
 </body>
 </html>
