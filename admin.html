@@ -1163,7 +1163,7 @@
         let totalPages = 1;
 
         // ============================================================
-        // 🔥 SESSION TIMEOUT (30 menit)
+        // 3. SESSION TIMEOUT
         // ============================================================
         const SESSION_TIMEOUT = 30 * 60 * 1000;
         let sessionCheckInterval = null;
@@ -1200,20 +1200,13 @@
         }
 
         // ============================================================
-        // 3. INIT SUPABASE
+        // 4. INIT SUPABASE
         // ============================================================
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('✅ Supabase client created!');
         } catch (err) {
             console.error('❌ Supabase error:', err);
-        }
-
-        // ============================================================
-        // 4. HELPER FUNCTIONS
-        // ============================================================
-        async function hashPassword(password) {
-            return btoa(password + 'silverchain_salt_2026');
         }
 
         // ============================================================
@@ -1345,10 +1338,11 @@
         }
 
         // ============================================================
-        // 8. UPDATE DEPOSIT STATUS (DENGAN AUTO VERIFY)
+        // 8. UPDATE DEPOSIT STATUS - TANPA updated_at
         // ============================================================
         async function updateDepositStatus(id, status) {
             try {
+                // Ambil data deposit dulu
                 const { data: deposit, error: getError } = await supabaseClient
                     .from('deposits')
                     .select('*')
@@ -1357,22 +1351,23 @@
                 
                 if (getError) throw getError;
                 
+                // 🔥 PERBAIKAN: Hanya update status, tanpa updated_at
                 const { error } = await supabaseClient
                     .from('deposits')
                     .update({ 
-                        status: status,
-                        updated_at: new Date().toISOString()
+                        status: status
                     })
                     .eq('id', id);
                 
                 if (error) throw error;
                 
+                // Jika status approved, verifikasi user
                 if (status === 'approved' && deposit) {
+                    // 🔥 PERBAIKAN: Hanya update verified, tanpa updated_at
                     const { error: userError } = await supabaseClient
                         .from('users')
                         .update({ 
-                            verified: true,
-                            updated_at: new Date().toISOString()
+                            verified: true
                         })
                         .eq('email', deposit.email);
                     
@@ -1391,15 +1386,15 @@
         }
 
         // ============================================================
-        // 9. UPDATE WITHDRAWAL STATUS
+        // 9. UPDATE WITHDRAWAL STATUS - TANPA updated_at
         // ============================================================
         async function updateWithdrawalStatus(id, status) {
             try {
+                // 🔥 PERBAIKAN: Hanya update status, tanpa updated_at
                 const { error } = await supabaseClient
                     .from('withdrawals')
                     .update({ 
-                        status: status,
-                        updated_at: new Date().toISOString()
+                        status: status
                     })
                     .eq('id', id);
                 if (error) throw error;
@@ -1445,11 +1440,11 @@
                 
                 let result;
                 if (existing) {
+                    // 🔥 PERBAIKAN: Hanya update value, tanpa updated_at
                     const { data, error } = await supabaseClient
                         .from('settings')
                         .update({
-                            value: value,
-                            updated_at: new Date().toISOString()
+                            value: value
                         })
                         .eq('key', key)
                         .select();
@@ -1462,8 +1457,7 @@
                         .from('settings')
                         .insert({
                             key: key,
-                            value: value,
-                            updated_at: new Date().toISOString()
+                            value: value
                         })
                         .select();
                     
@@ -1616,7 +1610,6 @@
             const end = Math.min(start + ROWS_PER_PAGE, totalUsers);
             const pageUsers = usersData.slice(start, end);
 
-            // 🔥 Ambil semua deposit untuk perhitungan
             const allDeposits = depositsData;
             const allWithdrawals = withdrawalsData;
             const refPercent = parseInt(await getSetting('ref_percent')) || 3;
@@ -1628,7 +1621,7 @@
                 const verifiedStatus = u.verified ? '✅ Verified' : '⏳ Pending';
                 const num = start + i + 1;
 
-                // 🔥 HITUNG TOTAL DEPOSIT USER
+                // HITUNG TOTAL DEPOSIT USER
                 const userDeposits = allDeposits.filter(d => d.email === u.email && d.status === 'approved');
                 let totalDeposit = 0;
                 let totalBonus = 0;
@@ -1637,7 +1630,7 @@
                     totalBonus += dep.bonus || 0;
                 }
 
-                // 🔥 HITUNG OMSET (Total deposit + bonus dari semua downline)
+                // HITUNG OMSET
                 let totalOmset = 0;
                 const downlineUsers = usersData.filter(d => d.referred_by === u.ref_code);
                 for (const down of downlineUsers) {
@@ -1647,7 +1640,7 @@
                     }
                 }
 
-                // 🔥 HITUNG REFERRAL EARNINGS (3% dari deposit pertama setiap downline)
+                // HITUNG REFERRAL EARNINGS
                 let refEarnings = 0;
                 for (const down of downlineUsers) {
                     const downDeposits = allDeposits
@@ -1658,7 +1651,6 @@
                     }
                 }
 
-                // Kurangi dengan withdrawal
                 const userWd = allWithdrawals.filter(w => w.email === u.email && w.status === 'approved');
                 const totalWd = userWd.reduce((sum, w) => sum + w.amount, 0);
                 refEarnings = Math.round((refEarnings - totalWd) * 100) / 100;
@@ -1753,12 +1745,13 @@
 
             let html = '';
             pending.forEach(d => {
+                const txDisplay = d.tx_hash ? d.tx_hash.substring(0, 20) + '...' : '-';
                 html += `<tr>
                     <td>${d.email}</td>
                     <td>${d.usdt}</td>
                     <td>${d.bonus || 0}</td>
                     <td>${d.total || d.usdt}</td>
-                    <td style="font-family:monospace; font-size:0.7rem;">${d.tx_hash || '-'}</td>
+                    <td style="font-family:monospace; font-size:0.7rem;">${txDisplay}</td>
                     <td>
                         <button class="btn-approve deposit-approve" data-id="${d.id}">✅ Approve</button>
                         <button class="btn-reject deposit-reject" data-id="${d.id}">✖ Reject</button>
