@@ -253,6 +253,7 @@
             font-size: 0.9rem;
         }
 
+        /* ===== BUTTONS ===== */
         .btn-approve {
             background: rgba(60, 220, 80, 0.15);
             border: 1px solid rgba(60, 220, 80, 0.2);
@@ -281,6 +282,45 @@
         }
         .btn-reject:hover {
             background: rgba(255, 60, 60, 0.25);
+        }
+
+        /* ===== COPY ADDRESS BUTTON ===== */
+        .btn-copy-address {
+            background: rgba(60, 120, 255, 0.1);
+            border: 1px solid rgba(80, 140, 255, 0.1);
+            border-radius: 60px;
+            padding: 0.2rem 0.6rem;
+            color: #60a5fa;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: 0.1s;
+            border: none;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .btn-copy-address:hover {
+            background: rgba(60, 120, 255, 0.2);
+        }
+        .btn-copy-address.copied {
+            background: rgba(60, 220, 80, 0.15);
+            color: #6aff8a;
+            border-color: rgba(60, 220, 80, 0.15);
+        }
+
+        .address-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: monospace;
+            font-size: 0.7rem;
+        }
+        .address-cell .address-text {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .pagination {
@@ -529,6 +569,7 @@
             margin-top: 0.8rem;
         }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .section-card {
                 padding: 1rem 0.8rem;
@@ -589,6 +630,13 @@
             .btn-reject {
                 font-size: 0.65rem;
                 padding: 0.18rem 0.6rem;
+            }
+            .btn-copy-address {
+                font-size: 0.55rem;
+                padding: 0.15rem 0.5rem;
+            }
+            .address-cell .address-text {
+                max-width: 80px;
             }
             .pagination button {
                 padding: 0.25rem 0.6rem;
@@ -709,6 +757,14 @@
                 font-size: 0.55rem;
                 padding: 0.15rem 0.5rem;
             }
+            .btn-copy-address {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.4rem;
+            }
+            .address-cell .address-text {
+                max-width: 60px;
+                font-size: 0.6rem;
+            }
             .pagination button {
                 padding: 0.2rem 0.45rem;
                 font-size: 0.6rem;
@@ -778,6 +834,10 @@
             .table-wrapper table {
                 font-size: 0.55rem;
                 min-width: 340px;
+            }
+            .address-cell .address-text {
+                max-width: 40px;
+                font-size: 0.5rem;
             }
             .bottom-nav a {
                 min-width: 28px;
@@ -921,7 +981,9 @@
                 </div>
             </div>
 
-            <!-- TAB WITHDRAW -->
+            <!-- ============================================================ -->
+            <!-- TAB WITHDRAW - DENGAN COPY ADDRESS                            -->
+            <!-- ============================================================ -->
             <div class="tab-content" id="tabWithdraw">
                 <div class="section-title"><i class="fas fa-arrow-up"></i> Pending Withdrawals</div>
                 <div class="table-wrapper">
@@ -1104,7 +1166,74 @@
         }
 
         // ============================================================
-        // 5. SUPABASE FUNCTIONS
+        // 5. TOAST
+        // ============================================================
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.className = 'toast-message show';
+            if (type === 'success') {
+                toast.style.borderLeftColor = '#6aff8a';
+            } else if (type === 'error') {
+                toast.style.borderLeftColor = '#ff6a6a';
+            } else {
+                toast.style.borderLeftColor = '#c0c0c0';
+            }
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // 6. COPY ADDRESS FUNCTION
+        // ============================================================
+        function copyAddress(address, btnElement) {
+            if (!address || address === '-') {
+                showToast('❌ No address to copy', 'error');
+                return;
+            }
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address).then(() => {
+                    btnElement.classList.add('copied');
+                    btnElement.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    showToast('📋 Address copied!', 'success');
+                    setTimeout(() => {
+                        btnElement.classList.remove('copied');
+                        btnElement.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    }, 2000);
+                }).catch(() => {
+                    fallbackCopyAddress(address, btnElement);
+                });
+            } else {
+                fallbackCopyAddress(address, btnElement);
+            }
+        }
+
+        function fallbackCopyAddress(address, btnElement) {
+            const ta = document.createElement('textarea');
+            ta.value = address;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                btnElement.classList.add('copied');
+                btnElement.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                showToast('📋 Address copied!', 'success');
+                setTimeout(() => {
+                    btnElement.classList.remove('copied');
+                    btnElement.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            } catch (e) {
+                showToast('❌ Failed to copy. Please copy manually.', 'error');
+            }
+            document.body.removeChild(ta);
+        }
+
+        // ============================================================
+        // 7. SUPABASE FUNCTIONS
         // ============================================================
         async function getUserByEmail(email) {
             try {
@@ -1165,11 +1294,10 @@
         }
 
         // ============================================================
-        // 🔥 PERUBAHAN: updateDepositStatus dengan verifikasi user
+        // 8. UPDATE DEPOSIT STATUS (DENGAN AUTO VERIFY)
         // ============================================================
         async function updateDepositStatus(id, status) {
             try {
-                // Ambil data deposit dulu
                 const { data: deposit, error: getError } = await supabaseClient
                     .from('deposits')
                     .select('*')
@@ -1178,7 +1306,6 @@
                 
                 if (getError) throw getError;
                 
-                // Update status deposit
                 const { error } = await supabaseClient
                     .from('deposits')
                     .update({ 
@@ -1189,7 +1316,6 @@
                 
                 if (error) throw error;
                 
-                // 🔥 Jika status approved, verifikasi user
                 if (status === 'approved' && deposit) {
                     const { error: userError } = await supabaseClient
                         .from('users')
@@ -1201,9 +1327,8 @@
                     
                     if (userError) {
                         console.error('❌ Failed to verify user:', userError);
-                        // Jangan throw, biarkan deposit tetap approved
                     } else {
-                        console.log(`✅ User ${deposit.email} verified!`);
+                        console.log(`✅ User ${deposit.email} verified automatically!`);
                     }
                 }
                 
@@ -1214,6 +1339,9 @@
             }
         }
 
+        // ============================================================
+        // 9. UPDATE WITHDRAWAL STATUS
+        // ============================================================
         async function updateWithdrawalStatus(id, status) {
             try {
                 const { error } = await supabaseClient
@@ -1231,6 +1359,9 @@
             }
         }
 
+        // ============================================================
+        // 10. SETTINGS FUNCTIONS
+        // ============================================================
         async function getSetting(key) {
             try {
                 const { data, error } = await supabaseClient
@@ -1250,7 +1381,6 @@
             try {
                 console.log(`💾 Saving setting: ${key} = ${value}`);
                 
-                // Cek apakah setting sudah ada
                 const { data: existing, error: checkError } = await supabaseClient
                     .from('settings')
                     .select('key')
@@ -1264,8 +1394,6 @@
                 
                 let result;
                 if (existing) {
-                    // UPDATE
-                    console.log(`🔄 Updating existing setting: ${key}`);
                     const { data, error } = await supabaseClient
                         .from('settings')
                         .update({
@@ -1279,8 +1407,6 @@
                     result = data;
                     console.log('✅ Setting updated:', key, '=', value);
                 } else {
-                    // INSERT
-                    console.log(`➕ Inserting new setting: ${key}`);
                     const { data, error } = await supabaseClient
                         .from('settings')
                         .insert({
@@ -1313,17 +1439,7 @@
         }
 
         // ============================================================
-        // 6. TOAST
-        // ============================================================
-        function showToast(msg) {
-            const toast = document.getElementById('toastMessage');
-            document.getElementById('toastText').textContent = msg;
-            toast.style.display = 'flex';
-            setTimeout(() => { toast.style.display = 'none'; }, 3500);
-        }
-
-        // ============================================================
-        // 7. LOAD & CHECK AUTH
+        // 11. LOAD & CHECK AUTH
         // ============================================================
         async function loadCurrentUser() {
             try {
@@ -1346,7 +1462,7 @@
         async function checkAuth() {
             if (!supabaseClient) {
                 console.error('❌ Supabase not initialized!');
-                showToast('⚠️ System not ready. Please refresh.');
+                showToast('⚠️ System not ready. Please refresh.', 'error');
                 return false;
             }
 
@@ -1370,7 +1486,7 @@
         }
 
         // ============================================================
-        // 8. TABS
+        // 12. TABS
         // ============================================================
         const navItems = document.querySelectorAll('.bottom-nav a[data-tab]');
         const tabContents = {
@@ -1409,7 +1525,7 @@
         });
 
         // ============================================================
-        // 9. RENDER FUNCTIONS
+        // 13. RENDER FUNCTIONS
         // ============================================================
         function renderUsersTable() {
             const tbody = document.getElementById('adminUserBody');
@@ -1542,10 +1658,10 @@
                     const id = parseInt(this.dataset.id);
                     try {
                         await updateDepositStatus(id, 'approved');
-                        showToast('✅ Deposit approved! User verified!');
+                        showToast('✅ Deposit approved! User verified!', 'success');
                         await updateUI();
                     } catch (err) {
-                        showToast('❌ Failed: ' + err.message);
+                        showToast('❌ Failed: ' + err.message, 'error');
                     }
                 });
             });
@@ -1555,15 +1671,18 @@
                     const id = parseInt(this.dataset.id);
                     try {
                         await updateDepositStatus(id, 'rejected');
-                        showToast('❌ Deposit rejected.');
+                        showToast('❌ Deposit rejected.', 'error');
                         await updateUI();
                     } catch (err) {
-                        showToast('❌ Failed: ' + err.message);
+                        showToast('❌ Failed: ' + err.message, 'error');
                     }
                 });
             });
         }
 
+        // ============================================================
+        // 14. RENDER PENDING WITHDRAWALS - DENGAN COPY ADDRESS
+        // ============================================================
         function renderPendingWithdrawals() {
             const tbody = document.getElementById('adminWdBody');
             const pending = withdrawalsData.filter(w => w.status === 'pending');
@@ -1577,11 +1696,22 @@
             pending.forEach(w => {
                 const date = new Date(w.timestamp).toLocaleDateString('en-US') + ' ' + new Date(w.timestamp)
                     .toLocaleTimeString('en-US');
-                const addrShort = w.address ? w.address.substring(0, 10) + '...' : '-';
+                
+                // 🔥 Address dengan tombol copy
+                const address = w.address || '-';
+                const addressDisplay = address !== '-' ? 
+                    `<div class="address-cell">
+                        <span class="address-text" title="${address}">${address}</span>
+                        <button class="btn-copy-address copy-wd-address" data-address="${address}">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>` : 
+                    `<span style="color:#666;">-</span>`;
+
                 html += `<tr>
                     <td>${w.email}</td>
                     <td>${w.amount} USDT</td>
-                    <td style="font-family:monospace; font-size:0.7rem;">${addrShort}</td>
+                    <td>${addressDisplay}</td>
                     <td>${date}</td>
                     <td>
                         <button class="btn-approve wd-approve" data-id="${w.id}">✅ Approve</button>
@@ -1591,15 +1721,29 @@
             });
             tbody.innerHTML = html;
 
+            // ============================================================
+            // 🔥 EVENT LISTENER UNTUK COPY ADDRESS
+            // ============================================================
+            document.querySelectorAll('.copy-wd-address').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const address = this.dataset.address;
+                    copyAddress(address, this);
+                });
+            });
+
+            // ============================================================
+            // EVENT LISTENER UNTUK APPROVE / REJECT WD
+            // ============================================================
             document.querySelectorAll('.wd-approve').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
                     try {
                         await updateWithdrawalStatus(id, 'approved');
-                        showToast('✅ Withdrawal approved!');
+                        showToast('✅ Withdrawal approved!', 'success');
                         await updateUI();
                     } catch (err) {
-                        showToast('❌ Failed: ' + err.message);
+                        showToast('❌ Failed: ' + err.message, 'error');
                     }
                 });
             });
@@ -1609,17 +1753,17 @@
                     const id = parseInt(this.dataset.id);
                     try {
                         await updateWithdrawalStatus(id, 'rejected');
-                        showToast('❌ Withdrawal rejected.');
+                        showToast('❌ Withdrawal rejected.', 'error');
                         await updateUI();
                     } catch (err) {
-                        showToast('❌ Failed: ' + err.message);
+                        showToast('❌ Failed: ' + err.message, 'error');
                     }
                 });
             });
         }
 
         // ============================================================
-        // 10. LOAD QRIS & SETTINGS
+        // 15. LOAD QRIS & SETTINGS
         // ============================================================
         async function loadQrisPreview() {
             try {
@@ -1676,7 +1820,6 @@
             try {
                 console.log('🔄 Loading settings from Supabase...');
                 
-                // Ambil semua setting sekaligus
                 const { data: allSettings, error } = await supabaseClient
                     .from('settings')
                     .select('*');
@@ -1685,7 +1828,6 @@
                 
                 console.log('📌 All settings:', allSettings);
                 
-                // Convert to object for easy access
                 const settingsMap = {};
                 allSettings.forEach(s => {
                     settingsMap[s.key] = s.value;
@@ -1693,7 +1835,6 @@
                 
                 console.log('📌 Settings map:', settingsMap);
                 
-                // Apply to UI
                 document.getElementById('adminBrandName').value = settingsMap.brand_name || '';
                 document.getElementById('adminLogoUrl').value = settingsMap.logo_image || '';
                 document.getElementById('adminTwitter').value = settingsMap.contact_twitter || '';
@@ -1711,7 +1852,6 @@
                     document.getElementById('adminRefPercent').value = settingsMap.ref_percent;
                 }
                 
-                // Save to localStorage
                 const settings = {
                     brandName: settingsMap.brand_name || '',
                     logoImage: settingsMap.logo_image || '',
@@ -1726,7 +1866,6 @@
                 
             } catch (e) {
                 console.error('❌ Load settings error:', e);
-                // Fallback to localStorage
                 try {
                     const settings = JSON.parse(localStorage.getItem('silverchain_settings') || '{}');
                     document.getElementById('adminBrandName').value = settings.brandName || '';
@@ -1742,109 +1881,103 @@
         }
 
         // ============================================================
-        // 11. SAVE SETTINGS
+        // 16. SAVE SETTINGS
         // ============================================================
 
         document.getElementById('saveTwitterBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminTwitter').value.trim();
             if (!value) {
-                showToast('❌ Please enter a Twitter URL.');
+                showToast('❌ Please enter a Twitter URL.', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('contact_twitter', value);
-                showToast('✅ Twitter URL saved to database!');
+                showToast('✅ Twitter URL saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveTelegramBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminTelegram').value.trim();
             if (!value) {
-                showToast('❌ Please enter a Telegram URL.');
+                showToast('❌ Please enter a Telegram URL.', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('contact_telegram', value);
-                showToast('✅ Telegram URL saved to database!');
+                showToast('✅ Telegram URL saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveDiscordBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminDiscord').value.trim();
             if (!value) {
-                showToast('❌ Please enter a Discord URL.');
+                showToast('❌ Please enter a Discord URL.', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('contact_discord', value);
-                showToast('✅ Discord URL saved to database!');
+                showToast('✅ Discord URL saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveContactEmailBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminContactEmail').value.trim();
             if (!value || !value.includes('@')) {
-                showToast('❌ Please enter a valid email.');
+                showToast('❌ Please enter a valid email.', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('contact_email', value);
-                showToast('✅ Contact email saved to database!');
+                showToast('✅ Contact email saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveBrandBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminBrandName').value.trim();
             if (!value) {
-                showToast('❌ Please enter a brand name.');
+                showToast('❌ Please enter a brand name.', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('brand_name', value);
-                showToast('✅ Brand name saved to database!');
+                showToast('✅ Brand name saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveLogoBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminLogoUrl').value.trim();
             if (!value) {
-                showToast('❌ Please enter a logo URL.');
+                showToast('❌ Please enter a logo URL.', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('logo_image', value);
                 await saveSetting('logo_type', 'image');
-                showToast('✅ Logo saved to database!');
+                showToast('✅ Logo saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
@@ -1854,89 +1987,83 @@
                 await saveSetting('logo_image', '');
                 await saveSetting('logo_type', 'icon');
                 await saveSetting('logo_icon', 'fas fa-coins');
-                showToast('✅ Logo reset to default!');
+                showToast('✅ Logo reset to default!', 'success');
                 document.getElementById('adminLogoUrl').value = '';
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveSettingsBtn').addEventListener('click', async function() {
             const bonus = parseInt(document.getElementById('adminBonusPercent').value) || 10;
             const ref = parseInt(document.getElementById('adminRefPercent').value) || 3;
-            
             try {
                 await saveSetting('bonus_percent', String(bonus));
                 await saveSetting('ref_percent', String(ref));
-                showToast('✅ Settings saved to database!');
+                showToast('✅ Settings saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveUsdtBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminUsdtAddress').value.trim();
             if (!value || value.length < 10) {
-                showToast('❌ Please enter a valid USDT address.');
+                showToast('❌ Please enter a valid USDT address.', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('usdt_address', value);
                 localStorage.setItem('silverchain_usdt_address', value);
-                showToast('✅ USDT address saved to database!');
+                showToast('✅ USDT address saved to database!', 'success');
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         document.getElementById('saveQrisUrlBtn').addEventListener('click', async function() {
             const value = document.getElementById('adminQrisUrl').value.trim();
-            
             if (!value) {
-                showToast('❌ Please enter a QRIS image URL.');
+                showToast('❌ Please enter a QRIS image URL.', 'error');
                 return;
             }
-            
             if (!value.startsWith('http://') && !value.startsWith('https://')) {
-                showToast('❌ Please enter a valid URL (http:// or https://)');
+                showToast('❌ Please enter a valid URL (http:// or https://)', 'error');
                 return;
             }
-            
             if (value.includes('imgur.com/a/') || value.includes('imgur.com/gallery/')) {
-                showToast('❌ Gunakan direct image URL: i.imgur.com/xxxxx.png');
+                showToast('❌ Gunakan direct image URL: i.imgur.com/xxxxx.png', 'error');
                 return;
             }
-            
             try {
                 await saveSetting('qris_image', value);
-                showToast('✅ QRIS image URL saved to database!');
+                showToast('✅ QRIS image URL saved to database!', 'success');
                 await loadQrisPreview();
                 await loadSettingsUI();
                 await updateUI();
             } catch (err) {
-                showToast('❌ Failed: ' + err.message);
+                showToast('❌ Failed: ' + err.message, 'error');
             }
         });
 
         // ============================================================
-        // 12. LOGOUT
+        // 17. LOGOUT
         // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
             currentUser = null;
-            showToast('👋 Logged out.');
+            showToast('👋 Logged out.', 'info');
             setTimeout(() => { window.location.href = '/'; }, 500);
         });
 
         // ============================================================
-        // 13. UPDATE UI
+        // 18. UPDATE UI
         // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
@@ -1984,19 +2111,19 @@
 
             } catch (error) {
                 console.error('❌ Update UI error:', error);
-                showToast('⚠️ Failed to load data: ' + error.message);
+                showToast('⚠️ Failed to load data: ' + error.message, 'error');
             }
         }
 
         // ============================================================
-        // 14. INIT
+        // 19. INIT
         // ============================================================
         async function init() {
             console.log('🔄 Admin panel initializing...');
 
             if (!supabaseClient) {
                 console.error('❌ Supabase not ready!');
-                showToast('❌ System not ready. Please refresh.');
+                showToast('❌ System not ready. Please refresh.', 'error');
                 setTimeout(init, 2000);
                 return;
             }
