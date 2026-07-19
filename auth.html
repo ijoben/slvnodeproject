@@ -483,20 +483,20 @@
                     <label>Password <span class="required">*</span></label>
                     <div class="input-wrap">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="registerPassword" placeholder="Min 6 characters" required minlength="6" />
+                        <input type="password" id="registerPassword" placeholder="Min 8 characters" required minlength="8" />
                         <span class="password-strength" id="passwordStrength"></span>
                         <button type="button" class="toggle-pw" onclick="togglePassword('registerPassword', this)"><i class="fas fa-eye"></i></button>
                     </div>
                     <div class="info-banner">
                         <i class="fas fa-info-circle"></i>
-                        <span>Password must be at least 6 characters</span>
+                        <span>Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special character</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Confirm Password <span class="required">*</span></label>
                     <div class="input-wrap">
                         <i class="fas fa-check-circle"></i>
-                        <input type="password" id="registerConfirmPassword" placeholder="Re-enter your password" required minlength="6" />
+                        <input type="password" id="registerConfirmPassword" placeholder="Re-enter your password" required minlength="8" />
                         <button type="button" class="toggle-pw" onclick="togglePassword('registerConfirmPassword', this)"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
@@ -534,11 +534,107 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyYnJpYXNnbXhqenZidWtzbGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMzAxODMsImV4cCI6MjA5OTYwNjE4M30.fhcSgXY-D-AvgDyg86v7eA_ltAU_UC0LFrCDnsJufgg';
         const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
         const ADMIN_EMAIL = 'admin@silverchain.io';
-        const MIN_PASSWORD_LENGTH = 6;
+        const MIN_PASSWORD_LENGTH = 8;
 
         let supabaseClient = null;
         let refCheckTimeout = null;
         let isReferralAutoFilled = false;
+
+        // ============================================================
+        // 🔥 SESSION TIMEOUT (30 menit)
+        // ============================================================
+        const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 menit
+        let sessionCheckInterval = null;
+
+        function checkSessionTimeout() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                        showToast('⏰ Session expired. Please login again.', 'error');
+                        window.location.href = '/auth';
+                        return true;
+                    }
+                } catch (e) {
+                    console.error('Session check error:', e);
+                }
+            }
+            return false;
+        }
+
+        // ============================================================
+        // 🔥 RATE LIMITING (Basic)
+        // ============================================================
+        const RATE_LIMIT = {
+            attempts: 0,
+            maxAttempts: 5,
+            lockTime: 0,
+            lockDuration: 15 * 60 * 1000 // 15 menit
+        };
+
+        function checkRateLimit() {
+            const now = Date.now();
+            if (RATE_LIMIT.lockTime > 0 && now - RATE_LIMIT.lockTime < RATE_LIMIT.lockDuration) {
+                const remaining = Math.ceil((RATE_LIMIT.lockDuration - (now - RATE_LIMIT.lockTime)) / 60000);
+                showToast(`⏳ Too many attempts. Try again in ${remaining} minutes.`, 'error');
+                return false;
+            }
+            if (RATE_LIMIT.attempts >= RATE_LIMIT.maxAttempts) {
+                RATE_LIMIT.lockTime = now;
+                showToast('⏳ Too many attempts. Try again in 15 minutes.', 'error');
+                return false;
+            }
+            return true;
+        }
+
+        function resetRateLimit() {
+            RATE_LIMIT.attempts = 0;
+            RATE_LIMIT.lockTime = 0;
+        }
+
+        // ============================================================
+        // 🔥 VALIDASI PASSWORD LEBIH KETAT
+        // ============================================================
+        function validatePasswordStrength(password) {
+            const errors = [];
+            if (password.length < 8) errors.push('Minimal 8 karakter');
+            if (!/[A-Z]/.test(password)) errors.push('Minimal 1 huruf kapital');
+            if (!/[a-z]/.test(password)) errors.push('Minimal 1 huruf kecil');
+            if (!/[0-9]/.test(password)) errors.push('Minimal 1 angka');
+            if (!/[^A-Za-z0-9]/.test(password)) errors.push('Minimal 1 karakter khusus (!@#$%^&*)');
+            return errors;
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toastMessage');
+            if (!toast) {
+                // Fallback jika toast tidak ada di halaman ini
+                alert(msg);
+                return;
+            }
+            const text = document.getElementById('toastText');
+            const icon = toast.querySelector('i');
+            
+            text.textContent = msg;
+            
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+                toast.style.borderLeftColor = '#6aff8a';
+            } else if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle';
+                toast.style.borderLeftColor = '#ff6a6a';
+            } else {
+                icon.className = 'fas fa-info-circle';
+                toast.style.borderLeftColor = '#c0c0c0';
+            }
+            
+            toast.style.display = 'flex';
+            setTimeout(() => { 
+                toast.style.display = 'none'; 
+            }, 4000);
+        }
 
         // ============================================================
         //  INIT SUPABASE
@@ -612,12 +708,12 @@
         function checkPasswordStrength(password) {
             if (!password || password.length === 0) return { label: '', class: '' };
             
-            if (password.length < 6) {
+            if (password.length < 8) {
                 return { label: 'Too short', class: 'weak' };
             }
             
             let score = 0;
-            if (password.length >= 8) score++;
+            if (password.length >= 10) score++;
             if (/[A-Z]/.test(password)) score++;
             if (/[a-z]/.test(password)) score++;
             if (/[0-9]/.test(password)) score++;
@@ -769,7 +865,7 @@
         }
 
         // ============================================================
-        //  REFERRAL AUTO-FILL FROM URL - TANPA NOTIFIKASI DOBEL
+        //  REFERRAL AUTO-FILL FROM URL
         // ============================================================
         function autoFillReferralCode() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -791,28 +887,23 @@
                 return false;
             }
 
-            // Set value
             const cleanRef = ref.trim().toUpperCase();
             refInput.value = cleanRef;
             
-            // Tampilkan status validasi (tanpa notifikasi dobel)
             refStatus.className = 'ref-status checking';
             refStatus.textContent = '⏳ Checking...';
             
-            // Highlight wrapper
             refWrapper.classList.add('highlight');
             
             isReferralAutoFilled = true;
             
             console.log(`✅ Referral code auto-filled: ${cleanRef}`);
             
-            // Switch to register tab
             const registerTab = document.querySelector('.auth-tab[data-tab="register"]');
             if (registerTab) {
                 registerTab.click();
             }
             
-            // Validate after a moment
             setTimeout(() => {
                 validateReferralCode(cleanRef);
             }, 800);
@@ -857,7 +948,6 @@
 
         if (refInput) {
             refInput.addEventListener('input', function() {
-                // Remove highlight when user manually edits
                 const wrapper = document.getElementById('refInputWrapper');
                 wrapper.classList.remove('highlight');
                 
@@ -927,7 +1017,7 @@
         });
 
         // ============================================================
-        //  LOGIN
+        //  LOGIN - DENGAN RATE LIMITING
         // ============================================================
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -947,12 +1037,24 @@
                 return;
             }
 
+            // 🔥 CEK RATE LIMIT
+            if (!checkRateLimit()) {
+                return;
+            }
+
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
             try {
                 const user = await loginUser(email, password);
-                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+                
+                // 🔥 SIMPAN DENGAN TIMESTAMP
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ 
+                    email: user.email,
+                    timestamp: Date.now()
+                }));
+                
+                RATE_LIMIT.attempts = 0;
                 showResult('loginResult', '✅ Login successful! Redirecting...', 'success');
 
                 setTimeout(() => {
@@ -960,6 +1062,8 @@
                 }, 800);
 
             } catch (err) {
+                // 🔥 TAMBAH ATTEMPT
+                RATE_LIMIT.attempts++;
                 showResult('loginResult', '❌ ' + err.message, 'error');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
@@ -967,7 +1071,7 @@
         });
 
         // ============================================================
-        //  REGISTER
+        //  REGISTER - DENGAN VALIDASI KETAT
         // ============================================================
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -989,8 +1093,10 @@
                 return;
             }
 
-            if (password.length < MIN_PASSWORD_LENGTH) {
-                showResult('registerResult', `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`, 'error');
+            // 🔥 VALIDASI PASSWORD KETAT
+            const passwordErrors = validatePasswordStrength(password);
+            if (passwordErrors.length > 0) {
+                showResult('registerResult', '❌ Password: ' + passwordErrors.join(', '), 'error');
                 return;
             }
 
@@ -1012,7 +1118,13 @@
 
             try {
                 const user = await createUser(email, password, refCode);
-                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+                
+                // 🔥 SIMPAN DENGAN TIMESTAMP
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ 
+                    email: user.email,
+                    timestamp: Date.now()
+                }));
+                
                 showResult('registerResult', '✅ Account created successfully! Redirecting...', 'success');
 
                 setTimeout(() => {
@@ -1050,6 +1162,12 @@
                 if (saved) {
                     const data = JSON.parse(saved);
                     if (data && data.email) {
+                        // 🔥 CEK SESSION TIMEOUT
+                        if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                            return false;
+                        }
+                        
                         const user = await getUserByEmail(data.email);
                         if (user) {
                             console.log('👤 Already logged in as:', user.email);
@@ -1063,6 +1181,18 @@
                 console.error('Check login error:', e);
                 return false;
             }
+        }
+
+        // ============================================================
+        //  SESSION CHECK INTERVAL
+        // ============================================================
+        function initSessionCheck() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+            }
+            sessionCheckInterval = setInterval(function() {
+                checkSessionTimeout();
+            }, 60000); // Cek setiap 1 menit
         }
 
         // ============================================================
@@ -1082,8 +1212,21 @@
             // Auto-fill referral code from URL
             autoFillReferralCode();
 
+            // 🔥 START SESSION CHECK
+            initSessionCheck();
+
             console.log('🟢 Auth page ready!');
         }
+
+        // ============================================================
+        //  CLEANUP
+        // ============================================================
+        window.addEventListener('beforeunload', function() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
+        });
 
         // Run init when DOM is ready
         if (document.readyState === 'loading') {
