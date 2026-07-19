@@ -253,7 +253,6 @@
             font-size: 0.9rem;
         }
 
-        /* ===== BUTTONS ===== */
         .btn-approve {
             background: rgba(60, 220, 80, 0.15);
             border: 1px solid rgba(60, 220, 80, 0.2);
@@ -569,7 +568,6 @@
             margin-top: 0.8rem;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .section-card {
                 padding: 1rem 0.8rem;
@@ -981,9 +979,7 @@
                 </div>
             </div>
 
-            <!-- ============================================================ -->
-            <!-- TAB WITHDRAW - DENGAN COPY ADDRESS                            -->
-            <!-- ============================================================ -->
+            <!-- TAB WITHDRAW - DENGAN COPY ADDRESS -->
             <div class="tab-content" id="tabWithdraw">
                 <div class="section-title"><i class="fas fa-arrow-up"></i> Pending Withdrawals</div>
                 <div class="table-wrapper">
@@ -1143,6 +1139,43 @@
 
         let currentPage = 1;
         let totalPages = 1;
+
+        // ============================================================
+        // 🔥 SESSION TIMEOUT (30 menit)
+        // ============================================================
+        const SESSION_TIMEOUT = 30 * 60 * 1000;
+        let sessionCheckInterval = null;
+
+        function checkSessionTimeout() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                        showToast('⏰ Session expired. Please login again.', 'error');
+                        setTimeout(() => { window.location.href = '/auth'; }, 1000);
+                        return true;
+                    }
+                } catch (e) {
+                    console.error('Session check error:', e);
+                }
+            }
+            return false;
+        }
+
+        function updateSessionTimestamp() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    data.timestamp = Date.now();
+                    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(data));
+                } catch (e) {
+                    console.error('Update session error:', e);
+                }
+            }
+        }
 
         // ============================================================
         // 3. INIT SUPABASE
@@ -1428,24 +1461,19 @@
             }
         }
 
-        async function isAdmin(email) {
-            try {
-                const user = await getUserByEmail(email);
-                return user && user.role === 'admin';
-            } catch (error) {
-                console.error('Check admin error:', error);
-                return false;
-            }
-        }
-
         // ============================================================
-        // 11. LOAD & CHECK AUTH
+        // 11. AUTH FUNCTIONS
         // ============================================================
         async function loadCurrentUser() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
+                    // 🔥 CEK SESSION TIMEOUT
+                    if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                        return false;
+                    }
                     const user = await getUserByEmail(data.email);
                     if (user) {
                         currentUser = user;
@@ -1459,6 +1487,34 @@
             }
         }
 
+        // ============================================================
+        // 🔥 ADMIN CHECK LEBIH AMAN (SERVER-SIDE)
+        // ============================================================
+        async function verifyAdminServerSide(email) {
+            try {
+                const user = await getUserByEmail(email);
+                if (!user) return false;
+                
+                if (user.role !== 'admin') {
+                    console.warn('⚠️ User is not admin:', email);
+                    return false;
+                }
+                
+                if (email !== ADMIN_EMAIL) {
+                    console.warn('⚠️ Not super admin:', email);
+                    return false;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Admin verification error:', error);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // 🔥 CHECK AUTH DENGAN SERVER-SIDE VERIFICATION
+        // ============================================================
         async function checkAuth() {
             if (!supabaseClient) {
                 console.error('❌ Supabase not initialized!');
@@ -1474,9 +1530,11 @@
                 return false;
             }
 
-            const adminCheck = await isAdmin(currentUser.email);
+            // 🔥 SERVER-SIDE ADMIN CHECK
+            const adminCheck = await verifyAdminServerSide(currentUser.email);
             if (!adminCheck) {
                 console.log('🔒 Not admin, redirecting to /dashboard');
+                localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
                 window.location.href = '/dashboard';
                 return false;
             }
@@ -1721,9 +1779,7 @@
             });
             tbody.innerHTML = html;
 
-            // ============================================================
             // 🔥 EVENT LISTENER UNTUK COPY ADDRESS
-            // ============================================================
             document.querySelectorAll('.copy-wd-address').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1732,9 +1788,7 @@
                 });
             });
 
-            // ============================================================
-            // EVENT LISTENER UNTUK APPROVE / REJECT WD
-            // ============================================================
+            // 🔥 EVENT LISTENER UNTUK APPROVE / REJECT WD
             document.querySelectorAll('.wd-approve').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const id = parseInt(this.dataset.id);
@@ -2058,6 +2112,10 @@
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
             currentUser = null;
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
             showToast('👋 Logged out.', 'info');
             setTimeout(() => { window.location.href = '/'; }, 500);
         });
@@ -2077,7 +2135,7 @@
                 return;
             }
 
-            const adminCheck = await isAdmin(currentUser.email);
+            const adminCheck = await verifyAdminServerSide(currentUser.email);
             if (!adminCheck) {
                 return;
             }
@@ -2116,7 +2174,26 @@
         }
 
         // ============================================================
-        // 19. INIT
+        // 19. SESSION CHECK INTERVAL
+        // ============================================================
+        function initSessionCheck() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+            }
+            sessionCheckInterval = setInterval(function() {
+                if (currentUser) {
+                    if (checkSessionTimeout()) {
+                        clearInterval(sessionCheckInterval);
+                        sessionCheckInterval = null;
+                    } else {
+                        updateSessionTimestamp();
+                    }
+                }
+            }, 300000);
+        }
+
+        // ============================================================
+        // 20. INIT
         // ============================================================
         async function init() {
             console.log('🔄 Admin panel initializing...');
@@ -2133,10 +2210,23 @@
 
             showTab('tabUsers');
             await updateUI();
+            
+            // 🔥 START SESSION CHECK
+            initSessionCheck();
 
             console.log('🟢 Admin panel ready!');
             console.log('👑 Admin:', currentUser.email);
         }
+
+        // ============================================================
+        // 21. CLEANUP
+        // ============================================================
+        window.addEventListener('beforeunload', function() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
+        });
 
         init();
 
