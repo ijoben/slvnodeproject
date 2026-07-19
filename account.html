@@ -174,9 +174,11 @@
             color: #c0c0c0;
             margin-right: 6px;
         }
+
+        /* 🔥 4 KOLOM */
         .downline-stats {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 0.5rem;
             margin-bottom: 0.6rem;
         }
@@ -200,7 +202,8 @@
         }
         .downline-stat.active .num { color: #6aff8a; }
         .downline-stat.pending .num { color: #fbbf24; }
-        .downline-stat.earnings .num { color: #60a5fa; }
+        .downline-stat.earnings .num { color: #c0c0c0; }
+        .downline-stat.omset .num { color: #60a5fa; }
 
         .downline-table-wrapper {
             width: 100%;
@@ -536,6 +539,10 @@
                 font-size: 0.6rem;
                 padding: 0.2rem 0.7rem;
             }
+            .downline-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.4rem;
+            }
             .downline-stat .num {
                 font-size: 1.1rem;
             }
@@ -613,7 +620,7 @@
                 font-size: 0.7rem;
             }
             .downline-stats {
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr;
                 gap: 0.25rem;
             }
             .downline-stat {
@@ -750,6 +757,7 @@
             <div class="downline-section">
                 <h4><i class="fas fa-users"></i> Referral Network</h4>
 
+                <!-- 🔥 4 KOLOM: Total, Active, Earnings, Omset -->
                 <div class="downline-stats">
                     <div class="downline-stat active">
                         <div class="num" id="downlineTotal">0</div>
@@ -762,6 +770,11 @@
                     <div class="downline-stat earnings">
                         <div class="num" id="downlineEarnings">0</div>
                         <div class="label">Earnings (USDT)</div>
+                    </div>
+                    <!-- 🔥 TOTAL OMSET -->
+                    <div class="downline-stat omset">
+                        <div class="num" id="downlineOmset">0</div>
+                        <div class="label">💰 Total Omset</div>
                     </div>
                 </div>
 
@@ -894,7 +907,7 @@
         }
 
         // ============================================================
-        // 🔥 VALIDASI PASSWORD LEBIH KETAT (Untuk Change Password)
+        // 🔥 VALIDASI PASSWORD LEBIH KETAT
         // ============================================================
         function validateNewPassword(password) {
             const errors = [];
@@ -983,52 +996,6 @@
             }
         }
 
-        async function createOrUpdateUser(email, password, refCode = null) {
-            try {
-                const existing = await getUserByEmail(email);
-                
-                if (existing) {
-                    const updateData = {};
-                    if (password) updateData.password = hashPassword(password);
-                    if (refCode) updateData.ref_code = refCode;
-                    
-                    const { data, error } = await supabaseClient
-                        .from('users')
-                        .update({ ...updateData, updated_at: new Date().toISOString() })
-                        .eq('email', email)
-                        .select()
-                        .single();
-                    
-                    if (error) throw error;
-                    return data;
-                } else {
-                    const newRefCode = generateRefCode();
-                    const hashedPassword = hashPassword(password);
-                    
-                    const { data, error } = await supabaseClient
-                        .from('users')
-                        .insert({
-                            email: email,
-                            password: hashedPassword,
-                            ref_code: newRefCode,
-                            referred_by: refCode || null,
-                            verified: false,
-                            role: email === ADMIN_EMAIL ? 'admin' : 'member',
-                            created_at: new Date().toISOString(),
-                            updated_at: new Date().toISOString()
-                        })
-                        .select()
-                        .single();
-                    
-                    if (error) throw error;
-                    return data;
-                }
-            } catch (error) {
-                console.error('Create/update user error:', error);
-                throw error;
-            }
-        }
-
         async function getUserDeposits(email) {
             try {
                 const { data, error } = await supabaseClient
@@ -1056,48 +1023,6 @@
             } catch (error) {
                 console.error('Get user withdrawals error:', error);
                 return [];
-            }
-        }
-
-        async function getReferralBalance(email) {
-            try {
-                const user = await getUserByEmail(email);
-                if (!user) return 0;
-
-                const { data: referrals } = await supabaseClient
-                    .from('users')
-                    .select('email')
-                    .eq('referred_by', user.ref_code);
-
-                const { data: settings } = await supabaseClient
-                    .from('settings')
-                    .select('value')
-                    .eq('key', 'ref_percent')
-                    .maybeSingle();
-
-                const refPercent = parseInt(settings ? settings.value : 3) || 3;
-                let total = 0;
-
-                for (const ref of referrals) {
-                    const deposits = await getUserDeposits(ref.email);
-                    const firstDeposit = deposits
-                        .filter(d => d.status === 'approved')
-                        .sort((a, b) => a.timestamp - b.timestamp)[0];
-
-                    if (firstDeposit) {
-                        total += firstDeposit.usdt * refPercent / 100;
-                    }
-                }
-
-                const withdrawals = await getUserWithdrawals(email);
-                const totalWd = withdrawals
-                    .filter(w => w.status === 'approved')
-                    .reduce((sum, w) => sum + w.amount, 0);
-
-                return Math.round((total - totalWd) * 100) / 100;
-            } catch (error) {
-                console.error('Get referral balance error:', error);
-                return 0;
             }
         }
 
@@ -1140,7 +1065,6 @@
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
-                    // 🔥 CEK SESSION TIMEOUT
                     if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
                         localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
                         return false;
@@ -1189,7 +1113,7 @@
         }
 
         // ============================================================
-        // FUNGSI UPDATE UI
+        // FUNGSI UPDATE UI - DENGAN OMSET
         // ============================================================
         async function updateUI() {
             if (isRefreshing) return;
@@ -1212,6 +1136,7 @@
                 document.getElementById('downlineTotal').textContent = '0';
                 document.getElementById('downlineActive').textContent = '0';
                 document.getElementById('downlineEarnings').textContent = '0';
+                document.getElementById('downlineOmset').textContent = '0';
                 return;
             }
 
@@ -1252,31 +1177,48 @@
                     adminBtn.style.display = 'none';
                 }
 
+                // ============================================================
+                // 🔥 DOWNLINE - DENGAN PERHITUNGAN OMSET
+                // ============================================================
                 const downline = await getDownline(user.ref_code);
                 const totalReferrals = downline.length;
                 const activeReferrals = downline.filter(d => d.verified === true).length;
 
                 let totalEarnings = 0;
+                let totalOmset = 0;
                 const refPercent = parseInt(await getSetting('ref_percent')) || 3;
+
                 for (const ref of downline) {
                     const deposits = await getUserDeposits(ref.email);
-                    const firstDeposit = deposits
-                        .filter(d => d.status === 'approved')
+                    
+                    // 🔥 HITUNG OMSET: Total deposit approved dari setiap downline
+                    const approvedDeposits = deposits.filter(d => d.status === 'approved');
+                    for (const dep of approvedDeposits) {
+                        totalOmset += dep.usdt + (dep.bonus || 0);
+                    }
+                    
+                    // 🔥 HITUNG EARNINGS: Hanya dari deposit pertama yang approved
+                    const firstDeposit = approvedDeposits
                         .sort((a, b) => a.timestamp - b.timestamp)[0];
                     if (firstDeposit) {
                         totalEarnings += firstDeposit.usdt * refPercent / 100;
                     }
                 }
+
+                // Kurangi dengan withdrawal yang sudah approved
                 const wdHistory = await getUserWithdrawals(user.email);
                 const totalWd = wdHistory
                     .filter(w => w.status === 'approved')
                     .reduce((sum, w) => sum + w.amount, 0);
                 totalEarnings = Math.round((totalEarnings - totalWd) * 100) / 100;
 
+                // Update stats
                 document.getElementById('downlineTotal').textContent = totalReferrals;
                 document.getElementById('downlineActive').textContent = activeReferrals;
                 document.getElementById('downlineEarnings').textContent = totalEarnings.toFixed(1);
+                document.getElementById('downlineOmset').textContent = totalOmset.toFixed(1);
 
+                // Render table
                 if (downline.length === 0) {
                     document.getElementById('downlineBody').innerHTML =
                         `<tr><td colspan="5" class="empty">No referrals yet</td></tr>`;
@@ -1378,7 +1320,7 @@
         }
 
         // ============================================================
-        // 🔥 CHANGE PASSWORD - DENGAN VALIDASI KETAT
+        // CHANGE PASSWORD - DENGAN VALIDASI KETAT
         // ============================================================
         document.getElementById('changePasswordBtn').addEventListener('click', function() {
             document.getElementById('passwordModal').classList.add('active');
@@ -1432,7 +1374,6 @@
                 return;
             }
 
-            // 🔥 UPDATE SESSION TIMESTAMP
             updateSessionTimestamp();
 
             try {
@@ -1576,7 +1517,6 @@
 
             await updateUI();
             
-            // 🔥 START SESSION CHECK
             initSessionCheck();
 
             console.log('🟢 Account page ready!');
