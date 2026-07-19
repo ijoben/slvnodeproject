@@ -493,24 +493,6 @@
             margin-top: 0.8rem;
         }
 
-        /* Loading skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, rgba(60,120,255,0.05) 25%, rgba(60,120,255,0.1) 50%, rgba(60,120,255,0.05) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 4px;
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .loading-placeholder {
-            color: #666;
-            text-align: center;
-            padding: 1rem;
-        }
-
         @media (min-width: 768px) {
             .bottom-nav {
                 padding: 0.8rem 2rem 1rem;
@@ -845,7 +827,7 @@
             </div>
             <div class="input-group">
                 <label>New Password</label>
-                <input type="password" id="modalNewPassword" placeholder="Min 4 characters" />
+                <input type="password" id="modalNewPassword" placeholder="Min 8 characters" />
             </div>
             <div class="input-group">
                 <label>Confirm New Password</label>
@@ -873,6 +855,56 @@
         let supabaseClient = null;
         let isRefreshing = false;
         let toastTimeout = null;
+
+        // ============================================================
+        // 🔥 SESSION TIMEOUT (30 menit)
+        // ============================================================
+        const SESSION_TIMEOUT = 30 * 60 * 1000;
+        let sessionCheckInterval = null;
+
+        function checkSessionTimeout() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                        showToast('⏰ Session expired. Please login again.', 'error');
+                        setTimeout(() => { window.location.href = '/auth'; }, 1000);
+                        return true;
+                    }
+                } catch (e) {
+                    console.error('Session check error:', e);
+                }
+            }
+            return false;
+        }
+
+        function updateSessionTimestamp() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    data.timestamp = Date.now();
+                    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(data));
+                } catch (e) {
+                    console.error('Update session error:', e);
+                }
+            }
+        }
+
+        // ============================================================
+        // 🔥 VALIDASI PASSWORD LEBIH KETAT (Untuk Change Password)
+        // ============================================================
+        function validateNewPassword(password) {
+            const errors = [];
+            if (password.length < 8) errors.push('Minimal 8 karakter');
+            if (!/[A-Z]/.test(password)) errors.push('Minimal 1 huruf kapital');
+            if (!/[a-z]/.test(password)) errors.push('Minimal 1 huruf kecil');
+            if (!/[0-9]/.test(password)) errors.push('Minimal 1 angka');
+            if (!/[^A-Za-z0-9]/.test(password)) errors.push('Minimal 1 karakter khusus (!@#$%^&*)');
+            return errors;
+        }
 
         // ============================================================
         // INISIALISASI SUPABASE
@@ -1108,6 +1140,11 @@
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
+                    // 🔥 CEK SESSION TIMEOUT
+                    if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                        return false;
+                    }
                     const user = await getUserByEmail(data.email);
                     if (user) {
                         currentUser = user;
@@ -1142,13 +1179,17 @@
         function logout() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
             currentUser = null;
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
             updateUI();
             showToast('👋 Logged out successfully.', 'info');
             setTimeout(() => { window.location.href = '/'; }, 500);
         }
 
         // ============================================================
-        // FUNGSI UPDATE UI - DENGAN PERBAIKAN VERIFIED
+        // FUNGSI UPDATE UI
         // ============================================================
         async function updateUI() {
             if (isRefreshing) return;
@@ -1177,7 +1218,6 @@
             isRefreshing = true;
             
             try {
-                // Refresh user data dari database
                 const user = await getUserByEmail(currentUser.email);
                 if (!user) {
                     showToast('⚠️ User data not found. Please login again.', 'error');
@@ -1185,23 +1225,22 @@
                     return;
                 }
                 
-                // Update currentUser dengan data terbaru
                 currentUser = user;
-                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: user.email }));
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ 
+                    email: user.email,
+                    timestamp: Date.now()
+                }));
 
-                // Update profile
                 document.getElementById('profileName').textContent = user.email.split('@')[0];
                 document.getElementById('profileEmail').textContent = user.email;
                 document.getElementById('infoEmail').textContent = user.email;
                 document.getElementById('infoRefCode').textContent = user.ref_code || generateRefCode();
 
-                // Generate referral link
                 const domain = getDomain();
                 const refCode = user.ref_code || generateRefCode();
                 const refLink = `https://${domain}/?ref=${refCode}`;
                 document.getElementById('infoRefLink').textContent = refLink;
 
-                // Role
                 const isAdmin = user.role === 'admin';
                 document.getElementById('infoRole').textContent = isAdmin ? '👑 Admin' : 'Member';
 
@@ -1213,12 +1252,8 @@
                     adminBtn.style.display = 'none';
                 }
 
-                // ============================================================
-                // 🔥 PERBAIKAN: Downline dengan status verified yang benar
-                // ============================================================
                 const downline = await getDownline(user.ref_code);
                 const totalReferrals = downline.length;
-                // Active = user yang sudah verified (sudah deposit approved)
                 const activeReferrals = downline.filter(d => d.verified === true).length;
 
                 let totalEarnings = 0;
@@ -1250,7 +1285,6 @@
                     for (let i = 0; i < downline.length; i++) {
                         const d = downline[i];
                         const joined = new Date(d.created_at).toLocaleDateString('en-US');
-                        // 🔥 Status berdasarkan verified: true = Active, false = Pending
                         const status = d.verified ? '✅ Active' : '⏳ Pending';
                         let contribution = '0 USDT';
                         const deposits = await getUserDeposits(d.email);
@@ -1271,7 +1305,6 @@
                     document.getElementById('downlineBody').innerHTML = html;
                 }
 
-                // Reset copy button state
                 const copyBtn = document.getElementById('copyRefLinkBtn');
                 copyBtn.classList.remove('copied');
                 copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
@@ -1345,7 +1378,7 @@
         }
 
         // ============================================================
-        // CHANGE PASSWORD
+        // 🔥 CHANGE PASSWORD - DENGAN VALIDASI KETAT
         // ============================================================
         document.getElementById('changePasswordBtn').addEventListener('click', function() {
             document.getElementById('passwordModal').classList.add('active');
@@ -1383,9 +1416,11 @@
                 return;
             }
 
-            if (newPass.length < 4) {
+            // 🔥 VALIDASI PASSWORD KETAT
+            const passwordErrors = validateNewPassword(newPass);
+            if (passwordErrors.length > 0) {
                 result.className = 'result-msg error';
-                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> New password must be at least 4 characters.';
+                result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password: ' + passwordErrors.join(', ');
                 result.style.display = 'block';
                 return;
             }
@@ -1396,6 +1431,9 @@
                 result.style.display = 'block';
                 return;
             }
+
+            // 🔥 UPDATE SESSION TIMESTAMP
+            updateSessionTimestamp();
 
             try {
                 const user = await getUserByEmail(currentUser.email);
@@ -1478,6 +1516,25 @@
         });
 
         // ============================================================
+        // SESSION CHECK INTERVAL
+        // ============================================================
+        function initSessionCheck() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+            }
+            sessionCheckInterval = setInterval(function() {
+                if (currentUser) {
+                    if (checkSessionTimeout()) {
+                        clearInterval(sessionCheckInterval);
+                        sessionCheckInterval = null;
+                    } else {
+                        updateSessionTimestamp();
+                    }
+                }
+            }, 300000);
+        }
+
+        // ============================================================
         // INISIALISASI
         // ============================================================
         async function init() {
@@ -1506,7 +1563,10 @@
                     
                     if (!error) {
                         currentUser.ref_code = newRefCode;
-                        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ email: currentUser.email }));
+                        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify({ 
+                            email: currentUser.email,
+                            timestamp: Date.now()
+                        }));
                         showToast('✅ Referral code generated!', 'success');
                     }
                 } catch (err) {
@@ -1515,11 +1575,24 @@
             }
 
             await updateUI();
+            
+            // 🔥 START SESSION CHECK
+            initSessionCheck();
 
             console.log('🟢 Account page ready!');
             console.log('👤 User:', currentUser.email);
             console.log('🔑 Referral Code:', currentUser.ref_code || 'Not set');
         }
+
+        // ============================================================
+        // CLEANUP
+        // ============================================================
+        window.addEventListener('beforeunload', function() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
+        });
 
         init();
 
