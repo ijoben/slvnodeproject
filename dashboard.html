@@ -608,7 +608,6 @@
             margin-top: 0.5rem;
         }
 
-        /* ===== BOTTOM NAV - UKURAN SERAGAM ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -1190,6 +1189,34 @@
             } catch (error) {
                 console.error('❌ Add withdrawal error:', error);
                 throw error;
+            }
+        }
+
+        // ============================================================
+        // 🔥 FUNGSI VERIFIKASI USER (Tambahan)
+        // ============================================================
+        async function updateUserVerification(email) {
+            try {
+                const deposits = await getUserDeposits(email);
+                const hasApproved = deposits.some(d => d.status === 'approved');
+                
+                if (hasApproved) {
+                    const { error } = await supabaseClient
+                        .from('users')
+                        .update({ 
+                            verified: true,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('email', email);
+                    
+                    if (error) throw error;
+                    console.log(`✅ User ${email} verified!`);
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('Update verification error:', error);
+                return false;
             }
         }
 
