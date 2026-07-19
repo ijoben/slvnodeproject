@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ===== SAME AS ORIGINAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -1076,6 +1077,9 @@
     </div>
 
     <script>
+        // ============================================================
+        // SUPABASE CONFIG
+        // ============================================================
         const SUPABASE_URL = 'https://xrbriasgmxjzvbukslat.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyYnJpYXNnbXhqenZidWtzbGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMzAxODMsImV4cCI6MjA5OTYwNjE4M30.fhcSgXY-D-AvgDyg86v7eA_ltAU_UC0LFrCDnsJufgg';
         const STORAGE_KEYS = { CURRENT_USER: 'silverchain_current_user' };
@@ -1085,6 +1089,57 @@
         let pendingDepositData = null;
         let supabaseClient = null;
 
+        // ============================================================
+        // 🔥 SESSION TIMEOUT (30 menit)
+        // ============================================================
+        const SESSION_TIMEOUT = 30 * 60 * 1000;
+        let sessionCheckInterval = null;
+
+        function checkSessionTimeout() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                        showToast('⏰ Session expired. Please login again.');
+                        setTimeout(() => { window.location.href = '/auth'; }, 1000);
+                        return true;
+                    }
+                } catch (e) {
+                    console.error('Session check error:', e);
+                }
+            }
+            return false;
+        }
+
+        function updateSessionTimestamp() {
+            const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    data.timestamp = Date.now();
+                    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(data));
+                } catch (e) {
+                    console.error('Update session error:', e);
+                }
+            }
+        }
+
+        // ============================================================
+        // 🔥 VALIDASI INPUT
+        // ============================================================
+        function validateAmount(amount) {
+            return !isNaN(amount) && amount > 0 && Number.isFinite(amount);
+        }
+
+        function validateAddress(address) {
+            return address && address.length >= 10;
+        }
+
+        // ============================================================
+        // INIT SUPABASE
+        // ============================================================
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('✅ Supabase client created!');
@@ -1092,6 +1147,19 @@
             console.error('❌ Supabase error:', err);
         }
 
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ============================================================
+        // SUPABASE FUNCTIONS
+        // ============================================================
         async function getUserByEmail(email) {
             try {
                 const { data, error } = await supabaseClient
@@ -1192,9 +1260,6 @@
             }
         }
 
-        // ============================================================
-        // 🔥 FUNGSI VERIFIKASI USER (Tambahan)
-        // ============================================================
         async function updateUserVerification(email) {
             try {
                 const deposits = await getUserDeposits(email);
@@ -1284,18 +1349,19 @@
             }
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toastMessage');
-            document.getElementById('toastText').textContent = msg;
-            toast.style.display = 'flex';
-            setTimeout(() => { toast.style.display = 'none'; }, 3500);
-        }
-
+        // ============================================================
+        // AUTH FUNCTIONS
+        // ============================================================
         async function loadCurrentUser() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
                 if (saved) {
                     const data = JSON.parse(saved);
+                    // 🔥 CEK SESSION TIMEOUT
+                    if (data.timestamp && Date.now() - data.timestamp > SESSION_TIMEOUT) {
+                        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                        return false;
+                    }
                     const user = await getUserByEmail(data.email);
                     if (user) {
                         currentUser = user;
@@ -1327,6 +1393,9 @@
             return true;
         }
 
+        // ============================================================
+        // TABS
+        // ============================================================
         const btns = document.querySelectorAll('.tab-btn');
         const contents = {
             tabBuy: document.getElementById('tabBuy'),
@@ -1346,6 +1415,9 @@
             });
         });
 
+        // ============================================================
+        // QRIS
+        // ============================================================
         async function loadQris() {
             try {
                 const qrisUrl = await getSetting('qris_image');
@@ -1380,6 +1452,9 @@
             showToast('✅ QRIS downloaded!');
         });
 
+        // ============================================================
+        // UPDATE UI
+        // ============================================================
         async function updateUI() {
             if (!supabaseClient) {
                 console.warn('⏳ Waiting for Supabase...');
@@ -1470,6 +1545,9 @@
             badge.style.display = pending.length > 0 ? 'block' : 'none';
         }
 
+        // ============================================================
+        // BONUS PREVIEW
+        // ============================================================
         async function updateBonusPreview() {
             const raw = document.getElementById('depositAmount').value.trim();
             const usdt = parseFloat(raw) || 0;
@@ -1494,6 +1572,9 @@
 
         document.getElementById('depositAmount').addEventListener('input', updateBonusPreview);
 
+        // ============================================================
+        // PAYMENT MODAL
+        // ============================================================
         async function getUsdtAddress() {
             const addr = await getSetting('usdt_address');
             return addr || '0x7a2Fb8F9cE3dA5bC1eF2gH4iJkLmNoPqRsTuVwXyZ';
@@ -1505,16 +1586,29 @@
             await loadQris();
         }
 
+        // ============================================================
+        // 🔥 BUY - DENGAN VALIDASI KETAT
+        // ============================================================
         document.getElementById('buyBtn').addEventListener('click', async function() {
             if (!currentUser) {
                 showToast('❌ Please login first.');
                 return;
             }
 
+            // 🔥 UPDATE SESSION TIMESTAMP
+            updateSessionTimestamp();
+
             const raw = document.getElementById('depositAmount').value.trim();
             const usdt = parseFloat(raw);
-            if (isNaN(usdt) || usdt <= 0) {
-                showToast('❌ Please enter a valid amount.');
+            
+            // 🔥 VALIDASI LEBIH KETAT
+            if (!validateAmount(usdt) || usdt <= 0) {
+                showToast('❌ Please enter a valid amount (min 1 USDT).');
+                return;
+            }
+
+            if (usdt > 1000000) {
+                showToast('❌ Maximum deposit is 1,000,000 USDT.');
                 return;
             }
 
@@ -1599,22 +1693,35 @@
             }
         });
 
+        // ============================================================
+        // 🔥 WITHDRAW - DENGAN VALIDASI KETAT
+        // ============================================================
         document.getElementById('wdSubmitBtn').addEventListener('click', async function() {
             if (!currentUser) {
                 showToast('❌ Please login first.');
                 return;
             }
 
+            // 🔥 UPDATE SESSION TIMESTAMP
+            updateSessionTimestamp();
+
             const amount = parseFloat(document.getElementById('wdAmount').value.trim());
             const address = document.getElementById('wdAddress').value.trim();
 
-            if (isNaN(amount) || amount < MIN_WITHDRAW) {
+            // 🔥 VALIDASI LEBIH KETAT
+            if (!validateAmount(amount) || amount < MIN_WITHDRAW) {
                 showToast(`❌ Minimum WD is ${MIN_WITHDRAW} USDT.`);
                 return;
             }
 
-            if (!address || address.length < 10) {
-                showToast('❌ Please enter a valid destination address.');
+            if (!validateAddress(address)) {
+                showToast('❌ Please enter a valid destination address (min 10 chars).');
+                return;
+            }
+
+            // Validasi address format (basic)
+            if (!address.startsWith('0x') && !address.startsWith('T') && !address.startsWith('1') && !address.startsWith('3')) {
+                showToast('❌ Please enter a valid wallet address (starts with 0x, T, 1, or 3).');
                 return;
             }
 
@@ -1635,13 +1742,42 @@
             }
         });
 
+        // ============================================================
+        // LOGOUT
+        // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
             currentUser = null;
             showToast('👋 Logged out.');
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
             setTimeout(() => { window.location.href = '/'; }, 500);
         });
 
+        // ============================================================
+        // SESSION CHECK INTERVAL
+        // ============================================================
+        function initSessionCheck() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+            }
+            sessionCheckInterval = setInterval(function() {
+                if (currentUser) {
+                    if (checkSessionTimeout()) {
+                        clearInterval(sessionCheckInterval);
+                        sessionCheckInterval = null;
+                    } else {
+                        updateSessionTimestamp();
+                    }
+                }
+            }, 300000); // Cek setiap 5 menit
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
         async function init() {
             console.log('🔄 Dashboard initializing...');
 
@@ -1657,10 +1793,23 @@
 
             await loadQris();
             await updateUI();
+            
+            // 🔥 START SESSION CHECK
+            initSessionCheck();
 
             console.log('🟢 Dashboard ready!');
             console.log('👤 User:', currentUser.email);
         }
+
+        // ============================================================
+        // CLEANUP
+        // ============================================================
+        window.addEventListener('beforeunload', function() {
+            if (sessionCheckInterval) {
+                clearInterval(sessionCheckInterval);
+                sessionCheckInterval = null;
+            }
+        });
 
         init();
 
