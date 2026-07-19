@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ... (CSS sama seperti sebelumnya, tidak diubah) ... */
         * {
             margin: 0;
             padding: 0;
@@ -494,6 +493,7 @@
             margin-top: 0.8rem;
         }
 
+        /* Loading skeleton */
         .skeleton {
             background: linear-gradient(90deg, rgba(60,120,255,0.05) 25%, rgba(60,120,255,0.1) 50%, rgba(60,120,255,0.05) 75%);
             background-size: 200% 100%;
@@ -933,7 +933,7 @@
         }
 
         // ============================================================
-        // FUNGSI DATABASE - FIXED
+        // FUNGSI DATABASE
         // ============================================================
         async function getUserByEmail(email) {
             try {
@@ -973,26 +973,13 @@
                     const newRefCode = generateRefCode();
                     const hashedPassword = hashPassword(password);
                     
-                    // Cek apakah referral code valid
-                    let referredBy = null;
-                    if (refCode) {
-                        const { data: referrer } = await supabaseClient
-                            .from('users')
-                            .select('ref_code')
-                            .eq('ref_code', refCode.toUpperCase())
-                            .maybeSingle();
-                        if (referrer) {
-                            referredBy = referrer.ref_code;
-                        }
-                    }
-                    
                     const { data, error } = await supabaseClient
                         .from('users')
                         .insert({
                             email: email,
                             password: hashedPassword,
                             ref_code: newRefCode,
-                            referred_by: referredBy,
+                            referred_by: refCode || null,
                             verified: false,
                             role: email === ADMIN_EMAIL ? 'admin' : 'member',
                             created_at: new Date().toISOString(),
@@ -1007,45 +994,6 @@
             } catch (error) {
                 console.error('Create/update user error:', error);
                 throw error;
-            }
-        }
-
-        // ============================================================
-        // FUNGSI DOWNLINE - FIXED
-        // ============================================================
-        async function getDownline(refCode) {
-            try {
-                if (!refCode) {
-                    console.warn('⚠️ getDownline: refCode is null or empty');
-                    return [];
-                }
-                
-                console.log(`🔍 Fetching downline for ref_code: ${refCode}`);
-                
-                const { data, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('referred_by', refCode)
-                    .order('created_at', { ascending: false });
-                
-                if (error) {
-                    console.error('❌ getDownline error:', error);
-                    throw error;
-                }
-                
-                console.log(`✅ Found ${data.length} downline members for ref_code ${refCode}`);
-                
-                // Debug: tampilkan data downline
-                if (data.length > 0) {
-                    console.log('📋 Downline members:', data.map(d => ({ email: d.email, referred_by: d.referred_by, ref_code: d.ref_code })));
-                } else {
-                    console.log('ℹ️ No downline members found');
-                }
-                
-                return data || [];
-            } catch (error) {
-                console.error('❌ Get downline error:', error);
-                return [];
             }
         }
 
@@ -1079,6 +1027,63 @@
             }
         }
 
+        async function getReferralBalance(email) {
+            try {
+                const user = await getUserByEmail(email);
+                if (!user) return 0;
+
+                const { data: referrals } = await supabaseClient
+                    .from('users')
+                    .select('email')
+                    .eq('referred_by', user.ref_code);
+
+                const { data: settings } = await supabaseClient
+                    .from('settings')
+                    .select('value')
+                    .eq('key', 'ref_percent')
+                    .maybeSingle();
+
+                const refPercent = parseInt(settings ? settings.value : 3) || 3;
+                let total = 0;
+
+                for (const ref of referrals) {
+                    const deposits = await getUserDeposits(ref.email);
+                    const firstDeposit = deposits
+                        .filter(d => d.status === 'approved')
+                        .sort((a, b) => a.timestamp - b.timestamp)[0];
+
+                    if (firstDeposit) {
+                        total += firstDeposit.usdt * refPercent / 100;
+                    }
+                }
+
+                const withdrawals = await getUserWithdrawals(email);
+                const totalWd = withdrawals
+                    .filter(w => w.status === 'approved')
+                    .reduce((sum, w) => sum + w.amount, 0);
+
+                return Math.round((total - totalWd) * 100) / 100;
+            } catch (error) {
+                console.error('Get referral balance error:', error);
+                return 0;
+            }
+        }
+
+        async function getDownline(refCode) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('referred_by', refCode)
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Get downline error:', error);
+                return [];
+            }
+        }
+
         async function getSetting(key) {
             try {
                 const { data, error } = await supabaseClient
@@ -1106,9 +1111,6 @@
                     const user = await getUserByEmail(data.email);
                     if (user) {
                         currentUser = user;
-                        console.log('👤 Current user loaded:', currentUser.email);
-                        console.log('🔑 Referral code:', currentUser.ref_code);
-                        console.log('👥 Referred by:', currentUser.referred_by || 'none');
                         return true;
                     }
                 }
@@ -1146,7 +1148,7 @@
         }
 
         // ============================================================
-        // FUNGSI UPDATE UI - FIXED
+        // FUNGSI UPDATE UI - DENGAN PERBAIKAN VERIFIED
         // ============================================================
         async function updateUI() {
             if (isRefreshing) return;
@@ -1212,42 +1214,15 @@
                 }
 
                 // ============================================================
-                // DOWNLINE - FIXED
+                // 🔥 PERBAIKAN: Downline dengan status verified yang benar
                 // ============================================================
-                console.log('📊 Fetching downline for user:', user.email);
-                console.log('🔑 Referral code:', user.ref_code);
-                
-                // Pastikan user punya referral code
-                let userRefCode = user.ref_code;
-                if (!userRefCode) {
-                    console.warn('⚠️ User has no referral code, generating one...');
-                    const newRefCode = generateRefCode();
-                    const { error } = await supabaseClient
-                        .from('users')
-                        .update({ ref_code: newRefCode })
-                        .eq('email', user.email);
-                    
-                    if (!error) {
-                        userRefCode = newRefCode;
-                        currentUser.ref_code = newRefCode;
-                        document.getElementById('infoRefCode').textContent = newRefCode;
-                        showToast('✅ Referral code generated!', 'success');
-                    } else {
-                        console.error('❌ Failed to generate referral code:', error);
-                    }
-                }
-
-                // Fetch downline menggunakan referral code
-                const downline = await getDownline(userRefCode);
-                
-                // Hitung statistik
+                const downline = await getDownline(user.ref_code);
                 const totalReferrals = downline.length;
+                // Active = user yang sudah verified (sudah deposit approved)
                 const activeReferrals = downline.filter(d => d.verified === true).length;
 
-                // Hitung earnings
                 let totalEarnings = 0;
                 const refPercent = parseInt(await getSetting('ref_percent')) || 3;
-                
                 for (const ref of downline) {
                     const deposits = await getUserDeposits(ref.email);
                     const firstDeposit = deposits
@@ -1257,27 +1232,25 @@
                         totalEarnings += firstDeposit.usdt * refPercent / 100;
                     }
                 }
-                
                 const wdHistory = await getUserWithdrawals(user.email);
                 const totalWd = wdHistory
                     .filter(w => w.status === 'approved')
                     .reduce((sum, w) => sum + w.amount, 0);
                 totalEarnings = Math.round((totalEarnings - totalWd) * 100) / 100;
 
-                // Update stats
                 document.getElementById('downlineTotal').textContent = totalReferrals;
                 document.getElementById('downlineActive').textContent = activeReferrals;
                 document.getElementById('downlineEarnings').textContent = totalEarnings.toFixed(1);
 
-                // Render downline table
                 if (downline.length === 0) {
                     document.getElementById('downlineBody').innerHTML =
-                        `<tr><td colspan="5" class="empty">No referrals yet. Share your referral link!</td></tr>`;
+                        `<tr><td colspan="5" class="empty">No referrals yet</td></tr>`;
                 } else {
                     let html = '';
                     for (let i = 0; i < downline.length; i++) {
                         const d = downline[i];
                         const joined = new Date(d.created_at).toLocaleDateString('en-US');
+                        // 🔥 Status berdasarkan verified: true = Active, false = Pending
                         const status = d.verified ? '✅ Active' : '⏳ Pending';
                         let contribution = '0 USDT';
                         const deposits = await getUserDeposits(d.email);
@@ -1304,7 +1277,7 @@
                 copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
 
             } catch (error) {
-                console.error('❌ Update UI error:', error);
+                console.error('Update UI error:', error);
                 showToast('⚠️ Error loading data. Please refresh.', 'error');
             } finally {
                 isRefreshing = false;
@@ -1520,7 +1493,6 @@
             const authPassed = await checkAuth();
             if (!authPassed) return;
 
-            // Pastikan user memiliki referral code
             if (currentUser && !currentUser.ref_code) {
                 try {
                     const newRefCode = generateRefCode();
@@ -1547,12 +1519,10 @@
             console.log('🟢 Account page ready!');
             console.log('👤 User:', currentUser.email);
             console.log('🔑 Referral Code:', currentUser.ref_code || 'Not set');
-            console.log('👥 Referred By:', currentUser.referred_by || 'None');
         }
 
         init();
 
-        // Auto refresh setiap 30 detik
         setInterval(async () => {
             if (currentUser) {
                 await updateUI();
